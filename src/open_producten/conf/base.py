@@ -48,6 +48,12 @@ MIDDLEWARE.insert(
 )
 
 #
+# MOZILLA DJANGO OIDC
+#
+
+OIDC_DRF_AUTH_BACKEND = "open_producten.utils.oauth.OIDCAuthenticationBackend"
+
+#
 # CELERY
 #
 
@@ -110,6 +116,8 @@ MARKDOWNX_EDITOR_RESIZABLE = False
 #
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
