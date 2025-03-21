@@ -6,9 +6,11 @@ from .jsonschema import JsonSchema
 from .link import Link
 from .parameter import Parameter
 from .prijs import Prijs, PrijsOptie, PrijsRegel
+from .proces import Proces
 from .producttype import ProductType
 from .thema import Thema
 from .upn import UniformeProductNaam
+from .zaaktype import ZaakType
 
 __all__ = [
     "UniformeProductNaam",
@@ -25,4 +27,6 @@ __all__ = [
     "ContentLabel",
     "JsonSchema",
     "Actie",
+    "Proces",
+    "ZaakType",
 ]

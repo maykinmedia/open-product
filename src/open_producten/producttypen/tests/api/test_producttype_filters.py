@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.urls import reverse, reverse_lazy
 
 from freezegun import freeze_time
@@ -12,6 +14,7 @@ from open_producten.producttypen.tests.factories import (
     ParameterFactory,
     ProductTypeFactory,
     UniformeProductNaamFactory,
+    ZaakTypeFactory,
 )
 from open_producten.utils.tests.cases import BaseApiTestCase
 
@@ -508,4 +511,19 @@ class TestProductTypeFilters(BaseApiTestCase):
         self.assertEqual(
             response.data["results"][0]["verbruiksobject_schema"]["naam"],
             "parkeer-verbruik-schema",
+        )
+
+    def test_zaaktype_uuid_filter(self):
+        uuid = uuid4()
+
+        ZaakTypeFactory.create(uuid=uuid)
+        ZaakTypeFactory.create()
+
+        response = self.client.get(self.path, {"zaaktypen__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            response.data["results"][0]["zaaktypen"][0]["url"],
+            f"https://www.zaaktype.nl/{uuid}",
         )

@@ -16,6 +16,7 @@ from ..models import (
     ProductType,
     Thema,
     UniformeProductNaam,
+    ZaakType,
 )
 from ..models.dmn_config import DmnConfig
 
@@ -146,6 +147,14 @@ class ParameterFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Parameter
+
+
+class ZaakTypeFactory(factory.django.DjangoModelFactory):
+    product_type = factory.SubFactory(ProductTypeFactory)
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = ZaakType
 
 
 class JsonSchemaFactory(factory.django.DjangoModelFactory):

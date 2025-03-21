@@ -3572,6 +3572,12 @@ paths:
         schema:
           type: string
         description: Naam van het json schema.
+      - in: query
+        name: zaaktypen__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van het zaaktype.
       tags:
       - producttypen
       security:
@@ -3692,6 +3698,8 @@ paths:
                       keywords:
                       - auto
                       interne_opmerkingen: interne opmerkingen...
+                      processen:
+                        url: https://gemeente.open-zaak.nl/
                   summary: product type response
           description: ''
         '400':
@@ -3874,6 +3882,8 @@ paths:
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
+                    processen:
+                      url: https://gemeente.open-zaak.nl/
                   summary: product type response
           description: ''
         '400':
@@ -4026,6 +4036,8 @@ paths:
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
+                    processen:
+                      url: https://gemeente.open-zaak.nl/
                   summary: product type response
           description: ''
         '400':
@@ -4216,6 +4228,8 @@ paths:
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
+                    processen:
+                      url: https://gemeente.open-zaak.nl/
                   summary: product type response
           description: ''
         '400':
@@ -4407,6 +4421,8 @@ paths:
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
+                    processen:
+                      url: https://gemeente.open-zaak.nl/
                   summary: product type response
           description: ''
         '400':
@@ -6412,6 +6428,26 @@ components:
           description: Het hoofd thema van het thema.
       required:
       - naam
+    NestedZaakType:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar het zaaktype.
+      required:
+      - url
+    NestedZaakTypeRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid naar het zaaktype.
+      required:
+      - uuid
     Organisatie:
       type: object
       properties:
@@ -7017,6 +7053,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7286,6 +7326,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameter'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakType'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7431,6 +7475,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.

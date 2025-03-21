@@ -103,6 +103,7 @@ class ProductTypeFilterSet(FilterSet):
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],
+            "zaaktypen__uuid": ["exact"],
         }
 
 

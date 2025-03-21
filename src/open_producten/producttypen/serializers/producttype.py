@@ -27,6 +27,7 @@ from .externe_code import ExterneCodeSerializer, NestedExterneCodeSerializer
 from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
+from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
 
 class NestedThemaSerializer(serializers.ModelSerializer):
@@ -173,6 +174,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "toegestane_statussen": ["gereed"],
                 "keywords": ["auto"],
                 "interne_opmerkingen": "interne opmerkingen...",
+                "processen": {"url": "https://gemeente.open-zaak.nl/"},
             },
             response_only=True,
         ),
@@ -293,6 +295,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     externe_codes = NestedExterneCodeSerializer(many=True, required=False)
     parameters = NestedParameterSerializer(many=True, required=False)
+    zaaktypen = NestedZaakTypeSerializer(many=True, required=False)
 
     def validate_externe_codes(self, externe_codes: list[dict]):
         return validate_key_value_model_keys(
@@ -306,6 +309,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             parameters,
             "naam",
             _("Er bestaat al een parameter met de naam {} voor dit ProductType."),
+        )
+
+    def validate_zaaktypen(self, parameters: list[dict]):
+        return validate_key_value_model_keys(
+            parameters,
+            "uuid",
+            _("Er bestaat al een zaaktype met de uuid {} voor dit ProductType."),
         )
 
     class Meta:
@@ -332,6 +342,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         samenvatting = validated_data.pop("samenvatting")
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
+        zaaktypen = validated_data.pop("zaaktypen", [])
 
         product_type = ProductType.objects.create(**validated_data)
         product_type.themas.set(themas)
@@ -352,6 +363,11 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ParameterSerializer,
         )
 
+        set_nested_serializer(
+            [zaaktype | {"product_type": product_type.id} for zaaktype in zaaktypen],
+            ZaakTypeSerializer,
+        )
+
         product_type.set_current_language("nl")
         product_type.naam = naam
         product_type.samenvatting = samenvatting
@@ -370,6 +386,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         samenvatting = validated_data.pop("samenvatting", None)
         externe_codes = validated_data.pop("externe_codes", None)
         parameters = validated_data.pop("parameters", None)
+        zaaktypen = validated_data.pop("zaaktypen", None)
 
         instance = super().update(instance, validated_data)
 
@@ -397,6 +414,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             set_nested_serializer(
                 [parameter | {"product_type": instance.id} for parameter in parameters],
                 ParameterSerializer,
+            )
+
+        if zaaktypen is not None:
+            instance.zaaktypen.all().delete()
+            set_nested_serializer(
+                [zaaktype | {"product_type": instance.id} for zaaktype in zaaktypen],
+                ZaakTypeSerializer,
             )
 
         instance.set_current_language("nl")

@@ -126,6 +126,13 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Interne opmerkingen over het product type."),
     )
 
+    # verzoek_type = models.UUIDField(
+    #     verbose_name=_("verzoek type"),
+    #     null=True,
+    #     blank=True,
+    #     help_text=_("uuid van een verzoek type")
+    # ) TODO niet in openzaak?
+
     translations = TranslatedFields(
         samenvatting=models.TextField(
             verbose_name=_("samenvatting"),

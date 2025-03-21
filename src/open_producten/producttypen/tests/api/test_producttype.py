@@ -13,7 +13,13 @@ from open_producten.locaties.tests.factories import (
     LocatieFactory,
     OrganisatieFactory,
 )
-from open_producten.producttypen.models import ExterneCode, Link, Parameter, ProductType
+from open_producten.producttypen.models import (
+    ExterneCode,
+    Link,
+    Parameter,
+    ProductType,
+    ZaakType,
+)
 from open_producten.producttypen.tests.factories import (
     BestandFactory,
     ContentElementFactory,
@@ -26,6 +32,7 @@ from open_producten.producttypen.tests.factories import (
     ProductTypeFactory,
     ThemaFactory,
     UniformeProductNaamFactory,
+    ZaakTypeFactory,
 )
 from open_producten.utils.tests.cases import BaseApiTestCase
 
@@ -106,6 +113,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contacten": [],
             "externe_codes": [],
             "parameters": [],
+            "zaaktypen": [],
             "gepubliceerd": False,
             "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product_type.update_datum.astimezone().isoformat(),
@@ -242,6 +250,30 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
+    def test_create_product_type_with_duplicate_zaaktype_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "zaaktypen": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaaktypen": [
+                    ErrorDetail(
+                        string="Er bestaat al een zaaktype met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
     def test_create_product_type_with_duplicate_ids_returns_error(self):
         thema = ThemaFactory.create()
 
@@ -292,6 +324,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contact_ids": [contact.id],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
+            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
             "verbruiksobject_schema_naam": schema.naam,
             "dataobject_schema_naam": schema.naam,
         }
@@ -391,6 +424,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
+            "zaaktypen": [
+                {"url": "https://www.zaaktype.nl/99a8bd4f-4144-4105-9850-e477628852fc"}
+            ],
             "gepubliceerd": False,
             "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product_type.update_datum.astimezone().isoformat(),
@@ -613,6 +649,57 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
+    def test_update_product_type_with_zaaktype(self):
+        product_type = ProductTypeFactory.create()
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [{"url": "https://www.zaaktype.nl/99a8bd4f-4144-4105-9850-e477628852fc"}],
+        )
+
+    def test_update_product_type_with_zaaktype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [{"url": "https://www.zaaktype.nl/99a8bd4f-4144-4105-9850-e477628852fc"}],
+        )
+
+    def test_update_product_type_removing_zaaktypen(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = []
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 0)
+        self.assertEqual(response.data["zaaktypen"], zaaktypen)
+
+    def test_update_product_type_existing_zaaktypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        response = self.client.patch(self.detail_path(product_type), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+
     def test_partial_update_product_type(self):
         product_type = ProductTypeFactory.create()
         locatie = LocatieFactory.create()
@@ -758,6 +845,57 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
+    def test_partial_update_product_type_with_zaaktype(self):
+        product_type = ProductTypeFactory.create()
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [{"url": "https://www.zaaktype.nl/99a8bd4f-4144-4105-9850-e477628852fc"}],
+        )
+
+    def test_partial_update_product_type_with_zaaktype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [{"url": "https://www.zaaktype.nl/99a8bd4f-4144-4105-9850-e477628852fc"}],
+        )
+
+    def test_partial_update_product_type_removing_zaaktypen(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = []
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 0)
+        self.assertEqual(response.data["zaaktypen"], zaaktypen)
+
+    def test_partial_update_product_type_existing_zaaktypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        response = self.client.patch(self.detail_path(product_type), {"naam": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+
     def test_read_product_type_link(self):
         product_type = ProductTypeFactory.create()
         link = LinkFactory.create(product_type=product_type)
@@ -847,6 +985,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "contacten": [],
                 "externe_codes": [],
                 "parameters": [],
+                "zaaktypen": [],
                 "gepubliceerd": True,
                 "aanmaak_datum": product_type1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product_type1.update_datum.astimezone().isoformat(),
@@ -883,6 +1022,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "contacten": [],
                 "externe_codes": [],
                 "parameters": [],
+                "zaaktypen": [],
                 "gepubliceerd": True,
                 "aanmaak_datum": product_type2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product_type2.update_datum.astimezone().isoformat(),
@@ -934,6 +1074,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contacten": [],
             "externe_codes": [],
             "parameters": [],
+            "zaaktypen": [],
             "themas": [
                 {
                     "id": str(self.thema.id),
