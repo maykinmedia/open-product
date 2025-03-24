@@ -76,15 +76,15 @@ API Autorisaties
 
 De *API's Open Producten* zijn niet toegankelijk zonder autorisatie.
 Dit betekent dat elke applicatie die gegevens ophaalt of registreert in Open
-Producten hiervoor geautoriseerd moet zijn.
+Producten hiervoor geautoriseerd moet zijn. Dit kan via tokens of een oidc provider.
 
-Via **Tokens** wordt elke client-applicatie geconfigureerd om de toegang in
-te regelen. Zie :ref:`manual_generate_token` voor hoe je dit doet.
+* Voor tokens, zie :ref:`manual_generate_token`.
+* Voor het gebruik van een oidc provider zie :ref:`manual_use_oidc`.
 
 Producten
 ---------
 
-De groep *Producten* laat je toe om gevens in te kijken die via de Open Producten
+De groep *Producten* laat je toe om gegevens in te kijken die via de Open Producten
 API's aangemaakt en/of gewijzigd worden.
 
 **Producten** bevat alle informatie die de *Producten API* ontsluit. Hier kan je

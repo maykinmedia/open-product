@@ -43,7 +43,13 @@ latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=htt
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-producten/main/src/openapi.yaml>`_
 ==============  ==============  =============================
 
-Een api token kan worden aangemaakt in Open Producten admin -> Users -> Tokens.
+Er zijn twee manieren om te authenticeren met de API.
+
+* Een api token kan worden aangemaakt in Open Producten admin -> Users -> Tokens.
+* OpenId Connect kan worden ingesteld in the Open Producten admin -> Configuratie -> OpenID connect configuratie.
+
+
+
 
 Ontwikkelaars
 =============

@@ -53,6 +53,12 @@ MIDDLEWARE.insert(
 
 OIDC_DRF_AUTH_BACKEND = "open_producten.utils.oauth.OIDCAuthenticationBackend"
 
+OIDC_CREATE_USER = config(
+    "OIDC_CREATE_USER",
+    default=True,
+    help_text="whether the OIDC authorization will create users if the user is unknown in Open Producten.",
+)
+
 #
 # CELERY
 #

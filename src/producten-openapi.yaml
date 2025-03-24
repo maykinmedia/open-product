@@ -253,6 +253,8 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -335,6 +337,8 @@ paths:
               $ref: '#/components/schemas/ProductRequest'
         required: true
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -416,6 +420,8 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -502,6 +508,8 @@ paths:
               $ref: '#/components/schemas/ProductRequest'
         required: true
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -587,6 +595,8 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedProductRequest'
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -667,6 +677,8 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
+      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -1134,6 +1146,14 @@ components:
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
   securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: open_producten_sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
     tokenAuth:
       type: apiKey
       in: header
