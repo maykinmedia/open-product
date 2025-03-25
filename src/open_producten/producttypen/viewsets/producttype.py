@@ -7,7 +7,11 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
-from open_producten.producttypen.models import ContentElement, ProductType
+from open_producten.producttypen.models import (
+    ContentElement,
+    ExterneVerwijzingConfig,
+    ProductType,
+)
 from open_producten.producttypen.models.producttype import ProductStateChoices
 from open_producten.producttypen.serializers import (
     ProductTypeActuelePrijsSerializer,
@@ -104,6 +108,8 @@ class ProductTypeFilterSet(FilterSet):
             "update_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],
             "zaaktypen__uuid": ["exact"],
+            "verzoektypen__uuid": ["exact"],
+            "processen__uuid": ["exact"],
         }
 
 
@@ -155,6 +161,11 @@ class ProductTypeViewSet(TranslatableViewSetMixin, OrderedModelViewSet):
     serializer_class = ProductTypeSerializer
     lookup_url_kwarg = "id"
     filterset_class = ProductTypeFilterSet
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["externe_verwijzing_config"] = ExterneVerwijzingConfig.get_solo()
+        return context
 
     @extend_schema(
         summary="De vertaling van een producttype aanpassen.",
