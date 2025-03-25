@@ -13,9 +13,11 @@ from ..models import (
     Prijs,
     PrijsOptie,
     PrijsRegel,
+    Proces,
     ProductType,
     Thema,
     UniformeProductNaam,
+    VerzoekType,
     ZaakType,
 )
 from ..models.dmn_config import DmnConfig
@@ -155,6 +157,22 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ZaakType
+
+
+class VerzoekTypeFactory(factory.django.DjangoModelFactory):
+    product_type = factory.SubFactory(ProductTypeFactory)
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = VerzoekType
+
+
+class ProcesFactory(factory.django.DjangoModelFactory):
+    product_type = factory.SubFactory(ProductTypeFactory)
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = Proces
 
 
 class JsonSchemaFactory(factory.django.DjangoModelFactory):
