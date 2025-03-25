@@ -176,6 +176,10 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
         "open_producten.utils.spectacular_hooks.custom_postprocessing_hook",
     ),
     "COMPONENT_SPLIT_REQUEST": True,
+    "AUTHENTICATION_WHITELIST": [
+        "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
 
 # Subpath (optional)

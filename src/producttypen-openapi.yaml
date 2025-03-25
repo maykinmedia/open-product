@@ -451,7 +451,6 @@ paths:
       - bestanden
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -512,7 +511,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -566,7 +564,6 @@ paths:
       - bestanden
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -631,7 +628,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -695,7 +691,6 @@ paths:
                 summary: bestand request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -748,7 +743,6 @@ paths:
       - bestanden
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -831,7 +825,6 @@ paths:
       - contacten
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -909,7 +902,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -976,7 +968,6 @@ paths:
       - contacten
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1058,7 +1049,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1140,7 +1130,6 @@ paths:
                 summary: contact request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1206,7 +1195,6 @@ paths:
       - contacten
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -1255,7 +1243,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -1312,7 +1299,6 @@ paths:
       - content
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1382,7 +1368,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1453,7 +1438,6 @@ paths:
                 summary: content element request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1509,7 +1493,6 @@ paths:
       - content
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -1564,7 +1547,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1616,7 +1598,6 @@ paths:
       - content
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -1665,7 +1646,6 @@ paths:
       - contentlabels
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1758,7 +1738,6 @@ paths:
       - links
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1821,7 +1800,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -1876,7 +1854,6 @@ paths:
       - links
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -1943,7 +1920,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2009,7 +1985,6 @@ paths:
                 summary: link request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2063,7 +2038,6 @@ paths:
       - links
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -2140,7 +2114,6 @@ paths:
       - locaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2211,7 +2184,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -2270,7 +2242,6 @@ paths:
       - locaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2345,7 +2316,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2419,7 +2389,6 @@ paths:
                 summary: locatie request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2477,7 +2446,6 @@ paths:
       - locaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -2559,7 +2527,6 @@ paths:
       - organisaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2632,7 +2599,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -2692,7 +2658,6 @@ paths:
       - organisaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2769,7 +2734,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2845,7 +2809,6 @@ paths:
                 summary: organisatie request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -2904,7 +2867,6 @@ paths:
       - organisaties
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -3021,7 +2983,6 @@ paths:
       - prijzen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -3118,7 +3079,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -3186,7 +3146,6 @@ paths:
       - prijzen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -3283,7 +3242,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -3379,7 +3337,6 @@ paths:
                   of als string met een . of , voor de decimalen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -3446,7 +3403,6 @@ paths:
       - prijzen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -3614,7 +3570,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -3801,7 +3756,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -3954,7 +3908,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4145,7 +4098,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4337,7 +4289,6 @@ paths:
                 summary: product type request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4489,7 +4440,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -4533,7 +4483,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4597,7 +4546,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4666,7 +4614,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4723,7 +4670,6 @@ paths:
               $ref: '#/components/schemas/PatchedProductTypeTranslationRequest'
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4775,7 +4721,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -4811,7 +4756,6 @@ paths:
       - producttypen
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4874,7 +4818,6 @@ paths:
       - schemas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -4946,7 +4889,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -5004,7 +4946,6 @@ paths:
       - schemas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5079,7 +5020,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5153,7 +5093,6 @@ paths:
                 summary: schema request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5210,7 +5149,6 @@ paths:
       - schemas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -5315,7 +5253,6 @@ paths:
       - themas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5395,7 +5332,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -5464,7 +5400,6 @@ paths:
       - themas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5548,7 +5483,6 @@ paths:
         required: true
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5633,7 +5567,6 @@ paths:
                 summary: thema request
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -5701,7 +5634,6 @@ paths:
       - themas
       security:
       - jwtAuth: []
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -7643,10 +7575,6 @@ components:
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
   securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: open_producten_sessionid
     jwtAuth:
       type: http
       scheme: bearer
