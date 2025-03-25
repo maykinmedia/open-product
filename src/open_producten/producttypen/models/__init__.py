@@ -2,6 +2,7 @@ from .actie import Actie
 from .bestand import Bestand
 from .content import ContentElement, ContentLabel
 from .externe_code import ExterneCode
+from .externeverwijzingconfig import ExterneVerwijzingConfig
 from .jsonschema import JsonSchema
 from .link import Link
 from .parameter import Parameter
@@ -10,6 +11,7 @@ from .proces import Proces
 from .producttype import ProductType
 from .thema import Thema
 from .upn import UniformeProductNaam
+from .verzoektype import VerzoekType
 from .zaaktype import ZaakType
 
 __all__ = [
@@ -29,4 +31,6 @@ __all__ = [
     "Actie",
     "Proces",
     "ZaakType",
+    "ExterneVerwijzingConfig",
+    "VerzoekType",
 ]

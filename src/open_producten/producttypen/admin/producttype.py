@@ -16,6 +16,7 @@ from .externe_code import ExterneCodeInline
 from .link import LinkInline
 from .parameter import ParameterInline
 from .proces import ProcesInline
+from .verzoektype import VerzoekTypeInline
 from .zaaktype import ZaakTypeInline
 
 
@@ -75,6 +76,7 @@ class ProductTypeAdmin(OrderedInlineModelAdminMixin, TranslatableAdmin):
         ActieInline,
         ProcesInline,
         ZaakTypeInline,
+        VerzoekTypeInline,
     )
     fields = (
         "naam",
