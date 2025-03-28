@@ -9,18 +9,18 @@ def custom_postprocessing_hook(result, generator, request, public):
     """
     DRF Spectacular adds default = [] to the item inside an array on PrimaryKeyRelatedField fields with many=True like
 
-    `product_type_ids = serializers.PrimaryKeyRelatedField(
+    `producttype_ids = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=ProductType.objects.all(),
         default=[],
         write_only=True,
-        source="product_typen",
+        source="producttypen",
     )`
     (src/openproduct/producttypen/serializers/thema.py)
 
     This generates the following schema:
 
-    product_type_ids:
+    producttype_ids:
       type: array
       items:
         type: string

@@ -19,23 +19,23 @@ from openproduct.producttypen.models.producttype import ProductStateChoices, Pro
 from .eigenaar import EigenaarInline
 
 
-def get_status_choices(product_type_id, instance):
+def get_status_choices(producttype_id, instance):
 
     if instance:
         return [
             choice
             for choice in ProductStateChoices.choices
-            if choice[0] in instance.product_type.toegestane_statussen
+            if choice[0] in instance.producttype.toegestane_statussen
             or choice[0] == ProductStateChoices.INITIEEL.value
             or choice[0] == instance.status  # keep exising status of product
         ]
 
-    if product_type_id:
+    if producttype_id:
         return [
             choice
             for choice in ProductStateChoices.choices
             if choice[0]
-            in ProductType.objects.get(id=product_type_id).toegestane_statussen
+            in ProductType.objects.get(id=producttype_id).toegestane_statussen
             or choice[0] == ProductStateChoices.INITIEEL.value
         ]
 
@@ -54,15 +54,15 @@ class ProductAdminForm(forms.ModelForm):
         self.fields["status"] = forms.TypedChoiceField(
             label=_("status"),
             choices=get_status_choices(
-                args[0].get("product_type") if args else None, kwargs.get("instance")
+                args[0].get("producttype") if args else None, kwargs.get("instance")
             ),
             widget=forms.Select,
         )
 
     def clean(self):
         """
-        The toegestane_statussen on the product type should be changeable without it affecting existing products.
-        This means that the status & dates should only be validated when they (or the product type is changed) otherwise it will raise an exception.
+        The toegestane_statussen on the producttype should be changeable without it affecting existing products.
+        This means that the status & dates should only be validated when they (or the producttype is changed) otherwise it will raise an exception.
         """
         super().clean()
 
@@ -70,35 +70,35 @@ class ProductAdminForm(forms.ModelForm):
             return
 
         validate_product_verbruiksobject(
-            self.cleaned_data["verbruiksobject"], self.cleaned_data["product_type"]
+            self.cleaned_data["verbruiksobject"], self.cleaned_data["producttype"]
         )
 
         validate_product_dataobject(
-            self.cleaned_data["dataobject"], self.cleaned_data["product_type"]
+            self.cleaned_data["dataobject"], self.cleaned_data["producttype"]
         )
 
-        product_type_changed = "product_type" in self.changed_data
+        producttype_changed = "producttype" in self.changed_data
 
-        if "status" in self.changed_data or product_type_changed:
+        if "status" in self.changed_data or producttype_changed:
             validate_product_status(
-                self.cleaned_data["status"], self.cleaned_data["product_type"]
+                self.cleaned_data["status"], self.cleaned_data["producttype"]
             )
 
-        if "start_datum" in self.changed_data or product_type_changed:
+        if "start_datum" in self.changed_data or producttype_changed:
             validate_product_start_datum(
-                self.cleaned_data["start_datum"], self.cleaned_data["product_type"]
+                self.cleaned_data["start_datum"], self.cleaned_data["producttype"]
             )
 
-        if "eind_datum" in self.changed_data or product_type_changed:
+        if "eind_datum" in self.changed_data or producttype_changed:
             validate_product_eind_datum(
-                self.cleaned_data["eind_datum"], self.cleaned_data["product_type"]
+                self.cleaned_data["eind_datum"], self.cleaned_data["producttype"]
             )
 
 
 @admin.register(Product)
 class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = (
-        "product_type_name",
+        "producttype_name",
         "aanmaak_datum",
         "start_datum",
         "eind_datum",
@@ -106,23 +106,23 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         "show_actions",
     )
     list_filter = (
-        ("product_type__translations__naam"),
+        ("producttype__translations__naam"),
         "aanmaak_datum",
         "start_datum",
         "eind_datum",
         "status",
     )
-    autocomplete_fields = ("product_type",)
-    search_fields = ("product_type__translations__naam",)
+    autocomplete_fields = ("producttype",)
+    search_fields = ("producttype__translations__naam",)
     form = ProductAdminForm
     inlines = (EigenaarInline,)
 
-    @admin.display(description="Product Type")
-    def product_type_name(self, obj):
-        return obj.product_type.naam
+    @admin.display(description="Producttype")
+    def producttype_name(self, obj):
+        return obj.producttype.naam
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("product_type")
+        return super().get_queryset(request).select_related("producttype")
 
     @admin.display(description=_("acties"))
     def show_actions(self, obj: Product) -> str:

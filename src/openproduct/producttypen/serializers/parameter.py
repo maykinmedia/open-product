@@ -10,10 +10,10 @@ class NestedParameterSerializer(serializers.ModelSerializer):
 
 
 class ParameterSerializer(serializers.ModelSerializer):
-    product_type = serializers.PrimaryKeyRelatedField(
+    producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Parameter
-        fields = ["naam", "waarde", "product_type"]
+        fields = ["naam", "waarde", "producttype"]

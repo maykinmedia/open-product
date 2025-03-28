@@ -88,7 +88,7 @@ Quickstart
 References
 ==========
 
-* `Documentation <https://TODO>`_
+* `Documentation <https://open-product.readthedocs.io/en/stable/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/open-product>`_
 * `Issues <https://github.com/maykinmedia/open-product/issues>`_
 * `Code <https://github.com/maykinmedia/open-product>`_

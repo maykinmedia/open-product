@@ -11,10 +11,10 @@ class TestThemaAdmin(TestCase):
     def setUp(self):
         self.admin = ThemaAdmin(Thema, AdminSite())
 
-    def test_get_deleted_objects_when_linked_product_type_has_one_thema(self):
-        product_type = ProductTypeFactory(naam="product type")
-        product_type.themas.add(ThemaFactory(naam="thema"))
-        product_type.save()
+    def test_get_deleted_objects_when_linked_producttype_has_one_thema(self):
+        producttype = ProductTypeFactory(naam="producttype")
+        producttype.themas.add(ThemaFactory(naam="thema"))
+        producttype.save()
 
         _, _, _, protected = self.admin.get_deleted_objects(
             Thema.objects.all(), self.client.request()
@@ -22,18 +22,18 @@ class TestThemaAdmin(TestCase):
         self.assertEqual(
             protected,
             [
-                f"Product Type <a href='/admin/producttypen/producttype/{product_type.id}/change/'>"
-                f"product type</a> moet aan een minimaal één thema zijn gelinkt. "
+                f"Producttype <a href='/admin/producttypen/producttype/{producttype.id}/change/'>"
+                f"producttype</a> moet aan een minimaal één thema zijn gelinkt. "
                 f"Huidige thema's: thema."
             ],
         )
 
-    def test_get_deleted_objects_when_linked_product_type_has_other_themas(self):
+    def test_get_deleted_objects_when_linked_producttype_has_other_themas(self):
         thema = ThemaFactory()
-        product_type = ProductTypeFactory()
-        product_type.themas.add(thema)
-        product_type.themas.add(ThemaFactory())
-        product_type.save()
+        producttype = ProductTypeFactory()
+        producttype.themas.add(thema)
+        producttype.themas.add(ThemaFactory())
+        producttype.save()
 
         _, _, _, protected = self.admin.get_deleted_objects(
             Thema.objects.filter(id=thema.id), self.client.request()
@@ -41,10 +41,10 @@ class TestThemaAdmin(TestCase):
         self.assertEqual(protected, [])
 
     def test_get_deleted_objects_with_multiple_themas(self):
-        product_type = ProductTypeFactory(naam="product type")
-        product_type.themas.add(ThemaFactory(naam="thema"))
-        product_type.themas.add(ThemaFactory(naam="thema 2"))
-        product_type.save()
+        producttype = ProductTypeFactory(naam="producttype")
+        producttype.themas.add(ThemaFactory(naam="thema"))
+        producttype.themas.add(ThemaFactory(naam="thema 2"))
+        producttype.save()
 
         _, _, _, protected = self.admin.get_deleted_objects(
             Thema.objects.all(), self.client.request()
@@ -52,8 +52,8 @@ class TestThemaAdmin(TestCase):
         self.assertEqual(
             protected,
             [
-                f"Product Type <a href='/admin/producttypen/producttype/{product_type.id}/change/'>"
-                f"product type</a> moet aan een minimaal één thema zijn gelinkt. "
+                f"Producttype <a href='/admin/producttypen/producttype/{producttype.id}/change/'>"
+                f"producttype</a> moet aan een minimaal één thema zijn gelinkt. "
                 f"Huidige thema's: thema, thema 2."
             ],
         )

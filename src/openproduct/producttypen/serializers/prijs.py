@@ -57,7 +57,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
             "prijs met opties response",
             value={
                 "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "prijsopties": [
                     {
                         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -73,7 +73,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
             "prijs met regels response",
             value={
                 "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "prijsregels": [
                     {
                         "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -93,7 +93,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                     {"bedrag": "50.99", "beschrijving": "normaal"},
                     {"bedrag": "70.99", "beschrijving": "spoed"},
                 ],
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "actief_vanaf": "2024-12-01",
             },
             request_only=True,
@@ -109,7 +109,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                         "beschrijving": "base",
                     },
                 ],
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "actief_vanaf": "2024-12-01",
             },
             request_only=True,
@@ -119,13 +119,13 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
 class PrijsSerializer(serializers.ModelSerializer):
     prijsopties = PrijsOptieSerializer(many=True, required=False)
     prijsregels = PrijsRegelSerializer(many=True, required=False)
-    product_type_id = serializers.PrimaryKeyRelatedField(
-        source="product_type", queryset=ProductType.objects.all()
+    producttype_id = serializers.PrimaryKeyRelatedField(
+        source="producttype", queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Prijs
-        fields = ("id", "product_type_id", "prijsopties", "prijsregels", "actief_vanaf")
+        fields = ("id", "producttype_id", "prijsopties", "prijsregels", "actief_vanaf")
         validators = [
             PrijsOptieRegelValidator(),
             NestedObjectsValidator("prijsopties", PrijsOptie),
@@ -136,9 +136,9 @@ class PrijsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         prijsopties = validated_data.pop("prijsopties", [])
         prijsregels = validated_data.pop("prijsregels", [])
-        product_type = validated_data.pop("product_type")
+        producttype = validated_data.pop("producttype")
 
-        prijs = Prijs.objects.create(**validated_data, product_type=product_type)
+        prijs = Prijs.objects.create(**validated_data, producttype=producttype)
 
         for optie in prijsopties:
             optie.pop("id", None)

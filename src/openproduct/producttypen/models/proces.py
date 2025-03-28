@@ -16,18 +16,18 @@ class Proces(BaseModel):
         help_text=_("Uuid van het proces."),
     )
 
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
-        verbose_name=_("product type"),
+        verbose_name=_("producttype"),
         related_name="processen",
         on_delete=models.CASCADE,
-        help_text=_("Het product type waarbij dit proces hoort."),
+        help_text=_("Het producttype waarbij dit proces hoort."),
     )
 
     class Meta:
         verbose_name = _("Proces")
         verbose_name_plural = _("Processen")
-        unique_together = (("product_type", "uuid"),)
+        unique_together = (("producttype", "uuid"),)
 
     def clean(self):
         check_externe_verwijzing_config_url("processen_url")

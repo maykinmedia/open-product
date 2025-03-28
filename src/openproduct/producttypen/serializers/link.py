@@ -10,7 +10,7 @@ from openproduct.producttypen.models import Link, ProductType
             "link response",
             value={
                 "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Open Product",
                 "url": "https://github.com/maykinmedia/open-product",
             },
@@ -19,7 +19,7 @@ from openproduct.producttypen.models import Link, ProductType
         OpenApiExample(
             "link request",
             value={
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Open Product",
                 "url": "https://github.com/maykinmedia/open-product",
             },
@@ -28,13 +28,13 @@ from openproduct.producttypen.models import Link, ProductType
     ],
 )
 class LinkSerializer(serializers.ModelSerializer):
-    product_type_id = serializers.PrimaryKeyRelatedField(
-        source="product_type", queryset=ProductType.objects.all()
+    producttype_id = serializers.PrimaryKeyRelatedField(
+        source="producttype", queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Link
-        fields = ("id", "naam", "url", "product_type_id")
+        fields = ("id", "naam", "url", "producttype_id")
 
 
 class NestedLinkSerializer(LinkSerializer):

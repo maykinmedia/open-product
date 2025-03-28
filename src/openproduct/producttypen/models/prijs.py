@@ -13,14 +13,14 @@ from .dmn_config import DmnConfig
 from .producttype import ProductType
 
 
-@reversion.register(follow=("product_type", "prijsopties"))
+@reversion.register(follow=("producttype", "prijsopties"))
 class Prijs(BaseModel):
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
-        verbose_name=_("product type"),
+        verbose_name=_("producttype"),
         on_delete=models.CASCADE,
         related_name="prijzen",
-        help_text=_("Het product type waarbij deze prijs hoort."),
+        help_text=_("Het producttype waarbij deze prijs hoort."),
     )
     actief_vanaf = models.DateField(
         verbose_name=_("start datum"),
@@ -31,10 +31,10 @@ class Prijs(BaseModel):
     class Meta:
         verbose_name = _("Prijs")
         verbose_name_plural = _("Prijzen")
-        unique_together = ("product_type", "actief_vanaf")
+        unique_together = ("producttype", "actief_vanaf")
 
     def __str__(self):
-        return f"{self.product_type.naam} {self.actief_vanaf}"
+        return f"{self.producttype.naam} {self.actief_vanaf}"
 
 
 @reversion.register()

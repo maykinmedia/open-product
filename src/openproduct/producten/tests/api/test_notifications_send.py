@@ -34,16 +34,16 @@ class SendNotifTestCase(BaseApiTestCase):
         config.notifications_api_service = service
         config.save()
 
-        cls.product_type = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        cls.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
         cls.data = {
-            "product_type_id": cls.product_type.id,
+            "producttype_id": cls.producttype.id,
             "status": "initieel",
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"bsn": "111222333"}],
         }
 
-        product = ProductFactory.create(product_type=cls.product_type)
+        product = ProductFactory.create(producttype=cls.producttype)
 
         cls.path = reverse("product-list")
         cls.detail_path = reverse("product-detail", args=[product.id])
@@ -64,11 +64,11 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "create",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "productType.id": data["product_type"]["id"],
-                "productType.uniformeProductNaam": data["product_type"][
+                "producttype.id": data["producttype"]["id"],
+                "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
-                "productType.code": data["product_type"]["code"],
+                "producttype.code": data["producttype"]["code"],
             },
         }
 
@@ -90,11 +90,11 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "update",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "productType.id": data["product_type"]["id"],
-                "productType.uniformeProductNaam": data["product_type"][
+                "producttype.id": data["producttype"]["id"],
+                "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
-                "productType.code": data["product_type"]["code"],
+                "producttype.code": data["producttype"]["code"],
             },
         }
 
@@ -116,11 +116,11 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "partial_update",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "productType.id": data["product_type"]["id"],
-                "productType.uniformeProductNaam": data["product_type"][
+                "producttype.id": data["producttype"]["id"],
+                "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
-                "productType.code": data["product_type"]["code"],
+                "producttype.code": data["producttype"]["code"],
             },
         }
 
@@ -141,9 +141,9 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "destroy",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "productType.id": str(self.product_type.id),
-                "productType.uniformeProductNaam": self.product_type.uniforme_product_naam.naam,
-                "productType.code": self.product_type.code,
+                "producttype.id": str(self.producttype.id),
+                "producttype.uniformeProductNaam": self.producttype.uniforme_product_naam.naam,
+                "producttype.code": self.producttype.code,
             },
         }
 

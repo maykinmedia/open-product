@@ -22,8 +22,8 @@ class ContentLabelAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 @admin.register(ContentElementTranslation)
 class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("contentelement", "language_code")
-    list_filter = ("master__product_type", "master__labels", "language_code")
-    search_fields = ("master__product_type", "master__labels")
+    list_filter = ("master__producttype", "master__labels", "language_code")
+    search_fields = ("master__producttype", "master__labels")
     readonly_fields = ("master", "language_code")
 
     @admin.display(description="contentelement")

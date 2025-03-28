@@ -12,15 +12,15 @@ from openproduct.utils.views import OrderedModelViewSet
 
 class PrijsFilterSet(FilterSet):
     uniforme_product_naam = django_filters.CharFilter(
-        field_name="product_type__uniforme_product_naam__naam",
+        field_name="producttype__uniforme_product_naam__naam",
         lookup_expr="exact",
         help_text=_("Uniforme product naam vanuit de UPL."),
     )
 
-    product_type__naam = TranslationFilter(
-        field_name="product_type__naam",
+    producttype__naam = TranslationFilter(
+        field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=_("Naam van het product type."),
+        help_text=_("Naam van het producttype."),
     )
 
     def filter_queryset(self, queryset):
@@ -29,8 +29,8 @@ class PrijsFilterSet(FilterSet):
     class Meta:
         model = Prijs
         fields = {
-            "product_type__id": ["exact"],
-            "product_type__code": ["exact"],
+            "producttype__id": ["exact"],
+            "producttype__code": ["exact"],
             "actief_vanaf": ["exact", "gte", "lte"],
             "prijsopties__bedrag": ["exact", "gte", "lte"],
             "prijsopties__beschrijving": ["exact"],

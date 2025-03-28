@@ -22,11 +22,11 @@ class PrijsFrequentieChoices(models.TextChoices):
     JAARLIJKS = "jaarlijks", _("Jaarlijks")
 
 
-@reversion.register(follow=("eigenaren", "product_type"))
+@reversion.register(follow=("eigenaren", "producttype"))
 class Product(BasePublishableModel):
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
-        verbose_name=_("Product type"),
+        verbose_name=_("Producttype"),
         on_delete=models.PROTECT,
         help_text=_("Het type van dit product"),
         related_name="producten",
@@ -35,7 +35,7 @@ class Product(BasePublishableModel):
     start_datum = models.DateField(
         _("start datum"),
         help_text=_(
-            "De start datum van dit product. Op deze datum zal de status van het product automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum wordt ingevuld moet de status ACTIEF op het product type zijn toegestaan."
+            "De start datum van dit product. Op deze datum zal de status van het product automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum wordt ingevuld moet de status ACTIEF op het producttype zijn toegestaan."
         ),
         null=True,
         blank=True,
@@ -43,7 +43,7 @@ class Product(BasePublishableModel):
     eind_datum = models.DateField(
         _("eind datum"),
         help_text=_(
-            "De einddatum van dit product. Op deze datum zal de status van het product automatisch naar VERLOPEN worden gezet. Op het moment dat de eind_datum wordt ingevuld moet de status VERLOPEN op het product type zijn toegestaan."
+            "De einddatum van dit product. Op deze datum zal de status van het product automatisch naar VERLOPEN worden gezet. Op het moment dat de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype zijn toegestaan."
         ),
         null=True,
         blank=True,
@@ -53,7 +53,7 @@ class Product(BasePublishableModel):
         _("status"),
         choices=ProductStateChoices.choices,
         help_text=_(
-            "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde product type."
+            "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype."
         ),
         default=ProductStateChoices.INITIEEL,
     )
@@ -78,7 +78,7 @@ class Product(BasePublishableModel):
         null=True,
         blank=True,
         help_text=_(
-            "Verbruiksobject van dit product. Wordt gevalideerd met het `verbruiksobject_schema` uit het product type."
+            "Verbruiksobject van dit product. Wordt gevalideerd met het `verbruiksobject_schema` uit het producttype."
         ),
         encoder=DjangoJSONEncoder,
     )
@@ -88,7 +88,7 @@ class Product(BasePublishableModel):
         null=True,
         blank=True,
         help_text=_(
-            "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het product type."
+            "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het producttype."
         ),
         encoder=DjangoJSONEncoder,
     )
@@ -134,4 +134,4 @@ class Product(BasePublishableModel):
             self.status = ProductStateChoices.VERLOPEN
 
     def __str__(self):
-        return f"{self.product_type.naam} instantie."
+        return f"{self.producttype.naam} instantie."

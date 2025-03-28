@@ -165,7 +165,7 @@ class AuditLogAdminTests(WebTest):
     def test_link_to_related_object(self):
         with self.subTest("related object enabled in admin"):
             product = ProductFactory.create(
-                product_type=ProductTypeFactory.create(naam="test product type")
+                producttype=ProductTypeFactory.create(naam="test producttype")
             )
             product_change_link = reverse(
                 "admin:producten_product_change", args=(product.pk,)
@@ -185,7 +185,7 @@ class AuditLogAdminTests(WebTest):
             )
 
             product_admin_view = response.click(
-                description="test product type",
+                description="test producttype",
                 href=product_change_link,
             )
 

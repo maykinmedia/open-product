@@ -16,16 +16,16 @@ class TestContentElement(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
-        self.product_type = ProductTypeFactory.create()
+        self.producttype = ProductTypeFactory.create()
         self.label = ContentLabel.objects.create(naam="voorwaarden")
 
         self.data = {
             "labels": [self.label.naam],
             "content": "Voorwaarden",
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
         }
         self.content_element = ContentElementFactory(
-            content="Test Content", product_type=self.product_type
+            content="Test Content", producttype=self.producttype
         )
 
         self.content_element.labels.add(self.label)
@@ -47,7 +47,7 @@ class TestContentElement(BaseApiTestCase):
                 "content": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "product_type_id": [
+                "producttype_id": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -63,7 +63,7 @@ class TestContentElement(BaseApiTestCase):
         expected_data = {
             "labels": [self.label.naam],
             "content": "Voorwaarden",
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)
@@ -95,7 +95,7 @@ class TestContentElement(BaseApiTestCase):
             "labels": [
                 self.label.naam,
             ],
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)

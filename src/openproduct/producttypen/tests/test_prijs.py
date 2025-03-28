@@ -12,23 +12,23 @@ from .factories import PrijsFactory, PrijsOptieFactory, ProductTypeFactory
 class TestPrijs(TestCase):
 
     def test_unique_validation(self):
-        product_type = ProductTypeFactory.create()
+        producttype = ProductTypeFactory.create()
         PrijsFactory.create(
-            product_type=product_type, actief_vanaf=date.today() + timedelta(days=1)
+            producttype=producttype, actief_vanaf=date.today() + timedelta(days=1)
         )
 
         with self.assertRaises(ValidationError):
             duplicate = PrijsFactory.build(
-                product_type=product_type, actief_vanaf=date.today() + timedelta(days=1)
+                producttype=producttype, actief_vanaf=date.today() + timedelta(days=1)
             )
             duplicate.full_clean()
 
     @freeze_time("2024-01-02")
     def test_min_date_validation(self):
-        product_type = ProductTypeFactory.create()
+        producttype = ProductTypeFactory.create()
         with self.assertRaises(ValidationError):
             prijs = PrijsFactory.build(
-                product_type=product_type, actief_vanaf=date(2020, 1, 1)
+                producttype=producttype, actief_vanaf=date(2020, 1, 1)
             )
             prijs.full_clean()
 

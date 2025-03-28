@@ -11,7 +11,7 @@ from openproduct.producttypen.models import Bestand, ProductType
             value={
                 "id": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
                 "bestand": "https://gemeente.open-product.nl/media/test.txt",
-                "product_type_id": "b035578b-e855-4b72-9f63-7868b8c4b630",
+                "producttype_id": "b035578b-e855-4b72-9f63-7868b8c4b630",
             },
             response_only=True,
         ),
@@ -19,7 +19,7 @@ from openproduct.producttypen.models import Bestand, ProductType
             "bestand request",
             value={
                 "bestand": "test.txt",
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
             },
             media_type="multipart/form-data",
             request_only=True,
@@ -27,13 +27,13 @@ from openproduct.producttypen.models import Bestand, ProductType
     ],
 )
 class BestandSerializer(serializers.ModelSerializer):
-    product_type_id = serializers.PrimaryKeyRelatedField(
-        source="product_type", queryset=ProductType.objects.all()
+    producttype_id = serializers.PrimaryKeyRelatedField(
+        source="producttype", queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Bestand
-        fields = ("id", "bestand", "product_type_id")
+        fields = ("id", "bestand", "producttype_id")
 
 
 class NestedBestandSerializer(BestandSerializer):

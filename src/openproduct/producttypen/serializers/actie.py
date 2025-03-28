@@ -18,7 +18,7 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
             "actie response",
             value={
                 "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
             },
@@ -27,7 +27,7 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
         OpenApiExample(
             "actie request",
             value={
-                "product_type_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
                 "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
@@ -37,8 +37,8 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
     ],
 )
 class ActieSerializer(serializers.ModelSerializer):
-    product_type_id = serializers.PrimaryKeyRelatedField(
-        source="product_type", queryset=ProductType.objects.all()
+    producttype_id = serializers.PrimaryKeyRelatedField(
+        source="producttype", queryset=ProductType.objects.all()
     )
 
     tabel_endpoint = serializers.SlugRelatedField(
@@ -68,7 +68,7 @@ class ActieSerializer(serializers.ModelSerializer):
             "tabel_endpoint",
             "dmn_tabel_id",
             "url",
-            "product_type_id",
+            "producttype_id",
         )
 
 

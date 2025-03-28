@@ -18,7 +18,7 @@ class TestThemaViewSet(BaseApiTestCase):
         self.data = {
             "naam": "test-thema",
             "hoofd_thema": None,
-            "product_type_ids": [],
+            "producttype_ids": [],
         }
 
     def detail_path(self, thema):
@@ -38,7 +38,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "product_type_ids": [
+                "producttype_ids": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "hoofd_thema": [
@@ -59,7 +59,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "beschrijving": thema.beschrijving,
             "gepubliceerd": False,
             "hoofd_thema": None,
-            "product_typen": [],
+            "producttypen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -82,28 +82,28 @@ class TestThemaViewSet(BaseApiTestCase):
             "beschrijving": thema.beschrijving,
             "gepubliceerd": False,
             "hoofd_thema": thema.hoofd_thema.id,
-            "product_typen": [],
+            "producttypen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
         self.assertEqual(response.data, expected_data)
 
-    def test_create_thema_with_product_type(self):
-        product_type = ProductTypeFactory.create()
-        data = self.data | {"product_type_ids": [product_type.id]}
+    def test_create_thema_with_producttype(self):
+        producttype = ProductTypeFactory.create()
+        data = self.data | {"producttype_ids": [producttype.id]}
 
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Thema.objects.count(), 1)
         self.assertEqual(
-            list(Thema.objects.values_list("product_typen", flat=True)),
-            [product_type.id],
+            list(Thema.objects.values_list("producttypen", flat=True)),
+            [producttype.id],
         )
 
-    def test_create_hoofd_thema_with_duplicate_product_typen_returns_error(self):
-        product_type = ProductTypeFactory.create()
-        data = self.data | {"product_type_ids": [product_type.id, product_type.id]}
+    def test_create_hoofd_thema_with_duplicate_producttypen_returns_error(self):
+        producttype = ProductTypeFactory.create()
+        data = self.data | {"producttype_ids": [producttype.id, producttype.id]}
 
         response = self.client.post(self.path, data)
 
@@ -111,9 +111,9 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "product_type_ids": [
+                "producttype_ids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(product_type.id),
+                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
                         code="invalid",
                     )
                 ]
@@ -182,10 +182,10 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(thema.hoofd_thema, new_hoofd_thema)
 
-    def test_update_hoofd_thema_with_duplicate_product_typen_returns_error(self):
+    def test_update_hoofd_thema_with_duplicate_producttypen_returns_error(self):
         thema = ThemaFactory.create()
-        product_type = ProductTypeFactory.create()
-        data = self.data | {"product_type_ids": [product_type.id, product_type.id]}
+        producttype = ProductTypeFactory.create()
+        data = self.data | {"producttype_ids": [producttype.id, producttype.id]}
 
         response = self.client.put(self.detail_path(thema), data)
 
@@ -195,9 +195,9 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "product_type_ids": [
+                "producttype_ids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(product_type.id),
+                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
                         code="invalid",
                     )
                 ]
@@ -295,12 +295,12 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(thema.hoofd_thema, None)
 
-    def test_partial_update_hoofd_thema_with_duplicate_product_typen_returns_error(
+    def test_partial_update_hoofd_thema_with_duplicate_producttypen_returns_error(
         self,
     ):
         thema = ThemaFactory.create()
-        product_type = ProductTypeFactory.create()
-        data = {"product_type_ids": [product_type.id, product_type.id]}
+        producttype = ProductTypeFactory.create()
+        data = {"producttype_ids": [producttype.id, producttype.id]}
 
         response = self.client.patch(self.detail_path(thema), data)
 
@@ -310,9 +310,9 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "product_type_ids": [
+                "producttype_ids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(product_type.id),
+                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
                         code="invalid",
                     )
                 ]
@@ -371,10 +371,10 @@ class TestThemaViewSet(BaseApiTestCase):
             },
         )
 
-    def test_read_product_type(self):
+    def test_read_producttype(self):
         thema = ThemaFactory.create()
-        product_type = ProductTypeFactory.create()
-        thema.product_typen.add(product_type)
+        producttype = ProductTypeFactory.create()
+        thema.producttypen.add(producttype)
         thema.save()
 
         response = self.client.get(self.detail_path(thema))
@@ -382,18 +382,18 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = [
             {
-                "id": str(product_type.id),
-                "code": product_type.code,
-                "uniforme_product_naam": product_type.uniforme_product_naam.naam,
+                "id": str(producttype.id),
+                "code": producttype.code,
+                "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
                 "toegestane_statussen": [],
-                "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": product_type.update_datum.astimezone().isoformat(),
+                "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
+                "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
             }
         ]
 
-        self.assertEqual(response.data["product_typen"], expected_data)
+        self.assertEqual(response.data["producttypen"], expected_data)
 
     def test_read_themas(self):
         thema1 = ThemaFactory.create()
@@ -410,7 +410,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "beschrijving": thema1.beschrijving,
                 "gepubliceerd": True,
                 "hoofd_thema": None,
-                "product_typen": [],
+                "producttypen": [],
                 "aanmaak_datum": thema1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": thema1.update_datum.astimezone().isoformat(),
             },
@@ -420,7 +420,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "beschrijving": thema2.beschrijving,
                 "gepubliceerd": True,
                 "hoofd_thema": None,
-                "product_typen": [],
+                "producttypen": [],
                 "aanmaak_datum": thema2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": thema2.update_datum.astimezone().isoformat(),
             },
@@ -439,7 +439,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "beschrijving": thema.beschrijving,
             "gepubliceerd": True,
             "hoofd_thema": None,
-            "product_typen": [],
+            "producttypen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -453,11 +453,11 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Thema.objects.count(), 0)
 
-    def test_delete_thema_when_linked_product_type_has_one_thema(self):
+    def test_delete_thema_when_linked_producttype_has_one_thema(self):
         thema = ThemaFactory.create()
-        product_type = ProductTypeFactory.create(naam="test")
-        product_type.themas.add(thema)
-        product_type.save()
+        producttype = ProductTypeFactory.create(naam="test")
+        producttype.themas.add(thema)
+        producttype.save()
 
         response = self.client.delete(self.detail_path(thema))
 
@@ -465,18 +465,18 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "product_typen": [
-                    "Product Type test moet aan een minimaal één thema zijn gelinkt."
+                "producttypen": [
+                    "Producttype test moet aan een minimaal één thema zijn gelinkt."
                 ]
             },
         )
 
-    def test_delete_thema_when_linked_product_type_has_other_themas(self):
+    def test_delete_thema_when_linked_producttype_has_other_themas(self):
         thema = ThemaFactory.create()
-        product_type = ProductTypeFactory.create(naam="test")
-        product_type.themas.add(thema)
-        product_type.themas.add(ThemaFactory())
-        product_type.save()
+        producttype = ProductTypeFactory.create(naam="test")
+        producttype.themas.add(thema)
+        producttype.themas.add(ThemaFactory())
+        producttype.save()
 
         response = self.client.delete(self.detail_path(thema))
 

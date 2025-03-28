@@ -78,25 +78,25 @@ class TestProductFilters(BaseApiTestCase):
             self.assertEqual(response.data["count"], 1)
             self.assertEqual(response.data["results"][0]["prijs"], "20.99")
 
-    def test_product_type_code_filter(self):
-        ProductFactory.create(product_type__code="123")
-        ProductFactory.create(product_type__code="8234098q2730492873")
+    def test_producttype_code_filter(self):
+        ProductFactory.create(producttype__code="123")
+        ProductFactory.create(producttype__code="8234098q2730492873")
 
         response = self.client.get(
-            self.path, {"product_type__code": "8234098q2730492873"}
+            self.path, {"producttype__code": "8234098q2730492873"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["product_type"]["code"], "8234098q2730492873"
+            response.data["results"][0]["producttype"]["code"], "8234098q2730492873"
         )
 
-    def test_product_type_upn_filter(self):
+    def test_producttype_upn_filter(self):
         ProductFactory.create(
-            product_type__uniforme_product_naam__naam="parkeervergunning"
+            producttype__uniforme_product_naam__naam="parkeervergunning"
         )
-        ProductFactory.create(product_type__uniforme_product_naam__naam="aanbouw")
+        ProductFactory.create(producttype__uniforme_product_naam__naam="aanbouw")
 
         response = self.client.get(
             self.path, {"uniforme_product_naam": "parkeervergunning"}
@@ -105,38 +105,38 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["product_type"]["uniforme_product_naam"],
+            response.data["results"][0]["producttype"]["uniforme_product_naam"],
             "parkeervergunning",
         )
 
-    def test_product_type_id_filter(self):
-        product_type_id = uuid4()
-        ProductFactory.create(product_type__id=product_type_id)
-        ProductFactory.create(product_type__id=uuid4())
+    def test_producttype_id_filter(self):
+        producttype_id = uuid4()
+        ProductFactory.create(producttype__id=producttype_id)
+        ProductFactory.create(producttype__id=uuid4())
 
-        response = self.client.get(self.path + f"?product_type__id={product_type_id}")
+        response = self.client.get(self.path + f"?producttype__id={producttype_id}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["product_type"]["id"], str(product_type_id)
+            response.data["results"][0]["producttype"]["id"], str(producttype_id)
         )
 
-    def test_product_type_naam_filter(self):
-        product_type_id = uuid4()
+    def test_producttype_naam_filter(self):
+        producttype_id = uuid4()
         ProductFactory.create(
-            product_type__naam="parkeervergunning", product_type__id=product_type_id
+            producttype__naam="parkeervergunning", producttype__id=producttype_id
         )
-        ProductFactory.create(product_type__naam="aanbouw")
+        ProductFactory.create(producttype__naam="aanbouw")
 
         response = self.client.get(
-            self.path, {"product_type__naam": "parkeervergunning"}
+            self.path, {"producttype__naam": "parkeervergunning"}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["product_type"]["id"], str(product_type_id)
+            response.data["results"][0]["producttype"]["id"], str(producttype_id)
         )
 
     def test_start_datum_filter(self):
@@ -270,14 +270,14 @@ class TestProductFilters(BaseApiTestCase):
         }
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 dataobject_schema=JsonSchemaFactory(schema=schema)
             ),
             dataobject={"naam": "test"},
         )
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 dataobject_schema=JsonSchemaFactory(schema=schema)
             ),
             dataobject={"naam": "abc"},
@@ -325,14 +325,14 @@ class TestProductFilters(BaseApiTestCase):
         }
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"naam": "test"},
         )
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"naam": "abc"},
@@ -384,14 +384,14 @@ class TestProductFilters(BaseApiTestCase):
         }
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"leeftijd": 30},
         )
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"leeftijd": 50},
@@ -479,14 +479,14 @@ class TestProductFilters(BaseApiTestCase):
         }
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"datum": "2024-10-10"},
         )
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"datum": "2025-10-10"},
@@ -641,14 +641,14 @@ class TestProductFilters(BaseApiTestCase):
         }
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"naam": "test", "type": "test"},
         )
 
         ProductFactory(
-            product_type=ProductTypeFactory.create(
+            producttype=ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(schema=schema)
             ),
             verbruiksobject={"naam": "abc", "type": "abc"},

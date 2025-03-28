@@ -44,18 +44,18 @@ def validate_eigenaar_vestingsnummer_only_with_kvk(kvk_nummer, vestigingsnummer)
         )
 
 
-def validate_product_status(status, product_type):
+def validate_product_status(status, producttype):
     if (
         status != ProductStateChoices.INITIEEL
-        and status not in product_type.toegestane_statussen
+        and status not in producttype.toegestane_statussen
     ):
         raise ValidationError(
             {
                 "status": _(
-                    "Status '{}' is niet toegestaan voor het product type {}."
+                    "Status '{}' is niet toegestaan voor het producttype {}."
                 ).format(
                     ProductStateChoices(status).label,
-                    product_type.naam,
+                    producttype.naam,
                 )
             }
         )
@@ -70,61 +70,61 @@ def validate_product_dates(start_datum, eind_datum):
         )
 
 
-def validate_product_start_datum(start_datum, product_type):
+def validate_product_start_datum(start_datum, producttype):
 
     if (
         start_datum
-        and ProductStateChoices.ACTIEF not in product_type.toegestane_statussen
+        and ProductStateChoices.ACTIEF not in producttype.toegestane_statussen
     ):
         raise ValidationError(
             {
                 "start_datum": _(
-                    "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het product type."
+                    "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
                 )
             }
         )
 
 
-def validate_product_eind_datum(eind_datum, product_type):
+def validate_product_eind_datum(eind_datum, producttype):
     if (
         eind_datum
-        and ProductStateChoices.VERLOPEN not in product_type.toegestane_statussen
+        and ProductStateChoices.VERLOPEN not in producttype.toegestane_statussen
     ):
         raise ValidationError(
             {
                 "eind_datum": _(
-                    "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het product type."
+                    "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
                 )
             }
         )
 
 
-def validate_product_verbruiksobject(verbruiksobject, product_type):
+def validate_product_verbruiksobject(verbruiksobject, producttype):
     try:
         if (
             verbruiksobject is not None
-            and product_type.verbruiksobject_schema is not None
+            and producttype.verbruiksobject_schema is not None
         ):
-            product_type.verbruiksobject_schema.validate(verbruiksobject)
+            producttype.verbruiksobject_schema.validate(verbruiksobject)
     except ValidationError:
         raise ValidationError(
             {
                 "verbruiksobject": _(
-                    "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het product type."
+                    "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
                 )
             },
         )
 
 
-def validate_product_dataobject(dataobject, product_type):
+def validate_product_dataobject(dataobject, producttype):
     try:
-        if dataobject is not None and product_type.dataobject_schema is not None:
-            product_type.dataobject_schema.validate(dataobject)
+        if dataobject is not None and producttype.dataobject_schema is not None:
+            producttype.dataobject_schema.validate(dataobject)
     except ValidationError:
         raise ValidationError(
             {
                 "dataobject": _(
-                    "Het dataobject komt niet overeen met het schema gedefinieerd op het product type."
+                    "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype."
                 )
             },
         )

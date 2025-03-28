@@ -14,7 +14,7 @@ ProductRouter.register("producten", ProductViewSet, basename="product")
 description = f"""
 Een Api voor Producten.
 
-Een product is de instantie van een Product type (zie producttypen api), hierin worden de specifieke gegevens van de instantie opgeslagen zoals bijvoorbeeld de gegevens van de eigenaar.
+Een product is de instantie van een Producttype (zie producttypen api), hierin worden de specifieke gegevens van de instantie opgeslagen zoals bijvoorbeeld de gegevens van de eigenaar.
 
 ### Notificaties
 
@@ -31,9 +31,9 @@ custom_settings = {
         {
             "name": "producten",
             "description": "Opvragen en bewerken van PRODUCTEN.\n\n"
-            "De status opties van een PRODUCT zijn afhankelijk van de `toegestane_statussen` van het product_type.\n\n"
+            "De status opties van een PRODUCT zijn afhankelijk van de `toegestane_statussen` van het producttype.\n\n"
             "Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet."
-            "Op het moment dat deze velden worden gezet moeten deze statussen wel zijn toegestaan op het product_type.\n\n"
+            "Op het moment dat deze velden worden gezet moeten deze statussen wel zijn toegestaan op het producttype.\n\n"
             "De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.",
         },
     ],

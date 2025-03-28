@@ -64,7 +64,7 @@ class TranslationFilter(django_filters.CharFilter):
     Simplifies Django-parler field translations.
 
     ProductType.naam -> translations__naam
-    Product.product_type.naam -> product_type__translations__naam
+    Product.producttype.naam -> producttype__translations__naam
     """
 
     def __init__(self, *args, **kwargs):

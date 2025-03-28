@@ -16,13 +16,13 @@ class TestProductTypeLink(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
-        self.product_type = ProductTypeFactory.create()
+        self.producttype = ProductTypeFactory.create()
         self.data = {
             "naam": "test link",
             "url": "https://www.google.com",
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
         }
-        self.link = LinkFactory.create(product_type=self.product_type)
+        self.link = LinkFactory.create(producttype=self.producttype)
 
         self.detail_path = reverse("link-detail", args=[self.link.id])
 
@@ -43,7 +43,7 @@ class TestProductTypeLink(BaseApiTestCase):
                 "url": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "product_type_id": [
+                "producttype_id": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -75,7 +75,7 @@ class TestProductTypeLink(BaseApiTestCase):
         self.assertEqual(ProductType.objects.get().links.get().naam, "update")
 
     def test_read_links(self):
-        link = LinkFactory.create(product_type=self.product_type)
+        link = LinkFactory.create(producttype=self.producttype)
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -85,13 +85,13 @@ class TestProductTypeLink(BaseApiTestCase):
                 "id": str(self.link.id),
                 "naam": self.link.naam,
                 "url": self.link.url,
-                "product_type_id": self.product_type.id,
+                "producttype_id": self.producttype.id,
             },
             {
                 "id": str(link.id),
                 "naam": link.naam,
                 "url": link.url,
-                "product_type_id": self.product_type.id,
+                "producttype_id": self.producttype.id,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -105,7 +105,7 @@ class TestProductTypeLink(BaseApiTestCase):
             "id": str(self.link.id),
             "naam": self.link.naam,
             "url": self.link.url,
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
         }
         self.assertEqual(response.data, expected_data)
 

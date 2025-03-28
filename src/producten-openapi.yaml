@@ -2,9 +2,6 @@ openapi: 3.0.3
 info:
   title: Open Product API
   version: 0.0.0
-  description: |2
-
-    Open Product is an API to manage product types and products.
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -72,7 +69,7 @@ paths:
           format: date
         description: De einddatum van dit product. Op deze datum zal de status van
           het product automatisch naar VERLOPEN worden gezet. Op het moment dat de
-          eind_datum wordt ingevuld moet de status VERLOPEN op het product type zijn
+          eind_datum wordt ingevuld moet de status VERLOPEN op het producttype zijn
           toegestaan.
       - in: query
         name: eind_datum__gte
@@ -81,7 +78,7 @@ paths:
           format: date
         description: De einddatum van dit product. Op deze datum zal de status van
           het product automatisch naar VERLOPEN worden gezet. Op het moment dat de
-          eind_datum wordt ingevuld moet de status VERLOPEN op het product type zijn
+          eind_datum wordt ingevuld moet de status VERLOPEN op het producttype zijn
           toegestaan.
       - in: query
         name: eind_datum__lte
@@ -90,7 +87,7 @@ paths:
           format: date
         description: De einddatum van dit product. Op deze datum zal de status van
           het product automatisch naar VERLOPEN worden gezet. Op het moment dat de
-          eind_datum wordt ingevuld moet de status VERLOPEN op het product type zijn
+          eind_datum wordt ingevuld moet de status VERLOPEN op het producttype zijn
           toegestaan.
       - in: query
         name: frequentie
@@ -140,20 +137,20 @@ paths:
           type: number
         description: De prijs van het product.
       - in: query
-        name: product_type__code
+        name: producttype__code
         schema:
           type: string
-        description: code van het product type.
+        description: code van het producttype.
       - in: query
-        name: product_type__id
+        name: producttype__id
         schema:
           type: string
           format: uuid
       - in: query
-        name: product_type__naam
+        name: producttype__naam
         schema:
           type: string
-        description: Naam van het product type.
+        description: Naam van het producttype.
       - in: query
         name: start_datum
         schema:
@@ -161,7 +158,7 @@ paths:
           format: date
         description: De start datum van dit product. Op deze datum zal de status van
           het product automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum
-          wordt ingevuld moet de status ACTIEF op het product type zijn toegestaan.
+          wordt ingevuld moet de status ACTIEF op het producttype zijn toegestaan.
       - in: query
         name: start_datum__gte
         schema:
@@ -169,7 +166,7 @@ paths:
           format: date
         description: De start datum van dit product. Op deze datum zal de status van
           het product automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum
-          wordt ingevuld moet de status ACTIEF op het product type zijn toegestaan.
+          wordt ingevuld moet de status ACTIEF op het producttype zijn toegestaan.
       - in: query
         name: start_datum__lte
         schema:
@@ -177,7 +174,7 @@ paths:
           format: date
         description: De start datum van dit product. Op deze datum zal de status van
           het product automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum
-          wordt ingevuld moet de status ACTIEF op het product type zijn toegestaan.
+          wordt ingevuld moet de status ACTIEF op het producttype zijn toegestaan.
       - in: query
         name: status
         schema:
@@ -190,7 +187,7 @@ paths:
           - initieel
           - verlopen
         description: |-
-          De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde product type.
+          De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype.
 
           * `initieel` - Initieel
           * `gereed` - Gereed
@@ -274,7 +271,7 @@ paths:
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
-                      product_type:
+                      producttype:
                         id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         code: 129380-c21231
                         keywords:
@@ -349,7 +346,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
-                    product_type:
+                    producttype:
                       id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
@@ -427,7 +424,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
-                    product_type:
+                    producttype:
                       id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
@@ -510,7 +507,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
-                    product_type:
+                    producttype:
                       id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
@@ -592,7 +589,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
-                    product_type:
+                    producttype:
                       id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
@@ -771,7 +768,7 @@ components:
           readOnly: true
         code:
           type: string
-          description: code van het product type.
+          description: code van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -812,7 +809,7 @@ components:
         code:
           type: string
           minLength: 1
-          description: code van het product type.
+          description: code van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -861,7 +858,7 @@ components:
     PatchedProductRequest:
       type: object
       properties:
-        product_type_id:
+        producttype_id:
           type: string
           format: uuid
           writeOnly: true
@@ -878,7 +875,7 @@ components:
           nullable: true
           description: De start datum van dit product. Op deze datum zal de status
             van het product automatisch naar ACTIEF worden gezet. Op het moment dat
-            de start_datum wordt ingevuld moet de status ACTIEF op het product type
+            de start_datum wordt ingevuld moet de status ACTIEF op het producttype
             zijn toegestaan.
         eind_datum:
           type: string
@@ -886,13 +883,13 @@ components:
           nullable: true
           description: De einddatum van dit product. Op deze datum zal de status van
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
-            de eind_datum wordt ingevuld moet de status VERLOPEN op het product type
+            de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
           description: |-
-            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde product type.
+            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype.
 
             * `initieel` - Initieel
             * `gereed` - Gereed
@@ -918,11 +915,11 @@ components:
         verbruiksobject:
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
-            `verbruiksobject_schema` uit het product type.
+            `verbruiksobject_schema` uit het producttype.
         dataobject:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het product type.
+            uit het producttype.
     Product:
       type: object
       properties:
@@ -938,7 +935,7 @@ components:
           maxLength: 1000
           description: URL-referentie naar dit object. Dit is de unieke identificatie
             en locatie van dit object.
-        product_type:
+        producttype:
           allOf:
           - $ref: '#/components/schemas/NestedProductType'
           readOnly: true
@@ -965,7 +962,7 @@ components:
           nullable: true
           description: De start datum van dit product. Op deze datum zal de status
             van het product automatisch naar ACTIEF worden gezet. Op het moment dat
-            de start_datum wordt ingevuld moet de status ACTIEF op het product type
+            de start_datum wordt ingevuld moet de status ACTIEF op het producttype
             zijn toegestaan.
         eind_datum:
           type: string
@@ -973,13 +970,13 @@ components:
           nullable: true
           description: De einddatum van dit product. Op deze datum zal de status van
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
-            de eind_datum wordt ingevuld moet de status VERLOPEN op het product type
+            de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
           description: |-
-            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde product type.
+            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype.
 
             * `initieel` - Initieel
             * `gereed` - Gereed
@@ -1005,24 +1002,24 @@ components:
         verbruiksobject:
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
-            `verbruiksobject_schema` uit het product type.
+            `verbruiksobject_schema` uit het producttype.
         dataobject:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het product type.
+            uit het producttype.
       required:
       - aanmaak_datum
       - eigenaren
       - frequentie
       - id
       - prijs
-      - product_type
+      - producttype
       - update_datum
       - url
     ProductRequest:
       type: object
       properties:
-        product_type_id:
+        producttype_id:
           type: string
           format: uuid
           writeOnly: true
@@ -1039,7 +1036,7 @@ components:
           nullable: true
           description: De start datum van dit product. Op deze datum zal de status
             van het product automatisch naar ACTIEF worden gezet. Op het moment dat
-            de start_datum wordt ingevuld moet de status ACTIEF op het product type
+            de start_datum wordt ingevuld moet de status ACTIEF op het producttype
             zijn toegestaan.
         eind_datum:
           type: string
@@ -1047,13 +1044,13 @@ components:
           nullable: true
           description: De einddatum van dit product. Op deze datum zal de status van
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
-            de eind_datum wordt ingevuld moet de status VERLOPEN op het product type
+            de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
           description: |-
-            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde product type.
+            De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype.
 
             * `initieel` - Initieel
             * `gereed` - Gereed
@@ -1079,16 +1076,16 @@ components:
         verbruiksobject:
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
-            `verbruiksobject_schema` uit het product type.
+            `verbruiksobject_schema` uit het producttype.
         dataobject:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het product type.
+            uit het producttype.
       required:
       - eigenaren
       - frequentie
       - prijs
-      - product_type_id
+      - producttype_id
     StatusEnum:
       enum:
       - initieel

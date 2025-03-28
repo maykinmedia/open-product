@@ -54,25 +54,25 @@ class TestProductTypeFilters(BaseApiTestCase):
         )
 
     def test_externe_code_filter(self):
-        product_type_1 = ProductTypeFactory.create()
-        ExterneCodeFactory(naam="ISO", code="12345", product_type=product_type_1)
+        producttype_1 = ProductTypeFactory.create()
+        ExterneCodeFactory(naam="ISO", code="12345", producttype=producttype_1)
 
-        product_type_2 = ProductTypeFactory.create()
-        ExterneCodeFactory(naam="ISO", code="9837549857", product_type=product_type_2)
+        producttype_2 = ProductTypeFactory.create()
+        ExterneCodeFactory(naam="ISO", code="9837549857", producttype=producttype_2)
 
         response = self.client.get(self.path, {"externe_code": "[ISO:12345]"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["id"], str(product_type_1.id))
+        self.assertEqual(response.data["results"][0]["id"], str(producttype_1.id))
 
     def test_multiple_externe_code_filters(self):
-        product_type_1 = ProductTypeFactory.create()
-        ExterneCodeFactory(naam="ISO", code="12345", product_type=product_type_1)
-        ExterneCodeFactory(naam="OSI", code="456", product_type=product_type_1)
+        producttype_1 = ProductTypeFactory.create()
+        ExterneCodeFactory(naam="ISO", code="12345", producttype=producttype_1)
+        ExterneCodeFactory(naam="OSI", code="456", producttype=producttype_1)
 
-        product_type_2 = ProductTypeFactory.create()
-        ExterneCodeFactory(naam="ISO", code="9837549857", product_type=product_type_2)
+        producttype_2 = ProductTypeFactory.create()
+        ExterneCodeFactory(naam="ISO", code="9837549857", producttype=producttype_2)
 
         response = self.client.get(
             self.path, {"externe_code": ("[ISO:12345]", "[OSI:456]")}
@@ -80,7 +80,7 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["id"], str(product_type_1.id))
+        self.assertEqual(response.data["results"][0]["id"], str(producttype_1.id))
 
     def test_externe_code_filter_without_brackets(self):
         response = self.client.get(self.path, {"externe_code": "abc"})
@@ -103,32 +103,28 @@ class TestProductTypeFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_parameter_filter(self):
-        product_type_1 = ProductTypeFactory.create()
-        ParameterFactory(
-            naam="doelgroep", waarde="inwoners", product_type=product_type_1
-        )
+        producttype_1 = ProductTypeFactory.create()
+        ParameterFactory(naam="doelgroep", waarde="inwoners", producttype=producttype_1)
 
-        product_type_2 = ProductTypeFactory.create()
+        producttype_2 = ProductTypeFactory.create()
         ParameterFactory(
-            naam="doelgroep", waarde="bedrijven", product_type=product_type_2
+            naam="doelgroep", waarde="bedrijven", producttype=producttype_2
         )
 
         response = self.client.get(self.path, {"parameter": "[doelgroep:inwoners]"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["id"], str(product_type_1.id))
+        self.assertEqual(response.data["results"][0]["id"], str(producttype_1.id))
 
     def test_multiple_parameter_filters(self):
-        product_type_1 = ProductTypeFactory.create()
-        ParameterFactory(
-            naam="doelgroep", waarde="inwoners", product_type=product_type_1
-        )
-        ParameterFactory(naam="buurt", waarde="kwartier", product_type=product_type_1)
+        producttype_1 = ProductTypeFactory.create()
+        ParameterFactory(naam="doelgroep", waarde="inwoners", producttype=producttype_1)
+        ParameterFactory(naam="buurt", waarde="kwartier", producttype=producttype_1)
 
-        product_type_2 = ProductTypeFactory.create()
+        producttype_2 = ProductTypeFactory.create()
         ParameterFactory(
-            naam="doelgroep", waarde="bedrijven", product_type=product_type_2
+            naam="doelgroep", waarde="bedrijven", producttype=producttype_2
         )
 
         response = self.client.get(
@@ -137,7 +133,7 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["id"], str(product_type_1.id))
+        self.assertEqual(response.data["results"][0]["id"], str(producttype_1.id))
 
     def test_parameter_filter_without_brackets(self):
         response = self.client.get(self.path, {"parameter": "abc"})
@@ -161,7 +157,7 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_product_type_code_filter(self):
+    def test_producttype_code_filter(self):
         ProductTypeFactory.create(code="123")
         ProductTypeFactory.create(code="8234098q2730492873")
 
@@ -172,8 +168,8 @@ class TestProductTypeFilters(BaseApiTestCase):
         self.assertEqual(response.data["results"][0]["code"], "8234098q2730492873")
 
     def test_letter_filter(self):
-        product_type_1 = ProductTypeFactory.create(naam="Parkeervergunning")
-        product_type_2 = ProductTypeFactory.create(naam="Aanbouw")
+        producttype_1 = ProductTypeFactory.create(naam="Parkeervergunning")
+        producttype_2 = ProductTypeFactory.create(naam="Aanbouw")
 
         with self.subTest("NL"):
             response = self.client.get(
@@ -185,13 +181,13 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.data["results"][0]["naam"], "Parkeervergunning")
 
         with self.subTest("EN"):
-            product_type_1.set_current_language("en")
-            product_type_1.naam = "ssss"
-            product_type_1.save()
+            producttype_1.set_current_language("en")
+            producttype_1.naam = "ssss"
+            producttype_1.save()
 
-            product_type_2.set_current_language("en")
-            product_type_2.naam = "qqqq"
-            product_type_2.save()
+            producttype_2.set_current_language("en")
+            producttype_2.naam = "qqqq"
+            producttype_2.save()
 
             response = self.client.get(
                 self.path, {"letter": "q"}, headers={"Accept-Language": "en"}
@@ -202,15 +198,15 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.data["results"][0]["naam"], "qqqq")
 
     def test_producttype_content_label_filter(self):
-        product_type = ProductTypeFactory.create()
-        element_1 = ContentElementFactory.create(product_type=product_type)
+        producttype = ProductTypeFactory.create()
+        element_1 = ContentElementFactory.create(producttype=producttype)
         element_1.labels.add(ContentLabelFactory.create(naam="openingstijden"))
         element_1.labels.add(ContentLabelFactory.create(naam="main"))
 
-        element_2 = ContentElementFactory.create(product_type=product_type)
+        element_2 = ContentElementFactory.create(producttype=producttype)
         element_2.labels.add(ContentLabelFactory.create(naam="stappenplan"))
 
-        path = reverse("producttype-content", args=(product_type.id,))
+        path = reverse("producttype-content", args=(producttype.id,))
 
         with self.subTest("single label filter"):
             response = self.client.get(path, {"labels": "openingstijden"})
@@ -239,15 +235,15 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(len(response.data), 0)
 
     def test_producttype_content_exclude_label_filter(self):
-        product_type = ProductTypeFactory.create()
-        element_1 = ContentElementFactory.create(product_type=product_type)
+        producttype = ProductTypeFactory.create()
+        element_1 = ContentElementFactory.create(producttype=producttype)
         element_1.labels.add(ContentLabelFactory.create(naam="openingstijden"))
         element_1.labels.add(ContentLabelFactory.create(naam="main"))
 
-        element_2 = ContentElementFactory.create(product_type=product_type)
+        element_2 = ContentElementFactory.create(producttype=producttype)
         element_2.labels.add(ContentLabelFactory.create(naam="stappenplan"))
 
-        path = reverse("producttype-content", args=(product_type.id,))
+        path = reverse("producttype-content", args=(producttype.id,))
 
         with self.subTest("single label filter"):
             response = self.client.get(path, {"exclude_labels": "openingstijden"})
