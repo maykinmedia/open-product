@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: client_id=open-producten&client_secret=wmAIwCLwVG72jTZzG0MCreu8yjERYdoU&username=testtest&password=test&grant_type=password
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '123'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.3
+    method: POST
+    uri: https://keycloak.server272.ovh/realms/master/protocol/openid-connect/token
+  response:
+    body:
+      string: '{"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0M2JmeHl5dGVjdDU3UkhWODlXa2h4aUYwVFRrQnpOY01wU1BZRjhIbDFjIn0.eyJleHAiOjE3NDMxNzQ5NDksImlhdCI6MTc0MzE3NDM0OSwianRpIjoiYzVmMmJkMzEtZTAyNi00NDZjLWI3NmEtN2VkYmNlNjllNDA4IiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5zZXJ2ZXIyNzIub3ZoL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOlsib3Blbi1wcm9kdWN0ZW4iLCJhY2NvdW50Il0sInN1YiI6ImQ4NmRhODkxLWY1NDMtNGNlZC1hOGVjLTEzNDc4M2IwZTIxZiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZW4tcHJvZHVjdGVuIiwic2lkIjoiYzcyZjQ2ODUtZTZhYi00YjQwLWI2ZDgtZTBmMjhkY2RiOWZhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIG9wZW5pZCBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdHRlc3QifQ.BaxBSmAafl9Pt07gh0d76rP-CPufJ-yvo9wuwLDzSLJ0jCLDu-QCTVsWLeryM6PwESMvir8PgJxSWgVNG7vq2TIHA0INGbWga0hf7Z_CbG0w-ZmOfmmE8BCCJ0xufZxXx129SK5mAoO0X05F6NnJpcbKLNnKAt-GMOQeVNCi-jeKjGmZV7U4ZAqvW0CXj-WLuKaRw-j8NhrWrAjVDfITrqXbYfVi3CwIPHTVv9EIR9PhaOCj7HcGyYaulQ8VUvrv8pTWDT1Vx4cM_pIj9wuFxbn8FER7oyMhrWBcgDw9sc8gg2OTfFx2SGW173oSY7lYOxJMAGMo-vltthSBwRah6g","expires_in":600,"refresh_expires_in":1800,"refresh_token":"eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiNGJkMzVjNi02YjgyLTRiYWEtOTM5Yy1lMmY4ZjE1Y2VjMjMifQ.eyJleHAiOjE3NDMxNzYxNDksImlhdCI6MTc0MzE3NDM0OSwianRpIjoiNzJiZmUwZTUtOTI4Zi00ZDYxLWJmZWEtMDY0NmZmODE3ODQ2IiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5zZXJ2ZXIyNzIub3ZoL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOiJodHRwczovL2tleWNsb2FrLnNlcnZlcjI3Mi5vdmgvcmVhbG1zL21hc3RlciIsInN1YiI6ImQ4NmRhODkxLWY1NDMtNGNlZC1hOGVjLTEzNDc4M2IwZTIxZiIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJvcGVuLXByb2R1Y3RlbiIsInNpZCI6ImM3MmY0Njg1LWU2YWItNGI0MC1iNmQ4LWUwZjI4ZGNkYjlmYSIsInNjb3BlIjoicHJvZmlsZSB3ZWItb3JpZ2lucyBvcGVuaWQgcm9sZXMgYWNyIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBiYXNpYyJ9.Gj99Tr-26Cequ_J2LJIsiADjDtjOF37i8RzwWj8QQzS2ROUhGNg6yxEwZDVtKK9fCOsZwsBDBJGhLdHfdH6huw","token_type":"Bearer","not-before-policy":0,"session_state":"c72f4685-e6ab-4b40-b6d8-e0f28dcdb9fa","scope":"profile
+        openid email"}'
+    headers:
+      Cache-Control:
+      - no-store
+      Content-Length:
+      - '2178'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 28 Mar 2025 15:05:49 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - no-referrer
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0M2JmeHl5dGVjdDU3UkhWODlXa2h4aUYwVFRrQnpOY01wU1BZRjhIbDFjIn0.eyJleHAiOjE3NDMxNzQ5NDksImlhdCI6MTc0MzE3NDM0OSwianRpIjoiYzVmMmJkMzEtZTAyNi00NDZjLWI3NmEtN2VkYmNlNjllNDA4IiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5zZXJ2ZXIyNzIub3ZoL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOlsib3Blbi1wcm9kdWN0ZW4iLCJhY2NvdW50Il0sInN1YiI6ImQ4NmRhODkxLWY1NDMtNGNlZC1hOGVjLTEzNDc4M2IwZTIxZiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZW4tcHJvZHVjdGVuIiwic2lkIjoiYzcyZjQ2ODUtZTZhYi00YjQwLWI2ZDgtZTBmMjhkY2RiOWZhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIG9wZW5pZCBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdHRlc3QifQ.BaxBSmAafl9Pt07gh0d76rP-CPufJ-yvo9wuwLDzSLJ0jCLDu-QCTVsWLeryM6PwESMvir8PgJxSWgVNG7vq2TIHA0INGbWga0hf7Z_CbG0w-ZmOfmmE8BCCJ0xufZxXx129SK5mAoO0X05F6NnJpcbKLNnKAt-GMOQeVNCi-jeKjGmZV7U4ZAqvW0CXj-WLuKaRw-j8NhrWrAjVDfITrqXbYfVi3CwIPHTVv9EIR9PhaOCj7HcGyYaulQ8VUvrv8pTWDT1Vx4cM_pIj9wuFxbn8FER7oyMhrWBcgDw9sc8gg2OTfFx2SGW173oSY7lYOxJMAGMo-vltthSBwRah6gb
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: https://keycloak.server272.ovh/realms/master/protocol/openid-connect/userinfo
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain;charset=utf-8
+      Date:
+      - Fri, 28 Mar 2025 15:05:49 GMT
+      Referrer-Policy:
+      - no-referrer
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Www-Authenticate:
+      - Bearer realm="master", error="invalid_token", error_description="Token verification
+        failed"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
