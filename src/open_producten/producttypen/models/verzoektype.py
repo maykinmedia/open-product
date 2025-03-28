@@ -1,11 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from open_producten.utils.models import BaseModel
 
-from .externeverwijzingconfig import ExterneVerwijzingConfig
 from .producttype import ProductType
+from .validators import check_verzoektypen_url
 
 
 class VerzoekType(BaseModel):
@@ -35,12 +34,3 @@ class VerzoekType(BaseModel):
 
     def __str__(self):
         return str(self.uuid)
-
-
-def check_verzoektypen_url():
-    if not ExterneVerwijzingConfig.get_solo().verzoektypen_url:
-        raise ValidationError(
-            _(
-                "De verzoektypen url is niet geconfigureerd in de externe verwijzing config"
-            )
-        )

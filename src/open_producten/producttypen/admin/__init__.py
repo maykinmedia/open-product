@@ -2,7 +2,7 @@ from .actie import ActieInline
 from .bestand import BestandAdmin
 from .content import ContentLabelAdmin
 from .dmn_config import DmnConfigAdmin
-from .externeverwijzingconfig import ExterneVerwijzingConfig
+from .externeverwijzingconfig import ExterneVerwijzingConfigAdmin
 from .jsonschema import JsonSchemaAdmin
 from .link import LinkAdmin
 from .prijs import PrijsAdmin
@@ -21,5 +21,5 @@ __all__ = [
     "JsonSchemaAdmin",
     "DmnConfigAdmin",
     "ActieInline",
-    "ExterneVerwijzingConfig",
+    "ExterneVerwijzingConfigAdmin",
 ]

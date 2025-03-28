@@ -1,11 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from open_producten.utils.models import BaseModel
 
-from .externeverwijzingconfig import ExterneVerwijzingConfig
 from .producttype import ProductType
+from .validators import check_processen_url
 
 
 class Proces(BaseModel):
@@ -35,10 +34,3 @@ class Proces(BaseModel):
 
     def __str__(self):
         return str(self.uuid)
-
-
-def check_processen_url():
-    if not ExterneVerwijzingConfig.get_solo().processen_url:
-        raise ValidationError(
-            _("De processen url is niet geconfigureerd in de externe verwijzing config")
-        )

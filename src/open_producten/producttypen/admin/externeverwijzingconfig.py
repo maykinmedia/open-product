@@ -6,5 +6,5 @@ from open_producten.producttypen.models import ExterneVerwijzingConfig
 
 
 @admin.register(ExterneVerwijzingConfig)
-class ExterneVerwijzingConfig(SingletonModelAdmin):
+class ExterneVerwijzingConfigAdmin(SingletonModelAdmin):
     pass

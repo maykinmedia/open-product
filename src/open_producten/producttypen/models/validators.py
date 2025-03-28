@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from .externeverwijzingconfig import ExterneVerwijzingConfig
+
 
 def validate_prijs_optie_xor_regel(optie_count: int, regel_count: int):
 
@@ -36,3 +38,26 @@ def validate_thema_gepubliceerd_state(hoofd_thema, gepubliceerd, sub_themas=None
 def disallow_hoofd_thema_self_reference(thema, hoofd_thema):
     if thema and hoofd_thema and thema.id == hoofd_thema.id:
         raise ValidationError("Een thema kan niet zijn eigen hoofd thema zijn.")
+
+
+def check_processen_url():
+    if not ExterneVerwijzingConfig.get_solo().processen_url:
+        raise ValidationError(
+            _("De processen url is niet geconfigureerd in de externe verwijzing config")
+        )
+
+
+def check_verzoektypen_url():
+    if not ExterneVerwijzingConfig.get_solo().verzoektypen_url:
+        raise ValidationError(
+            _(
+                "De verzoektypen url is niet geconfigureerd in de externe verwijzing config"
+            )
+        )
+
+
+def check_zaaktypen_url():
+    if not ExterneVerwijzingConfig.get_solo().processen_url:
+        raise ValidationError(
+            _("De zaaktypen url is niet geconfigureerd in de externe verwijzing config")
+        )
