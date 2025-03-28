@@ -51,7 +51,7 @@ MIDDLEWARE.insert(
 # MOZILLA DJANGO OIDC
 #
 
-OIDC_DRF_AUTH_BACKEND = "open_producten.utils.oauth.OIDCAuthenticationBackend"
+OIDC_DRF_AUTH_BACKEND = "open_producten.utils.oidc_backend.OIDCAuthenticationBackend"
 
 OIDC_CREATE_USER = config(
     "OIDC_CREATE_USER",
@@ -122,7 +122,7 @@ MARKDOWNX_EDITOR_RESIZABLE = False
 #
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
+        "open_producten.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
@@ -177,7 +177,7 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     ),
     "COMPONENT_SPLIT_REQUEST": True,
     "AUTHENTICATION_WHITELIST": [
-        "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
+        "open_producten.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
 }

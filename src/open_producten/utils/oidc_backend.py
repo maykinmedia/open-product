@@ -26,7 +26,7 @@ class OIDCAuthenticationBackend(_OIDCAuthenticationBackendDB):
 
 
 class JWTScheme(OpenApiAuthenticationExtension):
-    target_class = "mozilla_django_oidc.contrib.drf.OIDCAuthentication"
+    target_class = "open_producten.utils.oidc_drf_middleware.OIDCAuthentication"
     name = "jwtAuth"
 
     def get_security_definition(
