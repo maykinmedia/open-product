@@ -78,6 +78,7 @@ paths:
       tags:
       - acties
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -142,6 +143,7 @@ paths:
                 summary: actie request
         required: true
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -195,6 +197,7 @@ paths:
       tags:
       - acties
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -261,6 +264,7 @@ paths:
                 summary: actie request
         required: true
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -326,6 +330,7 @@ paths:
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                 summary: actie request
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -378,6 +383,7 @@ paths:
       tags:
       - acties
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '204':

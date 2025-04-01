@@ -1,0 +1,87 @@
+interactions:
+- request:
+    body: client_id=testid&client_secret=7DB3KUAAizYCcmZufpHRVOcD0TOkNO3I&grant_type=client_credentials
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '93'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.3
+    method: POST
+    uri: http://localhost:8080/realms/test/protocol/openid-connect/token
+  response:
+    body:
+      string: '{"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0VU5RQWN2VWN2LURGVU94XzRPMWd0MTNPZEpTb3RxRUtQWnVyczJ2UVc4In0.eyJleHAiOjE3NDM1MTk3MTQsImlhdCI6MTc0MzUxOTQxNCwianRpIjoiNjAwMTA2NjUtNDcwOS00NjEzLWExNDktZjdmOWU0M2U1ZDBmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImEyOGFhYzE5LTZhYzUtNGNlNS1iYmUzLWI2YzI0MDUxOTE0YSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRlc3RpZCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovLzEyNy4wLjAuMTo4MDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXRlc3QiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGt2ayBncm91cHMgYnNuIiwiY2xpZW50SG9zdCI6IjE3Mi4yNy4wLjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6WyJkZWZhdWx0LXJvbGVzLXRlc3QiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl0sInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC10ZXN0aWQiLCJjbGllbnRBZGRyZXNzIjoiMTcyLjI3LjAuMSIsImNsaWVudF9pZCI6InRlc3RpZCJ9.kn4LhFhyry5j1dfQFiqe7rY9_1JsjzMY2KcsnvNpoUVph7flWu2Wb2sBfWkGTqAX-9R0tPA_CEZMIRe9_tn2gdIxu4zD5Ba_9yDqQK-BZ4uns5tEvGMQ9qrAxAf0yfSJNPNZplRj_dZifGQW6XMLOgKBrLnKbi7AH-0SD8_H3m8PkJ4pX24dB5ueqWOv8Bq8IomXB7SPiThK5P1ItD3an2qeHXHGVgXz8MjjPkC06ZUAoJSnOK19QumhHDYEhBo0T9DkRBRIRffLMbv_9TiYHcq1f2a1p0r7QbPeEC6VmAma1NSK1CG7Th74su6KF9DsLfyZYt6vwI8N8ArfxaPSyw","expires_in":300,"refresh_expires_in":0,"token_type":"Bearer","not-before-policy":0,"scope":"email
+        profile kvk groups bsn"}'
+    headers:
+      Cache-Control:
+      - no-store
+      Content-Type:
+      - application/json
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - no-referrer
+      Set-Cookie:
+      - KC_RESTART=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0;
+        Path=/realms/test/; HttpOnly
+      - KC_AUTH_STATE=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0;
+        Path=/realms/test/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1533'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0VU5RQWN2VWN2LURGVU94XzRPMWd0MTNPZEpTb3RxRUtQWnVyczJ2UVc4In0.eyJleHAiOjE3NDM1MTk3MTQsImlhdCI6MTc0MzUxOTQxNCwianRpIjoiNjAwMTA2NjUtNDcwOS00NjEzLWExNDktZjdmOWU0M2U1ZDBmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImEyOGFhYzE5LTZhYzUtNGNlNS1iYmUzLWI2YzI0MDUxOTE0YSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRlc3RpZCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovLzEyNy4wLjAuMTo4MDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXRlc3QiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGt2ayBncm91cHMgYnNuIiwiY2xpZW50SG9zdCI6IjE3Mi4yNy4wLjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6WyJkZWZhdWx0LXJvbGVzLXRlc3QiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl0sInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC10ZXN0aWQiLCJjbGllbnRBZGRyZXNzIjoiMTcyLjI3LjAuMSIsImNsaWVudF9pZCI6InRlc3RpZCJ9.kn4LhFhyry5j1dfQFiqe7rY9_1JsjzMY2KcsnvNpoUVph7flWu2Wb2sBfWkGTqAX-9R0tPA_CEZMIRe9_tn2gdIxu4zD5Ba_9yDqQK-BZ4uns5tEvGMQ9qrAxAf0yfSJNPNZplRj_dZifGQW6XMLOgKBrLnKbi7AH-0SD8_H3m8PkJ4pX24dB5ueqWOv8Bq8IomXB7SPiThK5P1ItD3an2qeHXHGVgXz8MjjPkC06ZUAoJSnOK19QumhHDYEhBo0T9DkRBRIRffLMbv_9TiYHcq1f2a1p0r7QbPeEC6VmAma1NSK1CG7Th74su6KF9DsLfyZYt6vwI8N8ArfxaPSyw
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: http://localhost:8080/realms/test/protocol/openid-connect/userinfo
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Type:
+      - text/plain;charset=utf-8
+      Referrer-Policy:
+      - no-referrer
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      WWW-Authenticate:
+      - Bearer realm="test", error="insufficient_scope", error_description="Missing
+        openid scope"
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '0'
+    status:
+      code: 403
+      message: Forbidden
+version: 1

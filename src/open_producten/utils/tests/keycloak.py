@@ -5,9 +5,7 @@ from unittest.mock import patch
 
 from django.apps import apps
 
-KEYCLOAK_BASE_URL = (
-    "https://keycloak.server272.ovh/realms/master/protocol/openid-connect"
-)
+KEYCLOAK_BASE_URL = "http://localhost:8080/realms/test/protocol/openid-connect"
 
 
 @contextmanager
@@ -18,11 +16,10 @@ def mock_oidc_db_config(app_label: str, model: str, **overrides):
     This context manager deliberately prevents the mocked things from being injected in
     the test method signature.
     """
-
     defaults = {
         "enabled": True,
-        "oidc_rp_client_id": "open-producten",
-        "oidc_rp_client_secret": "wmAIwCLwVG72jTZzG0MCreu8yjERYdoU",
+        "oidc_rp_client_id": "testid",
+        "oidc_rp_client_secret": "7DB3KUAAizYCcmZufpHRVOcD0TOkNO3I",
         "oidc_rp_sign_algo": "RS256",
         "oidc_rp_scopes_list": ["openid"],
         "oidc_op_jwks_endpoint": f"{KEYCLOAK_BASE_URL}/certs",
