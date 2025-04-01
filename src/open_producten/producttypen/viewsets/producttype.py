@@ -24,9 +24,9 @@ from open_producten.utils.filters import (
     ChoiceArrayFilter,
     FilterSet,
     ManyCharFilter,
-    ManyRegexValidator,
     TranslationFilter,
 )
+from open_producten.utils.validators import ManyRegexValidator
 from open_producten.utils.views import OrderedModelViewSet, TranslatableViewSetMixin
 
 

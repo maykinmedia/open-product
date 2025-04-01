@@ -42,20 +42,18 @@ paths:
           type: string
         description: |2
 
-          Only include objects that have attributes with certain values.
-
-          een json filter parameter heeft de format `key__operator__waarde`.
+          Een json filter parameter heeft de format `key__operator__waarde`.
           `key` is de naam van de attribuut, `operator` is de operator die gebruikt moet worden en `waarde` is de waarde waarop zal worden gezocht.
 
           Waardes kunnen een string, nummer of datum (ISO format; YYYY-MM-DD) zijn.
 
           De ondersteunde operators zijn:
           * `exact` - gelijk aan
-          * `gt` - grooter dan
-          * `gte` - grooter dan of gelijk aan
+          * `gt` - groter dan
+          * `gte` - groter dan of gelijk aan
           * `lt` - kleiner dan
           * `lte` - kleiner dan of gelijk aan
-          * `icontains` - case-insensitive partial match
+          * `icontains` - hoofdletterongevoelige gedeeltelijke match
           * `in` - in een lijst van waarden gescheiden door `|`
 
           `key` mag ook geen komma's bevatten.
@@ -229,20 +227,18 @@ paths:
           type: string
         description: |2
 
-          Only include objects that have attributes with certain values.
-
-          een json filter parameter heeft de format `key__operator__waarde`.
+          Een json filter parameter heeft de format `key__operator__waarde`.
           `key` is de naam van de attribuut, `operator` is de operator die gebruikt moet worden en `waarde` is de waarde waarop zal worden gezocht.
 
           Waardes kunnen een string, nummer of datum (ISO format; YYYY-MM-DD) zijn.
 
           De ondersteunde operators zijn:
           * `exact` - gelijk aan
-          * `gt` - grooter dan
-          * `gte` - grooter dan of gelijk aan
+          * `gt` - groter dan
+          * `gte` - groter dan of gelijk aan
           * `lt` - kleiner dan
           * `lte` - kleiner dan of gelijk aan
-          * `icontains` - case-insensitive partial match
+          * `icontains` - hoofdletterongevoelige gedeeltelijke match
           * `in` - in een lijst van waarden gescheiden door `|`
 
           `key` mag ook geen komma's bevatten.
