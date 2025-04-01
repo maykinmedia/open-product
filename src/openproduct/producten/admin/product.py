@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
+from reversion_compare.admin import CompareVersionAdmin
+
 from openproduct.logging.service import AdminAuditLogMixin, get_logs_link
 from openproduct.producten.models import Product
 from openproduct.producten.models.validators import (
@@ -94,7 +96,7 @@ class ProductAdminForm(forms.ModelForm):
 
 
 @admin.register(Product)
-class ProductAdmin(AdminAuditLogMixin, admin.ModelAdmin):
+class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = (
         "product_type_name",
         "aanmaak_datum",

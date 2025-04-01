@@ -6,6 +6,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.logging.logevent import audit_automation_update
 from openproduct.producten.models.validators import validate_product_dates
 from openproduct.producttypen.models import ProductType
@@ -20,6 +22,7 @@ class PrijsFrequentieChoices(models.TextChoices):
     JAARLIJKS = "jaarlijks", _("Jaarlijks")
 
 
+@reversion.register(follow=("eigenaren", "product_type"))
 class Product(BasePublishableModel):
     product_type = models.ForeignKey(
         ProductType,

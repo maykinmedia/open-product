@@ -6,9 +6,12 @@ from django.utils.translation import gettext as _
 from ordered_model.admin import OrderedInlineModelAdminMixin
 from parler.admin import TranslatableAdmin
 from parler.forms import TranslatableModelForm
+from reversion_compare.admin import CompareVersionAdmin
 
+from ...logging.admin_tools import AdminAuditLogMixin
 from ...utils.widgets import WysimarkWidget
 from ..models import ProductType, Thema
+from ..models.producttype import ProductTypeTranslation
 from . import ActieInline
 from .bestand import BestandInline
 from .content import ContentElementInline
@@ -18,6 +21,14 @@ from .parameter import ParameterInline
 from .proces import ProcesInline
 from .verzoektype import VerzoekTypeInline
 from .zaaktype import ZaakTypeInline
+
+
+@admin.register(ProductTypeTranslation)
+class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
+    list_display = ("master", "naam", "language_code")
+    list_filter = ("master__themas", "language_code")
+    search_fields = ("naam",)
+    readonly_fields = ("master", "language_code")
 
 
 class ProductTypeAdminForm(TranslatableModelForm):
@@ -44,7 +55,12 @@ class ProductTypeAdminForm(TranslatableModelForm):
 
 
 @admin.register(ProductType)
-class ProductTypeAdmin(OrderedInlineModelAdminMixin, TranslatableAdmin):
+class ProductTypeAdmin(
+    AdminAuditLogMixin,
+    OrderedInlineModelAdminMixin,
+    TranslatableAdmin,
+    CompareVersionAdmin,
+):
     list_display = (
         "naam",
         "uniforme_product_naam",

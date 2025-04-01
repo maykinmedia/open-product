@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Prijs
 from openproduct.producttypen.serializers import PrijsSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
@@ -57,7 +58,7 @@ class PrijsFilterSet(FilterSet):
         summary="Verwijder een PRIJS.",
     ),
 )
-class PrijsViewSet(OrderedModelViewSet):
+class PrijsViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Prijs.objects.all()
     serializer_class = PrijsSerializer
     lookup_url_kwarg = "id"

@@ -5,12 +5,16 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from reversion_compare.admin import CompareVersionAdmin
+
 from openproduct.utils.widgets import WysimarkWidget
 
+from ...logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 from ..models import ProductType, Thema
 
 
 class ProductTypeInline(admin.TabularInline):
+    formset = AuditLogInlineformset
     model = ProductType.themas.through
     extra = 0
 
@@ -35,7 +39,7 @@ class ThemaAdminForm(forms.ModelForm):
 
 
 @admin.register(Thema)
-class ThemaAdmin(admin.ModelAdmin):
+class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     inlines = (ProductTypeInline,)
     search_fields = ("naam", "hoofd_thema__naam")
     list_display = ("naam", "hoofd_thema", "gepubliceerd", "product_typen_count")

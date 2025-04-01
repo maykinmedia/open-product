@@ -2,6 +2,8 @@ from django.core.validators import MinLengthValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.producten.models.validators import (
     validate_bsn,
     validate_eigenaar_identifier,
@@ -12,6 +14,7 @@ from openproduct.utils.models import BaseModel
 from .product import Product
 
 
+@reversion.register()
 class Eigenaar(BaseModel):
 
     product = models.ForeignKey(

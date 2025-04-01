@@ -2,6 +2,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from openproduct.locaties.models import Contact
 from openproduct.locaties.serializers import ContactSerializer
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.utils.filters import FilterSet
 from openproduct.utils.views import OrderedModelViewSet
 
@@ -42,7 +43,7 @@ class ContactFilterSet(FilterSet):
         summary="Verwijder een CONTACT.",
     ),
 )
-class ContactViewSet(OrderedModelViewSet):
+class ContactViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     lookup_field = "id"

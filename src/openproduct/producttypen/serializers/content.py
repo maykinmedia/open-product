@@ -67,26 +67,6 @@ class ContentElementSerializer(TranslatableModelSerializer):
         model = ContentElement
         fields = ("id", "content", "labels", "product_type_id", "taal")
 
-    def create(self, validated_data):
-        content = validated_data.pop("content")
-
-        content_element = super().create(validated_data)
-        content_element.set_current_language("nl")
-        content_element.content = content
-
-        return content_element
-
-    def update(self, instance, validated_data):
-        content = validated_data.pop("content", None)
-
-        instance = super().update(instance, validated_data)
-
-        instance.set_current_language("nl")
-        if content:
-            instance.content = content
-
-        return instance
-
 
 class NestedContentElementSerializer(ContentElementSerializer):
 

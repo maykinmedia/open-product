@@ -1,11 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.models import BaseModel
 
 from .producttype import ProductType
 
 
+@reversion.register(follow=("product_type",))
 class Bestand(BaseModel):
     product_type = models.ForeignKey(
         ProductType,

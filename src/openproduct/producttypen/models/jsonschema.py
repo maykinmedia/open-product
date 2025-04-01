@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 import jsonschema  # noqa
+import reversion
 from jsonschema import validate
 from jsonschema.exceptions import (
     SchemaError,
@@ -10,6 +11,7 @@ from jsonschema.exceptions import (
 )
 
 
+@reversion.register()
 class JsonSchema(models.Model):
     naam = models.CharField(
         _("naam"), help_text=_("Naam van het json schema."), max_length=200, unique=True

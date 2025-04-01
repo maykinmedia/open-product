@@ -9,6 +9,8 @@ def model_to_dict(instance):
 
     * it doesn't skip non-editable fields
     * it serializes related objects to their PK instead of passing model instances
+    * it serializers FileField objects to their filename
+    * it serializers ManyToOneRel fields recursively
     """
     opts = instance._meta
     data = {}
@@ -17,9 +19,17 @@ def model_to_dict(instance):
         match f:
             case models.ManyToManyField():
                 value = [obj.pk for obj in value]
+            case models.FileField():
+                value = value.name
             case _:
                 pass
         data[f.name] = value
+
+    for obj in opts.related_objects:
+        manager = getattr(instance, obj.related_name, None)
+        data[obj.related_name] = [
+            model_to_dict(instance) for instance in manager.iterator()
+        ]
 
     return data
 

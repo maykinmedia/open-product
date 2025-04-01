@@ -4,6 +4,7 @@ import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.parsers import MultiPartParser
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Bestand
 from openproduct.producttypen.serializers import BestandSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
@@ -57,7 +58,7 @@ class BestandFilterSet(FilterSet):
         summary="Verwijder een BESTAND.",
     ),
 )
-class BestandViewSet(OrderedModelViewSet):
+class BestandViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Bestand.objects.all()
     parser_classes = [MultiPartParser]
     serializer_class = BestandSerializer

@@ -23,6 +23,8 @@ INSTALLED_APPS += [
     "parler",
     "markdownx",
     "django_celery_beat",
+    "reversion",
+    "reversion_compare",
     "openproduct.accounts",
     "openproduct.logging",
     "openproduct.utils",
@@ -46,6 +48,8 @@ MIDDLEWARE.insert(
     MIDDLEWARE.index("django.middleware.common.CommonMiddleware"),
     "django.middleware.locale.LocaleMiddleware",
 )
+
+MIDDLEWARE.append("reversion.middleware.RevisionMiddleware")
 
 #
 # MOZILLA DJANGO OIDC
@@ -116,6 +120,15 @@ ADMIN_INDEX_SHOW_REMAINING_APPS = False
 # markdownx
 #
 MARKDOWNX_EDITOR_RESIZABLE = False
+
+
+#
+# reversion_compare
+#
+ADD_REVERSION_ADMIN = True
+REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID = False
+REVERSION_COMPARE_IGNORE_NOT_REGISTERED = False
+
 
 #
 # Django rest framework

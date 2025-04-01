@@ -1,6 +1,6 @@
 from .actie import Actie
 from .bestand import Bestand
-from .content import ContentElement, ContentLabel
+from .content import ContentElement, ContentElementTranslation, ContentLabel
 from .externe_code import ExterneCode
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 from .jsonschema import JsonSchema
@@ -8,7 +8,7 @@ from .link import Link
 from .parameter import Parameter
 from .prijs import Prijs, PrijsOptie, PrijsRegel
 from .proces import Proces
-from .producttype import ProductType
+from .producttype import ProductType, ProductTypeTranslation
 from .thema import Thema
 from .upn import UniformeProductNaam
 from .verzoektype import VerzoekType
@@ -22,11 +22,13 @@ __all__ = [
     "PrijsOptie",
     "PrijsRegel",
     "ProductType",
+    "ProductTypeTranslation",
     "Bestand",
     "ExterneCode",
     "Parameter",
     "ContentElement",
     "ContentLabel",
+    "ContentElementTranslation",
     "JsonSchema",
     "Actie",
     "Proces",

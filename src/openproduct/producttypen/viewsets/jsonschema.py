@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import JsonSchema
 from openproduct.producttypen.serializers import JsonSchemaSerializer
 from openproduct.utils.filters import FilterSet
@@ -34,7 +35,7 @@ class JsonSchemaFilterSet(FilterSet):
         summary="Verwijder een SCHEMA.",
     ),
 )
-class JsonSchemaViewSet(OrderedModelViewSet):
+class JsonSchemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = JsonSchema.objects.all()
     serializer_class = JsonSchemaSerializer
     lookup_url_kwarg = "id"

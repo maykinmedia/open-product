@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
     ContentElement,
     ExterneVerwijzingConfig,
@@ -158,7 +159,9 @@ class Meta:
         summary="Verwijder een PRODUCTTYPE.",
     ),
 )
-class ProductTypeViewSet(TranslatableViewSetMixin, OrderedModelViewSet):
+class ProductTypeViewSet(
+    AuditTrailViewSetMixin, TranslatableViewSetMixin, OrderedModelViewSet
+):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
     lookup_url_kwarg = "id"

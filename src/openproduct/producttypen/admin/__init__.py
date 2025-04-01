@@ -1,6 +1,6 @@
 from .actie import ActieInline
 from .bestand import BestandAdmin
-from .content import ContentLabelAdmin
+from .content import ContentElementTranslationAdmin, ContentLabelAdmin
 from .dmn_config import DmnConfigAdmin
 from .externeverwijzingconfig import ExterneVerwijzingConfigAdmin
 from .jsonschema import JsonSchemaAdmin
@@ -18,6 +18,7 @@ __all__ = [
     "PrijsAdmin",
     "ThemaAdmin",
     "ContentLabelAdmin",
+    "ContentElementTranslationAdmin",
     "JsonSchemaAdmin",
     "DmnConfigAdmin",
     "ActieInline",
