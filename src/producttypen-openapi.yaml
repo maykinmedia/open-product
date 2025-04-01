@@ -500,10 +500,6 @@ paths:
           description: ''
     post:
       operationId: bestanden_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een BESTAND aan.
       tags:
       - bestanden
@@ -561,10 +557,6 @@ paths:
   /bestanden/{id}/:
     get:
       operationId: bestanden_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek BESTAND opvragen.
       parameters:
       - in: path
@@ -617,10 +609,6 @@ paths:
           description: ''
     put:
       operationId: bestanden_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een BESTAND in zijn geheel bij.
       parameters:
       - in: path
@@ -685,10 +673,6 @@ paths:
           description: ''
     patch:
       operationId: bestanden_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een BESTAND deels bij.
       parameters:
       - in: path
@@ -752,10 +736,6 @@ paths:
           description: ''
     delete:
       operationId: bestanden_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een BESTAND.
       parameters:
       - in: path
@@ -907,10 +887,6 @@ paths:
           description: ''
     post:
       operationId: contacten_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een CONTACT aan.
       tags:
       - contacten
@@ -985,10 +961,6 @@ paths:
   /contacten/{id}/:
     get:
       operationId: contacten_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek CONTACT opvragen.
       parameters:
       - in: path
@@ -1054,10 +1026,6 @@ paths:
           description: ''
     put:
       operationId: contacten_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een CONTACT in zijn geheel bij.
       parameters:
       - in: path
@@ -1220,10 +1188,6 @@ paths:
           description: ''
     delete:
       operationId: contacten_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een CONTACT.
       parameters:
       - in: path
@@ -1266,10 +1230,6 @@ paths:
   /content/:
     post:
       operationId: content_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een CONTENTELEMENT aan.
       tags:
       - content
@@ -1332,10 +1292,6 @@ paths:
   /content/{id}/:
     get:
       operationId: content_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek CONTENTELEMENT opvragen.
       parameters:
       - in: path
@@ -1391,10 +1347,6 @@ paths:
           description: ''
     put:
       operationId: content_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een CONTENTELEMENT in zijn geheel bij.
       parameters:
       - in: path
@@ -1534,10 +1486,6 @@ paths:
           description: ''
     delete:
       operationId: content_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een CONTENTELEMENT.
       parameters:
       - in: path
@@ -1840,10 +1788,6 @@ paths:
           description: ''
     post:
       operationId: links_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een LINK aan.
       tags:
       - links
@@ -1903,10 +1847,6 @@ paths:
   /links/{id}/:
     get:
       operationId: links_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifieke LINK opvragen.
       parameters:
       - in: path
@@ -1960,10 +1900,6 @@ paths:
           description: ''
     put:
       operationId: links_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een LINK in zijn geheel bij.
       parameters:
       - in: path
@@ -2030,10 +1966,6 @@ paths:
           description: ''
     patch:
       operationId: links_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een LINK deels bij.
       parameters:
       - in: path
@@ -2099,10 +2031,6 @@ paths:
           description: ''
     delete:
       operationId: links_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een LINK.
       parameters:
       - in: path
@@ -2240,10 +2168,6 @@ paths:
           description: ''
     post:
       operationId: locaties_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een LOCATIE aan.
       tags:
       - locaties
@@ -2311,10 +2235,6 @@ paths:
   /locaties/{id}/:
     get:
       operationId: locaties_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifieke LOCATIE opvragen.
       parameters:
       - in: path
@@ -2372,10 +2292,6 @@ paths:
           description: ''
     put:
       operationId: locaties_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een LOCATIE in zijn geheel bij.
       parameters:
       - in: path
@@ -2450,10 +2366,6 @@ paths:
           description: ''
     patch:
       operationId: locaties_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een LOCATIE deels bij.
       parameters:
       - in: path
@@ -2527,10 +2439,6 @@ paths:
           description: ''
     delete:
       operationId: locaties_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een LOCATIE.
       parameters:
       - in: path
@@ -2674,10 +2582,6 @@ paths:
           description: ''
     post:
       operationId: organisaties_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een ORGANISATIE aan.
       tags:
       - organisaties
@@ -2747,10 +2651,6 @@ paths:
   /organisaties/{id}/:
     get:
       operationId: organisaties_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifieke ORGANISATIE opvragen.
       parameters:
       - in: path
@@ -2809,10 +2709,6 @@ paths:
           description: ''
     put:
       operationId: organisaties_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een ORGANISATIE in zijn geheel bij.
       parameters:
       - in: path
@@ -2889,10 +2785,6 @@ paths:
           description: ''
     patch:
       operationId: organisaties_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een ORGANISATIE deels bij.
       parameters:
       - in: path
@@ -2968,10 +2860,6 @@ paths:
           description: ''
     delete:
       operationId: organisaties_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een ORGANISATIE.
       parameters:
       - in: path
@@ -3162,10 +3050,6 @@ paths:
           description: ''
     post:
       operationId: prijzen_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een PRIJS aan.
       tags:
       - prijzen
@@ -3255,10 +3139,6 @@ paths:
   /prijzen/{id}/:
     get:
       operationId: prijzen_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifieke PRIJS opvragen.
       parameters:
       - in: path
@@ -3325,10 +3205,6 @@ paths:
           description: ''
     put:
       operationId: prijzen_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een PRIJS in zijn geheel bij.
       parameters:
       - in: path
@@ -3425,10 +3301,6 @@ paths:
           description: ''
     patch:
       operationId: prijzen_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een PRIJS deels bij.
       parameters:
       - in: path
@@ -3524,10 +3396,6 @@ paths:
           description: ''
     delete:
       operationId: prijzen_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een PRIJS.
       parameters:
       - in: path
@@ -3874,10 +3742,6 @@ paths:
           description: ''
     post:
       operationId: producttypen_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een PRODUCTTYPE aan.
       tags:
       - producttypen
@@ -4073,10 +3937,6 @@ paths:
   /producttypen/{id}/:
     get:
       operationId: producttypen_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek PRODUCTTYPE opvragen.
       parameters:
       - in: path
@@ -4234,10 +4094,6 @@ paths:
           description: ''
     put:
       operationId: producttypen_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een PRODUCTTYPE in zijn geheel bij.
       parameters:
       - in: path
@@ -4643,10 +4499,6 @@ paths:
           description: ''
     delete:
       operationId: producttypen_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een PRODUCTTYPE.
       parameters:
       - in: path
@@ -5086,10 +4938,6 @@ paths:
           description: ''
     post:
       operationId: schemas_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een SCHEMA aan.
       tags:
       - schemas
@@ -5158,10 +5006,6 @@ paths:
   /schemas/{id}/:
     get:
       operationId: schemas_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek SCHEMA opvragen.
       parameters:
       - in: path
@@ -5218,10 +5062,6 @@ paths:
           description: ''
     put:
       operationId: schemas_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een SCHEMA in zijn geheel bij.
       parameters:
       - in: path
@@ -5296,10 +5136,6 @@ paths:
           description: ''
     patch:
       operationId: schemas_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een SCHEMA deels bij.
       parameters:
       - in: path
@@ -5373,10 +5209,6 @@ paths:
           description: ''
     delete:
       operationId: schemas_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een SCHEMA.
       parameters:
       - in: path
@@ -5551,10 +5383,6 @@ paths:
           description: ''
     post:
       operationId: themas_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een THEMA aan.
       tags:
       - themas
@@ -5631,10 +5459,6 @@ paths:
   /themas/{id}/:
     get:
       operationId: themas_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek THEMA opvragen.
       parameters:
       - in: path
@@ -5702,10 +5526,6 @@ paths:
           description: ''
     put:
       operationId: themas_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een THEMA in zijn geheel bij.
       parameters:
       - in: path
@@ -5873,10 +5693,6 @@ paths:
           description: ''
     delete:
       operationId: themas_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een THEMA.
       parameters:
       - in: path

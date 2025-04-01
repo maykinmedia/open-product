@@ -186,13 +186,14 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     "SERVE_INCLUDE_SCHEMA": False,
     "POSTPROCESSING_HOOKS": (
         "drf_spectacular.hooks.postprocess_schema_enums",
-        "openproduct.utils.spectacular_hooks.custom_postprocessing_hook",
+        "openproduct.utils.spectacular.custom_postprocessing_hook",
     ),
     "COMPONENT_SPLIT_REQUEST": True,
     "AUTHENTICATION_WHITELIST": [
         "openproduct.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "GET_LIB_DOC_EXCLUDES": "open_producten.utils.spectacular.get_lib_doc_excludes",
 }
 
 # Subpath (optional)

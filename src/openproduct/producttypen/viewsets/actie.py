@@ -59,8 +59,6 @@ class ActieFilterSet(FilterSet):
     ),
 )
 class ActieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
-    """ """
-
     queryset = Actie.objects.all()
     serializer_class = ActieSerializer
     lookup_url_kwarg = "id"
