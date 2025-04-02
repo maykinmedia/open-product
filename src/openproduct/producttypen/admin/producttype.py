@@ -25,10 +25,14 @@ from .zaaktype import ZaakTypeInline
 
 @admin.register(ProductTypeTranslation)
 class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    list_display = ("master", "naam", "language_code")
+    list_display = ("producttype", "language_code")
     list_filter = ("master__themas", "language_code")
     search_fields = ("naam",)
     readonly_fields = ("master", "language_code")
+
+    @admin.display(description="Producttype")
+    def producttype(self, obj):
+        return obj.master
 
 
 class ProductTypeAdminForm(TranslatableModelForm):

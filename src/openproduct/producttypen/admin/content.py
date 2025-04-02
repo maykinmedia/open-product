@@ -21,10 +21,14 @@ class ContentLabelAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 
 @admin.register(ContentElementTranslation)
 class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    list_display = ("master", "language_code")
+    list_display = ("contentelement", "language_code")
     list_filter = ("master__product_type", "master__labels", "language_code")
     search_fields = ("master__product_type", "master__labels")
     readonly_fields = ("master", "language_code")
+
+    @admin.display(description="contentelement")
+    def contentelement(self, obj):
+        return obj.master
 
 
 class ContentElementInlineForm(TranslatableModelForm):
