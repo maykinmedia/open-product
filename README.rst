@@ -34,13 +34,24 @@ Informatiemodel
 API specificatie
 ================
 
-|lint-oas| |generate-sdks| |generate-postman-collection|
+Products
+---------
 
 ==============  ==============  =============================
 Versie          Release datum   API specificatie
 ==============  ==============  =============================
-latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openapi.yaml>`_
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
+==============  ==============  =============================
+
+Product types
+-------------
+
+==============  ==============  =============================
+Versie          Release datum   API specificatie
+==============  ==============  =============================
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
 Er zijn twee manieren om te authenticeren met de API.
@@ -74,7 +85,7 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/main/docker-compose.yml
+      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/master/docker-compose.yml
       $ docker-compose up -d --no-build
       $ docker-compose exec web src/manage.py loaddata demodata
       $ docker-compose exec web src/manage.py createsuperuser
@@ -104,15 +115,13 @@ Licensed under the EUPL_
 
 .. _`Maykin B.V.`: https://www.maykinmedia.nl
 
-.. _`Objecttypen API`: https://github.com/maykinmedia/objecttypes-api
-
 .. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=main
+.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=master
     :alt: Build status
     :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Aci
 
-.. |coverage| image:: https://codecov.io/github/maykinmedia/open-product/branch/main/graphs/badge.svg?branch=main
+.. |coverage| image:: https://codecov.io/github/maykinmedia/open-product/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-product
 
@@ -123,14 +132,3 @@ Licensed under the EUPL_
 .. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
     :alt: Supported Python version
 
-.. |lint-oas| image:: https://github.com/maykinmedia/open-product/workflows/lint-oas/badge.svg
-    :alt: Lint OAS
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Alint-oas
-
-.. |generate-sdks| image:: https://github.com/maykinmedia/open-product/workflows/generate-sdks/badge.svg
-    :alt: Generate SDKs
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-sdks
-
-.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-product/workflows/generate-postman-collection/badge.svg
-    :alt: Generate Postman collection
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-postman-collection
