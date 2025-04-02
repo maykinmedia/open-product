@@ -202,8 +202,10 @@ LANGUAGES = [
     ("en", _("English")),
 ]
 
+SITE_ID = None
+
 PARLER_LANGUAGES = {
-    1: (
+    None: (
         {
             "code": "nl",
         },

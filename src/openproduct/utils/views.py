@@ -58,10 +58,7 @@ class IndexView(TemplateView):
 class TranslatableViewSetMixin:
 
     _supported_languages = {
-        language["code"]
-        for site in settings.PARLER_LANGUAGES
-        if isinstance(site, int)
-        for language in settings.PARLER_LANGUAGES[site]
+        language["code"] for language in settings.PARLER_LANGUAGES[None]
     }
 
     def update_vertaling(self, request, taal, **kwargs):
