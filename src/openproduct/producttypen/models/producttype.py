@@ -144,19 +144,6 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Interne opmerkingen over het product type."),
     )
 
-    # translations = TranslatedFields(
-    #     samenvatting=models.TextField(
-    #         verbose_name=_("samenvatting"),
-    #         default="",
-    #         help_text=_("Korte samenvatting van het product type."),
-    #     ),
-    #     naam=models.CharField(
-    #         verbose_name=_("product type naam"),
-    #         max_length=255,
-    #         help_text=_("naam van het product type."),
-    #     ),
-    # )
-
     naam = TranslatedField()
     samenvatting = TranslatedField()
 
