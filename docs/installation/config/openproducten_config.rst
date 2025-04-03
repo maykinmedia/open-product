@@ -117,10 +117,8 @@ can be used in the ``Authorization`` header.
 
 
 Making an API call
-==================
+------------------
 
-Open Producten
---------------
 We can now make an HTTP request to one of the APIs of Open Producten. For this
 example, we have used `curl`_ to make the request.
 
@@ -128,6 +126,40 @@ example, we have used `curl`_ to make the request.
 
    curl --request GET \
    --header 'Authorization: Token 1d4df96cfe14543558118805c5e9252629e805a0' \
+   --header 'Content-Type: application/json' \
+   {{base_url}}/producten/api/v1/producten
+
+The example above uses the same value configured in
+:ref:`installation_configuration_sites`.
+
+.. _Curl: https://curl.se/docs/manpage.html
+
+Configure openID connect
+========================
+
+Open Producten
+--------------
+
+Navigate to **Config** > **OpenID**.
+
+1. Fill in the fields required for the provider you want to use. See :ref:`manual_oidc`.
+2. Enable the configuration.
+3. Click **Opslaan** in the bottom left
+
+After creating the **Token** the **key** is shown in the list page. This value
+can be used in the ``Authorization`` header.
+
+
+Making an API call
+------------------
+
+We can now make an HTTP request to one of the APIs of Open Producten. For this
+example, we have used `curl`_ to make the request.
+
+.. code-block:: bash
+
+   curl --request GET \
+   --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cC.....' \
    --header 'Content-Type: application/json' \
    {{base_url}}/producten/api/v1/producten
 

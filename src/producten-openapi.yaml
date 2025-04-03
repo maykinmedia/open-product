@@ -253,6 +253,7 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -335,6 +336,7 @@ paths:
               $ref: '#/components/schemas/ProductRequest'
         required: true
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '201':
@@ -416,6 +418,7 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -502,6 +505,7 @@ paths:
               $ref: '#/components/schemas/ProductRequest'
         required: true
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -587,6 +591,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedProductRequest'
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '200':
@@ -667,6 +672,7 @@ paths:
       tags:
       - producten
       security:
+      - jwtAuth: []
       - tokenAuth: []
       responses:
         '204':
@@ -1134,6 +1140,10 @@ components:
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
   securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
     tokenAuth:
       type: apiKey
       in: header

@@ -12,7 +12,7 @@ pylint
 pyquery  # integrates with webtest
 requests-mock
 tblib
-
+vcrpy
 black
 isort
 

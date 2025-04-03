@@ -446,7 +446,7 @@ drf-spectacular==0.28.0
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   open-api-framework
-drf-spectacular-sidecar==2025.2.1
+drf-spectacular-sidecar==2025.4.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -521,6 +521,7 @@ idna==3.10
     #   anyio
     #   httpx
     #   requests
+    #   yarl
 imagesize==1.4.1
     # via
     #   -c requirements/ci.txt
@@ -625,6 +626,11 @@ mozilla-django-oidc-db==0.19.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
+multidict==6.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   yarl
 mypy-extensions==1.0.0
     # via
     #   -c requirements/ci.txt
@@ -698,6 +704,11 @@ prompt-toolkit==3.0.48
     #   -r requirements/ci.txt
     #   click-repl
     #   questionary
+propcache==0.3.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   yarl
 psycopg2==2.9.10
     # via
     #   -c requirements/ci.txt
@@ -809,6 +820,7 @@ pyyaml==6.0.2
     #   -r requirements/ci.txt
     #   drf-spectacular
     #   oyaml
+    #   vcrpy
 qrcode==7.4.2
     # via
     #   -c requirements/ci.txt
@@ -1004,11 +1016,16 @@ urllib3==2.2.3
     #   elastic-apm
     #   requests
     #   sentry-sdk
+    #   vcrpy
 uwsgi==2.0.28
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
+vcrpy==7.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 vine==5.1.0
     # via
     #   -c requirements/ci.txt
@@ -1053,6 +1070,12 @@ wrapt==1.17.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   elastic-apm
+    #   vcrpy
+yarl==1.18.3
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   vcrpy
 zgw-consumers==0.35.1
     # via
     #   -c requirements/ci.txt

@@ -22,5 +22,14 @@ van alle aangemaakte Tokens waarmee toegang mogelijk is naar de API's van Open P
 
 Om een nieuwe Token aan te maken klikt de gebruiker op de knop **TOKEN TOEVOEGEN**.
 Hier kan vervolgens een gebruiker gekozen worden waaraan de Token is gekoppeld.
-Tenslotte wordt er wanneer er op de knop **Opslaan** wordt geklikt een Token genereerd
+Tenslotte wordt er wanneer er op de knop **Opslaan** wordt geklikt een Token gegenereerd
 en wordt deze getoond op het scherm waarnaar de gebruiker wordt verwezen.
+
+.. _manual_use_oidc:
+
+Een JWT token gebruiken van een OIDC provider voor API-toegang
+===============================================================
+
+Nadat de openID connect is :ref:`geconfigureerd <manual_oidc>` kunnen jwt tokens van de openID provider worden gebruikt voor toegang tot de API.
+
+

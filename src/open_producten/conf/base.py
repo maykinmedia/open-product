@@ -48,6 +48,18 @@ MIDDLEWARE.insert(
 )
 
 #
+# MOZILLA DJANGO OIDC
+#
+
+OIDC_DRF_AUTH_BACKEND = "open_producten.utils.oidc_backend.OIDCAuthenticationBackend"
+
+OIDC_CREATE_USER = config(
+    "OIDC_CREATE_USER",
+    default=True,
+    help_text="whether the OIDC authorization will create users if the user is unknown in Open Producten.",
+)
+
+#
 # CELERY
 #
 
@@ -110,6 +122,7 @@ MARKDOWNX_EDITOR_RESIZABLE = False
 #
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "open_producten.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
@@ -162,6 +175,10 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
         "open_producten.utils.spectacular_hooks.custom_postprocessing_hook",
     ),
     "COMPONENT_SPLIT_REQUEST": True,
+    "AUTHENTICATION_WHITELIST": [
+        "open_producten.utils.oidc_drf_middleware.OIDCAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
 
 # Subpath (optional)

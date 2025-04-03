@@ -23,6 +23,8 @@ flow:
 
 .. _manual_oidc_appgroup:
 
+Daarnaast kan een JWT token van de OpenID provider worden gebruikt om the authenticeren voor de API.
+
 Configureren van OIDC zelf
 ==========================
 
