@@ -1,3 +1,5 @@
+import logging
+
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
@@ -32,6 +34,8 @@ from open_producten.utils.filters import (
 )
 from open_producten.utils.validators import ManyRegexValidator
 from open_producten.utils.views import OrderedModelViewSet, TranslatableViewSetMixin
+
+logger = logging.getLogger(__name__)
 
 
 class ProductTypeFilterSet(FilterSet):
@@ -164,7 +168,18 @@ class ProductTypeViewSet(TranslatableViewSetMixin, OrderedModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context["externe_verwijzing_config"] = ExterneVerwijzingConfig.get_solo()
+        externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
+
+        if "" in (
+            externe_verwijzing_config.zaaktypen_url,
+            externe_verwijzing_config.verzoektypen_url,
+            externe_verwijzing_config.processen_url,
+        ):
+            logger.warning(
+                "One or more urls are not configured in the externe verwijzing config."
+            )
+
+        context["externe_verwijzing_config"] = externe_verwijzing_config
         return context
 
     @extend_schema(

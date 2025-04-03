@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from open_producten.utils.models import BaseModel
 
 from .producttype import ProductType
-from .validators import check_zaaktypen_url
+from .validators import check_externe_verwijzing_config_url
 
 
 class ZaakType(BaseModel):
@@ -30,7 +30,7 @@ class ZaakType(BaseModel):
         unique_together = (("product_type", "uuid"),)
 
     def clean(self):
-        check_zaaktypen_url()
+        check_externe_verwijzing_config_url("zaaktypen_url")
 
     def __str__(self):
         return str(self.uuid)

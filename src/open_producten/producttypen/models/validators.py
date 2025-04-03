@@ -40,24 +40,10 @@ def disallow_hoofd_thema_self_reference(thema, hoofd_thema):
         raise ValidationError("Een thema kan niet zijn eigen hoofd thema zijn.")
 
 
-def check_processen_url():
-    if not ExterneVerwijzingConfig.get_solo().processen_url:
-        raise ValidationError(
-            _("De processen url is niet geconfigureerd in de externe verwijzing config")
-        )
-
-
-def check_verzoektypen_url():
-    if not ExterneVerwijzingConfig.get_solo().verzoektypen_url:
+def check_externe_verwijzing_config_url(field_url):
+    if not getattr(ExterneVerwijzingConfig.get_solo(), field_url, ""):
         raise ValidationError(
             _(
-                "De verzoektypen url is niet geconfigureerd in de externe verwijzing config"
-            )
-        )
-
-
-def check_zaaktypen_url():
-    if not ExterneVerwijzingConfig.get_solo().processen_url:
-        raise ValidationError(
-            _("De zaaktypen url is niet geconfigureerd in de externe verwijzing config")
+                "De {field_url} is niet geconfigureerd in de externe verwijzing config"
+            ).format(field_url=field_url.replace("_", " "))
         )

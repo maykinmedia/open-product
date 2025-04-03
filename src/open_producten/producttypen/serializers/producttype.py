@@ -20,9 +20,7 @@ from open_producten.locaties.serializers import (
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
-from ..models.proces import check_processen_url
-from ..models.verzoektype import check_verzoektypen_url
-from ..models.zaaktype import check_zaaktypen_url
+from ..models.validators import check_externe_verwijzing_config_url
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -336,7 +334,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         )
 
     def validate_zaaktypen(self, zaaktypen: list[dict]):
-        check_zaaktypen_url()
+        check_externe_verwijzing_config_url("zaaktypen_url")
 
         return validate_key_value_model_keys(
             zaaktypen,
@@ -345,7 +343,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         )
 
     def validate_verzoektypen(self, verzoektypen: list[dict]):
-        check_verzoektypen_url()
+        check_externe_verwijzing_config_url("verzoektypen_url")
 
         return validate_key_value_model_keys(
             verzoektypen,
@@ -354,7 +352,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         )
 
     def validate_processen(self, processen: list[dict]):
-        check_processen_url()
+        check_externe_verwijzing_config_url("processen_url")
 
         return validate_key_value_model_keys(
             processen,
