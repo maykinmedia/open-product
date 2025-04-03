@@ -8,8 +8,38 @@ from open_producten.logging.api_tools import AuditTrailViewSetMixin
 from open_producten.producten.kanalen import KANAAL_PRODUCTEN
 from open_producten.producten.models import Product
 from open_producten.producten.serializers.product import ProductSerializer
-from open_producten.utils.filters import FilterSet, TranslationFilter
+from open_producten.utils.enums import Operators
+from open_producten.utils.filters import (
+    FilterSet,
+    ManyCharFilter,
+    TranslationFilter,
+    filter_data_attr_value_part,
+)
+from open_producten.utils.helpers import display_choice_values_for_help_text
+from open_producten.utils.validators import validate_data_attr
 from open_producten.utils.views import OrderedModelViewSet
+
+DATA_ATTR_HELP_TEXT = _(
+    """
+Een json filter parameter heeft de format `key__operator__waarde`.
+`key` is de naam van de attribuut, `operator` is de operator die gebruikt moet worden en `waarde` is de waarde waarop zal worden gezocht.
+
+Waardes kunnen een string, nummer of datum (ISO format; YYYY-MM-DD) zijn.
+
+De ondersteunde operators zijn:
+{}
+
+`key` mag ook geen komma's bevatten.
+
+Voorbeeld: om producten met `kenteken`: `AA-111-B` in het dataobject vinden: `dataobject_attr=kenteken__exact__AA-111-B`.
+Als `kenteken` genest zit in `auto`: `dataobject_attr=auto__kenteken__exact__AA-111-B`
+
+
+
+Meerdere filters kunnen worden toegevoegd door `dataobject_attr` meerdere keren aan het request toe te voegen.
+Bijvoorbeeld: `dataobject_attr=kenteken__exact__AA-111-B&objectdata_attr=zone__exact__B`
+"""
+).format(display_choice_values_for_help_text(Operators))
 
 
 class ProductFilterSet(FilterSet):
@@ -24,6 +54,32 @@ class ProductFilterSet(FilterSet):
         lookup_expr="exact",
         help_text=_("Naam van het product type."),
     )
+
+    dataobject_attr = ManyCharFilter(
+        method="filter_dataobject_attr",
+        validators=[validate_data_attr],
+        help_text=DATA_ATTR_HELP_TEXT,
+    )
+
+    verbruiksobject_attr = ManyCharFilter(
+        method="filter_verbruiksobject_attr",
+        validators=[validate_data_attr],
+        help_text=DATA_ATTR_HELP_TEXT,
+    )
+
+    def filter_dataobject_attr(self, queryset, name, value: list):
+        for value_part in value:
+            queryset = filter_data_attr_value_part(value_part, "dataobject", queryset)
+
+        return queryset
+
+    def filter_verbruiksobject_attr(self, queryset, name, value: list):
+        for value_part in value:
+            queryset = filter_data_attr_value_part(
+                value_part, "verbruiksobject", queryset
+            )
+
+        return queryset
 
     class Meta:
         model = Product

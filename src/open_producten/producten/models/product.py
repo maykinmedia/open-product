@@ -1,6 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -76,6 +77,7 @@ class Product(BasePublishableModel):
         help_text=_(
             "Verbruiksobject van dit product. Wordt gevalideerd met het `verbruiksobject_schema` uit het product type."
         ),
+        encoder=DjangoJSONEncoder,
     )
 
     dataobject = models.JSONField(
@@ -85,6 +87,7 @@ class Product(BasePublishableModel):
         help_text=_(
             "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het product type."
         ),
+        encoder=DjangoJSONEncoder,
     )
 
     class Meta:

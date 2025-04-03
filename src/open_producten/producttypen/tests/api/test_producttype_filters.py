@@ -87,6 +87,11 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_first_externe_code_filter_without_key_value(self):
+        response = self.client.get(self.path, {"externe_code": ("[:]", "[ISO:123]")})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_externe_code_filter_with_invalid_characters(self):
         response = self.client.get(self.path, {"externe_code": "[a[b:[b:a]]"})
 
@@ -136,6 +141,13 @@ class TestProductTypeFilters(BaseApiTestCase):
 
     def test_parameter_filter_without_key_value(self):
         response = self.client.get(self.path, {"parameter": "[:]"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_first_parameter_filter_without_key_value(self):
+        response = self.client.get(
+            self.path, {"parameter": ("[:]", "[doelgroep:inwoners]")}
+        )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

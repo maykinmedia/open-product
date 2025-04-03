@@ -3,13 +3,19 @@ from decimal import Decimal
 from uuid import uuid4
 
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 from freezegun import freeze_time
 from rest_framework import status
+from rest_framework.exceptions import ErrorDetail
 
 from open_producten.producten.models.product import PrijsFrequentieChoices
 from open_producten.producten.tests.factories import ProductFactory
 from open_producten.producttypen.models.producttype import ProductStateChoices
+from open_producten.producttypen.tests.factories import (
+    JsonSchemaFactory,
+    ProductTypeFactory,
+)
 from open_producten.utils.tests.cases import BaseApiTestCase
 
 
@@ -255,3 +261,404 @@ class TestProductFilters(BaseApiTestCase):
             self.assertEqual(
                 response.data["results"][0]["update_datum"], "2025-06-07T02:00:00+02:00"
             )
+
+    def test_dataobject_attr_string_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"naam": {"type": "string"}},
+            "required": ["naam"],
+        }
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"naam": "test"},
+        )
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"naam": "abc"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "naam__exact__test"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["dataobject"]["naam"], "test")
+
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "naam__icontains__st"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["dataobject"]["naam"], "test")
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "naam__in__test|abc"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        for op in ["gt", "gte", "lt", "lte"]:
+            with self.subTest(op):
+                response = self.client.get(
+                    self.path, {"dataobject_attr": f"naam__{op}__abc"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_verbruiksobject_attr_string_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"naam": {"type": "string"}},
+            "required": ["naam"],
+        }
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"naam": "test"},
+        )
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"naam": "abc"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "naam__exact__test"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["naam"], "test"
+            )
+
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "naam__icontains__st"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["naam"], "test"
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "naam__in__test|abc"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        for op in ["gt", "gte", "lt", "lte"]:
+            with self.subTest(op):
+                response = self.client.get(
+                    self.path, {"verbruiksobject_attr": f"naam__{op}__abc"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_verbruiksobject_attr_numeric_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"leeftijd": {"type": "number"}},
+            "required": ["leeftijd"],
+        }
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"leeftijd": 30},
+        )
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"leeftijd": 50},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__exact__30"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 30.0
+            )
+
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__icontains__30"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 30
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__in__30|50"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__gt__40"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 50
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__gte__50"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 50
+            )
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__lt__40"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 30
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "leeftijd__lte__30"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["leeftijd"], 30
+            )
+
+    def test_verbruiksobject_attr_date_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"datum": {"type": "date"}},
+            "required": ["datum"],
+        }
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"datum": "2024-10-10"},
+        )
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"datum": "2025-10-10"},
+        )
+
+        with self.subTest("none"):
+            response = self.client.get(self.path)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__exact__2024-10-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2024-10-10"
+            )
+
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__icontains__2024"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2024-10-10"
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__in__2024-10-10|2025-10-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__gt__2024-12-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2025-10-10"
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__gte__2025-10-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2025-10-10"
+            )
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__lt__2024-12-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2024-10-10"
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"verbruiksobject_attr": "datum__lte__2024-10-10"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["verbruiksobject"]["datum"], "2024-10-10"
+            )
+
+    def test_verbruiksobject_attr_filter_with_comma(self):
+        filter = "naam__icontains__test,naam__icontains__abc"
+
+        response = self.client.get(
+            self.path,
+            {"verbruiksobject_attr": filter},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            [
+                ErrorDetail(
+                    string=_(
+                        "Filter '{}' moet de format 'key__operator__value' hebben, "
+                        "komma's kunnen alleen in de `waarde` worden toegevoegd"
+                    ).format(filter),
+                    code="invalid-data-attr-query",
+                )
+            ],
+        )
+
+    def test_verbruiksobject_attr_filter_with_wrong_shape(self):
+        filter = "naam__icontains"
+
+        response = self.client.get(
+            self.path,
+            {"verbruiksobject_attr": filter},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            [
+                ErrorDetail(
+                    string=_(
+                        "Filter '{}' heeft niet de format 'key__operator__waarde'"
+                    ).format(filter),
+                    code="invalid-data-attr-query",
+                )
+            ],
+        )
+
+    def test_verbruiksobject_attr_filter_with_unknown_operator(self):
+
+        response = self.client.get(
+            self.path,
+            {"verbruiksobject_attr": "naam__contains__test"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            [
+                ErrorDetail(
+                    string=_("operator `{}` is niet bekend/ondersteund").format(
+                        "contains"
+                    ),
+                    code="invalid-data-attr-query",
+                )
+            ],
+        )
+
+    def test_verbruiksobject_attr_multiple_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"naam": {"type": "string"}, "type": "string"},
+            "required": ["naam"],
+        }
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"naam": "test", "type": "test"},
+        )
+
+        ProductFactory(
+            product_type=ProductTypeFactory.create(
+                verbruiksobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            verbruiksobject={"naam": "abc", "type": "abc"},
+        )
+
+        response = self.client.get(
+            self.path,
+            {"verbruiksobject_attr": ("naam__exact__test", "type__exact__test")},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["verbruiksobject"]["naam"], "test")
