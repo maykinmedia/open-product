@@ -75,6 +75,8 @@ cryptography==44.0.0
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
+diff-match-patch==20241021
+    # via django-reversion-compare
 django==4.2.17
     # via
     #   commonground-api-common
@@ -99,6 +101,8 @@ django==4.2.17
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
+    #   django-reversion
+    #   django-reversion-compare
     #   django-sendfile2
     #   django-sessionprofile
     #   django-setup-configuration
@@ -171,6 +175,12 @@ django-relativedelta==2.0.0
     # via zgw-consumers
 django-rest-framework-condition==0.1.1
     # via commonground-api-common
+django-reversion==5.1.0
+    # via
+    #   -r requirements/base.in
+    #   django-reversion-compare
+django-reversion-compare==0.18.1
+    # via -r requirements/base.in
 django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
@@ -264,10 +274,14 @@ markdown==3.3.6
     # via
     #   django-markdownx
     #   django-markup
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==3.0.2
     # via jinja2
 maykin-2fa==1.0.1
     # via open-api-framework
+mdurl==0.1.2
+    # via markdown-it-py
 mozilla-django-oidc==4.0.1
     # via mozilla-django-oidc-db
 mozilla-django-oidc-db==0.19.0
@@ -297,7 +311,9 @@ psycopg2==2.9.10
 pycparser==2.22
     # via cffi
 pygments==2.18.0
-    # via django-markup
+    # via
+    #   django-markup
+    #   rich
 pyjwt==2.10.1
     # via
     #   commonground-api-common
@@ -351,6 +367,8 @@ requests==2.32.3
     #   zgw-consumers
 requests-mock==1.12.1
     # via commonground-api-common
+rich==14.0.0
+    # via django-reversion-compare
 rpds-py==0.21.0
     # via
     #   jsonschema

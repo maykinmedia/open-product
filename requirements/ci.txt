@@ -147,6 +147,11 @@ cryptography==44.0.0
     #   webauthn
 cssselect==1.2.0
     # via pyquery
+diff-match-patch==20241021
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-reversion-compare
 dill==0.3.9
     # via pylint
 django==4.2.17
@@ -175,6 +180,8 @@ django==4.2.17
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
+    #   django-reversion
+    #   django-reversion-compare
     #   django-sendfile2
     #   django-sessionprofile
     #   django-setup-configuration
@@ -304,6 +311,15 @@ django-rest-framework-condition==0.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
+django-reversion==5.1.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-reversion-compare
+django-reversion-compare==0.18.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-sendfile2==0.7.1
     # via
     #   -c requirements/base.txt
@@ -392,7 +408,7 @@ drf-nested-routers==0.94.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-drf-spectacular==0.28.0
+drf-spectacular==0.27.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -515,6 +531,11 @@ markdown==3.3.6
     #   django-markdownx
     #   django-markup
     #   sphinx-markdown-tables
+markdown-it-py==3.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   rich
 markupsafe==3.0.2
     # via
     #   -c requirements/base.txt
@@ -529,6 +550,11 @@ mccabe==0.7.0
     # via
     #   flake8
     #   pylint
+mdurl==0.1.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   markdown-it-py
 mozilla-django-oidc==4.0.1
     # via
     #   -c requirements/base.txt
@@ -621,6 +647,7 @@ pygments==2.18.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-markup
+    #   rich
     #   sphinx
     #   sphinx-tabs
 pyjwt==2.10.1
@@ -734,6 +761,11 @@ requests-mock==1.12.1
     #   -r requirements/base.txt
     #   -r requirements/test-tools.in
     #   commonground-api-common
+rich==14.0.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-reversion-compare
 rpds-py==0.21.0
     # via
     #   -c requirements/base.txt
