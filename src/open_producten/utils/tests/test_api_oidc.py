@@ -28,6 +28,12 @@ mock_admin_oidc_config = partial(
 
 @override_settings()
 class TestApiOidcAuthentication(TestCase):
+    """
+    Test results are stored in utils.vc_cassettes
+
+    To generate results, start the keycloak docker container located in open-product/keycloak
+    & delete the files in vcr_cassettes
+    """
 
     def setUp(self):
         ProductTypeFactory.create()

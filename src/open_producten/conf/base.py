@@ -123,7 +123,6 @@ MARKDOWNX_EDITOR_RESIZABLE = False
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "open_producten.utils.oidc_drf_middleware.OIDCAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
