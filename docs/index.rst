@@ -1,9 +1,9 @@
-Open Producten Documentation
-============================
+Open Product Documentation
+==========================
 
-**Open Producten** is an application where product types and products can be
+**Open Product** is an application where product types and products can be
 managed in a single place. Other applications like `Open Inwoner`_ and `Open
-Formulieren`_ can integrate **Open Producten** using its REST API to for example show
+Formulieren`_ can integrate **Open Product** using its REST API to for example show
 product type information, create products or to get the current price for a
 product type.
 
@@ -15,15 +15,15 @@ Getting Started
 
 To get you started, you might find some of these links relevant:
 
-* New to Open Producten? Have a look at the :ref:`introduction_index`
-* Want to get started with Open Producten yourself? See :ref:`installation_index`.
-* Want to configure or manage data in Open Producten? Read the :ref:`manual_index`.
-* Need help with Open Producten? Contact :ref:`support_index`.
+* New to Open Product? Have a look at the :ref:`introduction_index`
+* Want to get started with Open Product yourself? See :ref:`installation_index`.
+* Want to configure or manage data in Open Product? Read the :ref:`manual_index`.
+* Need help with Open Product? Contact :ref:`support_index`.
 * Are you a developer? Head over to :ref:`development_index`!
 
-Open Producten `is`_ and only uses :ref:`introduction_open-source`.
+Open Product `is`_ and only uses :ref:`introduction_open-source`.
 
-.. _`is`: https://github.com/maykinmedia/open-producten/blob/master/LICENSE.md
+.. _`is`: https://github.com/maykinmedia/open-product/blob/master/LICENSE.md
 
 .. toctree::
    :maxdepth: 3

@@ -1,0 +1,68 @@
+{% load static vng_api_common %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'vng_api_common/css/screen.css' %}">
+    <link rel="stylesheet" href="{% static 'vng_api_common/libs/fontawesome/css/all.min.css' %}">
+    <linK rel="stylesheet" href="{% static 'css/openproduct.css' %}">
+
+    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
+
+    {% block extra_style %}{% endblock %}
+
+    <title>{% block title %}{% if title %}{{ title }}{% else %}{{ settings.SITE_TITLE }}{% endif %} |
+        {{ settings.PROJECT_NAME }}{% endblock %}</title>
+</head>
+<body>
+
+{% if not settings.SITE_TITLE or not settings.PROJECT_NAME %}
+    <div class="container">
+        Please add the variables <em>SITE_TITLE</em> and <em>PROJECT_NAME</em> to your <em>settings.py</em> and make
+        sure they are available via <em>context processors</em>.
+    </div>
+{% endif %}
+
+{% block content %}
+    Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
+    to get some actual content.
+{% endblock content %}
+
+{% block footer %}
+    <div class="container">
+        <footer class="footer">
+            <div class="footer__row">
+                <div class="footer__item footer__logo">
+                    <img src="{% static 'ico/favicon-96x96.png' %}" alt="Maykin logo" height="48">
+                    <small>Ontwikkeld door <a class="link" href="https://www.maykinmedia.nl">Maykin Media</a></small>
+                </div>
+                <div class="footer__item">
+                    <h5>Open Product</h5>
+                    <ul class="list">
+                        <li><a class="link link--muted" href="https://hub.docker.com/r/maykinmedia/open-product">Docker
+                            images</a></li>
+                        <li><a class="link link--muted" href="https://github.com/maykinmedia/open-product">Code op
+                            Github</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <div class="footer__row">
+                    <div class="footer__item">
+                        <code>{{ settings.RELEASE }}</code>
+                    </div>
+                    <div class="footer__item footer__item--right">
+                        <code>{{ settings.GIT_SHA|default:"" }}</code>
+                    </div>
+                </div>
+            {% endif %}
+
+        </footer>
+    </div>
+{% endblock footer %}
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

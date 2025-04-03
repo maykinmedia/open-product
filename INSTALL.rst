@@ -44,8 +44,8 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/open-producten.git
-       $ cd open-producten
+       $ git clone git@github.com:maykinmedia/open-product.git
+       $ cd open-product
 
 3. Install all required (backend) libraries.
    **Tip:** You can use the ``bootstrap.py`` script to install the requirements
@@ -91,7 +91,7 @@ development machine.
 
 
 **Note:** If you are making local, machine specific, changes, add them to
-``src/open_producten/conf/local.py``. You can base this file on the
+``src/openproduct/conf/local.py``. You can base this file on the
 example file included in the same directory.
 
 
@@ -104,7 +104,7 @@ When updating an existing installation:
 
    .. code-block:: bash
 
-       $ cd open_producten
+       $ cd openproduct
        $ source env/bin/activate
 
 2. Update the code and libraries:
@@ -131,7 +131,7 @@ To run the test suite:
 
 .. code-block:: bash
 
-    $ python src/manage.py test open_producten
+    $ python src/manage.py test openproduct
 
 Configuration via environment variables
 ---------------------------------------
@@ -142,9 +142,9 @@ file or as part of the ``(post)activate`` of your virtualenv.
 
 * ``SECRET_KEY``: the secret key to use. A default is set in ``dev.py``
 
-* ``DB_NAME``: name of the database for the project. Defaults to ``open_producten``.
-* ``DB_USER``: username to connect to the database with. Defaults to ``open_producten``.
-* ``DB_PASSWORD``: password to use to connect to the database. Defaults to ``open_producten``.
+* ``DB_NAME``: name of the database for the project. Defaults to ``openproduct``.
+* ``DB_USER``: username to connect to the database with. Defaults to ``openproduct``.
+* ``DB_PASSWORD``: password to use to connect to the database. Defaults to ``openproduct``.
 * ``DB_HOST``: database host. Defaults to ``localhost``
 * ``DB_PORT``: database port. Defaults to ``5432``.
 
@@ -158,23 +158,23 @@ Docker
 The easiest way to get the project started is by using `Docker Compose`_.
 
 1. Clone or download the code from `Github`_ in a folder like
-   ``open_producten``:
+   ``openproduct``:
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/open-producten.git
-       Cloning into 'open_producten'...
+       $ git clone git@github.com:maykinmedia/open-product.git
+       Cloning into 'openproduct'...
        ...
 
-       $ cd open_producten
+       $ cd openproduct
 
 2. Start the database and web services:
 
    .. code-block:: bash
 
        $ docker-compose up -d
-       Starting open_producten_db_1 ... done
-       Starting open_producten_web_1 ... done
+       Starting openproduct_db_1 ... done
+       Starting openproduct_web_1 ... done
 
    It can take a while before everything is done. Even after starting the web
    container, the database might still be migrating. You can always check the
@@ -182,19 +182,19 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ docker logs -f open_producten_web_1
+       $ docker logs -f openproduct_web_1
 
 3. Create an admin user and load initial data. If different container names
    are shown above, use the container name ending with ``_web_1``:
 
    .. code-block:: bash
 
-       $ docker exec -it open_producten_web_1 /app/src/manage.py createsuperuser
+       $ docker exec -it openproduct_web_1 /app/src/manage.py createsuperuser
        Username: admin
        ...
        Superuser created successfully.
 
-       $ docker exec -it open_producten_web_1 /app/src/manage.py loaddata admin_index groups
+       $ docker exec -it openproduct_web_1 /app/src/manage.py loaddata admin_index groups
        Installed 5 object(s) from 2 fixture(s)
 
 4. Point your browser to ``http://localhost:8000/`` to access the project's
@@ -216,7 +216,7 @@ The easiest way to get the project started is by using `Docker Compose`_.
    system you can run ``docker system prune``.
 
 .. _Docker Compose: https://docs.docker.com/compose/install/
-.. _Github: https://github.com/maykinmedia/open-producten/
+.. _Github: https://github.com/maykinmedia/open-product/
 
 
 More Docker
@@ -224,21 +224,21 @@ More Docker
 
 If you just want to run the project as a Docker container and connect to an
 external database, you can build and run the ``Dockerfile`` and pass several
-environment variables. See ``src/open_producten/conf/docker.py`` for
+environment variables. See ``src/openproduct/conf/docker.py`` for
 all settings.
 
 .. code-block:: bash
 
-    $ docker build -t open_producten
+    $ docker build -t openproduct
     $ docker run \
         -p 8000:8000 \
         -e DATABASE_USERNAME=... \
         -e DATABASE_PASSWORD=... \
         -e DATABASE_HOST=... \
-        --name open_producten \
-        open_producten
+        --name openproduct \
+        openproduct
 
-    $ docker exec -it open_producten /app/src/manage.py createsuperuser
+    $ docker exec -it openproduct /app/src/manage.py createsuperuser
 
 Building and publishing the image
 ---------------------------------
@@ -264,7 +264,7 @@ Settings
 ========
 
 All settings for the project can be found in
-``src/open_producten/conf``.
+``src/openproduct/conf``.
 The file ``local.py`` overwrites settings from the base configuration.
 
 

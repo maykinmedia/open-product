@@ -18,13 +18,13 @@ of having apps within the project.
   Tests are in the django app package. Split tests in logical modules, and try to avoid
   complex nesting structures.
 
-- All apps must go in the ``src/open_producten`` directory, which namespaces all the Open Producten
-  code in the ``open_producten`` package. This prevents name conflicts with third party
+- All apps must go in the ``src/openproduct`` directory, which namespaces all the Open Product
+  code in the ``openproduct`` package. This prevents name conflicts with third party
   applications.
 
 - Application names should always be in plural form.
 
-- Settings go in ``open_producten.conf``, which is split according to deploy environment:
+- Settings go in ``openproduct.conf``, which is split according to deploy environment:
 
       - dev
       - ci
@@ -32,16 +32,16 @@ of having apps within the project.
       - production
       - docker
 
-  Settings must always be defined in the ``open_producten.conf.base`` with sane defaults.
+  Settings must always be defined in the ``openproduct.conf.base`` with sane defaults.
 
-- Global runtime Open Producten configuration (database backed) should go in the
-  ``open_producten.config`` app.
+- Global runtime Open Product configuration (database backed) should go in the
+  ``openproduct.config`` app.
 
-- Generic tools that are used by specific apps should be a ``open_producten`` sub-package,
-  or possibly go in ``open_producten.utils``.
+- Generic tools that are used by specific apps should be a ``openproduct`` sub-package,
+  or possibly go in ``openproduct.utils``.
 
 - Integration with other, third-party services/interfaces should go in a
-  ``open_producten.contrib`` package. This is currently (!) not the case yet.
+  ``openproduct.contrib`` package. This is currently (!) not the case yet.
 
 - Code style is enforced in CI with `black`_. When Black is not conclusive, stick to
   `PEP 8`_.

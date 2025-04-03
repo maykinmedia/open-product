@@ -2,7 +2,7 @@
 Release process
 ===============
 
-Open Producten makes use of quite a bit of Continuous Integration tooling to
+Open Product makes use of quite a bit of Continuous Integration tooling to
 set up a full release process, all driven by the Git repository.
 
 Github Actions
@@ -64,6 +64,6 @@ Once the PR is merged to main, check out the ``master`` branch and tag it:
     git pull
     git tag 1.0.0
 
-Tagging will ensure that a Docker image ``maykinmedia/open-producten:1.0.0`` is published.
+Tagging will ensure that a Docker image ``maykinmedia/open-product:1.0.0`` is published.
 
 . _`Maykin`: https://github.com/maykinmedia

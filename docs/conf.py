@@ -12,24 +12,24 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../src"))
 os.environ["LOG_REQUESTS"] = "false"
-os.environ["DJANGO_SETTINGS_MODULE"] = "open_producten.conf.ci"
+os.environ["DJANGO_SETTINGS_MODULE"] = "openproduct.conf.ci"
 
-import open_producten  # noqa isort:skip
+import openproduct  # noqa isort:skip
 import django
 
-from open_producten.setup import setup_env  # noqa isort:skip
+from openproduct.setup import setup_env  # noqa isort:skip
 
 setup_env()
 django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = "Open Producten"
+project = "Open Product"
 copyright = "2024 - 2025, Dimpact"
-author = open_producten.__author__
+author = openproduct.__author__
 
 # The full version, including alpha/beta/rc tags
-release = open_producten.__version__
+release = openproduct.__version__
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,17 +1,17 @@
-Security measures in Open Producten
+Security measures in Open Product
 ===================================
 
-The following is a non-exhaustive list of configurations in Open Producten to enhance
+The following is a non-exhaustive list of configurations in Open Product to enhance
 security.
 
 Nginx template considerations
 -----------------------------
 
-When deploying Open Producten on a VM, nginx is used as a reverse proxy. A number of headers
+When deploying Open Product on a VM, nginx is used as a reverse proxy. A number of headers
 are set in the virtual host:
 
 ``Referrer-Policy: "same-origin";``
-    the ``HTTP_REFERER`` header is sent only to Open Producten pages
+    the ``HTTP_REFERER`` header is sent only to Open Product pages
 
 ``X-XSS-Protection: "1; mode=block";``
     note that this is not honored by most browsers anymore, but it doesn't hurt to
@@ -23,7 +23,7 @@ are set in the virtual host:
 ``Feature-Policy: "autoplay 'none'; camera 'none'" always;``
     there's no need for these :-)
 
-Open Producten settings
+Open Product settings
 -----------------------
 
 ``X-Frame-Options`` is set to ``DENY``

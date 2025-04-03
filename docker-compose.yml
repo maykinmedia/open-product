@@ -15,12 +15,12 @@ services:
   web:
     build: &web_build
       context: .
-    image: maykinmedia/open-producten:latest
+    image: maykinmedia/open-product:latest
     environment: &web_env
-      - DJANGO_SETTINGS_MODULE=open_producten.conf.docker
+      - DJANGO_SETTINGS_MODULE=openproduct.conf.docker
       - SECRET_KEY=${SECRET_KEY:-django-insecure-@4wj9(+*bu7*v&%on7+e_8!d1ckl%r=6+sz#d2!pw^@lb0+=}
-      - DB_NAME=open_producten
-      - DB_USER=open_producten
+      - DB_NAME=openproduct
+      - DB_USER=openproduct
       - DB_HOST=db
       # Only allow all hosts for development/testing purposes!
       - ALLOWED_HOSTS=*
@@ -31,7 +31,7 @@ services:
 
   celery:
     build: *web_build
-    image: maykinmedia/open-producten:latest
+    image: maykinmedia/open-product:latest
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
@@ -46,7 +46,7 @@ services:
 
   celery-beat:
     build: *web_build
-    image: maykinmedia/open-producten:latest
+    image: maykinmedia/open-product:latest
     environment: *web_env
     command: /celery_beat.sh
     depends_on:
@@ -54,7 +54,7 @@ services:
 
   celery-flower:
     build: *web_build
-    image: maykinmedia/open-producten:latest
+    image: maykinmedia/open-product:latest
     environment: *web_env
     command: /celery_flower.sh
     ports:

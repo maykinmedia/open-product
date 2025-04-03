@@ -3,8 +3,8 @@
 Prerequisites
 =============
 
-While the `container images <https://hub.docker.com/r/maykinmedia/open-producten/>`_
-contain all the necessary dependencies, Open Producten does require extra service to
+While the `container images <https://hub.docker.com/r/maykinmedia/open-product/>`_
+contain all the necessary dependencies, Open Product does require extra service to
 deploy the full stack. These dependencies and their supported versions are
 documented here.
 
@@ -14,6 +14,6 @@ repository also describes these dependencies.
 Redis
 -----
 
-Open Producten uses Redis as a cache backend and especially relevant for admin sessions.
+Open Product uses Redis as a cache backend and especially relevant for admin sessions.
 
 Supported versions: 5, 6, 7.

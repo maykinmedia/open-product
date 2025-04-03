@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 
-from open_producten.setup import setup_env
+from openproduct.setup import setup_env
 
 if __name__ == "__main__":
     setup_env()

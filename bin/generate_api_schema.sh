@@ -11,13 +11,13 @@ src/manage.py spectacular \
     --validate \
     --fail-on-warn \
     --lang=nl \
-    --urlconf open_producten.producttypen.urls \
+    --urlconf openproduct.producttypen.urls \
     --file src/producttypen-openapi.yaml
 
 src/manage.py spectacular \
     --validate \
     --fail-on-warn \
     --lang=nl \
-    --urlconf open_producten.producten.urls \
+    --urlconf openproduct.producten.urls \
     --file src/producten-openapi.yaml
 

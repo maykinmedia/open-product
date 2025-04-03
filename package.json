@@ -1,18 +1,18 @@
 {
-    "name": "open_producten",
+    "name": "openproduct",
     "version": "0.0.5",
-    "description": "open-producten project",
-    "main": "src/static/open-producten/js/open-producten.js",
+    "description": "open-product project",
+    "main": "src/static/open-product/js/open-product.js",
     "directories": {
         "doc": "docs"
     },
     "scripts": {
         "build": "npm run collect",
-        "collect": "cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js src/open_producten/static/wysimark/wysimark.js && cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js.map src/open_producten/static/wysimark/index.cjs.js.map"
+        "collect": "cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js src/openproduct/static/wysimark/wysimark.js && cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js.map src/openproduct/static/wysimark/index.cjs.js.map"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/maykinmedia/open-producten.git"
+        "url": "git+https://github.com/maykinmedia/open-product.git"
     },
     "author": "Maykin",
     "license": "UNLICENSED",

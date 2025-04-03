@@ -9,12 +9,12 @@ tree to ``*.txt`` files.
 
 The backend dependencies are layered:
 
-- ``requirements/base.txt``: the minimal set of packages that is needed to run Open Producten
+- ``requirements/base.txt``: the minimal set of packages that is needed to run Open Product
   in a production-like environment
 - ``requirements/ci.txt``: ``base.txt`` + any testing/CI tools to guard the quality of
-  Open Producten
+  Open Product
 - ``requirements/dev.txt``: ``ci.txt`` + developer tools only installed in a local
-  environment to develop Open Producten itself
+  environment to develop Open Product itself
 
 Adding a backend dependency
 ---------------------------

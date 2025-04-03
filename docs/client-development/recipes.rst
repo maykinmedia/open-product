@@ -10,4 +10,4 @@ If you can give the equivalent example in your own language-of-preference, pleas
 submit a pull request!
 
 
- .. TODO: include common patterns of how Open Producten will be used
+ .. TODO: include common patterns of how Open Product will be used

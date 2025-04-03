@@ -4,18 +4,18 @@
 Logging
 =======
 
-Logging is a valuable tool to discover and debug issues happening when using Open Producten.
+Logging is a valuable tool to discover and debug issues happening when using Open Product.
 
 Issues can be of different nature, and a different logging approach is suitable to
 those. For example, the following types of events are logged in some form or another:
 
 * unexpected application errors, as a result of programming mistakes (bugs) - these
-  logs are technical in nature and should be accessible for Open Producten developers.
+  logs are technical in nature and should be accessible for Open Product developers.
 
-* application server logs - startup and access logs of the server running Open Producten.
+* application server logs - startup and access logs of the server running Open Product.
   Useful to see if client requests actually reach the 'backend'
 
-* webserver logs - Open Producten uses a complex set-up to serve user-uploaded files
+* webserver logs - Open Product uses a complex set-up to serve user-uploaded files
   securily. Things can go wrong here too.
 
 * container logs - the docker container itself may have problems that need to be
@@ -26,11 +26,11 @@ This guide walks you through the various options on how to access and configure 
 Monitoring
 ==========
 
-`Sentry`_ focuses on tracking down errors in software, i.e. the Open Producten application.
+`Sentry`_ focuses on tracking down errors in software, i.e. the Open Product application.
 We strongly recommend setting up this integration.
 
-Open Producten has support to integrate with Sentry error monitoring. Whenever a bug occurs
-in Open Producten, the client will receive an error response **and** the technical details
+Open Product has support to integrate with Sentry error monitoring. Whenever a bug occurs
+in Open Product, the client will receive an error response **and** the technical details
 of the error are sent to the Sentry project, with context.
 
 .. note::
@@ -44,7 +44,7 @@ documentation (make sure to follow the instructions for the platform Python > Dj
 After setting up the project, you will receive a **DSN**, which is the URL to which
 exceptions will be sent.
 
-The created Sentry project can be linked to Open Producten by setting the environment
+The created Sentry project can be linked to Open Product by setting the environment
 variable ``SENTRY_DSN`` equal to this DSN.
 
 .. _`Sentry`: https://sentry.io/
@@ -53,7 +53,7 @@ variable ``SENTRY_DSN`` equal to this DSN.
 Viewing nginx logs
 ==================
 
-Nginx is the webserver sitting between the client and the Open Producten backend. It mostly
+Nginx is the webserver sitting between the client and the Open Product backend. It mostly
 proxies requests to the backend.
 
 .. _installation_logging_nginx_k8s:
@@ -73,7 +73,7 @@ Or, via the CLI tool ``kubectl``:
 .. code-block:: shell
 
     # for convenience, set up the k8s namespace
-    [user@host]$ kubectl config set-context --current --namespace=openproducten-test
+    [user@host]$ kubectl config set-context --current --namespace=openproduct-test
 
     # fetch the logs
     [user@host]$ kubectl logs -l app.kubernetes.io/name=nginx
@@ -84,9 +84,9 @@ Or, via the CLI tool ``kubectl``:
     cache-79455b996-62llx       1/1     Running   0          68d
     nginx-8579d9dfbd-8dn5m      1/1     Running   0          7h3m
     nginx-8579d9dfbd-h4tc4      1/1     Running   0          7h3m
-    openproducten-59df44f556-7znvg   1/1     Running   0          7h2m
-    openproducten-59df44f556-gb4lq   1/1     Running   0          7h3m
-    openproducten-59df44f556-nqtr2   1/1     Running   0          7h3m
+    openproduct-59df44f556-7znvg   1/1     Running   0          7h2m
+    openproduct-59df44f556-gb4lq   1/1     Running   0          7h3m
+    openproduct-59df44f556-nqtr2   1/1     Running   0          7h3m
 
     [user@host]$ kubectl logs --since=24h nginx-8579d9dfbd-8dn5m
 
@@ -126,7 +126,7 @@ Otherwise, you can use the CLI tool:
 .. code-block:: shell
 
     # for convenience, set up the k8s namespace
-    [user@host]$ kubectl config set-context --current --namespace=openproducten-test
+    [user@host]$ kubectl config set-context --current --namespace=openproduct-test
 
     # fetch the logs
     [user@host]$ kubectl logs -l app.kubernetes.io/name=django
@@ -137,17 +137,17 @@ Otherwise, you can use the CLI tool:
     cache-79455b996-62llx       1/1     Running   0          68d
     nginx-8579d9dfbd-8dn5m      1/1     Running   0          7h3m
     nginx-8579d9dfbd-h4tc4      1/1     Running   0          7h3m
-    openproducten-59df44f556-7znvg   1/1     Running   0          7h2m
-    openproducten-59df44f556-gb4lq   1/1     Running   0          7h3m
-    openproducten-59df44f556-nqtr2   1/1     Running   0          7h3m
+    openproduct-59df44f556-7znvg   1/1     Running   0          7h2m
+    openproduct-59df44f556-gb4lq   1/1     Running   0          7h3m
+    openproduct-59df44f556-nqtr2   1/1     Running   0          7h3m
 
-    [user@host]$ kubectl logs --since=24h openproducten-59df44f556-gb4lq
+    [user@host]$ kubectl logs --since=24h openproduct-59df44f556-gb4lq
 
 On a VMWare appliance or single-server
 --------------------------------------
 
 Unfortunately, docker does not seem to be able to aggregate logs from different
-containers. This means that if you are running multiple replicas of Open Producten (which
+containers. This means that if you are running multiple replicas of Open Product (which
 is the default), you may have to dig around a bit before you find what you are looking
 for.
 
@@ -156,10 +156,10 @@ To view the logs of a particular replica:
 .. code-block:: shell
 
     # first replica
-    [root@server]# docker logs openproducten-0
+    [root@server]# docker logs openproduct-0
 
     # second replica
-    [root@server]# docker logs openproducten-1
+    [root@server]# docker logs openproduct-1
 
 Check the `Docker documentation`_ for more information about logs in Docker.
 
@@ -173,7 +173,7 @@ Customizing the log output
 Logging to file instead
 -----------------------
 
-By default, we configure Open Producten to log to stdout in containers by setting the
+By default, we configure Open Product to log to stdout in containers by setting the
 environment variable ``LOG_STDOUT=1``.
 
 You may wish to log to files instead, by using persistent volumes. If you decide to do
@@ -204,4 +204,4 @@ Different needs?
 
 Talk to us on `Github`_ if the current infrastructure does not fit your needs!
 
-.. _Github: https://github.com/maykinmedia/open-producten/issues
+.. _Github: https://github.com/maykinmedia/open-product/issues

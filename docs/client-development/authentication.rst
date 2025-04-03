@@ -3,7 +3,7 @@
 Authentication and authorization
 ================================
 
-Open Producten uses the described authentication and authorization mechanism based on
+Open Product uses the described authentication and authorization mechanism based on
 API tokens. It does not implement its own mechanism but uses `TokenAuthentication`_
 provided by `Django REST Framework`_ and `OIDCAuthentication` provided by `mozilla-django-oidc`_ in combination with `mozilla-django-oidc-db`_.
 
@@ -11,7 +11,7 @@ provided by `Django REST Framework`_ and `OIDCAuthentication` provided by `mozil
 Token
 -----
 
-To connect to Open Producten, you have received a token key which should be included
+To connect to Open Product, you have received a token key which should be included
 in your request's HTTP headers:
 
 .. code-block:: none
@@ -22,7 +22,7 @@ in your request's HTTP headers:
 OpenID connect
 --------------
 
-To connect to Open Producten, you have received a jwt token which should be included
+To connect to Open Product, you have received a jwt token which should be included
 in your request's HTTP headers:
 
 .. code-block:: none

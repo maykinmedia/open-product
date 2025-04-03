@@ -5,10 +5,10 @@ Algemene onderwerpen
 ====================
 
 De algemene onderwerpen beschrijven acties voor medewerkers met toegang tot de
-beheerinterface van Open Producten (hierna *de admin* genoemd).
+beheerinterface van Open Product (hierna *de admin* genoemd).
 
-In deze handleiding nemen we aan dat Open Producten geïnstalleerd is en beschikbaar
-op het adres https://open-producten.gemeente.nl.
+In deze handleiding nemen we aan dat Open Product geïnstalleerd is en beschikbaar
+op het adres https://open-product.gemeente.nl.
 
 .. _manual_login:
 
@@ -16,7 +16,7 @@ Inloggen
 ========
 
 Om in te loggen in de admin kan je navigeren naar de startpagina
-https://open-producten.gemeente.nl. Klik vervolgens op **Beheer**:
+https://open-product.gemeente.nl. Klik vervolgens op **Beheer**:
 
 .. image:: assets/startpagina.png
     :width: 100%
@@ -74,7 +74,7 @@ gebruiker toevoegt en configureert.
 API Autorisaties
 ----------------
 
-De *API's Open Producten* zijn niet toegankelijk zonder autorisatie.
+De *API's Open Product* zijn niet toegankelijk zonder autorisatie.
 Dit betekent dat elke applicatie die gegevens ophaalt of registreert in Open
 Producten hiervoor geautoriseerd moet zijn. Dit kan via tokens of een oidc provider.
 
@@ -84,7 +84,7 @@ Producten hiervoor geautoriseerd moet zijn. Dit kan via tokens of een oidc provi
 Producten
 ---------
 
-De groep *Producten* laat je toe om gegevens in te kijken die via de Open Producten
+De groep *Producten* laat je toe om gegevens in te kijken die via de Open Product
 API's aangemaakt en/of gewijzigd worden.
 
 **Producten** bevat alle informatie die de *Producten API* ontsluit. Hier kan je
@@ -95,7 +95,7 @@ alle aangemaakte **Producten** inzien.
 Config
 ------
 
-Het configuratiegedeelte dient om de Open Producten-installatie te configureren.
+Het configuratiegedeelte dient om de Open Product-installatie te configureren.
 Typisch wordt dit initieel bij installatie geconfigureerd.
 
 Via **Applicatiegroepen** kan je een **Applicatiegroep** aanmaken. Met deze
@@ -104,7 +104,7 @@ menu groepen.
 
 In de **Notificatiescomponentconfiguratie** kan je instellen van welke
 *Notificaties API* je gebruik maakt. Je moet een geldige configuratie instellen,
-anders worden er door Open Producten geen notificaties verstuurd.
+anders worden er door Open Product geen notificaties verstuurd.
 
 Logs
 ----
@@ -120,13 +120,13 @@ notificaties opnieuw versturen of verder onderzoeken waarom de notificatie niet
 kon verstuurd worden.
 
 Er worden vaak informatieve logberichten weggeschreven die kunnen wijzen op een
-probleem in de Open Producten applicatie. Deze worden via de logs inzichtelijk
+probleem in de Open Product applicatie. Deze worden via de logs inzichtelijk
 gemaakt.
 
 Misc
 ----
 
-**Websites** bevat gegevens over waar Open Producten gehost wordt. Zorg ervoor dat
+**Websites** bevat gegevens over waar Open Product gehost wordt. Zorg ervoor dat
 de standaard website het juiste domein ingesteld heeft (en dus niet
 ``example.com``).
 

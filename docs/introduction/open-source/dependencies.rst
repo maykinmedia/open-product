@@ -3,11 +3,11 @@
 Open Source dependencies
 ========================
 
-Open Producten would not be possible without a number of other Open Source dependencies.
+Open Product would not be possible without a number of other Open Source dependencies.
 
 Most notably, the backend is written in the Python_ programming language. We use the
 Django_ framework to build the web-application (which includes the API of course) that
-is Open Producten.
+is Open Product.
 
 The core elements for the API implementation are:
 
@@ -62,4 +62,4 @@ anyway, in alphabetical order.
 
 * ``zgw-consumers==0.35.1`` library maintained by Maykin Media.
 
-.. _`requirements`: https://github.com/maykinmedia/open-producten/blob/master/requirements/base.txt
+.. _`requirements`: https://github.com/maykinmedia/open-product/blob/master/requirements/base.txt

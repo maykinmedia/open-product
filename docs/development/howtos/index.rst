@@ -3,7 +3,7 @@
 How to's
 ========
 
-When you're developing on Open Producten, some things aren't as obvious as they could be.
+When you're developing on Open Product, some things aren't as obvious as they could be.
 The HOW TO section of the documentation should give you some quick insight on a number
 of topics.
 

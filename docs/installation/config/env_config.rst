@@ -39,7 +39,7 @@ Elastic APM
 -----------
 
 * ``ELASTIC_APM_SERVER_URL``: URL where Elastic APM is hosted. Defaults to: ``None``.
-* ``ELASTIC_APM_SERVICE_NAME``: Name of the service for this application in Elastic APM. Defaults to ``open_producten - <environment>``.
+* ``ELASTIC_APM_SERVICE_NAME``: Name of the service for this application in Elastic APM. Defaults to ``openproduct - <environment>``.
 * ``ELASTIC_APM_SECRET_TOKEN``: Token used to communicate with Elastic APM. Defaults to: ``default``.
 * ``ELASTIC_APM_TRANSACTION_SAMPLE_RATE``: By default, the agent will sample every transaction (e.g. request to your service). To reduce overhead and storage requirements, set the sample rate to a value between 0.0 and 1.0. Defaults to: ``0.1``.
 
@@ -63,16 +63,16 @@ Optional
 * ``DEBUG``: Only set this to ``True`` on a local development environment. Various other security settings are derived from this setting!. Defaults to: ``False``.
 * ``USE_X_FORWARDED_HOST``: whether to grab the domain/host from the X-Forwarded-Host header or not. This header is typically set by reverse proxies (such as nginx, traefik, Apache...). Note: this is a header that can be spoofed and you need to ensure you control it before enabling this. Defaults to: ``False``.
 * ``IS_HTTPS``: Used to construct absolute URLs and controls a variety of security settings. Defaults to the inverse of ``DEBUG``.
-* ``DB_NAME``:  Defaults to: ``open_producten``.
-* ``DB_USER``:  Defaults to: ``open_producten``.
-* ``DB_PASSWORD``:  Defaults to: ``open_producten``.
+* ``DB_NAME``:  Defaults to: ``openproduct``.
+* ``DB_USER``:  Defaults to: ``openproduct``.
+* ``DB_PASSWORD``:  Defaults to: ``openproduct``.
 * ``DB_HOST``:  Defaults to: ``localhost``.
 * ``DB_PORT``:  Defaults to: ``5432``.
 * ``EMAIL_PORT``: port number of the outgoing e-mail server. Note that if you're on Google Cloud, sending e-mail via port 25 is completely blocked and you should use 487 for TLS. Defaults to: ``25``.
 * ``EMAIL_HOST_USER``: username to connect to the mail server. Defaults to: ``(empty string)``.
 * ``EMAIL_HOST_PASSWORD``: password to connect to the mail server. Defaults to: ``(empty string)``.
 * ``EMAIL_USE_TLS``: whether to use TLS or not to connect to the mail server. Should be True if you're changing the ``EMAIL_PORT`` to 487. Defaults to: ``False``.
-* ``DEFAULT_FROM_EMAIL``: The default email address from which emails are sent. Defaults to: ``open_producten@example.com``.
+* ``DEFAULT_FROM_EMAIL``: The default email address from which emails are sent. Defaults to: ``openproduct@example.com``.
 * ``LOG_STDOUT``: whether to log to stdout or not. Defaults to: ``True``.
 * ``LOG_LEVEL``: control the verbosity of logging output. Available values are ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO`` and ``DEBUG``. Defaults to: ``WARNING``.
 * ``LOG_QUERIES``: enable (query) logging at the database backend level. Note that you must also set ``DEBUG=1``, which should be done very sparingly!. Defaults to: ``False``.
@@ -93,7 +93,7 @@ Optional
 * ``LOG_OUTGOING_REQUESTS_DB_SAVE``: Whether or not outgoing request logs should be saved to the database. Defaults to: ``False``.
 * ``LOG_OUTGOING_REQUESTS_DB_SAVE_BODY``: Whether or not outgoing request bodies should be saved to the database. Defaults to: ``True``.
 * ``LOG_OUTGOING_REQUESTS_MAX_AGE``: The amount of time after which request logs should be deleted from the database. Defaults to: ``7``.
-* ``OIDC_CREATE_USER``: whether the OIDC authorization will create users if the user is unknown in Open Producten. Defaults to: ``True``.
+* ``OIDC_CREATE_USER``: whether the OIDC authorization will create users if the user is unknown in Open Product. Defaults to: ``True``.
 
 
 
