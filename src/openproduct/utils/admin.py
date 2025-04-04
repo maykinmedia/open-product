@@ -28,7 +28,7 @@ class PeriodicTaskAdmin(_PeriodicTaskAdmin):
         app.send_task(periodic_task.task, args=task_args, kwargs=task_kwargs)
 
         messages.success(request, f"Task '{periodic_task.name}' was sent to worker.")
-        return redirect(request.META.get("HTTP_REFERER", reverse("admin:index")))
+        return redirect(reverse("admin:django_celery_beat_periodictask_changelist"))
 
     def detail_url(self, instance):
         url = reverse("admin:run_task", kwargs={"task_id": instance.pk})
