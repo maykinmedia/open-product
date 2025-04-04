@@ -67,15 +67,15 @@ class StatusValidator:
         status, status_changed = get_from_serializer_data_or_instance_and_changed(
             "status", value, serializer
         )
-        product_type, product_type_changed = (
+        producttype, producttype_changed = (
             get_from_serializer_data_or_instance_and_changed(
-                "product_type", value, serializer
+                "producttype", value, serializer
             )
         )
 
         try:
-            if status_changed or product_type_changed:
-                validate_product_status(status, product_type)
+            if status_changed or producttype_changed:
+                validate_product_status(status, producttype)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
 
@@ -94,16 +94,16 @@ class DateValidator:
                 "eind_datum", value, serializer
             )
         )
-        product_type, product_type_changed = (
+        producttype, producttype_changed = (
             get_from_serializer_data_or_instance_and_changed(
-                "product_type", value, serializer
+                "producttype", value, serializer
             )
         )
         try:
-            if start_datum_changed or product_type_changed:
-                validate_product_start_datum(start_datum, product_type)
-            if eind_datum_changed or product_type_changed:
-                validate_product_eind_datum(eind_datum, product_type)
+            if start_datum_changed or producttype_changed:
+                validate_product_start_datum(start_datum, producttype)
+            if eind_datum_changed or producttype_changed:
+                validate_product_eind_datum(eind_datum, producttype)
             validate_product_dates(start_datum, eind_datum)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
@@ -116,11 +116,11 @@ class VerbruiksObjectValidator:
         verbruiksobject = get_from_serializer_data_or_instance(
             "verbruiksobject", value, serializer
         )
-        product_type = get_from_serializer_data_or_instance(
-            "product_type", value, serializer
+        producttype = get_from_serializer_data_or_instance(
+            "producttype", value, serializer
         )
         try:
-            validate_product_verbruiksobject(verbruiksobject, product_type)
+            validate_product_verbruiksobject(verbruiksobject, producttype)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
 
@@ -132,10 +132,10 @@ class DataObjectValidator:
         dataobject = get_from_serializer_data_or_instance(
             "dataobject", value, serializer
         )
-        product_type = get_from_serializer_data_or_instance(
-            "product_type", value, serializer
+        producttype = get_from_serializer_data_or_instance(
+            "producttype", value, serializer
         )
         try:
-            validate_product_dataobject(dataobject, product_type)
+            validate_product_dataobject(dataobject, producttype)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)

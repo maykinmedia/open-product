@@ -30,9 +30,9 @@ class TestProduct(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
-        self.product_type = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        self.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
         self.data = {
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
             "status": "initieel",
             "prijs": "20.20",
             "frequentie": "eenmalig",
@@ -53,7 +53,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "product_type_id": [
+                "producttype_id": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "prijs": [
@@ -74,7 +74,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
-        product_type = product.product_type
+        producttype = product.producttype
         expected_data = {
             "url": f"http://testserver{self.detail_path(product)}",
             "id": str(product.id),
@@ -97,14 +97,14 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
-            "product_type": {
-                "id": str(product_type.id),
-                "code": product_type.code,
-                "uniforme_product_naam": product_type.uniforme_product_naam.naam,
+            "producttype": {
+                "id": str(producttype.id),
+                "code": producttype.code,
+                "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
                 "toegestane_statussen": ["gereed"],
-                "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": product_type.update_datum.astimezone().isoformat(),
+                "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
+                "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
             },
         }
@@ -119,8 +119,8 @@ class TestProduct(BaseApiTestCase):
             },
         )
 
-        self.product_type.verbruiksobject_schema = json_schema
-        self.product_type.save()
+        self.producttype.verbruiksobject_schema = json_schema
+        self.producttype.save()
 
         data = self.data | {"verbruiksobject": {"naam": "Test"}}
         response = self.client.post(self.path, data)
@@ -128,7 +128,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
-        product_type = product.product_type
+        producttype = product.producttype
         expected_data = {
             "id": str(product.id),
             "url": f"http://testserver{self.detail_path(product)}",
@@ -151,14 +151,14 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
-            "product_type": {
-                "id": str(product_type.id),
-                "code": product_type.code,
-                "uniforme_product_naam": product_type.uniforme_product_naam.naam,
+            "producttype": {
+                "id": str(producttype.id),
+                "code": producttype.code,
+                "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
                 "toegestane_statussen": ["gereed"],
-                "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": product_type.update_datum.astimezone().isoformat(),
+                "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
+                "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
             },
         }
@@ -173,8 +173,8 @@ class TestProduct(BaseApiTestCase):
             },
         )
 
-        self.product_type.verbruiksobject_schema = json_schema
-        self.product_type.save()
+        self.producttype.verbruiksobject_schema = json_schema
+        self.producttype.save()
 
         data = self.data | {"verbruiksobject": {"naam": 123}}
         response = self.client.post(self.path, data)
@@ -186,7 +186,7 @@ class TestProduct(BaseApiTestCase):
                 "verbruiksobject": [
                     ErrorDetail(
                         string=_(
-                            "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het product type."
+                            "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
                         ),
                         code="invalid",
                     )
@@ -203,8 +203,8 @@ class TestProduct(BaseApiTestCase):
             },
         )
 
-        self.product_type.dataobject_schema = json_schema
-        self.product_type.save()
+        self.producttype.dataobject_schema = json_schema
+        self.producttype.save()
 
         data = self.data | {"dataobject": {"naam": "Test"}}
         response = self.client.post(self.path, data)
@@ -212,7 +212,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
-        product_type = product.product_type
+        producttype = product.producttype
         expected_data = {
             "id": str(product.id),
             "url": f"http://testserver{self.detail_path(product)}",
@@ -235,14 +235,14 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
-            "product_type": {
-                "id": str(product_type.id),
-                "code": product_type.code,
-                "uniforme_product_naam": product_type.uniforme_product_naam.naam,
+            "producttype": {
+                "id": str(producttype.id),
+                "code": producttype.code,
+                "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
                 "toegestane_statussen": ["gereed"],
-                "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": product_type.update_datum.astimezone().isoformat(),
+                "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
+                "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
             },
         }
@@ -257,8 +257,8 @@ class TestProduct(BaseApiTestCase):
             },
         )
 
-        self.product_type.dataobject_schema = json_schema
-        self.product_type.save()
+        self.producttype.dataobject_schema = json_schema
+        self.producttype.save()
 
         data = self.data | {"dataobject": {"naam": 123}}
         response = self.client.post(self.path, data)
@@ -269,7 +269,7 @@ class TestProduct(BaseApiTestCase):
             {
                 "dataobject": [
                     ErrorDetail(
-                        string="Het dataobject komt niet overeen met het schema gedefinieerd op het product type.",
+                        string="Het dataobject komt niet overeen met het schema gedefinieerd op het producttype.",
                         code="invalid",
                     )
                 ]
@@ -286,8 +286,8 @@ class TestProduct(BaseApiTestCase):
                 "status": [
                     ErrorDetail(
                         string=_(
-                            "Status 'Actief' is niet toegestaan voor het product type {}."
-                        ).format(self.product_type.naam),
+                            "Status 'Actief' is niet toegestaan voor het producttype {}."
+                        ).format(self.producttype.naam),
                         code="invalid",
                     )
                 ]
@@ -413,12 +413,12 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
     def test_update_product(self):
-        product_type = ProductTypeFactory.create(toegestane_statussen=["verlopen"])
-        product = ProductFactory.create(product_type=product_type)
+        producttype = ProductTypeFactory.create(toegestane_statussen=["verlopen"])
+        product = ProductFactory.create(producttype=producttype)
 
         data = self.data | {
             "eind_datum": datetime.date(2025, 12, 31),
-            "product_type_id": product_type.id,
+            "producttype_id": producttype.id,
             "eigenaren": [{"kvk_nummer": "12345678"}],
         }
         response = self.client.put(self.detail_path(product), data)
@@ -439,8 +439,8 @@ class TestProduct(BaseApiTestCase):
                 "status": [
                     ErrorDetail(
                         string=_(
-                            "Status 'Actief' is niet toegestaan voor het product type {}."
-                        ).format(self.product_type.naam),
+                            "Status 'Actief' is niet toegestaan voor het producttype {}."
+                        ).format(self.producttype.naam),
                         code="invalid",
                     )
                 ]
@@ -657,7 +657,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product(self):
         product = ProductFactory.create(
-            product_type=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
+            producttype=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
         )
 
         data = {"eind_datum": datetime.date(2025, 12, 31)}
@@ -668,9 +668,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
 
     def test_read_producten(self):
-        product1 = ProductFactory.create(product_type=self.product_type)
+        product1 = ProductFactory.create(producttype=self.producttype)
         EigenaarFactory(kvk_nummer="12345678", product=product1)
-        product2 = ProductFactory.create(product_type=self.product_type)
+        product2 = ProductFactory.create(producttype=self.producttype)
         EigenaarFactory(kvk_nummer="12345678", product=product2)
 
         response = self.client.get(self.path)
@@ -700,14 +700,14 @@ class TestProduct(BaseApiTestCase):
                         "id": str(product1.eigenaren.get().id),
                     }
                 ],
-                "product_type": {
-                    "id": str(self.product_type.id),
-                    "code": self.product_type.code,
-                    "uniforme_product_naam": self.product_type.uniforme_product_naam.naam,
+                "producttype": {
+                    "id": str(self.producttype.id),
+                    "code": self.producttype.code,
+                    "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
-                    "aanmaak_datum": self.product_type.aanmaak_datum.astimezone().isoformat(),
-                    "update_datum": self.product_type.update_datum.astimezone().isoformat(),
+                    "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
+                    "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
                 },
             },
@@ -733,14 +733,14 @@ class TestProduct(BaseApiTestCase):
                         "id": str(product2.eigenaren.get().id),
                     }
                 ],
-                "product_type": {
-                    "id": str(self.product_type.id),
-                    "code": self.product_type.code,
-                    "uniforme_product_naam": self.product_type.uniforme_product_naam.naam,
+                "producttype": {
+                    "id": str(self.producttype.id),
+                    "code": self.producttype.code,
+                    "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
-                    "aanmaak_datum": self.product_type.aanmaak_datum.astimezone().isoformat(),
-                    "update_datum": self.product_type.update_datum.astimezone().isoformat(),
+                    "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
+                    "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
                 },
             },
@@ -749,8 +749,8 @@ class TestProduct(BaseApiTestCase):
 
     @freeze_time("2025-12-31")
     def test_read_product(self):
-        product_type = ProductTypeFactory.create(toegestane_statussen=["gereed"])
-        product = ProductFactory.create(product_type=product_type)
+        producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        product = ProductFactory.create(producttype=producttype)
         EigenaarFactory(kvk_nummer="12345678", product=product)
 
         response = self.client.get(self.detail_path(product))
@@ -778,10 +778,10 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
-            "product_type": {
-                "id": str(product_type.id),
-                "code": product_type.code,
-                "uniforme_product_naam": product_type.uniforme_product_naam.naam,
+            "producttype": {
+                "id": str(producttype.id),
+                "code": producttype.code,
+                "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "toegestane_statussen": ["gereed"],
                 "gepubliceerd": True,
                 "aanmaak_datum": "2025-12-31T01:00:00+01:00",
@@ -815,7 +815,7 @@ class TestProduct(BaseApiTestCase):
     @freeze_time("2025-11-30")
     def test_update_state_and_dates_are_not_checked_when_not_changed(self):
         data = {
-            "product_type_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
+            "producttype_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
@@ -834,7 +834,7 @@ class TestProduct(BaseApiTestCase):
     @freeze_time("2025-11-30")
     def test_partial_update_state_and_dates_are_not_checked_when_not_changed(self):
         data = {
-            "product_type_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
+            "producttype_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
@@ -846,8 +846,8 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @freeze_time("2025-11-30")
-    def test_update_state_and_dates_are_checked_when_product_type_is_changed(self):
-        new_product_type = ProductTypeFactory.create(toegestane_statussen=[])
+    def test_update_state_and_dates_are_checked_when_producttype_is_changed(self):
+        new_producttype = ProductTypeFactory.create(toegestane_statussen=[])
 
         tests = [
             {
@@ -856,8 +856,8 @@ class TestProduct(BaseApiTestCase):
                     "status": [
                         ErrorDetail(
                             string=_(
-                                "Status 'Gereed' is niet toegestaan voor het product type {}."
-                            ).format(new_product_type.naam),
+                                "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                            ).format(new_producttype.naam),
                             code="invalid",
                         )
                     ]
@@ -869,7 +869,7 @@ class TestProduct(BaseApiTestCase):
                     "start_datum": [
                         ErrorDetail(
                             string=_(
-                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het product type."
+                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
                             ),
                             code="invalid",
                         )
@@ -882,7 +882,7 @@ class TestProduct(BaseApiTestCase):
                     "eind_datum": [
                         ErrorDetail(
                             string=_(
-                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het product type."
+                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
                             ),
                             code="invalid",
                         )
@@ -893,11 +893,11 @@ class TestProduct(BaseApiTestCase):
 
         for test in tests:
             with self.subTest(
-                f"Test {test['field']} is checked when product type is changed."
+                f"Test {test['field']} is checked when producttype is changed."
             ):
 
                 data = {
-                    "product_type_id": ProductTypeFactory.create(
+                    "producttype_id": ProductTypeFactory.create(
                         toegestane_statussen=[]
                     ).id,
                     "prijs": "10",
@@ -911,7 +911,7 @@ class TestProduct(BaseApiTestCase):
                     self.detail_path(product),
                     data
                     | {
-                        "product_type_id": new_product_type.id,
+                        "producttype_id": new_producttype.id,
                         "eigenaren": [{"kvk_nummer": "12345678"}],
                     },
                 )
@@ -921,7 +921,7 @@ class TestProduct(BaseApiTestCase):
 
     @freeze_time("2025-11-30")
     def test_update_state_and_dates_are_checked_when_changed(self):
-        product_type = ProductTypeFactory.create(toegestane_statussen=[])
+        producttype = ProductTypeFactory.create(toegestane_statussen=[])
         tests = [
             {
                 "field": {"status": "gereed"},
@@ -929,8 +929,8 @@ class TestProduct(BaseApiTestCase):
                     "status": [
                         ErrorDetail(
                             string=_(
-                                "Status 'Gereed' is niet toegestaan voor het product type {}."
-                            ).format(product_type.naam),
+                                "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                            ).format(producttype.naam),
                             code="invalid",
                         )
                     ]
@@ -942,7 +942,7 @@ class TestProduct(BaseApiTestCase):
                     "start_datum": [
                         ErrorDetail(
                             string=_(
-                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het product type."
+                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
                             ),
                             code="invalid",
                         )
@@ -955,7 +955,7 @@ class TestProduct(BaseApiTestCase):
                     "eind_datum": [
                         ErrorDetail(
                             string=_(
-                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het product type."
+                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
                             ),
                             code="invalid",
                         )
@@ -966,11 +966,11 @@ class TestProduct(BaseApiTestCase):
 
         for test in tests:
             with self.subTest(
-                f"Test {test['field']} is checked when product type is changed."
+                f"Test {test['field']} is checked when producttype is changed."
             ):
 
                 data = {
-                    "product_type_id": product_type.id,
+                    "producttype_id": producttype.id,
                     "status": "initieel",
                     "prijs": "10",
                     "frequentie": "eenmalig",

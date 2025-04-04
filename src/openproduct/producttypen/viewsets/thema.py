@@ -42,7 +42,7 @@ class ThemaFilterSet(FilterSet):
     ),
     partial_update=extend_schema(
         summary="Werk een THEMA deels bij.",
-        description="Als product_type_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als producttype_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een THEMA.",
@@ -57,17 +57,17 @@ class ThemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         errors = []
-        for product_type in ProductType.objects.filter(themas__in=[instance]):
-            if product_type.themas.count() <= 1:
+        for producttype in ProductType.objects.filter(themas__in=[instance]):
+            if producttype.themas.count() <= 1:
                 errors.append(
                     _(
-                        "Product Type {} moet aan een minimaal één thema zijn gelinkt."
-                    ).format(product_type)
+                        "Producttype {} moet aan een minimaal één thema zijn gelinkt."
+                    ).format(producttype)
                 )
 
         if errors:
             return Response(
-                data={"product_typen": errors}, status=status.HTTP_400_BAD_REQUEST
+                data={"producttypen": errors}, status=status.HTTP_400_BAD_REQUEST
             )
         try:
             return super().destroy(request, *args, **kwargs)

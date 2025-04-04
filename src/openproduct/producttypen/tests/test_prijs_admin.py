@@ -17,9 +17,9 @@ from openproduct.producttypen.tests.factories import PrijsFactory, ProductTypeFa
 class TestPrijsAdmin(TestCase):
 
     def setUp(self):
-        product_type = ProductTypeFactory.create()
+        producttype = ProductTypeFactory.create()
         self.data = {
-            "product_type": product_type.id,
+            "producttype": producttype.id,
             "actief_vanaf": "2025-01-01",
             "prijsregels-TOTAL_FORMS": "1",
             "prijsregels-INITIAL_FORMS": "0",

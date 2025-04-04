@@ -14,7 +14,7 @@ from mozilla_django_oidc_db.views import AdminLoginFailure
 
 from openproduct.accounts.views.password_reset import PasswordResetView
 from openproduct.producten.urls import urlpatterns as product_urlpatterns
-from openproduct.producttypen.urls import urlpatterns as product_type_urlpatterns
+from openproduct.producttypen.urls import urlpatterns as producttype_urlpatterns
 from openproduct.utils.views import IndexView
 
 # Configure admin
@@ -63,7 +63,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="main.html"), name="home"),
     path(
         "producttypen/api/v{}/".format(settings.PRODUCTTYPEN_API_MAJOR_VERSION),
-        include(product_type_urlpatterns),
+        include(producttype_urlpatterns),
     ),
     path(
         "producten/api/v{}/".format(settings.PRODUCTEN_API_MAJOR_VERSION),

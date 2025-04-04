@@ -6,7 +6,7 @@ from ..models.product import PrijsFrequentieChoices
 
 
 class ProductFactory(factory.django.DjangoModelFactory):
-    product_type = factory.SubFactory(ProductTypeFactory)
+    producttype = factory.SubFactory(ProductTypeFactory)
     prijs = factory.fuzzy.FuzzyDecimal(1, 10)
     frequentie = factory.fuzzy.FuzzyChoice(
         [x[0] for x in PrijsFrequentieChoices.choices]

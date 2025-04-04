@@ -41,21 +41,24 @@ class OrderedModelViewSet(ModelViewSet):
 class IndexView(TemplateView):
     template_name = "index.html"
     # custom context
+    github_ref = "master"
     component = ""
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({"component": self.component})
+        context.update(
+            {
+                "component": self.component,
+                "github_ref": self.github_ref,
+            }
+        )
         return context
 
 
 class TranslatableViewSetMixin:
 
     _supported_languages = {
-        language["code"]
-        for site in settings.PARLER_LANGUAGES
-        if isinstance(site, int)
-        for language in settings.PARLER_LANGUAGES[site]
+        language["code"] for language in settings.PARLER_LANGUAGES[None]
     }
 
     def update_vertaling(self, request, taal, **kwargs):

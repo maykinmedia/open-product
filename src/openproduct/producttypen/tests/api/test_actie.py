@@ -16,15 +16,15 @@ class TestProductTypeActie(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
-        self.product_type = ProductTypeFactory.create()
+        self.producttype = ProductTypeFactory.create()
         self.data = {
             "naam": "test actie",
             "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
             "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
         }
         self.actie = ActieFactory.create(
-            product_type=self.product_type,
+            producttype=self.producttype,
             dmn_config__tabel_endpoint="https://gemeente-a-flowable/dmn-repository/decision-tables",
         )
 
@@ -47,7 +47,7 @@ class TestProductTypeActie(BaseApiTestCase):
                 "tabel_endpoint": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "product_type_id": [
+                "producttype_id": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
                 "dmn_tabel_id": [
@@ -68,7 +68,7 @@ class TestProductTypeActie(BaseApiTestCase):
             response.data,
             {
                 "naam": self.data["naam"],
-                "product_type_id": self.data["product_type_id"],
+                "producttype_id": self.data["producttype_id"],
                 "url": f"{self.data['tabel_endpoint']}/{self.data['dmn_tabel_id']}",
             },
         )
@@ -90,7 +90,7 @@ class TestProductTypeActie(BaseApiTestCase):
         self.assertEqual(ProductType.objects.get().acties.get().naam, "update")
 
     def test_read_acties(self):
-        actie = ActieFactory.create(product_type=self.product_type)
+        actie = ActieFactory.create(producttype=self.producttype)
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -100,13 +100,13 @@ class TestProductTypeActie(BaseApiTestCase):
                 "id": str(self.actie.id),
                 "naam": self.actie.naam,
                 "url": self.actie.url,
-                "product_type_id": self.product_type.id,
+                "producttype_id": self.producttype.id,
             },
             {
                 "id": str(actie.id),
                 "naam": actie.naam,
                 "url": actie.url,
-                "product_type_id": self.product_type.id,
+                "producttype_id": self.producttype.id,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -120,7 +120,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "id": str(self.actie.id),
             "naam": self.actie.naam,
             "url": self.actie.url,
-            "product_type_id": self.product_type.id,
+            "producttype_id": self.producttype.id,
         }
         self.assertEqual(response.data, expected_data)
 

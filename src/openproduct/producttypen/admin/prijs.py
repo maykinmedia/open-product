@@ -61,10 +61,10 @@ class PrijsAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     form = PrijsAdminForm
     inlines = [PrijsOptieInline, PrijsRegelInline]
     list_display = ("__str__", "actief_vanaf")
-    list_filter = ("product_type__code", "actief_vanaf")
+    list_filter = ("producttype__code", "actief_vanaf")
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("product_type")
+        return super().get_queryset(request).select_related("producttype")
 
     def has_change_permission(self, request, obj=None):
         if obj and obj.actief_vanaf < date.today():

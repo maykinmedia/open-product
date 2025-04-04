@@ -12,7 +12,7 @@ class Kanaal(_Kanaal):
     def get_field(model: Model, field: str) -> Field:
         """
         Function to retrieve a field from a Model, can also be passed a path to a field
-        (e.g. `product_type.id`)
+        (e.g. `producttype.id`)
         """
         if "." in field:
             model_field = None
@@ -32,7 +32,7 @@ class Kanaal(_Kanaal):
     ) -> Dict:
         """
         Overridden to support sending kenmerken that are not directly part of the main
-        resource (e.g `Product.product_type.id`)
+        resource (e.g `Product.producttype.id`)
         """
         data = data or {}
         kenmerken = {}

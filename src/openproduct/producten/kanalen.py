@@ -6,8 +6,9 @@ KANAAL_PRODUCTEN = Kanaal(
     "producten",
     main_resource=Product,
     kenmerken=(
-        "product_type.id",
-        "product_type.uniforme_product_naam",
-        "product_type.code",
+        "producttype.id",
+        "producttype.uniforme_product_naam",
+        "producttype.code",
     ),
+    extra_kwargs={"producttype.id": {"help_text": "uuid van het producttype"}},
 )

@@ -50,7 +50,6 @@ bleach==6.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   django-markup
     #   open-api-framework
 boltons==24.1.0
     # via
@@ -262,7 +261,7 @@ django-markdownx==4.0.7
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-django-markup==1.9.1
+django-markup==1.8.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -395,10 +394,6 @@ djangorestframework-inclusions==1.2.0
     #   open-api-framework
 docutils==0.17.1
     # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-markup
-    #   python-creole
     #   recommonmark
     #   sphinx
     #   sphinx-rtd-theme
@@ -529,7 +524,6 @@ markdown==3.3.6
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-markdownx
-    #   django-markup
     #   sphinx-markdown-tables
 markdown-it-py==3.0.0
     # via
@@ -569,17 +563,12 @@ multidict==6.2.0
     # via yarl
 mypy-extensions==1.0.0
     # via black
-nh3==0.2.18
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   textile
 notifications-api-common==0.6.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.9.6
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -646,7 +635,6 @@ pygments==2.18.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-    #   django-markup
     #   rich
     #   sphinx
     #   sphinx-tabs
@@ -673,11 +661,6 @@ pyquery==2.0.1
     # via -r requirements/test-tools.in
 pytest==8.3.4
     # via -r requirements/test-tools.in
-python-creole==1.4.10
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-markup
 python-crontab==3.2.0
     # via
     #   -c requirements/base.txt
@@ -737,11 +720,6 @@ referencing==0.35.1
     #   -r requirements/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2024.11.6
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   textile
 requests==2.32.3
     # via
     #   -c requirements/base.txt
@@ -784,11 +762,6 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
-smartypants==2.0.1
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-markup
 snowballstemmer==2.2.0
     # via sphinx
 soupsieve==2.6
@@ -834,11 +807,6 @@ sqlparse==0.5.2
     #   django
 tblib==3.0.0
     # via -r requirements/test-tools.in
-textile==4.0.3
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-markup
 tomlkit==0.13.2
     # via pylint
 tornado==6.4.2
@@ -908,7 +876,7 @@ webencodings==0.5.1
     #   bleach
 webob==1.8.9
     # via webtest
-webtest==3.0.2
+webtest==3.0.4
     # via django-webtest
 wrapt==1.17.0
     # via

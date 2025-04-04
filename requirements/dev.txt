@@ -69,7 +69,6 @@ bleach==6.2.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   django-markup
     #   open-api-framework
 boltons==24.1.0
     # via
@@ -308,7 +307,7 @@ django-markdownx==4.0.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-markup==1.9.1
+django-markup==1.8.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -445,8 +444,6 @@ docutils==0.17.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   django-markup
-    #   python-creole
     #   recommonmark
     #   sphinx
     #   sphinx-rtd-theme
@@ -610,7 +607,6 @@ markdown==3.3.6
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-markdownx
-    #   django-markup
     #   sphinx-markdown-tables
 markdown-it-py==3.0.0
     # via
@@ -658,17 +654,12 @@ mypy-extensions==1.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   black
-nh3==0.2.18
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   textile
 notifications-api-common==0.6.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.9.3
+open-api-framework==0.9.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -763,7 +754,6 @@ pygments==2.18.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   django-markup
     #   rich
     #   sphinx
     #   sphinx-tabs
@@ -796,11 +786,6 @@ pytest==8.3.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-python-creole==1.4.10
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-markup
 python-crontab==3.2.0
     # via
     #   -c requirements/ci.txt
@@ -865,11 +850,6 @@ referencing==0.35.1
     #   -r requirements/ci.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2024.11.6
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   textile
 requests==2.32.3
     # via
     #   -c requirements/ci.txt
@@ -915,11 +895,6 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
-smartypants==2.0.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-markup
 smmap==5.0.1
     # via gitdb
 sniffio==1.3.1
@@ -993,11 +968,6 @@ tblib==3.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-textile==4.0.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-markup
 tomlkit==0.13.2
     # via
     #   -c requirements/ci.txt
@@ -1085,7 +1055,7 @@ webob==1.8.9
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webtest
-webtest==3.0.2
+webtest==3.0.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

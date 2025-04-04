@@ -13,7 +13,7 @@ from openproduct.utils.views import OrderedModelViewSet
 
 class BestandFilterSet(FilterSet):
     uniforme_product_naam = django_filters.CharFilter(
-        field_name="product_type__uniforme_product_naam__naam",
+        field_name="producttype__uniforme_product_naam__naam",
         lookup_expr="exact",
         help_text=_("Uniforme product naam vanuit de UPL."),
     )
@@ -23,17 +23,17 @@ class BestandFilterSet(FilterSet):
         help_text=_("Naam van het bestand."),
     )
 
-    product_type__naam = TranslationFilter(
-        field_name="product_type__naam",
+    producttype__naam = TranslationFilter(
+        field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=_("Naam van het product type."),
+        help_text=_("Naam van het producttype."),
     )
 
     class Meta:
         model = Bestand
         fields = {
-            "product_type__code": ["exact"],
-            "product_type__id": ["exact"],
+            "producttype__code": ["exact"],
+            "producttype__id": ["exact"],
         }
 
 

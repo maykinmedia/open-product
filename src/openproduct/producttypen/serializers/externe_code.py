@@ -10,10 +10,10 @@ class NestedExterneCodeSerializer(serializers.ModelSerializer):
 
 
 class ExterneCodeSerializer(serializers.ModelSerializer):
-    product_type = serializers.PrimaryKeyRelatedField(
+    producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = ExterneCode
-        fields = ["naam", "code", "product_type"]
+        fields = ["naam", "code", "producttype"]

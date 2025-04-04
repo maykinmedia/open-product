@@ -26,7 +26,7 @@ class ContentElementManager(OrderedModelManager.from_queryset(ContentElementQuer
     pass
 
 
-@reversion.register(follow=("labels", "product_type"))
+@reversion.register(follow=("labels", "producttype"))
 class ContentElement(TranslatableModel, OrderedModel, BaseModel):
     labels = models.ManyToManyField(
         ContentLabel,
@@ -35,26 +35,26 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
         related_name="content_elementen",
         help_text=_("De labels van dit content element"),
     )
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         "ProductType",
         verbose_name=_("label"),
         on_delete=models.CASCADE,
-        help_text=_("Het product type van dit content element"),
+        help_text=_("Het producttype van dit content element"),
         related_name="content_elementen",
     )
 
     content = TranslatedField()
 
-    order_with_respect_to = "product_type"
+    order_with_respect_to = "producttype"
     objects = ContentElementManager()
 
     def __str__(self):
-        return f"{self.product_type} - {','.join(list(self.labels.values_list('naam', flat=True)))}"
+        return f"{self.producttype} - {','.join(list(self.labels.values_list('naam', flat=True)))}"
 
     class Meta:
         verbose_name = _("content element")
         verbose_name_plural = _("content elementen")
-        ordering = ("product_type", "order")
+        ordering = ("producttype", "order")
 
 
 @reversion.register()

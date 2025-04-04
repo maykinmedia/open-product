@@ -8,14 +8,14 @@ from openproduct.utils.models import BaseModel
 from .producttype import ProductType
 
 
-@reversion.register(follow=("product_type",))
+@reversion.register(follow=("producttype",))
 class Link(BaseModel):
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
-        verbose_name=_("Product type"),
+        verbose_name=_("Producttype"),
         related_name="links",
         on_delete=models.CASCADE,
-        help_text=_("Het product type waarbij deze link hoort."),
+        help_text=_("Het producttype waarbij deze link hoort."),
     )
     naam = models.CharField(
         verbose_name=_("naam"), max_length=255, help_text=_("Naam van de link.")
@@ -23,8 +23,8 @@ class Link(BaseModel):
     url = models.URLField(verbose_name=_("Url"), help_text=_("Url van de link."))
 
     class Meta:
-        verbose_name = _("Product type link")
-        verbose_name_plural = _("Product type links")
+        verbose_name = _("Producttype link")
+        verbose_name_plural = _("Producttype links")
 
     def __str__(self):
-        return f"{self.product_type}: {self.naam}"
+        return f"{self.producttype}: {self.naam}"

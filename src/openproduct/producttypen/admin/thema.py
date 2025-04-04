@@ -18,8 +18,8 @@ class ProductTypeInline(admin.TabularInline):
     model = ProductType.themas.through
     extra = 0
 
-    verbose_name = _("Product type")
-    verbose_name_plural = _("Product typen")
+    verbose_name = _("producttype")
+    verbose_name_plural = _("Producttypen")
 
     def has_change_permission(self, request, obj=None):
         return False
@@ -42,40 +42,40 @@ class ThemaAdminForm(forms.ModelForm):
 class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     inlines = (ProductTypeInline,)
     search_fields = ("naam", "hoofd_thema__naam")
-    list_display = ("naam", "hoofd_thema", "gepubliceerd", "product_typen_count")
+    list_display = ("naam", "hoofd_thema", "gepubliceerd", "producttypen_count")
     form = ThemaAdminForm
 
-    @admin.display(description=_("Aantal product typen"))
-    def product_typen_count(self, obj):
-        return obj.product_typen_count
+    @admin.display(description=_("Aantal producttypen"))
+    def producttypen_count(self, obj):
+        return obj.producttypen_count
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset = queryset.annotate(product_typen_count=Count("product_typen"))
+        queryset = queryset.annotate(producttypen_count=Count("producttypen"))
         return queryset
 
-    list_filter = ["gepubliceerd", "product_typen", "hoofd_thema"]
+    list_filter = ["gepubliceerd", "producttypen", "hoofd_thema"]
 
     def get_deleted_objects(self, objs, request):
         """
-        Product_typen need at least one thema.
+        Producttypen need at least one thema.
         """
 
-        def get_product_type_url(instance):
+        def get_producttype_url(instance):
             return reverse("admin:producttypen_producttype_change", args=(instance.id,))
 
-        def get_current_product_type_themas(instance):
+        def get_current_producttype_themas(instance):
             return ", ".join(instance.themas.values_list("naam", flat=True))
 
         errors = []
-        for product_type in ProductType.objects.filter(themas__in=objs).distinct():
-            if product_type.themas.count() <= objs.count():
+        for producttype in ProductType.objects.filter(themas__in=objs).distinct():
+            if producttype.themas.count() <= objs.count():
                 errors.append(
                     format_html(
-                        "Product Type <a href='{}'>{}</a> moet aan een minimaal één thema zijn gelinkt. Huidige thema's: {}.",
-                        get_product_type_url(product_type),
-                        product_type,
-                        get_current_product_type_themas(product_type),
+                        "Producttype <a href='{}'>{}</a> moet aan een minimaal één thema zijn gelinkt. Huidige thema's: {}.",
+                        get_producttype_url(producttype),
+                        producttype,
+                        get_current_producttype_themas(producttype),
                     )
                 )
         if errors:

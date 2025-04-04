@@ -16,18 +16,18 @@ class ZaakType(BaseModel):
         help_text=_("Uuid van het zaaktype."),
     )
 
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
-        verbose_name=_("product type"),
+        verbose_name=_("producttype"),
         related_name="zaaktypen",
         on_delete=models.CASCADE,
-        help_text=_("Het product type waarbij dit zaaktype hoort."),
+        help_text=_("Het producttype waarbij dit zaaktype hoort."),
     )
 
     class Meta:
         verbose_name = _("zaaktype")
         verbose_name_plural = _("zaaktypen")
-        unique_together = (("product_type", "uuid"),)
+        unique_together = (("producttype", "uuid"),)
 
     def clean(self):
         check_externe_verwijzing_config_url("zaaktypen_url")

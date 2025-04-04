@@ -20,14 +20,14 @@ class TestProductAdminForm(TestCase):
 
     def test_status_and_dates_are_not_validated_when_not_changed(self):
         data = {
-            "product_type": ProductTypeFactory.create(toegestane_statussen=[]),
+            "producttype": ProductTypeFactory.create(toegestane_statussen=[]),
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
 
         form.full_clean()
@@ -42,7 +42,7 @@ class TestProductAdminForm(TestCase):
         mock_validate_product_eind_datum,
     ):
         data = {
-            "product_type": ProductTypeFactory.create(toegestane_statussen=["gereed"]),
+            "producttype": ProductTypeFactory.create(toegestane_statussen=["gereed"]),
             "status": "initeel",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
@@ -51,7 +51,7 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         data["status"] = "gereed"
         data["start_datum"] = datetime.date(2025, 11, 30)
         data["eind_datum"] = datetime.date(2026, 11, 30)
@@ -65,14 +65,14 @@ class TestProductAdminForm(TestCase):
     @patch("openproduct.producten.admin.product.validate_product_status")
     @patch("openproduct.producten.admin.product.validate_product_start_datum")
     @patch("openproduct.producten.admin.product.validate_product_eind_datum")
-    def test_status__and_dates_are_validated_when_product_type_is_changed(
+    def test_status__and_dates_are_validated_when_producttype_is_changed(
         self,
         mock_validate_product_status,
         mock_validate_product_start_datum,
         mock_validate_product_eind_datum,
     ):
         data = {
-            "product_type": ProductTypeFactory.create(toegestane_statussen=["gereed"]),
+            "producttype": ProductTypeFactory.create(toegestane_statussen=["gereed"]),
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
@@ -81,7 +81,7 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = ProductTypeFactory.create(toegestane_statussen=[]).id
+        data["producttype"] = ProductTypeFactory.create(toegestane_statussen=[]).id
         form = ProductAdminForm(data=data, instance=product)
 
         form.full_clean()
@@ -90,8 +90,8 @@ class TestProductAdminForm(TestCase):
         mock_validate_product_eind_datum.assert_called_once()
 
     def test_get_status_choices_with_instance(self):
-        product_type = ProductTypeFactory.create(toegestane_statussen=["actief"])
-        product = ProductFactory(product_type=product_type, status="gereed")
+        producttype = ProductTypeFactory.create(toegestane_statussen=["actief"])
+        product = ProductFactory(producttype=producttype, status="gereed")
         choices = get_status_choices(None, product)
 
         self.assertCountEqual(
@@ -99,9 +99,9 @@ class TestProductAdminForm(TestCase):
             [("actief", "Actief"), ("initieel", "Initieel"), ("gereed", "Gereed")],
         )
 
-    def test_get_status_choices_with_product_type_id(self):
-        product_type = ProductTypeFactory.create(toegestane_statussen=["actief"])
-        choices = get_status_choices(product_type.id, None)
+    def test_get_status_choices_with_producttype_id(self):
+        producttype = ProductTypeFactory.create(toegestane_statussen=["actief"])
+        choices = get_status_choices(producttype.id, None)
 
         self.assertCountEqual(choices, [("actief", "Actief"), ("initieel", "Initieel")])
 
@@ -112,7 +112,7 @@ class TestProductAdminForm(TestCase):
 
     def test_valid_verbruiksobject(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -128,14 +128,14 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
 
     def test_invalid_verbruiksobject(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -151,7 +151,7 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(
@@ -159,7 +159,7 @@ class TestProductAdminForm(TestCase):
             {
                 "verbruiksobject": [
                     _(
-                        "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het product type."
+                        "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
                     )
                 ]
             },
@@ -167,7 +167,7 @@ class TestProductAdminForm(TestCase):
 
     def test_verbruiksobject_without_schema(self):
         data = {
-            "product_type": ProductTypeFactory.create(),
+            "producttype": ProductTypeFactory.create(),
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -175,14 +175,14 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
 
     def test_verbruiksobject_with_schema_without_object(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 verbruiksobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -196,14 +196,14 @@ class TestProductAdminForm(TestCase):
             "frequentie": "eenmalig",
         }
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
 
     def test_valid_dataobject(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 dataobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -219,14 +219,14 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
 
     def test_invalid_dataobject(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 dataobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -242,7 +242,7 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(
@@ -250,7 +250,7 @@ class TestProductAdminForm(TestCase):
             {
                 "dataobject": [
                     _(
-                        "Het dataobject komt niet overeen met het schema gedefinieerd op het product type."
+                        "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype."
                     )
                 ]
             },
@@ -258,7 +258,7 @@ class TestProductAdminForm(TestCase):
 
     def test_dataobject_without_schema(self):
         data = {
-            "product_type": ProductTypeFactory.create(),
+            "producttype": ProductTypeFactory.create(),
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -266,14 +266,14 @@ class TestProductAdminForm(TestCase):
         }
 
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
 
     def test_dataobject_with_schema_without_object(self):
         data = {
-            "product_type": ProductTypeFactory.create(
+            "producttype": ProductTypeFactory.create(
                 dataobject_schema=JsonSchemaFactory(
                     schema={
                         "type": "object",
@@ -287,7 +287,7 @@ class TestProductAdminForm(TestCase):
             "frequentie": "eenmalig",
         }
         product = ProductFactory.create(**data)
-        data["product_type"] = data.pop("product_type").id
+        data["producttype"] = data.pop("producttype").id
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})

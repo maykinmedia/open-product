@@ -50,7 +50,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "product type response",
+            "producttype response",
             value={
                 "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "uniforme_product_naam": "parkeervergunning",
@@ -196,7 +196,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
             response_only=True,
         ),
         OpenApiExample(
-            "product type request",
+            "producttype request",
             value={
                 "uniforme_product_naam": "aanleunwoning",
                 "thema_ids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
@@ -297,15 +297,15 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     )
 
     naam = serializers.CharField(
-        required=True, max_length=255, help_text=_("naam van het product type.")
+        required=True, max_length=255, help_text=_("naam van het producttype.")
     )
     samenvatting = serializers.CharField(
         required=True,
-        help_text=_("Korte beschrijving van het product type."),
+        help_text=_("Korte beschrijving van het producttype."),
     )
 
     taal = serializers.SerializerMethodField(
-        read_only=True, help_text=_("De huidige taal van het product type.")
+        read_only=True, help_text=_("De huidige taal van het producttype.")
     )
 
     @extend_schema_field(OpenApiTypes.STR)
@@ -386,45 +386,45 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         verzoektypen = validated_data.pop("verzoektypen", [])
         processen = validated_data.pop("processen", [])
 
-        product_type = ProductType.objects.create(**validated_data)
-        product_type.themas.set(themas)
-        product_type.locaties.set(locaties)
-        product_type.organisaties.set(organisaties)
-        product_type.contacten.set(contacten)
+        producttype = ProductType.objects.create(**validated_data)
+        producttype.themas.set(themas)
+        producttype.locaties.set(locaties)
+        producttype.organisaties.set(organisaties)
+        producttype.contacten.set(contacten)
 
         set_nested_serializer(
             [
-                externe_code | {"product_type": product_type.id}
+                externe_code | {"producttype": producttype.id}
                 for externe_code in externe_codes
             ],
             ExterneCodeSerializer,
         )
 
         set_nested_serializer(
-            [parameter | {"product_type": product_type.id} for parameter in parameters],
+            [parameter | {"producttype": producttype.id} for parameter in parameters],
             ParameterSerializer,
         )
 
         set_nested_serializer(
-            [zaaktype | {"product_type": product_type.id} for zaaktype in zaaktypen],
+            [zaaktype | {"producttype": producttype.id} for zaaktype in zaaktypen],
             ZaakTypeSerializer,
         )
 
         set_nested_serializer(
             [
-                verzoektype | {"product_type": product_type.id}
+                verzoektype | {"producttype": producttype.id}
                 for verzoektype in verzoektypen
             ],
             VerzoekTypeSerializer,
         )
 
         set_nested_serializer(
-            [proces | {"product_type": product_type.id} for proces in processen],
+            [proces | {"producttype": producttype.id} for proces in processen],
             ProcesSerializer,
         )
 
-        product_type.add_contact_organisaties()
-        return product_type
+        producttype.add_contact_organisaties()
+        return producttype
 
     @transaction.atomic()
     def update(self, instance, validated_data):
@@ -454,7 +454,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.externe_codes.all().delete()
             set_nested_serializer(
                 [
-                    externe_code | {"product_type": instance.id}
+                    externe_code | {"producttype": instance.id}
                     for externe_code in externe_codes
                 ],
                 ExterneCodeSerializer,
@@ -463,14 +463,14 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if parameters is not None:
             instance.parameters.all().delete()
             set_nested_serializer(
-                [parameter | {"product_type": instance.id} for parameter in parameters],
+                [parameter | {"producttype": instance.id} for parameter in parameters],
                 ParameterSerializer,
             )
 
         if zaaktypen is not None:
             instance.zaaktypen.all().delete()
             set_nested_serializer(
-                [zaaktype | {"product_type": instance.id} for zaaktype in zaaktypen],
+                [zaaktype | {"producttype": instance.id} for zaaktype in zaaktypen],
                 ZaakTypeSerializer,
             )
 
@@ -478,7 +478,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.verzoektypen.all().delete()
             set_nested_serializer(
                 [
-                    verzoektype | {"product_type": instance.id}
+                    verzoektype | {"producttype": instance.id}
                     for verzoektype in verzoektypen
                 ],
                 VerzoekTypeSerializer,
@@ -487,7 +487,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if processen is not None:
             instance.processen.all().delete()
             set_nested_serializer(
-                [proces | {"product_type": instance.id} for proces in processen],
+                [proces | {"producttype": instance.id} for proces in processen],
                 ProcesSerializer,
             )
 

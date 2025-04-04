@@ -21,7 +21,7 @@ from openproduct.producttypen.models import ContentElement, ContentLabel, Produc
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
                 "taal": "nl",
-                "product_type_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
+                "producttype_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             response_only=True,
         ),
@@ -30,7 +30,7 @@ from openproduct.producttypen.models import ContentElement, ContentLabel, Produc
             value={
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
-                "product_type_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
+                "producttype_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             request_only=True,
         ),
@@ -50,8 +50,8 @@ class ContentElementSerializer(TranslatableModelSerializer):
         help_text=_("De content van dit content element."),
     )
 
-    product_type_id = serializers.PrimaryKeyRelatedField(
-        source="product_type", queryset=ProductType.objects.all()
+    producttype_id = serializers.PrimaryKeyRelatedField(
+        source="producttype", queryset=ProductType.objects.all()
     )
 
     taal = serializers.SerializerMethodField(
@@ -65,7 +65,7 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     class Meta:
         model = ContentElement
-        fields = ("id", "content", "labels", "product_type_id", "taal")
+        fields = ("id", "content", "labels", "producttype_id", "taal")
 
 
 class NestedContentElementSerializer(ContentElementSerializer):

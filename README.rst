@@ -6,7 +6,7 @@ Open Product
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``producten``
 
-Plek voor gemeenten om product-typen en producten te beheren om ze te gebruiken in andere applicaties.
+Plek voor gemeenten om producttypen en producten te beheren om ze te gebruiken in andere applicaties.
 (`English version`_)
 
 Ontwikkeld door `Maykin B.V.`_.
@@ -15,12 +15,12 @@ Ontwikkeld door `Maykin B.V.`_.
 Introductie
 ===========
 
-Open Product is een applicatie waarin product typen en producten op een enkele plek kunnen worden beheerd.
-Andere applicaties zoals Open Inwoner en Open Formulieren kunnen met Open Product via een REST API integreren om bijvoorbeeld product typen informatie te tonen, producten aan te maken of om de actuele prijs van een product type op te halen.
+Open Product is een applicatie waarin producttypen en producten op een enkele plek kunnen worden beheerd.
+Andere applicaties zoals Open Inwoner en Open Formulieren kunnen met Open Product via een REST API integreren om bijvoorbeeld producttypen informatie te tonen, producten aan te maken of om de actuele prijs van een producttype op te halen.
 
 Dit project zit op dit moment in de ontwikkelingsfase.
 
-In Open Product worden product typen en producten opgeslagen. Een product type is bijvoorbeeld een parkeervergunning en bevat alle relevante informatie zoals wat de regels zijn, hoe verschillende zones werken enz.
+In Open Product worden producttypen en producten opgeslagen. Een producttype is bijvoorbeeld een parkeervergunning en bevat alle relevante informatie zoals wat de regels zijn, hoe verschillende zones werken enz.
 Een product is in dit voorbeeld een parkeervergunning van een persoon en bevat in dit geval het kenteken en de persoonsgegevens.
 
 Informatiemodel
@@ -34,13 +34,24 @@ Informatiemodel
 API specificatie
 ================
 
-|lint-oas| |generate-sdks| |generate-postman-collection|
+Producten
+---------
 
 ==============  ==============  =============================
 Versie          Release datum   API specificatie
 ==============  ==============  =============================
-latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openapi.yaml>`_
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
+==============  ==============  =============================
+
+Producttypen
+------------
+
+==============  ==============  =============================
+Versie          Release datum   API specificatie
+==============  ==============  =============================
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
 Er zijn twee manieren om te authenticeren met de API.
@@ -49,6 +60,7 @@ Er zijn twee manieren om te authenticeren met de API.
 * OpenId Connect kan worden ingesteld in the Open Product admin -> Configuratie -> OpenID connect configuratie.
 
 
+See: `Alle versies en veranderingen <https://github.com/maykinmedia/open-product/blob/master/CHANGELOG.rst>`_
 
 
 Ontwikkelaars
@@ -56,14 +68,14 @@ Ontwikkelaars
 
 |build-status| |coverage| |black| |python-versions|
 
-Deze repository bevat de broncode voor openproduct. Om snel aan de slag
+Deze repository bevat de broncode voor Open Product. Om snel aan de slag
 te gaan, raden we aan om de Docker image te gebruiken. Uiteraard kan je ook
 het project zelf bouwen van de broncode. Zie hiervoor
 `INSTALL.rst <INSTALL.rst>`_.
 
 Open Product bestaat uit drie apps:
 
-* product types
+* producttypen
 * products
 * locations (& organisations)
 
@@ -74,7 +86,7 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/main/docker-compose.yml
+      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/master/docker-compose.yml
       $ docker-compose up -d --no-build
       $ docker-compose exec web src/manage.py loaddata demodata
       $ docker-compose exec web src/manage.py createsuperuser
@@ -86,6 +98,7 @@ Quickstart
 Links
 =====
 
+* `Documentatie <https://open-product.readthedocs.io/en/stable/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/open-product>`_
 * `Issues <https://github.com/maykinmedia/open-product/issues>`_
 * `Code <https://github.com/maykinmedia/open-product>`_
@@ -103,15 +116,13 @@ Licensed under the EUPL_
 
 .. _`Maykin B.V.`: https://www.maykinmedia.nl
 
-.. _`Objecttypen API`: https://github.com/maykinmedia/objecttypes-api
-
 .. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=main
+.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=master
     :alt: Build status
     :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Aci
 
-.. |coverage| image:: https://codecov.io/github/maykinmedia/open-product/branch/main/graphs/badge.svg?branch=main
+.. |coverage| image:: https://codecov.io/github/maykinmedia/open-product/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-product
 
@@ -122,14 +133,3 @@ Licensed under the EUPL_
 .. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
     :alt: Supported Python version
 
-.. |lint-oas| image:: https://github.com/maykinmedia/open-product/workflows/lint-oas/badge.svg
-    :alt: Lint OAS
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Alint-oas
-
-.. |generate-sdks| image:: https://github.com/maykinmedia/open-product/workflows/generate-sdks/badge.svg
-    :alt: Generate SDKs
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-sdks
-
-.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-product/workflows/generate-postman-collection/badge.svg
-    :alt: Generate Postman collection
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-postman-collection

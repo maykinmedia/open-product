@@ -24,10 +24,10 @@ class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
 
 
 class VerzoekTypeSerializer(serializers.ModelSerializer):
-    product_type = serializers.PrimaryKeyRelatedField(
+    producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = VerzoekType
-        fields = ("uuid", "product_type")
+        fields = ("uuid", "producttype")

@@ -42,26 +42,26 @@ ProductTypenRouter.register(
 )
 
 description = """
-Een Api voor Product typen.
+Een Api voor Producttypen.
 
-Een Product type is de definitie van een Product. hierin word alle relevante data opgeslagen zoals informatie teksten bedoeld voor klanten.
+Een Producttype is de definitie van een Product. hierin word alle relevante data opgeslagen zoals informatie teksten bedoeld voor klanten.
 
 Een Product (zie product api) is de instantie, hierin worden de specifieke gegevens van de instantie opgeslagen zoals bijvoorbeeld de gegevens van de eigenaar.
 
-Een product type valt onder een thema. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
+Een producttype valt onder een thema. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
 
-Een product type kan worden gelinkt één of meerdere locaties, organisaties en/of contacten.
+Een producttype kan worden gelinkt één of meerdere locaties, organisaties en/of contacten.
 
 Daarnaast kunnen de volgende modellen per product worden aangemaakt:
 - prijzen
 - links
 
-Een aantal velden verwachten een lijst/array van bijvoorbeeld product_type_ids. Let op dat als dit veld in een PATCH request wordt meegestuurd de gehele lijst/array zal worden overschreven.
+Een aantal velden verwachten een lijst/array van bijvoorbeeld producttype_ids. Let op dat als dit veld in een PATCH request wordt meegestuurd de gehele lijst/array zal worden overschreven.
 
 """
 
 custom_settings = {
-    "TITLE": "Product typen API",
+    "TITLE": "Producttypen API",
     "VERSION": settings.PRODUCTTYPEN_API_VERSION,
     "DESCRIPTION": description,
     "SERVERS": [
@@ -91,7 +91,7 @@ custom_settings = {
         },
         {
             "name": "schemas",
-            "description": "Opvragen en bewerken van JSON SCHEMA'S. (product_type.verbruiksobject_schema, product_type_dataobject_schema)",
+            "description": "Opvragen en bewerken van JSON SCHEMA'S. (producttype.verbruiksobject_schema, producttype_dataobject_schema)",
         },
         {"name": "acties", "description": "Opvragen en bewerken van ACTIES."},
     ],

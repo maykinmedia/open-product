@@ -12,22 +12,22 @@ from openproduct.utils.views import OrderedModelViewSet
 
 class LinkFilterSet(FilterSet):
     uniforme_product_naam = django_filters.CharFilter(
-        field_name="product_type__uniforme_product_naam__naam",
+        field_name="producttype__uniforme_product_naam__naam",
         lookup_expr="exact",
         help_text=_("Uniforme product naam vanuit de UPL."),
     )
 
-    product_type__naam = TranslationFilter(
-        field_name="product_type__naam",
+    producttype__naam = TranslationFilter(
+        field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=_("Naam van het product type."),
+        help_text=_("Naam van het producttype."),
     )
 
     class Meta:
         model = Link
         fields = {
-            "product_type__code": ["exact"],
-            "product_type__id": ["exact"],
+            "producttype__code": ["exact"],
+            "producttype__id": ["exact"],
             "naam": ["exact", "contains"],
             "url": ["exact", "contains"],
         }

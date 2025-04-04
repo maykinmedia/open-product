@@ -22,10 +22,10 @@ class NestedProcesSerializer(serializers.ModelSerializer):
 
 
 class ProcesSerializer(serializers.ModelSerializer):
-    product_type = serializers.PrimaryKeyRelatedField(
+    producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Proces
-        fields = ("uuid", "product_type")
+        fields = ("uuid", "producttype")

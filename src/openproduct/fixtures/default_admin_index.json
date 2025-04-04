@@ -23,8 +23,8 @@
         "translations": {
             "en": "Product types"
         },
-        "name": "Product typen",
-        "slug": "product-typen",
+        "name": "Producttypen",
+        "slug": "producttypen",
         "models": [
             [
                 "producttypen",

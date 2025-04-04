@@ -9,7 +9,7 @@ from .dmn_config import DmnConfig
 from .producttype import ProductType
 
 
-@reversion.register(follow=("product_type",))
+@reversion.register(follow=("producttype",))
 class Actie(BaseModel):
     naam = models.CharField(
         verbose_name=_("naam"),
@@ -17,7 +17,7 @@ class Actie(BaseModel):
         help_text=_("naam van de actie."),
     )
 
-    product_type = models.ForeignKey(
+    producttype = models.ForeignKey(
         ProductType,
         verbose_name=_("Producttype"),
         on_delete=models.CASCADE,

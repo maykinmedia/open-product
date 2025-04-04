@@ -231,8 +231,8 @@ class ProductTypeViewSet(
         url_path="actuele-prijzen",
     )
     def actuele_prijzen(self, request):
-        product_typen = self.get_queryset().all()
-        serializer = ProductTypeActuelePrijsSerializer(product_typen, many=True)
+        producttypen = self.get_queryset().all()
+        serializer = ProductTypeActuelePrijsSerializer(producttypen, many=True)
         return Response(serializer.data)
 
     @extend_schema(
@@ -246,8 +246,8 @@ class ProductTypeViewSet(
         url_path="actuele-prijs",
     )
     def actuele_prijs(self, request, id=None):
-        product_type = self.get_object()
-        serializer = ProductTypeActuelePrijsSerializer(product_type)
+        producttype = self.get_object()
+        serializer = ProductTypeActuelePrijsSerializer(producttype)
         return Response(serializer.data)
 
     @extend_schema(
@@ -279,9 +279,9 @@ class ProductTypeViewSet(
         url_path="content",
     )
     def content(self, request, id=None):
-        product_type = self.get_object()
+        producttype = self.get_object()
 
-        queryset = product_type.content_elementen
+        queryset = producttype.content_elementen
 
         # Apply filtering
         filterset = ContentFilterSet(request.GET, queryset=queryset)

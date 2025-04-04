@@ -4,8 +4,8 @@ Open Product Documentation
 **Open Product** is an application where product types and products can be
 managed in a single place. Other applications like `Open Inwoner`_ and `Open
 Formulieren`_ can integrate **Open Product** using its REST API to for example show
-product type information, create products or to get the current price for a
-product type.
+producttype information, create products or to get the current price for a
+producttype.
 
 .. _`Open Inwoner`: https://docs.openinwoner.nl/en/stable/installation/index.html
 .. _`Open Formulieren`: https://open-forms.readthedocs.io/nl/latest/

@@ -33,13 +33,24 @@ Information Model
 API specification
 =================
 
-|lint-oas| |generate-sdks| |generate-postman-collection|
+Products
+--------
 
 ==============  ==============  =============================
 Version         Release date    API specification
 ==============  ==============  =============================
-latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openproduct/api/openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/main/src/openproduct/api/openapi.yaml>`_
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
+==============  ==============  =============================
+
+Product types
+-------------
+
+==============  ==============  =============================
+Version         Release date    API specification
+==============  ==============  =============================
+latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
 There a two ways to connect to authenticate with the API:
@@ -49,7 +60,7 @@ There a two ways to connect to authenticate with the API:
 
 
 
-See: `All versions and changes <https://github.com/maykinmedia/open-product/blob/main/CHANGELOG.rst>`_
+See: `All versions and changes <https://github.com/maykinmedia/open-product/blob/master/CHANGELOG.rst>`_
 
 
 Developers
@@ -57,7 +68,7 @@ Developers
 
 |build-status| |coverage| |black| |python-versions|
 
-This repository contains the source code for openproduct. To quickly
+This repository contains the source code for Open Product. To quickly
 get started, we recommend using the Docker image. You can also build the
 project from the source code. For this, please look at
 `INSTALL.rst <INSTALL.rst>`_.
@@ -76,7 +87,7 @@ Quickstart
 
    .. code:: bash
 
-      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/main/docker-compose.yml
+      $ wget https://raw.githubusercontent.com/maykinmedia/open-product/master/docker-compose.yml
       $ docker-compose up -d --no-build
       $ docker-compose exec web src/manage.py loaddata demodata
       $ docker-compose exec web src/manage.py createsuperuser
@@ -88,7 +99,7 @@ Quickstart
 References
 ==========
 
-* `Documentation <https://TODO>`_
+* `Documentation <https://open-product.readthedocs.io/en/stable/>`_
 * `Docker image <https://hub.docker.com/r/maykinmedia/open-product>`_
 * `Issues <https://github.com/maykinmedia/open-product/issues>`_
 * `Code <https://github.com/maykinmedia/open-product>`_
@@ -109,11 +120,11 @@ Licensed under the EUPL_
 
 .. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=main
+.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=master
     :alt: Build status
     :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Aci
 
-.. |coverage| image:: https://codecov.io/github/maykinmedia/open-roducten/branch/main/graphs/badge.svg?branch=main
+.. |coverage| image:: https://codecov.io/github/maykinmedia/open-product/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-product
 
@@ -124,14 +135,3 @@ Licensed under the EUPL_
 .. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
     :alt: Supported Python version
 
-.. |lint-oas| image:: https://github.com/maykinmedia/open-product/workflows/lint-oas/badge.svg
-    :alt: Lint OAS
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Alint-oas
-
-.. |generate-sdks| image:: https://github.com/maykinmedia/open-product/workflows/generate-sdks/badge.svg
-    :alt: Generate SDKs
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-sdks
-
-.. |generate-postman-collection| image:: https://github.com/maykinmedia/open-product/workflows/generate-postman-collection/badge.svg
-    :alt: Generate Postman collection
-    :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Agenerate-postman-collection
