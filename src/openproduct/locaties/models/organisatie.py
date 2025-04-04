@@ -1,9 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from .locatie import BaseLocatie
 
 
+@reversion.register()
 class Organisatie(BaseLocatie):
     class Meta:
         verbose_name = _("Organisatie")

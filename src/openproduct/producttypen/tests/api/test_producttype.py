@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
@@ -7,12 +8,15 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from reversion.models import Version
 
 from openproduct.locaties.tests.factories import (
     ContactFactory,
     LocatieFactory,
     OrganisatieFactory,
 )
+from openproduct.logging.constants import Events
+from openproduct.logging.models import TimelineLogProxy
 from openproduct.producttypen.models import (
     ExterneCode,
     ExterneVerwijzingConfig,
@@ -575,6 +579,22 @@ class TestProducttypeViewSet(BaseApiTestCase):
         }
         self.assertEqual(response.data, expected_data)
 
+    def test_create_product_type_creates_log_and_history(self):
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ProductType.objects.count(), 1)
+
+        product_type = ProductType.objects.get()
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product_type).pk,
+            object_id=product_type.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.create)
+        self.assertEqual(Version.objects.get_for_object(product_type).count(), 1)
+
     def test_update_minimal_product_type(self):
         product_type = ProductTypeFactory.create()
         response = self.client.put(self.detail_path(product_type), self.data)
@@ -774,7 +794,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         product_type = ProductTypeFactory.create()
         ParameterFactory.create(product_type=product_type)
 
-        response = self.client.patch(self.detail_path(product_type), self.data)
+        response = self.client.put(self.detail_path(product_type), self.data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
@@ -1012,6 +1032,24 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Proces.objects.count(), 1)
+
+    def test_update_product_type_creates_log_and_history(self):
+        product_type = ProductTypeFactory.create()
+
+        data = self.data | {"naam": "test123"}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ProductType.objects.count(), 1)
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product_type).pk,
+            object_id=product_type.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.update)
+        # version is not created with factoryboy
+        self.assertEqual(Version.objects.get_for_object(product_type).count(), 1)
 
     def test_partial_update_product_type(self):
         product_type = ProductTypeFactory.create()
@@ -1658,6 +1696,20 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(ProductType.objects.count(), 0)
         self.assertEqual(Link.objects.count(), 0)
+
+    def test_delete_product_type_creates_log(self):
+        product_type = ProductTypeFactory.create()
+        response = self.client.delete(self.detail_path(product_type))
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(ProductType.objects.count(), 0)
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product_type).pk,
+            object_id=product_type.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.delete)
 
 
 @freeze_time("2024-01-01")

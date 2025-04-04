@@ -1,5 +1,9 @@
 from sys import stdout
 
+from drf_spectacular.plumbing import (
+    get_lib_doc_excludes as default_get_lib_doc_excludes,
+)
+
 
 def custom_postprocessing_hook(result, generator, request, public):
     """
@@ -41,3 +45,12 @@ def custom_postprocessing_hook(result, generator, request, public):
                 items.pop("writeOnly", None)
 
     return result
+
+
+def get_lib_doc_excludes():
+    """
+    Exclude AuditTrailViewSetMixin docstring from api spec generation
+    """
+    from openproduct.logging.api_tools import AuditTrailViewSetMixin
+
+    return default_get_lib_doc_excludes() + [AuditTrailViewSetMixin]

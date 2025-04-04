@@ -4,7 +4,9 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from parler.models import TranslatableModel, TranslatedFields
+import reversion
+from parler.fields import TranslatedField, TranslationsForeignKey
+from parler.models import TranslatableModel, TranslatedFieldsModel
 
 from openproduct.locaties.models import Contact, Locatie, Organisatie
 from openproduct.utils.fields import ChoiceArrayField
@@ -25,6 +27,22 @@ class ProductStateChoices(models.TextChoices):
     VERLOPEN = "verlopen", _("Verlopen")
 
 
+@reversion.register(
+    follow=(
+        "verbruiksobject_schema",
+        "dataobject_schema",
+        "uniforme_product_naam",
+        "organisaties",
+        "locaties",
+        "contacten",
+        "content_elementen",
+        "externe_codes",
+        "links",
+        "parameters",
+        "bestanden",
+        "translations",
+    )
+)
 class ProductType(BasePublishableModel, TranslatableModel):
 
     code = models.CharField(
@@ -126,18 +144,8 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Interne opmerkingen over het product type."),
     )
 
-    translations = TranslatedFields(
-        samenvatting=models.TextField(
-            verbose_name=_("samenvatting"),
-            default="",
-            help_text=_("Korte samenvatting van het product type."),
-        ),
-        naam=models.CharField(
-            verbose_name=_("product type naam"),
-            max_length=255,
-            help_text=_("naam van het product type."),
-        ),
-    )
+    naam = TranslatedField()
+    samenvatting = TranslatedField()
 
     class Meta:
         verbose_name = _("Product type")
@@ -163,3 +171,29 @@ class ProductType(BasePublishableModel, TranslatableModel):
         return (
             self.prijzen.filter(actief_vanaf__lte=now).order_by("actief_vanaf").last()
         )
+
+
+@reversion.register()
+class ProductTypeTranslation(TranslatedFieldsModel):
+    master = TranslationsForeignKey(
+        ProductType,
+        related_name="translations",
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    naam = models.CharField(
+        verbose_name=_("product type naam"),
+        max_length=255,
+        help_text=_("naam van het product type."),
+    )
+
+    samenvatting = models.TextField(
+        verbose_name=_("samenvatting"),
+        default="",
+        help_text=_("Korte samenvatting van het product type."),
+    )
+
+    class Meta:
+        unique_together = ("language_code", "master")
+        verbose_name = _("Producttype vertaling")
+        verbose_name_plural = _("Producttype vertalingen")

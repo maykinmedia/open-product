@@ -1,12 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.models import BaseModel
 
 from .dmn_config import DmnConfig
 from .producttype import ProductType
 
 
+@reversion.register(follow=("product_type",))
 class Actie(BaseModel):
     naam = models.CharField(
         verbose_name=_("naam"),

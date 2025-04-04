@@ -3,6 +3,9 @@ import json
 from django import forms
 from django.contrib import admin
 
+from reversion_compare.admin import CompareVersionAdmin
+
+from openproduct.logging.admin_tools import AdminAuditLogMixin
 from openproduct.producttypen.models import JsonSchema
 
 
@@ -20,7 +23,7 @@ class JsonSchemaAdminForm(forms.ModelForm):
 
 
 @admin.register(JsonSchema)
-class JsonSchemaAdmin(admin.ModelAdmin):
+class JsonSchemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     form = JsonSchemaAdminForm
     search_fields = ["naam"]
 

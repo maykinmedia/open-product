@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.producttypen.models.validators import (
     disallow_hoofd_thema_self_reference,
     validate_thema_gepubliceerd_state,
@@ -8,6 +10,7 @@ from openproduct.producttypen.models.validators import (
 from openproduct.utils.models import BasePublishableModel
 
 
+@reversion.register(follow=("hoofd_thema",))
 class Thema(BasePublishableModel):
 
     naam = models.CharField(

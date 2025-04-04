@@ -36,6 +36,10 @@
             ],
             [
                 "producttypen",
+                "contentelementtranslation"
+            ],
+            [
+                "producttypen",
                 "contentlabel"
             ],
             [
@@ -53,6 +57,10 @@
             [
                 "producttypen",
                 "producttype"
+            ],
+            [
+                "producttypen",
+                "producttypetranslation"
             ],
             [
                 "producttypen",

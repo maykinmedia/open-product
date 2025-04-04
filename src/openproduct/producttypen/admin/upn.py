@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from reversion_compare.admin import CompareVersionAdmin
+
 from ..models import UniformeProductNaam
 
 
 @admin.register(UniformeProductNaam)
-class UniformeProductNaamAdmin(admin.ModelAdmin):
+class UniformeProductNaamAdmin(CompareVersionAdmin):
     list_display = ("naam", "uri", "is_verwijderd")
     list_filter = ("is_verwijderd",)
     search_fields = ("naam", "uri")

@@ -184,6 +184,11 @@ cssselect==1.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
+diff-match-patch==20241021
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-reversion-compare
 dill==0.3.9
     # via
     #   -c requirements/ci.txt
@@ -217,6 +222,8 @@ django==4.2.17
     #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
+    #   django-reversion
+    #   django-reversion-compare
     #   django-sendfile2
     #   django-sessionprofile
     #   django-setup-configuration
@@ -350,6 +357,15 @@ django-rest-framework-condition==0.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
+django-reversion==5.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-reversion-compare
+django-reversion-compare==0.18.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 django-sendfile2==0.7.1
     # via
     #   -c requirements/ci.txt
@@ -597,7 +613,10 @@ markdown==3.3.6
     #   django-markup
     #   sphinx-markdown-tables
 markdown-it-py==3.0.0
-    # via rich
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   rich
 markupsafe==3.0.2
     # via
     #   -c requirements/ci.txt
@@ -615,7 +634,10 @@ mccabe==0.7.0
     #   flake8
     #   pylint
 mdurl==0.1.2
-    # via markdown-it-py
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   markdown-it-py
 mozilla-django-oidc==4.0.1
     # via
     #   -c requirements/ci.txt
@@ -866,9 +888,12 @@ requests-mock==1.12.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-rich==13.9.4
+rich==14.0.0
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   bump-my-version
+    #   django-reversion-compare
     #   rich-click
 rich-click==1.8.5
     # via bump-my-version

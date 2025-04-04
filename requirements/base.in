@@ -11,6 +11,8 @@ django-markdownx
 django-localflavor
 django-parler
 django-parler-rest
+django-reversion
+django-reversion-compare
 
 django-celery-beat
 flower

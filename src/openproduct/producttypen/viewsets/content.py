@@ -4,6 +4,7 @@ from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ContentElement, ContentLabel
 from openproduct.producttypen.serializers.content import (
     ContentElementSerializer,
@@ -32,6 +33,7 @@ from openproduct.utils.views import TranslatableViewSetMixin
     ),
 )
 class ContentElementViewSet(
+    AuditTrailViewSetMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,

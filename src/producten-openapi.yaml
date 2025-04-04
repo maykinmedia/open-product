@@ -322,10 +322,6 @@ paths:
           description: ''
     post:
       operationId: producten_create
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Maak een PRODUCT aan.
       tags:
       - producten
@@ -402,10 +398,6 @@ paths:
   /producten/{id}/:
     get:
       operationId: producten_retrieve
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Een specifiek PRODUCT opvragen.
       parameters:
       - in: path
@@ -483,10 +475,6 @@ paths:
           description: ''
     put:
       operationId: producten_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een PRODUCT in zijn geheel bij.
       parameters:
       - in: path
@@ -570,10 +558,6 @@ paths:
           description: ''
     patch:
       operationId: producten_partial_update
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Werk een PRODUCT deels bij.
       parameters:
       - in: path
@@ -656,10 +640,6 @@ paths:
           description: ''
     delete:
       operationId: producten_destroy
-      description: |-
-        Add support for audit trails.
-
-        This includes all the CRUD operations.
       summary: Verwijder een PRODUCT.
       parameters:
       - in: path

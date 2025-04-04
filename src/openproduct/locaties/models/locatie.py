@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.models import BaseModel
 from openproduct.utils.validators import validate_phone_number, validate_postal_code
 
@@ -12,22 +14,19 @@ class BaseLocatie(BaseModel):
     )
     email = models.EmailField(
         verbose_name=_("email adres"),
-        null=True,
         blank=True,
     )
     telefoonnummer = models.CharField(
         verbose_name=_("telefoonnummer"),
         blank=True,
-        null=True,
         max_length=15,
         validators=[validate_phone_number],
     )
 
-    straat = models.CharField(_("straat"), null=True, blank=True, max_length=255)
+    straat = models.CharField(_("straat"), blank=True, max_length=255)
     huisnummer = models.CharField(
         _("huisnummer"),
         blank=True,
-        null=True,
         max_length=10,
     )
 
@@ -36,13 +35,11 @@ class BaseLocatie(BaseModel):
         max_length=7,
         validators=[validate_postal_code],
         blank=True,
-        null=True,
     )
     stad = models.CharField(
         _("stad"),
         max_length=255,
         blank=True,
-        null=True,
     )
 
     class Meta:
@@ -54,6 +51,7 @@ class BaseLocatie(BaseModel):
         return f"{self.straat} {self.huisnummer}, {postcode} {self.stad}"
 
 
+@reversion.register()
 class Locatie(BaseLocatie):
     class Meta:
         verbose_name = _("Locatie")

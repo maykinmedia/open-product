@@ -2,9 +2,12 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.models import BaseModel
 
 
+@reversion.register()
 class ExterneCode(BaseModel):
 
     naam = models.CharField(
@@ -33,3 +36,6 @@ class ExterneCode(BaseModel):
         verbose_name = _("externe producttype code")
         verbose_name_plural = _("externe producttype codes")
         unique_together = (("product_type", "naam"),)
+
+    def __str__(self):
+        return f"{self.naam}: {self.code}"

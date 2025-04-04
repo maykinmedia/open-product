@@ -1,12 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.validators import validate_phone_number
 
 from ...utils.models import BaseModel
 from .organisatie import Organisatie
 
 
+@reversion.register(follow=("organisatie",))
 class Contact(BaseModel):
     organisatie = models.ForeignKey(
         Organisatie,

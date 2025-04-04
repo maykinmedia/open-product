@@ -5,6 +5,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status
 from rest_framework.response import Response
 
+from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ProductType, Thema
 from openproduct.producttypen.serializers import ThemaSerializer
 from openproduct.utils.filters import FilterSet
@@ -47,7 +48,7 @@ class ThemaFilterSet(FilterSet):
         summary="Verwijder een THEMA.",
     ),
 )
-class ThemaViewSet(OrderedModelViewSet):
+class ThemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Thema.objects.all()
     serializer_class = ThemaSerializer
     lookup_url_kwarg = "id"

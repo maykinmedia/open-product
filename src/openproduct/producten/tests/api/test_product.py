@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from django.contrib.contenttypes.models import ContentType
 from django.test import override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
@@ -9,7 +10,10 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from reversion.models import Version
 
+from openproduct.logging.constants import Events
+from openproduct.logging.models import TimelineLogProxy
 from openproduct.producten.models import Eigenaar, Product
 from openproduct.producten.tests.factories import EigenaarFactory, ProductFactory
 from openproduct.producttypen.tests.factories import (
@@ -392,6 +396,22 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Eigenaar.objects.count(), 1)
 
+    def test_create_product_creates_log_and_history(self):
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Product.objects.count(), 1)
+
+        product = Product.objects.get()
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product).pk,
+            object_id=product.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.create)
+        self.assertEqual(Version.objects.get_for_object(product).count(), 1)
+
     def test_update_product(self):
         product_type = ProductTypeFactory.create(toegestane_statussen=["verlopen"])
         product = ProductFactory.create(product_type=product_type)
@@ -618,6 +638,23 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(response.data, expected_error)
 
+    def test_update_product_creates_log_and_history(self):
+        product = ProductFactory.create()
+
+        response = self.client.put(self.detail_path(product), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Product.objects.count(), 1)
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product).pk,
+            object_id=product.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.update)
+        # version is not created with factoryboy
+        self.assertEqual(Version.objects.get_for_object(product).count(), 1)
+
     def test_partial_update_product(self):
         product = ProductFactory.create(
             product_type=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
@@ -760,6 +797,20 @@ class TestProduct(BaseApiTestCase):
 
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Product.objects.count(), 0)
+
+    def test_delete_product_creates_log(self):
+        product = ProductFactory.create()
+        response = self.client.delete(self.detail_path(product))
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Product.objects.count(), 0)
+
+        log = TimelineLogProxy.objects.filter(
+            content_type__exact=ContentType.objects.get_for_model(product).pk,
+            object_id=product.pk,
+        ).get()
+
+        self.assertEqual(log.event, Events.delete)
 
     @freeze_time("2025-11-30")
     def test_update_state_and_dates_are_not_checked_when_not_changed(self):

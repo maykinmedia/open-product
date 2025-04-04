@@ -6071,29 +6071,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
       required:
       - id
@@ -6108,29 +6102,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
       required:
       - naam
@@ -6551,29 +6539,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
         code:
           type: string
@@ -6593,29 +6575,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
         code:
           type: string
@@ -6996,29 +6972,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
     PatchedOrganisatieRequest:
       type: object
@@ -7030,29 +7000,23 @@ components:
         email:
           type: string
           format: email
-          nullable: true
           title: Email adres
           maxLength: 254
         telefoonnummer:
           type: string
-          nullable: true
           maxLength: 15
         straat:
           type: string
-          nullable: true
           maxLength: 255
         huisnummer:
           type: string
-          nullable: true
           maxLength: 10
         postcode:
           type: string
-          nullable: true
           pattern: ^[1-9][0-9]{3} [A-Z]{2}$
           maxLength: 7
         stad:
           type: string
-          nullable: true
           maxLength: 255
         code:
           type: string

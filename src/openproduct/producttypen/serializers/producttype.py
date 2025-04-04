@@ -380,8 +380,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         locaties = validated_data.pop("locaties")
         organisaties = validated_data.pop("organisaties")
         contacten = validated_data.pop("contacten")
-        naam = validated_data.pop("naam")
-        samenvatting = validated_data.pop("samenvatting")
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
         zaaktypen = validated_data.pop("zaaktypen", [])
@@ -425,10 +423,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ProcesSerializer,
         )
 
-        product_type.set_current_language("nl")
-        product_type.naam = naam
-        product_type.samenvatting = samenvatting
-
         product_type.add_contact_organisaties()
         return product_type
 
@@ -439,8 +433,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         organisaties = validated_data.pop("organisaties", None)
         contacten = validated_data.pop("contacten", None)
 
-        naam = validated_data.pop("naam", None)
-        samenvatting = validated_data.pop("samenvatting", None)
         externe_codes = validated_data.pop("externe_codes", None)
         parameters = validated_data.pop("parameters", None)
         zaaktypen = validated_data.pop("zaaktypen", None)
@@ -498,12 +490,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
                 [proces | {"product_type": instance.id} for proces in processen],
                 ProcesSerializer,
             )
-
-        instance.set_current_language("nl")
-        if naam:
-            instance.naam = naam
-        if samenvatting:
-            instance.samenvatting = samenvatting
 
         instance.add_contact_organisaties()
         return instance

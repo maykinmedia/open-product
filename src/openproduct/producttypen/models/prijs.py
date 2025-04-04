@@ -5,12 +5,15 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import reversion
+
 from openproduct.utils.models import BaseModel
 
 from .dmn_config import DmnConfig
 from .producttype import ProductType
 
 
+@reversion.register(follow=("product_type", "prijsopties"))
 class Prijs(BaseModel):
     product_type = models.ForeignKey(
         ProductType,
@@ -34,6 +37,7 @@ class Prijs(BaseModel):
         return f"{self.product_type.naam} {self.actief_vanaf}"
 
 
+@reversion.register()
 class PrijsOptie(BaseModel):
     prijs = models.ForeignKey(
         Prijs,
@@ -63,6 +67,7 @@ class PrijsOptie(BaseModel):
         return f"{self.beschrijving} {self.bedrag}"
 
 
+@reversion.register()
 class PrijsRegel(BaseModel):
     beschrijving = models.CharField(
         verbose_name=_("beschrijving"),

@@ -23,6 +23,8 @@ INSTALLED_APPS += [
     "parler",
     "markdownx",
     "django_celery_beat",
+    "reversion",
+    "reversion_compare",
     "openproduct.accounts",
     "openproduct.logging",
     "openproduct.utils",
@@ -46,6 +48,8 @@ MIDDLEWARE.insert(
     MIDDLEWARE.index("django.middleware.common.CommonMiddleware"),
     "django.middleware.locale.LocaleMiddleware",
 )
+
+MIDDLEWARE.append("reversion.middleware.RevisionMiddleware")
 
 #
 # MOZILLA DJANGO OIDC
@@ -117,6 +121,15 @@ ADMIN_INDEX_SHOW_REMAINING_APPS = False
 #
 MARKDOWNX_EDITOR_RESIZABLE = False
 
+
+#
+# reversion_compare
+#
+ADD_REVERSION_ADMIN = True
+REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID = False
+REVERSION_COMPARE_IGNORE_NOT_REGISTERED = False
+
+
 #
 # Django rest framework
 #
@@ -173,13 +186,14 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     "SERVE_INCLUDE_SCHEMA": False,
     "POSTPROCESSING_HOOKS": (
         "drf_spectacular.hooks.postprocess_schema_enums",
-        "openproduct.utils.spectacular_hooks.custom_postprocessing_hook",
+        "openproduct.utils.spectacular.custom_postprocessing_hook",
     ),
     "COMPONENT_SPLIT_REQUEST": True,
     "AUTHENTICATION_WHITELIST": [
         "openproduct.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "GET_LIB_DOC_EXCLUDES": "openproduct.utils.spectacular.get_lib_doc_excludes",
 }
 
 # Subpath (optional)

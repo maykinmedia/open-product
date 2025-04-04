@@ -93,6 +93,7 @@ custom_settings = {
             "name": "schemas",
             "description": "Opvragen en bewerken van JSON SCHEMA'S. (product_type.verbruiksobject_schema, product_type_dataobject_schema)",
         },
+        {"name": "acties", "description": "Opvragen en bewerken van ACTIES."},
     ],
 }
 

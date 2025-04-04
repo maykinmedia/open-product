@@ -3,8 +3,11 @@ from datetime import date
 from django import forms
 from django.contrib import admin
 
+from reversion_compare.admin import CompareVersionAdmin
+
 from openproduct.producttypen.models.validators import validate_prijs_optie_xor_regel
 
+from ...logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 from ..models import Prijs, PrijsOptie
 from ..models.prijs import PrijsRegel
 
@@ -13,6 +16,7 @@ class PrijsOptieInline(admin.TabularInline):
     model = PrijsOptie
     extra = 1
     fields = ("bedrag", "beschrijving")
+    formset = AuditLogInlineformset
 
 
 class PrijsRegelInline(admin.TabularInline):
@@ -20,6 +24,7 @@ class PrijsRegelInline(admin.TabularInline):
     autocomplete_fields = ("dmn_config",)
     extra = 1
     fields = ("dmn_config", "dmn_tabel_id", "beschrijving")
+    formset = AuditLogInlineformset
 
 
 class PrijsAdminForm(forms.ModelForm):
@@ -51,7 +56,7 @@ class PrijsAdminForm(forms.ModelForm):
 
 
 @admin.register(Prijs)
-class PrijsAdmin(admin.ModelAdmin):
+class PrijsAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     model = Prijs
     form = PrijsAdminForm
     inlines = [PrijsOptieInline, PrijsRegelInline]
