@@ -6,7 +6,7 @@ Open Product
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``producten``
 
-Plek voor gemeenten om product-typen en producten te beheren om ze te gebruiken in andere applicaties.
+Plek voor gemeenten om producttypen en producten te beheren om ze te gebruiken in andere applicaties.
 (`English version`_)
 
 Ontwikkeld door `Maykin B.V.`_.
@@ -67,7 +67,7 @@ Ontwikkelaars
 
 |build-status| |coverage| |black| |python-versions|
 
-Deze repository bevat de broncode voor openproduct. Om snel aan de slag
+Deze repository bevat de broncode voor Open Product. Om snel aan de slag
 te gaan, raden we aan om de Docker image te gebruiken. Uiteraard kan je ook
 het project zelf bouwen van de broncode. Zie hiervoor
 `INSTALL.rst <INSTALL.rst>`_.

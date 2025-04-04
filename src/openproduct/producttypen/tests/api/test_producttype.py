@@ -55,7 +55,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.thema = ThemaFactory()
 
         self.data = {
-            "naam": "test-product-type",
+            "naam": "test-producttype",
             "code": "PT=12345",
             "samenvatting": "test",
             "uniforme_product_naam": upn.naam,

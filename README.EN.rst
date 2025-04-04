@@ -66,10 +66,9 @@ See: `All versions and changes <https://github.com/maykinmedia/open-product/blob
 Developers
 ==========
 
-This repository contains the source code for open_producten. To quickly
 |build-status| |coverage| |black| |python-versions|
 
-This repository contains the source code for openproduct. To quickly
+This repository contains the source code for Open Product. To quickly
 get started, we recommend using the Docker image. You can also build the
 project from the source code. For this, please look at
 `INSTALL.rst <INSTALL.rst>`_.
