@@ -34,7 +34,7 @@ Informatiemodel
 API specificatie
 ================
 
-Products
+Producten
 ---------
 
 ==============  ==============  =============================
@@ -44,8 +44,8 @@ latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=htt
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
-Product types
--------------
+Producttypen
+------------
 
 ==============  ==============  =============================
 Versie          Release datum   API specificatie
@@ -60,6 +60,7 @@ Er zijn twee manieren om te authenticeren met de API.
 * OpenId Connect kan worden ingesteld in the Open Product admin -> Configuratie -> OpenID connect configuratie.
 
 
+See: `Alle versies en veranderingen <https://github.com/maykinmedia/open-product/blob/master/CHANGELOG.rst>`_
 
 
 Ontwikkelaars

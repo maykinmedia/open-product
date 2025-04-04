@@ -33,21 +33,21 @@ Information Model
 API specification
 =================
 
-Producten
----------
+Products
+--------
 
 ==============  ==============  =============================
-Versie          Release datum   API specificatie
+Version         Release date    API specification
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
-Producttypen
-------------
+Product types
+-------------
 
 ==============  ==============  =============================
-Versie          Release datum   API specificatie
+Version         Release date    API specification
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
