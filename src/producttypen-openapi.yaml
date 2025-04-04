@@ -1,7 +1,25 @@
 openapi: 3.0.3
 info:
-  title: Open Product API
-  version: 0.0.0
+  title: Producttypen API
+  version: 0.0.1
+  description: |2+
+
+    Een Api voor Producttypen.
+
+    Een Producttype is de definitie van een Product. hierin word alle relevante data opgeslagen zoals informatie teksten bedoeld voor klanten.
+
+    Een Product (zie product api) is de instantie, hierin worden de specifieke gegevens van de instantie opgeslagen zoals bijvoorbeeld de gegevens van de eigenaar.
+
+    Een producttype valt onder een thema. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
+
+    Een producttype kan worden gelinkt één of meerdere locaties, organisaties en/of contacten.
+
+    Daarnaast kunnen de volgende modellen per product worden aangemaakt:
+    - prijzen
+    - links
+
+    Een aantal velden verwachten een lijst/array van bijvoorbeeld producttype_ids. Let op dat als dit veld in een PATCH request wordt meegestuurd de gehele lijst/array zal worden overschreven.
+
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -7713,3 +7731,29 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+servers:
+- url: /producttypen/api/v0
+tags:
+- name: themas
+  description: Opvragen en bewerken van THEMA'S.
+- name: producttypen
+  description: Opvragen en bewerken van PRODUCTTYPEN.
+- name: prijzen
+  description: Opvragen en bewerken van PRIJZEN.
+- name: links
+  description: Opvragen en bewerken van LINKS.
+- name: locaties
+  description: Opvragen en bewerken van LOCATIES.
+- name: organisaties
+  description: Opvragen en bewerken van ORGANISATIES.
+- name: contacten
+  description: Opvragen en bewerken van CONTACTEN.
+- name: content
+  description: Opvragen en bewerken van PRODUCTTYPE CONTENT.
+- name: contentlabels
+  description: Opvragen van CONTENTLABELS.
+- name: schemas
+  description: Opvragen en bewerken van JSON SCHEMA'S. (producttype.verbruiksobject_schema,
+    producttype_dataobject_schema)
+- name: acties
+  description: Opvragen en bewerken van ACTIES.

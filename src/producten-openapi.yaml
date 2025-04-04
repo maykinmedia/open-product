@@ -1,7 +1,33 @@
 openapi: 3.0.3
 info:
-  title: Open Product API
-  version: 0.0.0
+  title: Producten API
+  version: 0.0.1
+  description: |2+
+
+    Een Api voor Producten.
+
+    Een product is de instantie van een Producttype (zie producttypen api), hierin worden de specifieke gegevens van de instantie opgeslagen zoals bijvoorbeeld de gegevens van de eigenaar.
+
+    ### Notificaties
+
+    Deze API publiceert notificaties op het kanaal `producten`.
+
+    **Main resource**
+
+    `product`
+
+
+
+    **Kenmerken**
+
+    * `producttype.id`: uuid van het producttype
+    * `producttype.uniforme_product_naam`: Uniforme product naam gedefinieerd door de overheid.
+    * `producttype.code`: code van het producttype.
+
+    **Resources en acties**
+    - `product`: create, update, destroy
+
+
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -1126,3 +1152,15 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+servers:
+- url: /producten/api/v0
+tags:
+- name: producten
+  description: |-
+    Opvragen en bewerken van PRODUCTEN.
+
+    De status opties van een PRODUCT zijn afhankelijk van de `toegestane_statussen` van het producttype.
+
+    Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet.Op het moment dat deze velden worden gezet moeten deze statussen wel zijn toegestaan op het producttype.
+
+    De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
