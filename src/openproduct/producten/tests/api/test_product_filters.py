@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 
 from openproduct.producten.models.product import PrijsFrequentieChoices
-from openproduct.producten.tests.factories import ProductFactory
+from openproduct.producten.tests.factories import DocumentFactory, ProductFactory
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
@@ -662,3 +662,15 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(response.data["results"][0]["verbruiksobject"]["naam"], "test")
+
+    def test_document_uuid_filter(self):
+        uuid = uuid4()
+
+        DocumentFactory.create(uuid=uuid)
+        DocumentFactory.create()
+
+        response = self.client.get(self.path, {"documenten__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertIn(str(uuid), response.data["results"][0]["documenten"][0]["url"])

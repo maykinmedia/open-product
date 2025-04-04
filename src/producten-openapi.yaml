@@ -89,6 +89,12 @@ paths:
           Meerdere filters kunnen worden toegevoegd door `dataobject_attr` meerdere keren aan het request toe te voegen.
           Bijvoorbeeld: `dataobject_attr=kenteken__exact__AA-111-B&objectdata_attr=zone__exact__B`
       - in: query
+        name: documenten__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van het document.
+      - in: query
         name: eind_datum
         schema:
           type: string
@@ -312,6 +318,8 @@ paths:
                       eigenaren:
                       - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                         bsn: '111222333'
+                      documenten:
+                      - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                       status: gereed
                       prijs: '20.20'
                       frequentie: eenmalig
@@ -387,6 +395,8 @@ paths:
                     eigenaren:
                     - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
+                    documenten:
+                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -465,6 +475,8 @@ paths:
                     eigenaren:
                     - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
+                    documenten:
+                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -548,6 +560,8 @@ paths:
                     eigenaren:
                     - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
+                    documenten:
+                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -630,6 +644,8 @@ paths:
                     eigenaren:
                     - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
+                    documenten:
+                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -785,6 +801,26 @@ components:
         * `eenmalig` - Eenmalig
         * `maandelijks` - Maandelijks
         * `jaarlijks` - Jaarlijks
+    NestedDocument:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar het document.
+      required:
+      - url
+    NestedDocumentRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid naar het document.
+      required:
+      - uuid
     NestedProductType:
       type: object
       properties:
@@ -892,6 +928,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EigenaarRequest'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocumentRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -969,6 +1009,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Eigenaar'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocument'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -1053,6 +1097,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EigenaarRequest'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocumentRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.

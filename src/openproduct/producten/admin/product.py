@@ -16,6 +16,7 @@ from openproduct.producten.models.validators import (
 )
 from openproduct.producttypen.models.producttype import ProductStateChoices, ProductType
 
+from .document import DocumentInline
 from .eigenaar import EigenaarInline
 
 
@@ -115,7 +116,7 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     autocomplete_fields = ("producttype",)
     search_fields = ("producttype__translations__naam",)
     form = ProductAdminForm
-    inlines = (EigenaarInline,)
+    inlines = (EigenaarInline, DocumentInline)
 
     @admin.display(description="Producttype")
     def producttype_name(self, obj):
