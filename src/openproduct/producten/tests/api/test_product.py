@@ -9,14 +9,18 @@ from django.utils.translation import gettext as _
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.test import APIClient
 from reversion.models import Version
 
 from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
-from openproduct.producten.models import Eigenaar, Product
-from openproduct.producten.tests.factories import EigenaarFactory, ProductFactory
+from openproduct.producten.models import Document, Eigenaar, Product
+from openproduct.producten.tests.factories import (
+    DocumentFactory,
+    EigenaarFactory,
+    ProductFactory,
+)
+from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
@@ -40,6 +44,10 @@ class TestProduct(BaseApiTestCase):
             "frequentie": "eenmalig",
             "eigenaren": [{"kvk_nummer": "12345678"}],
         }
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = "https://gemeente-a.zgw.nl/documenten"
+        config.save()
 
     def detail_path(self, product):
         return reverse("product-detail", args=[product.id])
@@ -99,6 +107,7 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
+            "documenten": [],
             "producttype": {
                 "id": str(producttype.id),
                 "code": producttype.code,
@@ -153,6 +162,7 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
+            "documenten": [],
             "producttype": {
                 "id": str(producttype.id),
                 "code": producttype.code,
@@ -179,7 +189,7 @@ class TestProduct(BaseApiTestCase):
 
         response = self.client.post(self.path, data)
 
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["status"], ProductStateChoices.ACTIEF)
 
     @freeze_time("2024-1-1")
@@ -197,7 +207,7 @@ class TestProduct(BaseApiTestCase):
 
         response = self.client.post(self.path, data)
 
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["status"], ProductStateChoices.VERLOPEN)
 
     def test_create_product_with_invalid_verbruiksobject(self):
@@ -271,6 +281,7 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
+            "documenten": [],
             "producttype": {
                 "id": str(producttype.id),
                 "code": producttype.code,
@@ -448,6 +459,66 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(log.event, Events.create)
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
+    def test_create_product_without_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Product.objects.count(), 1)
+
+    def test_create_product_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        data = self.data | {
+            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "documenten": [
+                    ErrorDetail(
+                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_create_product_with_duplicate_document_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "documenten": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "documenten": [
+                    ErrorDetail(
+                        string="Er bestaat al een document met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
     def test_update_product(self):
         producttype = ProductTypeFactory.create(toegestane_statussen=["verlopen"])
         product = ProductFactory.create(producttype=producttype)
@@ -477,7 +548,7 @@ class TestProduct(BaseApiTestCase):
 
         response = self.client.put(self.detail_path(product), data)
 
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["status"], ProductStateChoices.ACTIEF)
 
     @freeze_time("2024-1-1")
@@ -496,7 +567,7 @@ class TestProduct(BaseApiTestCase):
 
         response = self.client.put(self.detail_path(product), data)
 
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["status"], ProductStateChoices.VERLOPEN)
 
     def test_update_product_with_not_allowed_state(self):
@@ -727,6 +798,106 @@ class TestProduct(BaseApiTestCase):
         # version is not created with factoryboy
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
+    def test_update_product_without_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        product = ProductFactory.create()
+
+        response = self.client.put(self.detail_path(product), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Product.objects.count(), 1)
+
+    def test_update_product_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        product = ProductFactory.create()
+
+        data = self.data | {
+            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "documenten": [
+                    ErrorDetail(
+                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_update_product_with_document(self):
+        product = ProductFactory.create()
+
+        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"documenten": documenten}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(
+            response.data["documenten"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_with_document_replacing_existing(self):
+        product = ProductFactory.create()
+
+        DocumentFactory.create(product=product)
+
+        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"documenten": documenten}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(
+            response.data["documenten"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_removing_documenten(self):
+        product = ProductFactory.create()
+        DocumentFactory.create(product=product)
+        DocumentFactory.create(product=product)
+
+        documenten = []
+        data = self.data | {"documenten": documenten}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 0)
+        self.assertEqual(response.data["documenten"], documenten)
+
+    def test_update_product_existing_documenten_are_kept(self):
+        product = ProductFactory.create()
+        DocumentFactory.create(product=product)
+
+        response = self.client.put(self.detail_path(product), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+
     def test_partial_update_product(self):
         product = ProductFactory.create(
             producttype=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
@@ -738,6 +909,119 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Product.objects.count(), 1)
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
+
+    def test_partial_update_product_without_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        product = ProductFactory.create()
+
+        response = self.client.patch(self.detail_path(product), {"prijs": "10"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Product.objects.count(), 1)
+
+    def test_partial_update_product_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        product = ProductFactory.create()
+
+        data = {
+            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "documenten": [
+                    ErrorDetail(
+                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_partial_update_product_with_document(self):
+        product = ProductFactory.create()
+
+        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"documenten": documenten}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(
+            response.data["documenten"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_with_document_replacing_existing(self):
+        product = ProductFactory.create()
+
+        DocumentFactory.create(product=product)
+
+        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"documenten": documenten}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(
+            response.data["documenten"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_removing_documenten(self):
+        product = ProductFactory.create()
+        DocumentFactory.create(product=product)
+        DocumentFactory.create(product=product)
+
+        documenten = []
+        data = {"documenten": documenten}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 0)
+        self.assertEqual(response.data["documenten"], documenten)
+
+    def test_partial_update_product_existing_documenten_are_kept(self):
+        product = ProductFactory.create()
+        DocumentFactory.create(product=product)
+
+        response = self.client.patch(self.detail_path(product), {"prijs": "10"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Document.objects.count(), 1)
+
+    def test_read_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.documenten_url = ""
+        config.save()
+
+        product = ProductFactory.create()
+        document = DocumentFactory(product=product)
+
+        response = self.client.get(self.detail_path(product))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["documenten"], [{"url": f"/{document.uuid}"}])
 
     def test_read_producten(self):
         product1 = ProductFactory.create(producttype=self.producttype)
@@ -772,6 +1056,7 @@ class TestProduct(BaseApiTestCase):
                         "id": str(product1.eigenaren.get().id),
                     }
                 ],
+                "documenten": [],
                 "producttype": {
                     "id": str(self.producttype.id),
                     "code": self.producttype.code,
@@ -805,6 +1090,7 @@ class TestProduct(BaseApiTestCase):
                         "id": str(product2.eigenaren.get().id),
                     }
                 ],
+                "documenten": [],
                 "producttype": {
                     "id": str(self.producttype.id),
                     "code": self.producttype.code,
@@ -850,6 +1136,7 @@ class TestProduct(BaseApiTestCase):
                     "id": str(product.eigenaren.get().id),
                 }
             ],
+            "documenten": [],
             "producttype": {
                 "id": str(producttype.id),
                 "code": producttype.code,

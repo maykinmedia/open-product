@@ -22,5 +22,11 @@ class ExterneVerwijzingConfig(SingletonModel):
         blank=True,
     )
 
+    documenten_url = models.URLField(
+        verbose_name=_("documenten url"),
+        help_text=_("Basis url van documenten."),
+        blank=True,
+    )
+
     class Meta:
         verbose_name = _("Externe verwijzingen configuratie")
