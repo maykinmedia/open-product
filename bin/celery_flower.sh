@@ -1,2 +1,2 @@
 #!/bin/bash
-exec celery --workdir src --app open_producten flower
+exec celery --workdir src --app openproduct flower

@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
 
 env:
-  DJANGO_SETTINGS_MODULE: open_producten.conf.ci
+  DJANGO_SETTINGS_MODULE: openproduct.conf.ci
 
 jobs:
   generate:
@@ -45,7 +45,7 @@ jobs:
       - name: Store generated API specification for later use
         uses: actions/upload-artifact@v4
         with:
-          name: open_producten-oas
+          name: openproduct-oas
           path: src/*-openapi.yaml
           retention-days: 1
 
@@ -64,7 +64,7 @@ jobs:
       - name: Download generated OAS
         uses: actions/download-artifact@v4
         with:
-          name: open_producten-oas
+          name: openproduct-oas
       - name: Check for OAS changes
         run: |
           diff ${{matrix.base_endpoint}}-openapi.yaml src/${{matrix.base_endpoint}}-openapi.yaml
@@ -91,7 +91,7 @@ jobs:
       - name: Download generated OAS
         uses: actions/download-artifact@v4
         with:
-          name: open_producten-oas
+          name: openproduct-oas
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -118,7 +118,7 @@ jobs:
       - name: Download generated OAS
         uses: actions/download-artifact@v4
         with:
-          name: open_producten-oas
+          name: openproduct-oas
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -148,7 +148,7 @@ jobs:
       - name: Download generated OAS
         uses: actions/download-artifact@v4
         with:
-          name: open_producten-oas
+          name: openproduct-oas
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

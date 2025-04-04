@@ -4,7 +4,7 @@
 Performance profiling
 =====================
 
-Since Open Producten emphasizes good performance, we need tooling to measure performance.
+Since Open Product emphasizes good performance, we need tooling to measure performance.
 There is no point in optimizing without knowing what you're optimizing for. Every
 optimization should be preceded by a base-line profiling run, which provides the
 information on where to optimize.

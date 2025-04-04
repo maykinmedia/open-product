@@ -15,11 +15,11 @@ In general, we advise to make use of `NTP`_ services for both client and server.
 possible, both client and server should use the *same* services so that their clocks are
 in sync.
 
-Where Open Producten deals with time-aspects
+Where Open Product deals with time-aspects
 ============================================
 
-Open Producten deals with time-based validations in a number of places, of which you can
-configure how Open Producten deals with them for a subset of these places.
+Open Product deals with time-based validations in a number of places, of which you can
+configure how Open Product deals with them for a subset of these places.
 
 API resource validation
 -----------------------

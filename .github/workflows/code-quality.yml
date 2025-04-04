@@ -102,7 +102,7 @@ jobs:
             --check \
             --dry-run
         env:
-          DJANGO_SETTINGS_MODULE: "open_producten.conf.ci"
+          DJANGO_SETTINGS_MODULE: "openproduct.conf.ci"
           DEBUG: 'true'
           SECRET_KEY: dummy
           DB_USER: postgres

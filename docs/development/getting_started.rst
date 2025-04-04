@@ -43,10 +43,10 @@ development machine.
 
    .. code-block:: bash
 
-       $ git clone git@github.com:maykinmedia/open-producten.git
-       $ cd open-producten
+       $ git clone git@github.com:maykinmedia/open-product.git
+       $ cd open-product
 
-3. At this point you can already built the Docker image and run Open Producten.
+3. At this point you can already built the Docker image and run Open Product.
    You can skip this if you don't want that.
 
    .. code-block:: bash
@@ -89,7 +89,7 @@ development machine.
 
 
 **Note:** If you are making local, machine specific, changes, add them to
-``src/open_producten/conf/local.py``. You can also set certain common
+``src/openproduct/conf/local.py``. You can also set certain common
 variables in a local ``.env`` file. You can base these files on the
 example files included in the same directory.
 
@@ -102,7 +102,7 @@ When updating an existing installation:
 
    .. code-block:: bash
 
-       $ cd open-producten
+       $ cd open-product
        $ source env/bin/activate
 
 2. Update the code and libraries:
@@ -126,20 +126,20 @@ To run the test suite:
 
 .. code-block:: bash
 
-    $ python src/manage.py test open_producten
+    $ python src/manage.py test openproduct
 
 Configuration via environment variables
 ---------------------------------------
 
 A number of common settings/configurations can be modified by setting
 environment variables, add them to your ``.env`` file or persist them in
-``src/open_producten/conf/local.py``.
+``src/openproduct/conf/local.py``.
 
 * ``SECRET_KEY``: the secret key to use. A default is set in ``dev.py``
 
-* ``DB_NAME``: name of the database for the project. Defaults to ``open_producten``.
-* ``DB_USER``: username to connect to the database with. Defaults to ``open_producten``.
-* ``DB_PASSWORD``: password to use to connect to the database. Defaults to ``open_producten``.
+* ``DB_NAME``: name of the database for the project. Defaults to ``openproduct``.
+* ``DB_USER``: username to connect to the database with. Defaults to ``openproduct``.
+* ``DB_PASSWORD``: password to use to connect to the database. Defaults to ``openproduct``.
 * ``DB_HOST``: database host. Defaults to ``localhost``
 * ``DB_PORT``: database port. Defaults to ``5432``.
 
@@ -151,7 +151,7 @@ environment variables, add them to your ``.env`` file or persist them in
 Settings
 ========
 
-All settings for the project can be found in `src/open_producten/conf``.
+All settings for the project can be found in `src/openproduct/conf``.
 The file ``local.py`` overwrites settings from the base configuration,
 and is only loaded for the dev settings.
 

@@ -1,19 +1,19 @@
 .. _security:
 
-Open Producten's security policies
+Open Product's security policies
 ==================================
 
-Open Producten's development team is strongly committed to responsible reporting
+Open Product's development team is strongly committed to responsible reporting
 and disclosure of security-related issues. As such, we’ve adopted and follow a
 set of policies which conform to that ideal and are geared toward allowing us to
-deliver timely security updates to the official distribution of Open Producten.
+deliver timely security updates to the official distribution of Open Product.
 
 Reporting security issues
 -------------------------
 
 **Short version: please report security issues by emailing security@maykinmedia.nl.**
 
-If you discover security issues in Open Producten or related projects under the same
+If you discover security issues in Open Product or related projects under the same
 organization, we request you to disclose these in a *responsible* way by e-mailing to
 security@maykinmedia.nl.
 
@@ -31,7 +31,7 @@ you may receive further followup emails.
 Timeline of the process
 -----------------------
 
-Open Producten has a technical steering group, of which all members are involved in the
+Open Product has a technical steering group, of which all members are involved in the
 handling of security issues.
 
 1. The recipients of the report first validate if there is indeed a (possible) issue.

@@ -4,17 +4,17 @@
 OpenID Connect configureren
 ===========================
 
-Open Producten ondersteunt Single Sign On (SSO) via het OpenID Connect protocol (OIDC) voor de beheerinterface.
+Open Product ondersteunt Single Sign On (SSO) via het OpenID Connect protocol (OIDC) voor de beheerinterface.
 
-Gebruikers kunnen op die manier inloggen op Open Producten met hun account bij de OpenID Connect provider. In deze
+Gebruikers kunnen op die manier inloggen op Open Product met hun account bij de OpenID Connect provider. In deze
 flow:
 
 1. Klikt een gebruiker op het inlogscherm op *Inloggen met OIDC*
 2. De gebruiker wordt naar de omgeving van de OpenID Connect provider geleid (bijv. Keycloak) waar ze inloggen met gebruikersnaam
    en wachtwoord (en eventuele Multi Factor Authentication)
-3. De OIDC omgeving stuurt de gebruiker terug naar Open Producten (waar de account aangemaakt
+3. De OIDC omgeving stuurt de gebruiker terug naar Open Product (waar de account aangemaakt
    wordt indien die nog niet bestaat)
-4. Een beheerder in Open Producten kent de juiste groepen toe aan deze gebruiker als deze
+4. Een beheerder in Open Product kent de juiste groepen toe aan deze gebruiker als deze
    voor het eerst inlogt.
 
 .. note:: Standaard krijgen deze gebruikers **geen** toegang tot de beheerinterface. Deze
@@ -31,8 +31,8 @@ Configureren van OIDC zelf
 Contacteer de IAM beheerders in je organisatie om een *Client* aan te
 maken in de omgeving van de OpenID Connect provider.
 
-Voor de **Redirect URI** vul je ``https://open-producten.gemeente.nl/oidc/callback`` in,
-waarbij je ``open-producten.gemeente.nl`` vervangt door het relevante domein.
+Voor de **Redirect URI** vul je ``https://open-product.gemeente.nl/oidc/callback`` in,
+waarbij je ``open-product.gemeente.nl`` vervangt door het relevante domein.
 
 Aan het eind van dit proces moet je de volgende gegevens hebben (on premise):
 
@@ -40,7 +40,7 @@ Aan het eind van dit proces moet je de volgende gegevens hebben (on premise):
 * Client ID, bijvoorbeeld ``a7d14516-8b20-418f-b34e-25f53c930948``
 * Client secret, bijvoorbeeld ``97d663a9-3624-4930-90c7-2b90635bd990``
 
-Configureren van OIDC in Open Producten
+Configureren van OIDC in Open Product
 =======================================
 
 Zorg dat je de volgende :ref:`gegevens <manual_oidc_appgroup>` hebt:
@@ -72,7 +72,7 @@ deze kunnen automatisch bepaald worden aan de hand van het discovery endpoint
 Klik tot slot rechtsonder op **Opslaan**.
 
 Je kan vervolgens het makkelijkst testen of alles werkt door in een incognitoscherm
-naar https://open-producten.gemeente.nl/admin/ te navigeren en op *Inloggen met OIDC* te
+naar https://open-product.gemeente.nl/admin/ te navigeren en op *Inloggen met OIDC* te
 klikken.
 
 .. _manual_oidc_providers:

@@ -4,7 +4,7 @@
 Install using Docker Compose
 ============================
 
-This installation is meant for people who want to just try out Open Producten on
+This installation is meant for people who want to just try out Open Product on
 their own machine.
 
 A `Docker Compose`_ file is available to get the app up and running in minutes.
@@ -17,7 +17,7 @@ for anything other than testing. For example, it includes:
   ``POSTGRES_HOST_AUTH_METHOD=trust``. This lets us connect to the database
   without using a password.
 * Default admin credentials
-* Runs against the latest version of Open Producten, which may contain bugs.
+* Runs against the latest version of Open Product, which may contain bugs.
 
 
 Prerequisites
@@ -42,9 +42,9 @@ Getting started
 
    .. code:: bash
 
-      $ wget https://github.com/maykinmedia/open-producten/archive/refs/heads/master.zip -O master.zip
+      $ wget https://github.com/maykinmedia/open-product/archive/refs/heads/master.zip -O master.zip
       $ unzip master.zip
-      $ cd open-producten-master
+      $ cd open-product-master
 
 2. Start the docker containers with ``docker compose``. If you want to run the
    containers in the background, add the ``-d`` option to the command below:
@@ -62,9 +62,9 @@ Getting started
       $ docker compose up
 
       [+] Running 5/5
-       ⠿ Network open-producten-main_default    Created      0.0s
-       ⠿ Container open-producten-main-db-1     Created      0.2s
-       ⠿ Container open-producten-main-web-1    Created      0.1s
+       ⠿ Network open-product-main_default    Created      0.0s
+       ⠿ Container open-product-main-db-1     Created      0.2s
+       ⠿ Container open-product-main-web-1    Created      0.1s
 
       ...
 

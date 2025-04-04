@@ -40,9 +40,9 @@ local.py
 /.env
 
 # Static files
-src/open_producten/static/bundles/
-src/open_producten/static/wysimark/wysimark.js
-src/open_producten/static/wysimark/index*
-src/open_producten/fonts/
+src/openproduct/static/bundles/
+src/openproduct/static/wysimark/wysimark.js
+src/openproduct/static/wysimark/index*
+src/openproduct/fonts/
 
 tmp/*

@@ -32,7 +32,7 @@ exec uwsgi \
     --http :$uwsgi_port \
     --http-keepalive \
     --manage-script-name \
-    --mount $mountpoint=open_producten.wsgi:application \
+    --mount $mountpoint=openproduct.wsgi:application \
     --static-map /static=/app/static \
     --static-map /media=/app/media  \
     --chdir src \

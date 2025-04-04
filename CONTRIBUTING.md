@@ -70,12 +70,12 @@ All pull requests will be reviewed by a project member before they are merged
 to a release branch.
 
 
-[issues]: https://github.com/maykinmedia/open-producten-issues
+[issues]: https://github.com/maykinmedia/open-product-issues
 
-[new_issue]: https://github.com/maykinmedia/open-producten/issues/new/choose
+[new_issue]: https://github.com/maykinmedia/open-product/issues/new/choose
 
 [mailinglist]: t.b.d.
 
 [Standard_for_Public_Code]: https://standard.publiccode.net
 
-[repository]: https://github.com/maykinmedia/open-producten
+[repository]: https://github.com/maykinmedia/open-product

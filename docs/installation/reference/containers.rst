@@ -3,13 +3,13 @@
 Container configuration
 =======================
 
-Open Producten is typically deployed as containers. There are some implementation details
+Open Product is typically deployed as containers. There are some implementation details
 relevant to properly configure this in your infrastructure.
 
 Permissions
 -----------
 
-Open Producten containers do not run as the root user, but instead drop privileges.
+Open Product containers do not run as the root user, but instead drop privileges.
 
 
 * Container user: ``maykin``, with ``UID: 1000``

@@ -3,7 +3,7 @@
 Command Line Interface (CLI)
 ============================
 
-Open Producten ships with a command line interface accessible inside of the containers.
+Open Product ships with a command line interface accessible inside of the containers.
 
 To get more information about a command, you can run:
 

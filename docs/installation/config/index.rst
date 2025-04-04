@@ -6,5 +6,5 @@ Configuration
 .. toctree::
    :maxdepth: 1
 
-   openproducten_config
+   openproduct_config
    env_config

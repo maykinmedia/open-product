@@ -3,7 +3,7 @@
 Development
 ===========
 
-Open Producten is :ref:`introduction_open-source` software. We'd love to have you
+Open Product is :ref:`introduction_open-source` software. We'd love to have you
 contribute!
 
 .. toctree::
@@ -17,5 +17,5 @@ contribute!
    performance/index
    howtos/index
 
-If you're looking for developer documentation as an Open Producten *client*, head over to
+If you're looking for developer documentation as an Open Product *client*, head over to
 :ref:`client-development`!

@@ -81,7 +81,7 @@ COPY --from=backend-build /usr/local/bin/celery /usr/local/bin/celery
 COPY --from=backend-build /app/src/ /app/src/
 
 # copy frontend build statics
-COPY --from=frontend-build /app/src/open_producten/static /app/src/open_producten/static
+COPY --from=frontend-build /app/src/openproduct/static /app/src/openproduct/static
 
 # copy source code
 COPY ./src /app/src
@@ -96,14 +96,14 @@ ARG COMMIT_HASH RELEASE=latest
 ENV RELEASE=${RELEASE} \
     GIT_SHA=${COMMIT_HASH} \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=open_producten.conf.docker
+    DJANGO_SETTINGS_MODULE=openproduct.conf.docker
 
 ARG SECRET_KEY=dummy
 
 LABEL org.label-schema.vcs-ref=$COMMIT_HASH \
-      org.label-schema.vcs-url="https://github.com/maykinmedia/open-producten" \
+      org.label-schema.vcs-url="https://github.com/maykinmedia/open-product" \
       org.label-schema.version=$RELEASE \
-      org.label-schema.name="open-producten"
+      org.label-schema.name="open-product"
 
 # Run collectstatic and compilemessages, so the result is already included in
 # the image

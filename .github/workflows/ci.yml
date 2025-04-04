@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: maykinmedia/open-producten
-  DJANGO_SETTINGS_MODULE: open_producten.conf.ci
+  IMAGE_NAME: maykinmedia/open-product
+  DJANGO_SETTINGS_MODULE: openproduct.conf.ci
   DOCKER_BUILDKIT: '1'
 
 jobs:

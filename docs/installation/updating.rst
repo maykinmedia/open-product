@@ -1,10 +1,10 @@
 .. _installation_updating:
 
-Updating an Open Producten installation
+Updating an Open Product installation
 =======================================
 
-Software receives new features and bugfixes all the time, and Open Producten is no different.
-At some point, you'll want to update to a newer version of Open Producten - be it a patch
+Software receives new features and bugfixes all the time, and Open Product is no different.
+At some point, you'll want to update to a newer version of Open Product - be it a patch
 version with bugfixes or a feature release to upgrade to.
 
 Before you actually upgrade, we strongly advise you to take a look at the

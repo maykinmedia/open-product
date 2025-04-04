@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Open Producten API
+  title: Open Product API
   version: 0.0.0
   description: |2
 
-    Open Producten is an API to manage product types and products.
+    Open Product is an API to manage product types and products.
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -472,7 +472,7 @@ paths:
                     previous: http://api.example.org/accounts/?page=2
                     results:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      bestand: https://gemeente.open-producten.nl/media/test.txt
+                      bestand: https://gemeente.open-product.nl/media/test.txt
                       product_type_id: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
@@ -528,7 +528,7 @@ paths:
                 BestandResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    bestand: https://gemeente.open-producten.nl/media/test.txt
+                    bestand: https://gemeente.open-product.nl/media/test.txt
                     product_type_id: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
@@ -581,7 +581,7 @@ paths:
                 BestandResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    bestand: https://gemeente.open-producten.nl/media/test.txt
+                    bestand: https://gemeente.open-product.nl/media/test.txt
                     product_type_id: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
@@ -645,7 +645,7 @@ paths:
                 BestandResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    bestand: https://gemeente.open-producten.nl/media/test.txt
+                    bestand: https://gemeente.open-product.nl/media/test.txt
                     product_type_id: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
@@ -708,7 +708,7 @@ paths:
                 BestandResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    bestand: https://gemeente.open-producten.nl/media/test.txt
+                    bestand: https://gemeente.open-product.nl/media/test.txt
                     product_type_id: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
@@ -1760,8 +1760,8 @@ paths:
                     results:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                      naam: Open Producten
-                      url: https://github.com/maykinmedia/open-producten
+                      naam: Open Product
+                      url: https://github.com/maykinmedia/open-product
                   summary: link response
           description: ''
         '400':
@@ -1800,8 +1800,8 @@ paths:
               LinkRequest:
                 value:
                   product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                  naam: Open Producten
-                  url: https://github.com/maykinmedia/open-producten
+                  naam: Open Product
+                  url: https://github.com/maykinmedia/open-product
                 summary: link request
         required: true
       security:
@@ -1818,8 +1818,8 @@ paths:
                   value:
                     id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                    naam: Open Producten
-                    url: https://github.com/maykinmedia/open-producten
+                    naam: Open Product
+                    url: https://github.com/maykinmedia/open-product
                   summary: link response
           description: ''
         '400':
@@ -1872,8 +1872,8 @@ paths:
                   value:
                     id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                    naam: Open Producten
-                    url: https://github.com/maykinmedia/open-producten
+                    naam: Open Product
+                    url: https://github.com/maykinmedia/open-product
                   summary: link response
           description: ''
         '400':
@@ -1920,8 +1920,8 @@ paths:
               LinkRequest:
                 value:
                   product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                  naam: Open Producten
-                  url: https://github.com/maykinmedia/open-producten
+                  naam: Open Product
+                  url: https://github.com/maykinmedia/open-product
                 summary: link request
         required: true
       security:
@@ -1938,8 +1938,8 @@ paths:
                   value:
                     id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                    naam: Open Producten
-                    url: https://github.com/maykinmedia/open-producten
+                    naam: Open Product
+                    url: https://github.com/maykinmedia/open-product
                   summary: link response
           description: ''
         '400':
@@ -1986,8 +1986,8 @@ paths:
               LinkRequest:
                 value:
                   product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                  naam: Open Producten
-                  url: https://github.com/maykinmedia/open-producten
+                  naam: Open Product
+                  url: https://github.com/maykinmedia/open-product
                 summary: link request
       security:
       - jwtAuth: []
@@ -2003,8 +2003,8 @@ paths:
                   value:
                     id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     product_type_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
-                    naam: Open Producten
-                    url: https://github.com/maykinmedia/open-producten
+                    naam: Open Product
+                    url: https://github.com/maykinmedia/open-product
                   summary: link response
           description: ''
         '400':
@@ -3663,15 +3663,15 @@ paths:
                         actief_vanaf: '2019-08-24'
                       links:
                       - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Open Producten
-                        url: https://github.com/maykinmedia/open-producten
+                        naam: Open Product
+                        url: https://github.com/maykinmedia/open-product
                       acties:
                       - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeervergunning opzegging
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       bestanden:
                       - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                        bestand: https://gemeente.open-producten.nl/media/test.txt
+                        bestand: https://gemeente.open-product.nl/media/test.txt
                       naam: Parkeervergunning
                       samenvatting: korte samenvatting...
                       taal: nl
@@ -3857,15 +3857,15 @@ paths:
                       actief_vanaf: '2019-08-24'
                     links:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Open Producten
-                      url: https://github.com/maykinmedia/open-producten
+                      naam: Open Product
+                      url: https://github.com/maykinmedia/open-product
                     acties:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      bestand: https://gemeente.open-producten.nl/media/test.txt
+                      bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
                     taal: nl
@@ -4015,15 +4015,15 @@ paths:
                       actief_vanaf: '2019-08-24'
                     links:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Open Producten
-                      url: https://github.com/maykinmedia/open-producten
+                      naam: Open Product
+                      url: https://github.com/maykinmedia/open-product
                     acties:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      bestand: https://gemeente.open-producten.nl/media/test.txt
+                      bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
                     taal: nl
@@ -4217,15 +4217,15 @@ paths:
                       actief_vanaf: '2019-08-24'
                     links:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Open Producten
-                      url: https://github.com/maykinmedia/open-producten
+                      naam: Open Product
+                      url: https://github.com/maykinmedia/open-product
                     acties:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      bestand: https://gemeente.open-producten.nl/media/test.txt
+                      bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
                     taal: nl
@@ -4420,15 +4420,15 @@ paths:
                       actief_vanaf: '2019-08-24'
                     links:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Open Producten
-                      url: https://github.com/maykinmedia/open-producten
+                      naam: Open Product
+                      url: https://github.com/maykinmedia/open-product
                     acties:
                     - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      bestand: https://gemeente.open-producten.nl/media/test.txt
+                      bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
                     taal: nl

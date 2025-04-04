@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Open Producten API
+  title: Open Product API
   version: 0.0.0
   description: |2
 
-    Open Producten is an API to manage product types and products.
+    Open Product is an API to manage product types and products.
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -269,7 +269,7 @@ paths:
                     previous: http://api.example.org/accounts/?page=2
                     results:
                     - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                      url: https://gemeente.open-producten.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                      url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       start_datum: '2024-12-01'
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -348,7 +348,7 @@ paths:
                 ProductResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    url: https://gemeente.open-producten.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -430,7 +430,7 @@ paths:
                 ProductResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    url: https://gemeente.open-producten.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -517,7 +517,7 @@ paths:
                 ProductResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    url: https://gemeente.open-producten.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -603,7 +603,7 @@ paths:
                 ProductResponse:
                   value:
                     id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
-                    url: https://gemeente.open-producten.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'

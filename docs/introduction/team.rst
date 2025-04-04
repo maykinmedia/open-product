@@ -1,9 +1,9 @@
-Who's behind Open Producten?
+Who's behind Open Product?
 ============================
 
 
 .. TODO:
-    The Open Producten project was initiated by:
+    The Open Product project was initiated by:
 
     *
 

@@ -3,10 +3,10 @@
 Cross-Origin Resource Sharing (CORS)
 ====================================
 
-Some clients develop against Open Producten using single-page-application technology that
+Some clients develop against Open Product using single-page-application technology that
 runs completely in the browser, such as React, Angular or other frameworks.
 
-Open Producten must be deployed with an appropriate CORS-configuration for this.
+Open Product must be deployed with an appropriate CORS-configuration for this.
 
 .. note:: We always recommend using an API gateway/own backend to communicate with Open
    Producten. It's simpler because you don't have to deal with CORS, and there's less risk
@@ -17,16 +17,16 @@ Production-grade settings
 -------------------------
 
 In production-like environments, we recommend using an explicit allow-list for the
-trusted origins. This requires deploying Open Producten with
+trusted origins. This requires deploying Open Product with
 ``CORS_ALLOWED_ORIGINS=https://my-app.example.com``, where ``https://my-app.example.com``
 is the domain where the application is deployed.
 
 Development/experimental configuration
 --------------------------------------
 
-If you're running Open Producten locally or on an environment with dummy data for
+If you're running Open Product locally or on an environment with dummy data for
 development purposes, you can grant CORS access to every possible client using
-``CORS_ALLOW_ALL_ORIGINS=True`` in the Open Producten deployment.
+``CORS_ALLOW_ALL_ORIGINS=True`` in the Open Product deployment.
 
 Separation of administrative interface and API
 ----------------------------------------------
