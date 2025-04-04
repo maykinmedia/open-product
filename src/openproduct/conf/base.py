@@ -193,7 +193,7 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
         "openproduct.utils.oidc_drf_middleware.OIDCAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
-    "GET_LIB_DOC_EXCLUDES": "open_producten.utils.spectacular.get_lib_doc_excludes",
+    "GET_LIB_DOC_EXCLUDES": "openproduct.utils.spectacular.get_lib_doc_excludes",
 }
 
 # Subpath (optional)

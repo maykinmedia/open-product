@@ -27,6 +27,10 @@ def model_to_dict(instance):
 
     for obj in opts.related_objects:
         manager = getattr(instance, obj.related_name, None)
+
+        if manager is None:
+            continue
+
         data[obj.related_name] = [
             model_to_dict(instance) for instance in manager.iterator()
         ]
