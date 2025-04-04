@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.urls import reverse, reverse_lazy
 
 from freezegun import freeze_time
@@ -10,8 +12,11 @@ from open_producten.producttypen.tests.factories import (
     ExterneCodeFactory,
     JsonSchemaFactory,
     ParameterFactory,
+    ProcesFactory,
     ProductTypeFactory,
     UniformeProductNaamFactory,
+    VerzoekTypeFactory,
+    ZaakTypeFactory,
 )
 from open_producten.utils.tests.cases import BaseApiTestCase
 
@@ -509,3 +514,39 @@ class TestProductTypeFilters(BaseApiTestCase):
             response.data["results"][0]["verbruiksobject_schema"]["naam"],
             "parkeer-verbruik-schema",
         )
+
+    def test_zaaktype_uuid_filter(self):
+        uuid = uuid4()
+
+        ZaakTypeFactory.create(uuid=uuid)
+        ZaakTypeFactory.create()
+
+        response = self.client.get(self.path, {"zaaktypen__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertIn(str(uuid), response.data["results"][0]["zaaktypen"][0]["url"])
+
+    def test_verzoektype_uuid_filter(self):
+        uuid = uuid4()
+
+        VerzoekTypeFactory.create(uuid=uuid)
+        VerzoekTypeFactory.create()
+
+        response = self.client.get(self.path, {"verzoektypen__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertIn(str(uuid), response.data["results"][0]["verzoektypen"][0]["url"])
+
+    def test_proces_uuid_filter(self):
+        uuid = uuid4()
+
+        ProcesFactory.create(uuid=uuid)
+        ProcesFactory.create()
+
+        response = self.client.get(self.path, {"processen__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertIn(str(uuid), response.data["results"][0]["processen"][0]["url"])

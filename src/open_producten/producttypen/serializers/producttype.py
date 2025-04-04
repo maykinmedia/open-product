@@ -20,6 +20,7 @@ from open_producten.locaties.serializers import (
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models.validators import check_externe_verwijzing_config_url
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -27,6 +28,9 @@ from .externe_code import ExterneCodeSerializer, NestedExterneCodeSerializer
 from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
+from .proces import NestedProcesSerializer, ProcesSerializer
+from .verzoektype import NestedVerzoekTypeSerializer, VerzoekTypeSerializer
+from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
 
 class NestedThemaSerializer(serializers.ModelSerializer):
@@ -150,6 +154,21 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "parameters": [
                     {"naam": "doelgroep", "waarde": "inwoners"},
                 ],
+                "zaaktypen": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "verzoektypen": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "processen": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
                 "verbruiksobject_schema": {
                     "naam": "verbruik_schema",
                     "schema": {
@@ -198,6 +217,9 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "parameters": [
                     {"naam": "doelgroep", "waarde": "inwoners"},
                 ],
+                "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
                 "verbruiksobject_schema_naam": "verbruik_schema",
                 "dataobject_schema": "data_schema",
             },
@@ -293,6 +315,9 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     externe_codes = NestedExterneCodeSerializer(many=True, required=False)
     parameters = NestedParameterSerializer(many=True, required=False)
+    zaaktypen = NestedZaakTypeSerializer(many=True, required=False)
+    verzoektypen = NestedVerzoekTypeSerializer(many=True, required=False)
+    processen = NestedProcesSerializer(many=True, required=False)
 
     def validate_externe_codes(self, externe_codes: list[dict]):
         return validate_key_value_model_keys(
@@ -306,6 +331,33 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             parameters,
             "naam",
             _("Er bestaat al een parameter met de naam {} voor dit ProductType."),
+        )
+
+    def validate_zaaktypen(self, zaaktypen: list[dict]):
+        check_externe_verwijzing_config_url("zaaktypen_url")
+
+        return validate_key_value_model_keys(
+            zaaktypen,
+            "uuid",
+            _("Er bestaat al een zaaktype met de uuid {} voor dit ProductType."),
+        )
+
+    def validate_verzoektypen(self, verzoektypen: list[dict]):
+        check_externe_verwijzing_config_url("verzoektypen_url")
+
+        return validate_key_value_model_keys(
+            verzoektypen,
+            "uuid",
+            _("Er bestaat al een verzoektype met de uuid {} voor dit ProductType."),
+        )
+
+    def validate_processen(self, processen: list[dict]):
+        check_externe_verwijzing_config_url("processen_url")
+
+        return validate_key_value_model_keys(
+            processen,
+            "uuid",
+            _("Er bestaat al een proces met de uuid {} voor dit ProductType."),
         )
 
     class Meta:
@@ -332,6 +384,9 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         samenvatting = validated_data.pop("samenvatting")
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
+        zaaktypen = validated_data.pop("zaaktypen", [])
+        verzoektypen = validated_data.pop("verzoektypen", [])
+        processen = validated_data.pop("processen", [])
 
         product_type = ProductType.objects.create(**validated_data)
         product_type.themas.set(themas)
@@ -352,6 +407,24 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ParameterSerializer,
         )
 
+        set_nested_serializer(
+            [zaaktype | {"product_type": product_type.id} for zaaktype in zaaktypen],
+            ZaakTypeSerializer,
+        )
+
+        set_nested_serializer(
+            [
+                verzoektype | {"product_type": product_type.id}
+                for verzoektype in verzoektypen
+            ],
+            VerzoekTypeSerializer,
+        )
+
+        set_nested_serializer(
+            [proces | {"product_type": product_type.id} for proces in processen],
+            ProcesSerializer,
+        )
+
         product_type.set_current_language("nl")
         product_type.naam = naam
         product_type.samenvatting = samenvatting
@@ -370,6 +443,9 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         samenvatting = validated_data.pop("samenvatting", None)
         externe_codes = validated_data.pop("externe_codes", None)
         parameters = validated_data.pop("parameters", None)
+        zaaktypen = validated_data.pop("zaaktypen", None)
+        verzoektypen = validated_data.pop("verzoektypen", None)
+        processen = validated_data.pop("processen", None)
 
         instance = super().update(instance, validated_data)
 
@@ -397,6 +473,30 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             set_nested_serializer(
                 [parameter | {"product_type": instance.id} for parameter in parameters],
                 ParameterSerializer,
+            )
+
+        if zaaktypen is not None:
+            instance.zaaktypen.all().delete()
+            set_nested_serializer(
+                [zaaktype | {"product_type": instance.id} for zaaktype in zaaktypen],
+                ZaakTypeSerializer,
+            )
+
+        if verzoektypen is not None:
+            instance.verzoektypen.all().delete()
+            set_nested_serializer(
+                [
+                    verzoektype | {"product_type": instance.id}
+                    for verzoektype in verzoektypen
+                ],
+                VerzoekTypeSerializer,
+            )
+
+        if processen is not None:
+            instance.processen.all().delete()
+            set_nested_serializer(
+                [proces | {"product_type": instance.id} for proces in processen],
+                ProcesSerializer,
             )
 
         instance.set_current_language("nl")

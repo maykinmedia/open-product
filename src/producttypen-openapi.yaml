@@ -3507,6 +3507,12 @@ paths:
           type: string
         description: Producttype parameters. [naam:waarde]
       - in: query
+        name: processen__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van het proces.
+      - in: query
         name: toegestane_statussen
         schema:
           type: array
@@ -3572,6 +3578,18 @@ paths:
         schema:
           type: string
         description: Naam van het json schema.
+      - in: query
+        name: verzoektypen__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van het verzoektype.
+      - in: query
+        name: zaaktypen__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van het zaaktype.
       tags:
       - producttypen
       security:
@@ -3665,6 +3683,12 @@ paths:
                       parameters:
                       - naam: doelgroep
                         waarde: inwoners
+                      zaaktypen:
+                      - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                      verzoektypen:
+                      - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                      processen:
+                      - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                       verbruiksobject_schema:
                         naam: verbruik_schema
                         schema:
@@ -3756,6 +3780,12 @@ paths:
                   parameters:
                   - naam: doelgroep
                     waarde: inwoners
+                  zaaktypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  verzoektypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  processen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema: data_schema
                 summary: product type request
@@ -3847,6 +3877,12 @@ paths:
                     parameters:
                     - naam: doelgroep
                       waarde: inwoners
+                    zaaktypen:
+                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    verzoektypen:
+                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    processen:
+                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -3999,6 +4035,12 @@ paths:
                     parameters:
                     - naam: doelgroep
                       waarde: inwoners
+                    zaaktypen:
+                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    verzoektypen:
+                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    processen:
+                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -4098,6 +4140,12 @@ paths:
                   parameters:
                   - naam: doelgroep
                     waarde: inwoners
+                  zaaktypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  verzoektypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  processen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema: data_schema
                 summary: product type request
@@ -4189,6 +4237,12 @@ paths:
                     parameters:
                     - naam: doelgroep
                       waarde: inwoners
+                    zaaktypen:
+                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    verzoektypen:
+                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    processen:
+                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -4290,6 +4344,12 @@ paths:
                   parameters:
                   - naam: doelgroep
                     waarde: inwoners
+                  zaaktypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  verzoektypen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  processen:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema: data_schema
                 summary: product type request
@@ -4380,6 +4440,12 @@ paths:
                     parameters:
                     - naam: doelgroep
                       waarde: inwoners
+                    zaaktypen:
+                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    verzoektypen:
+                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    processen:
+                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -6281,6 +6347,26 @@ components:
           description: De datum vanaf wanneer de prijs actief is.
       required:
       - actief_vanaf
+    NestedProces:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar het proces.
+      required:
+      - url
+    NestedProcesRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid naar het proces.
+      required:
+      - uuid
     NestedProductType:
       type: object
       properties:
@@ -6412,6 +6498,46 @@ components:
           description: Het hoofd thema van het thema.
       required:
       - naam
+    NestedVerzoekType:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar het verzoektype.
+      required:
+      - url
+    NestedVerzoekTypeRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid naar het verzoektype.
+      required:
+      - uuid
+    NestedZaakType:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar het zaaktype.
+      required:
+      - url
+    NestedZaakTypeRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid naar het zaaktype.
+      required:
+      - uuid
     Organisatie:
       type: object
       properties:
@@ -7017,6 +7143,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProcesRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7286,6 +7424,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameter'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakType'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekType'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProces'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7431,6 +7581,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProcesRequest'
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.

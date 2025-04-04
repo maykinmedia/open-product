@@ -13,7 +13,16 @@ from open_producten.locaties.tests.factories import (
     LocatieFactory,
     OrganisatieFactory,
 )
-from open_producten.producttypen.models import ExterneCode, Link, Parameter, ProductType
+from open_producten.producttypen.models import (
+    ExterneCode,
+    ExterneVerwijzingConfig,
+    Link,
+    Parameter,
+    Proces,
+    ProductType,
+    VerzoekType,
+    ZaakType,
+)
 from open_producten.producttypen.tests.factories import (
     BestandFactory,
     ContentElementFactory,
@@ -23,9 +32,12 @@ from open_producten.producttypen.tests.factories import (
     ParameterFactory,
     PrijsFactory,
     PrijsOptieFactory,
+    ProcesFactory,
     ProductTypeFactory,
     ThemaFactory,
     UniformeProductNaamFactory,
+    VerzoekTypeFactory,
+    ZaakTypeFactory,
 )
 from open_producten.utils.tests.cases import BaseApiTestCase
 
@@ -45,6 +57,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "uniforme_product_naam": upn.naam,
             "thema_ids": [self.thema.id],
         }
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = "https://gemeente-a.zgw.nl/zaaktypen"
+        config.verzoektypen_url = "https://gemeente-a.zgw.nl/verzoektypen"
+        config.processen_url = "https://gemeente-a.zgw.nl/processen"
+        config.save()
 
     def detail_path(self, product_type):
         return reverse("producttype-detail", args=[product_type.id])
@@ -106,6 +124,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contacten": [],
             "externe_codes": [],
             "parameters": [],
+            "zaaktypen": [],
+            "verzoektypen": [],
+            "processen": [],
             "gepubliceerd": False,
             "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product_type.update_datum.astimezone().isoformat(),
@@ -242,6 +263,132 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
+    def test_create_product_type_without_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ProductType.objects.count(), 1)
+
+    def test_create_product_type_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        data = self.data | {
+            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaaktypen": [
+                    ErrorDetail(
+                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "verzoektypen": [
+                    ErrorDetail(
+                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "processen": [
+                    ErrorDetail(
+                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_create_product_type_with_duplicate_zaaktype_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "zaaktypen": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaaktypen": [
+                    ErrorDetail(
+                        string="Er bestaat al een zaaktype met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
+    def test_create_product_type_with_duplicate_verzoektype_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "verzoektypen": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "verzoektypen": [
+                    ErrorDetail(
+                        string="Er bestaat al een verzoektype met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
+    def test_create_product_type_with_duplicate_proces_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "processen": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "processen": [
+                    ErrorDetail(
+                        string="Er bestaat al een proces met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
     def test_create_product_type_with_duplicate_ids_returns_error(self):
         thema = ThemaFactory.create()
 
@@ -274,6 +421,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         )
 
     def test_create_complete_product_type(self):
+
         locatie = LocatieFactory.create()
         organisatie = OrganisatieFactory.create()
         contact = ContactFactory.create()
@@ -292,6 +440,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contact_ids": [contact.id],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
+            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
             "verbruiksobject_schema_naam": schema.naam,
             "dataobject_schema_naam": schema.naam,
         }
@@ -391,6 +542,21 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
+            "zaaktypen": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+            "verzoektypen": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+            "processen": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
             "gepubliceerd": False,
             "aanmaak_datum": product_type.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product_type.update_datum.astimezone().isoformat(),
@@ -613,6 +779,240 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
+    def test_update_product_type_without_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        product_type = ProductTypeFactory.create()
+
+        response = self.client.put(self.detail_path(product_type), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ProductType.objects.count(), 1)
+
+    def test_update_product_type_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        product_type = ProductTypeFactory.create()
+
+        data = self.data | {
+            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaaktypen": [
+                    ErrorDetail(
+                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "verzoektypen": [
+                    ErrorDetail(
+                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "processen": [
+                    ErrorDetail(
+                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_update_product_type_with_zaaktype(self):
+        product_type = ProductTypeFactory.create()
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_with_zaaktype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_removing_zaaktypen(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = []
+        data = self.data | {"zaaktypen": zaaktypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 0)
+        self.assertEqual(response.data["zaaktypen"], zaaktypen)
+
+    def test_update_product_type_existing_zaaktypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        response = self.client.put(self.detail_path(product_type), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+
+    def test_update_product_type_with_verzoektype(self):
+        product_type = ProductTypeFactory.create()
+
+        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"verzoektypen": verzoektypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+        self.assertEqual(
+            response.data["verzoektypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_with_verzoektype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"verzoektypen": verzoektypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+        self.assertEqual(
+            response.data["verzoektypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_removing_verzoektypen(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        verzoektypen = []
+        data = self.data | {"verzoektypen": verzoektypen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 0)
+        self.assertEqual(response.data["verzoektypen"], verzoektypen)
+
+    def test_update_product_type_existing_verzoektypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        response = self.client.put(self.detail_path(product_type), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+
+    def test_update_product_type_with_proces(self):
+        product_type = ProductTypeFactory.create()
+
+        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"processen": processen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+        self.assertEqual(
+            response.data["processen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_with_proces_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+
+        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"processen": processen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+        self.assertEqual(
+            response.data["processen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_type_removing_processen(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+        ProcesFactory.create(product_type=product_type)
+
+        processen = []
+        data = self.data | {"processen": processen}
+        response = self.client.put(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 0)
+        self.assertEqual(response.data["processen"], processen)
+
+    def test_update_product_type_existing_processen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+
+        response = self.client.put(self.detail_path(product_type), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+
     def test_partial_update_product_type(self):
         product_type = ProductTypeFactory.create()
         locatie = LocatieFactory.create()
@@ -758,6 +1158,242 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
+    def test_partial_update_product_type_without_externe_verwijzingen_without_config(
+        self,
+    ):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        product_type = ProductTypeFactory.create()
+
+        response = self.client.patch(self.detail_path(product_type), {"naam": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ProductType.objects.count(), 1)
+
+    def test_partial_update_product_type_with_externe_verwijzingen_without_config_returns_error(
+        self,
+    ):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        product_type = ProductTypeFactory.create()
+
+        data = self.data | {
+            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+        }
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaaktypen": [
+                    ErrorDetail(
+                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "verzoektypen": [
+                    ErrorDetail(
+                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "processen": [
+                    ErrorDetail(
+                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+            },
+        )
+
+    def test_partial_update_product_type_with_zaaktype(self):
+        product_type = ProductTypeFactory.create()
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_with_zaaktype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaaktypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_removing_zaaktypen(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+        ZaakTypeFactory.create(product_type=product_type)
+
+        zaaktypen = []
+        data = {"zaaktypen": zaaktypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 0)
+        self.assertEqual(response.data["zaaktypen"], zaaktypen)
+
+    def test_partial_update_product_type_existing_zaaktypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ZaakTypeFactory.create(product_type=product_type)
+
+        response = self.client.patch(self.detail_path(product_type), {"naam": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(ZaakType.objects.count(), 1)
+
+    def test_partial_update_product_type_with_verzoektype(self):
+        product_type = ProductTypeFactory.create()
+
+        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"verzoektypen": verzoektypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+        self.assertEqual(
+            response.data["verzoektypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_with_verzoektype_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"verzoektypen": verzoektypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+        self.assertEqual(
+            response.data["verzoektypen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_removing_verzoektypen(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        verzoektypen = []
+        data = {"verzoektypen": verzoektypen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 0)
+        self.assertEqual(response.data["verzoektypen"], verzoektypen)
+
+    def test_partial_update_product_type_existing_verzoektypen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        VerzoekTypeFactory.create(product_type=product_type)
+
+        response = self.client.patch(self.detail_path(product_type), {"naam": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(VerzoekType.objects.count(), 1)
+
+    def test_partial_update_product_type_with_proces(self):
+        product_type = ProductTypeFactory.create()
+
+        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"processen": processen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+        self.assertEqual(
+            response.data["processen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_with_proces_replacing_existing(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+
+        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"processen": processen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+        self.assertEqual(
+            response.data["processen"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_type_removing_processen(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+        ProcesFactory.create(product_type=product_type)
+
+        processen = []
+        data = {"processen": processen}
+        response = self.client.patch(self.detail_path(product_type), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 0)
+        self.assertEqual(response.data["processen"], processen)
+
+    def test_partial_update_product_type_existing_processen_are_kept(self):
+        product_type = ProductTypeFactory.create()
+        ProcesFactory.create(product_type=product_type)
+
+        response = self.client.patch(self.detail_path(product_type), {"naam": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Proces.objects.count(), 1)
+
     def test_read_product_type_link(self):
         product_type = ProductTypeFactory.create()
         link = LinkFactory.create(product_type=product_type)
@@ -813,6 +1449,27 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ]
         self.assertEqual(response.data["prijzen"], expected_data)
 
+    def test_read_externe_verwijzingen_without_config(self):
+        config = ExterneVerwijzingConfig.get_solo()
+        config.zaaktypen_url = ""
+        config.verzoektypen_url = ""
+        config.processen_url = ""
+        config.save()
+
+        product_type = ProductTypeFactory.create()
+        zaaktype = ZaakTypeFactory(product_type=product_type)
+        verzoektype = VerzoekTypeFactory(product_type=product_type)
+        proces = ProcesFactory(product_type=product_type)
+
+        response = self.client.get(self.detail_path(product_type))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["zaaktypen"], [{"url": f"/{zaaktype.uuid}"}])
+        self.assertEqual(
+            response.data["verzoektypen"], [{"url": f"/{verzoektype.uuid}"}]
+        )
+        self.assertEqual(response.data["processen"], [{"url": f"/{proces.uuid}"}])
+
     def test_read_product_typen(self):
         product_type1 = ProductTypeFactory.create()
         product_type1.themas.add(self.thema)
@@ -847,6 +1504,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "contacten": [],
                 "externe_codes": [],
                 "parameters": [],
+                "zaaktypen": [],
+                "verzoektypen": [],
+                "processen": [],
                 "gepubliceerd": True,
                 "aanmaak_datum": product_type1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product_type1.update_datum.astimezone().isoformat(),
@@ -883,6 +1543,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "contacten": [],
                 "externe_codes": [],
                 "parameters": [],
+                "zaaktypen": [],
+                "verzoektypen": [],
+                "processen": [],
                 "gepubliceerd": True,
                 "aanmaak_datum": product_type2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product_type2.update_datum.astimezone().isoformat(),
@@ -934,6 +1597,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contacten": [],
             "externe_codes": [],
             "parameters": [],
+            "zaaktypen": [],
+            "verzoektypen": [],
+            "processen": [],
             "themas": [
                 {
                     "id": str(self.thema.id),
