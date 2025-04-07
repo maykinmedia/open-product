@@ -1,5 +1,5 @@
 import datetime
-import uuid
+from uuid import uuid4
 from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
@@ -39,7 +39,7 @@ class TestProduct(BaseApiTestCase):
         super().setUp()
         self.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
         self.data = {
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "status": "initieel",
             "prijs": "20.20",
             "frequentie": "eenmalig",
@@ -57,7 +57,7 @@ class TestProduct(BaseApiTestCase):
         self.addCleanup(config_patch.stop)
 
     def detail_path(self, product):
-        return reverse("product-detail", args=[product.id])
+        return reverse("product-detail", args=[product.uuid])
 
     def test_read_product_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -70,7 +70,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "prijs": [
@@ -94,7 +94,7 @@ class TestProduct(BaseApiTestCase):
         producttype = product.producttype
         expected_data = {
             "url": f"http://testserver{self.detail_path(product)}",
-            "id": str(product.id),
+            "uuid": str(product.uuid),
             "status": product.status,
             "verbruiksobject": None,
             "dataobject": None,
@@ -111,12 +111,12 @@ class TestProduct(BaseApiTestCase):
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
                     "klantnummer": "",
-                    "id": str(product.eigenaren.get().id),
+                    "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
             "documenten": [],
             "producttype": {
-                "id": str(producttype.id),
+                "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -148,7 +148,7 @@ class TestProduct(BaseApiTestCase):
         product = Product.objects.first()
         producttype = product.producttype
         expected_data = {
-            "id": str(product.id),
+            "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
             "status": product.status,
             "verbruiksobject": {"naam": "Test"},
@@ -166,12 +166,12 @@ class TestProduct(BaseApiTestCase):
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
                     "klantnummer": "",
-                    "id": str(product.eigenaren.get().id),
+                    "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
             "documenten": [],
             "producttype": {
-                "id": str(producttype.id),
+                "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -267,7 +267,7 @@ class TestProduct(BaseApiTestCase):
         product = Product.objects.first()
         producttype = product.producttype
         expected_data = {
-            "id": str(product.id),
+            "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
             "status": product.status,
             "verbruiksobject": None,
@@ -285,12 +285,12 @@ class TestProduct(BaseApiTestCase):
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
                     "klantnummer": "",
-                    "id": str(product.eigenaren.get().id),
+                    "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
             "documenten": [],
             "producttype": {
-                "id": str(producttype.id),
+                "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -368,18 +368,18 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Eigenaar.objects.count(), 3)
 
-    def test_create_product_with_eigenaar_with_id(self):
-        id = uuid.uuid4()
+    def test_create_product_with_eigenaar_with_uuid(self):
+        uuid = uuid4()
         data = self.data | {
             "eigenaren": [
-                {"id": id, "kvk_nummer": "11122233"},
+                {"uuid": uuid, "kvk_nummer": "11122233"},
             ]
         }
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Eigenaar.objects.count(), 1)
-        self.assertNotEqual(Eigenaar.objects.get().id, id)
+        self.assertNotEqual(Eigenaar.objects.get().uuid, uuid)
 
     def test_create_product_with_empty_eigenaar(self):
         data = self.data | {"eigenaren": [{}]}
@@ -527,7 +527,7 @@ class TestProduct(BaseApiTestCase):
 
         data = self.data | {
             "eind_datum": datetime.date(2025, 12, 31),
-            "producttype_id": producttype.id,
+            "producttype_uuid": producttype.uuid,
             "eigenaren": [{"kvk_nummer": "12345678"}],
         }
         response = self.client.put(self.detail_path(product), data)
@@ -634,7 +634,7 @@ class TestProduct(BaseApiTestCase):
         data = {
             "eigenaren": [
                 {
-                    "id": eigenaar_to_be_updated.id,
+                    "uuid": eigenaar_to_be_updated.uuid,
                     "klantnummer": "1234",
                     "bsn": "",
                 }
@@ -643,7 +643,7 @@ class TestProduct(BaseApiTestCase):
 
         expected_data = [
             {
-                "id": str(eigenaar_to_be_updated.id),
+                "uuid": str(eigenaar_to_be_updated.uuid),
                 "klantnummer": "1234",
                 "bsn": "",
                 "kvk_nummer": "",
@@ -691,15 +691,17 @@ class TestProduct(BaseApiTestCase):
         eigenaar_of_other_product = EigenaarFactory.create(kvk_nummer="12345678")
 
         data = {
-            "eigenaren": [{"id": eigenaar_of_other_product.id, "klantnummer": "1234"}]
+            "eigenaren": [
+                {"uuid": eigenaar_of_other_product.uuid, "klantnummer": "1234"}
+            ]
         }
 
         expected_error = {
             "eigenaren": [
                 ErrorDetail(
                     string=_(
-                        "Eigenaar id {} op index 0 is niet onderdeel van het Product object."
-                    ).format(eigenaar_of_other_product.id),
+                        "Eigenaar uuid {} op index 0 is niet onderdeel van het Product object."
+                    ).format(eigenaar_of_other_product.uuid),
                     code="invalid",
                 )
             ]
@@ -717,18 +719,18 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(response.data, expected_error)
 
-    def test_update_product_with_eigenaar_id_not_existing(self):
+    def test_update_product_with_eigenaar_uuid_not_existing(self):
         product = ProductFactory.create()
 
-        eigenaar_id = uuid.uuid4()
+        eigenaar_uuid = uuid4()
 
-        data = {"eigenaren": [{"id": eigenaar_id, "klantnummer": "1234"}]}
+        data = {"eigenaren": [{"uuid": eigenaar_uuid, "klantnummer": "1234"}]}
 
         expected_error = {
             "eigenaren": [
                 ErrorDetail(
-                    string=_("Eigenaar id {} op index 0 bestaat niet.").format(
-                        eigenaar_id
+                    string=_("Eigenaar uuid {} op index 0 bestaat niet.").format(
+                        eigenaar_uuid
                     ),
                     code="invalid",
                 )
@@ -747,7 +749,7 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(response.data, expected_error)
 
-    def test_update_product_with_duplicate_eigenaren_ids(self):
+    def test_update_product_with_duplicate_eigenaren_uuids(self):
         product = ProductFactory.create()
         eigenaar_to_be_updated = EigenaarFactory.create(
             product=product, bsn="111222333"
@@ -756,8 +758,8 @@ class TestProduct(BaseApiTestCase):
         expected_error = {
             "eigenaren": [
                 ErrorDetail(
-                    string=_("Dubbel id: {} op index 1.").format(
-                        eigenaar_to_be_updated.id
+                    string=_("Dubbel uuid: {} op index 1.").format(
+                        eigenaar_to_be_updated.uuid
                     ),
                     code="invalid",
                 )
@@ -766,8 +768,8 @@ class TestProduct(BaseApiTestCase):
 
         data = {
             "eigenaren": [
-                {"id": eigenaar_to_be_updated.id, "klantnummer": "1234"},
-                {"id": eigenaar_to_be_updated.id, "klantnummer": "5678"},
+                {"uuid": eigenaar_to_be_updated.uuid, "klantnummer": "1234"},
+                {"uuid": eigenaar_to_be_updated.uuid, "klantnummer": "5678"},
             ]
         }
 
@@ -1026,7 +1028,7 @@ class TestProduct(BaseApiTestCase):
         expected_data = [
             {
                 "url": f"http://testserver{self.detail_path(product1)}",
-                "id": str(product1.id),
+                "uuid": str(product1.uuid),
                 "status": product1.status,
                 "verbruiksobject": None,
                 "dataobject": None,
@@ -1043,12 +1045,12 @@ class TestProduct(BaseApiTestCase):
                         "kvk_nummer": "12345678",
                         "vestigingsnummer": "",
                         "klantnummer": "",
-                        "id": str(product1.eigenaren.get().id),
+                        "uuid": str(product1.eigenaren.get().uuid),
                     }
                 ],
                 "documenten": [],
                 "producttype": {
-                    "id": str(self.producttype.id),
+                    "uuid": str(self.producttype.uuid),
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
@@ -1060,7 +1062,7 @@ class TestProduct(BaseApiTestCase):
             },
             {
                 "url": f"http://testserver{self.detail_path(product2)}",
-                "id": str(product2.id),
+                "uuid": str(product2.uuid),
                 "status": product2.status,
                 "verbruiksobject": None,
                 "dataobject": None,
@@ -1077,12 +1079,12 @@ class TestProduct(BaseApiTestCase):
                         "kvk_nummer": "12345678",
                         "vestigingsnummer": "",
                         "klantnummer": "",
-                        "id": str(product2.eigenaren.get().id),
+                        "uuid": str(product2.eigenaren.get().uuid),
                     }
                 ],
                 "documenten": [],
                 "producttype": {
-                    "id": str(self.producttype.id),
+                    "uuid": str(self.producttype.uuid),
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
@@ -1106,7 +1108,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
             "url": f"http://testserver{self.detail_path(product)}",
-            "id": str(product.id),
+            "uuid": str(product.uuid),
             "status": product.status,
             "verbruiksobject": None,
             "dataobject": None,
@@ -1123,12 +1125,12 @@ class TestProduct(BaseApiTestCase):
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
                     "klantnummer": "",
-                    "id": str(product.eigenaren.get().id),
+                    "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
             "documenten": [],
             "producttype": {
-                "id": str(producttype.id),
+                "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "toegestane_statussen": ["gereed"],
@@ -1163,8 +1165,9 @@ class TestProduct(BaseApiTestCase):
 
     @freeze_time("2025-11-30")
     def test_update_state_and_dates_are_not_checked_when_not_changed(self):
+        producttype = ProductTypeFactory.create(toegestane_statussen=[])
+
         data = {
-            "producttype_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
@@ -1172,24 +1175,29 @@ class TestProduct(BaseApiTestCase):
             "frequentie": "eenmalig",
         }
 
-        product = ProductFactory.create(**data)
+        product = ProductFactory.create(producttype=producttype, **data)
 
         response = self.client.put(
             self.detail_path(product),
-            data | {"eigenaren": [{"kvk_nummer": "12345678"}]},
+            data
+            | {
+                "eigenaren": [{"kvk_nummer": "12345678"}],
+                "producttype_uuid": producttype.uuid,
+            },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @freeze_time("2025-11-30")
     def test_partial_update_state_and_dates_are_not_checked_when_not_changed(self):
+        producttype = ProductTypeFactory.create(toegestane_statussen=[])
+
         data = {
-            "producttype_id": ProductTypeFactory.create(toegestane_statussen=[]).id,
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
         }
 
-        product = ProductFactory.create(**data)
+        product = ProductFactory.create(producttype=producttype, **data)
 
         response = self.client.patch(self.detail_path(product), {"prijs": "50"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1246,21 +1254,20 @@ class TestProduct(BaseApiTestCase):
             ):
 
                 data = {
-                    "producttype_id": ProductTypeFactory.create(
-                        toegestane_statussen=[]
-                    ).id,
                     "prijs": "10",
                     "frequentie": "eenmalig",
                 } | test["field"]
 
-                product = ProductFactory.create(**data)
+                product = ProductFactory.create(
+                    producttype=ProductTypeFactory.create(), **data
+                )
                 EigenaarFactory(product=product)
 
                 response = self.client.put(
                     self.detail_path(product),
                     data
                     | {
-                        "producttype_id": new_producttype.id,
+                        "producttype_uuid": new_producttype.uuid,
                         "eigenaren": [{"kvk_nummer": "12345678"}],
                     },
                 )
@@ -1319,17 +1326,21 @@ class TestProduct(BaseApiTestCase):
             ):
 
                 data = {
-                    "producttype_id": producttype.id,
                     "status": "initieel",
                     "prijs": "10",
                     "frequentie": "eenmalig",
                 }
 
-                product = ProductFactory.create(**data)
+                product = ProductFactory.create(producttype=producttype, **data)
 
                 response = self.client.put(
                     self.detail_path(product),
-                    data | test["field"] | {"eigenaren": [{"kvk_nummer": "12345678"}]},
+                    data
+                    | test["field"]
+                    | {
+                        "eigenaren": [{"kvk_nummer": "12345678"}],
+                        "producttype_uuid": producttype.uuid,
+                    },
                 )
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

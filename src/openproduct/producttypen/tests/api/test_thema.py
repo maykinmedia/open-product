@@ -18,11 +18,11 @@ class TestThemaViewSet(BaseApiTestCase):
         self.data = {
             "naam": "test-thema",
             "hoofd_thema": None,
-            "producttype_ids": [],
+            "producttype_uuids": [],
         }
 
     def detail_path(self, thema):
-        return reverse("thema-detail", args=[thema.id])
+        return reverse("thema-detail", args=[thema.uuid])
 
     def test_read_thema_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -38,7 +38,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_ids": [
+                "producttype_uuids": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "hoofd_thema": [
@@ -54,7 +54,7 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(Thema.objects.count(), 1)
         thema = Thema.objects.first()
         expected_data = {
-            "id": str(thema.id),
+            "uuid": str(thema.uuid),
             "naam": thema.naam,
             "beschrijving": thema.beschrijving,
             "gepubliceerd": False,
@@ -67,21 +67,21 @@ class TestThemaViewSet(BaseApiTestCase):
 
     def test_create_thema_with_hoofd_thema(self):
         hoofd_thema = ThemaFactory.create()
-        data = self.data | {"hoofd_thema": hoofd_thema.id}
+        data = self.data | {"hoofd_thema": hoofd_thema.uuid}
 
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Thema.objects.count(), 2)
 
-        thema = Thema.objects.get(id=response.data["id"])
+        thema = Thema.objects.get(uuid=response.data["uuid"])
         self.assertEqual(thema.hoofd_thema, hoofd_thema)
         expected_data = {
-            "id": str(thema.id),
+            "uuid": str(thema.uuid),
             "naam": thema.naam,
             "beschrijving": thema.beschrijving,
             "gepubliceerd": False,
-            "hoofd_thema": thema.hoofd_thema.id,
+            "hoofd_thema": thema.hoofd_thema.uuid,
             "producttypen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
@@ -90,7 +90,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
     def test_create_thema_with_producttype(self):
         producttype = ProductTypeFactory.create()
-        data = self.data | {"producttype_ids": [producttype.id]}
+        data = self.data | {"producttype_uuids": [producttype.uuid]}
 
         response = self.client.post(self.path, data)
 
@@ -103,7 +103,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
     def test_create_hoofd_thema_with_duplicate_producttypen_returns_error(self):
         producttype = ProductTypeFactory.create()
-        data = self.data | {"producttype_ids": [producttype.id, producttype.id]}
+        data = self.data | {"producttype_uuids": [producttype.uuid, producttype.uuid]}
 
         response = self.client.post(self.path, data)
 
@@ -111,9 +111,11 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "producttype_ids": [
+                "producttype_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(
+                            producttype.uuid
+                        ),
                         code="invalid",
                     )
                 ]
@@ -125,7 +127,7 @@ class TestThemaViewSet(BaseApiTestCase):
     ):
         hoofd_thema = ThemaFactory.create(gepubliceerd=False)
 
-        data = self.data | {"hoofd_thema": hoofd_thema.id, "gepubliceerd": True}
+        data = self.data | {"hoofd_thema": hoofd_thema.uuid, "gepubliceerd": True}
 
         response = self.client.post(self.path, data)
 
@@ -148,7 +150,7 @@ class TestThemaViewSet(BaseApiTestCase):
         new_hoofd_thema = ThemaFactory.create()
         thema = ThemaFactory.create()
 
-        data = self.data | {"hoofd_thema": new_hoofd_thema.id}
+        data = self.data | {"hoofd_thema": new_hoofd_thema.uuid}
         response = self.client.put(self.detail_path(thema), data)
 
         thema.refresh_from_db()
@@ -174,7 +176,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
         new_hoofd_thema = ThemaFactory.create()
 
-        data = self.data | {"hoofd_thema": new_hoofd_thema.id}
+        data = self.data | {"hoofd_thema": new_hoofd_thema.uuid}
         response = self.client.put(self.detail_path(thema), data)
 
         thema.refresh_from_db()
@@ -185,7 +187,7 @@ class TestThemaViewSet(BaseApiTestCase):
     def test_update_hoofd_thema_with_duplicate_producttypen_returns_error(self):
         thema = ThemaFactory.create()
         producttype = ProductTypeFactory.create()
-        data = self.data | {"producttype_ids": [producttype.id, producttype.id]}
+        data = self.data | {"producttype_uuids": [producttype.uuid, producttype.uuid]}
 
         response = self.client.put(self.detail_path(thema), data)
 
@@ -195,9 +197,11 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "producttype_ids": [
+                "producttype_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(
+                            producttype.uuid
+                        ),
                         code="invalid",
                     )
                 ]
@@ -210,7 +214,7 @@ class TestThemaViewSet(BaseApiTestCase):
         hoofd_thema = ThemaFactory.create(gepubliceerd=False)
         sub_thema = ThemaFactory.create(naam="sub thema", hoofd_thema=hoofd_thema)
 
-        data = self.data | {"hoofd_thema": hoofd_thema.id, "gepubliceerd": True}
+        data = self.data | {"hoofd_thema": hoofd_thema.uuid, "gepubliceerd": True}
 
         response = self.client.put(self.detail_path(sub_thema), data)
 
@@ -275,7 +279,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
         new_hoofd_thema = ThemaFactory.create()
 
-        data = {"hoofd_thema": new_hoofd_thema.id}
+        data = {"hoofd_thema": new_hoofd_thema.uuid}
         response = self.client.patch(self.detail_path(thema), data)
 
         thema.refresh_from_db()
@@ -300,7 +304,7 @@ class TestThemaViewSet(BaseApiTestCase):
     ):
         thema = ThemaFactory.create()
         producttype = ProductTypeFactory.create()
-        data = {"producttype_ids": [producttype.id, producttype.id]}
+        data = {"producttype_uuids": [producttype.uuid, producttype.uuid]}
 
         response = self.client.patch(self.detail_path(thema), data)
 
@@ -310,9 +314,11 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "producttype_ids": [
+                "producttype_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(producttype.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(
+                            producttype.uuid
+                        ),
                         code="invalid",
                     )
                 ]
@@ -382,7 +388,7 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = [
             {
-                "id": str(producttype.id),
+                "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -405,7 +411,7 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(thema1.id),
+                "uuid": str(thema1.uuid),
                 "naam": thema1.naam,
                 "beschrijving": thema1.beschrijving,
                 "gepubliceerd": True,
@@ -415,7 +421,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "update_datum": thema1.update_datum.astimezone().isoformat(),
             },
             {
-                "id": str(thema2.id),
+                "uuid": str(thema2.uuid),
                 "naam": thema2.naam,
                 "beschrijving": thema2.beschrijving,
                 "gepubliceerd": True,
@@ -434,7 +440,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(thema.id),
+            "uuid": str(thema.uuid),
             "naam": thema.naam,
             "beschrijving": thema.beschrijving,
             "gepubliceerd": True,
@@ -501,7 +507,7 @@ class TestThemaViewSet(BaseApiTestCase):
     def test_thema_cannot_reference_itself(self):
         thema = ThemaFactory.create()
 
-        data = {"hoofd_thema": thema.id}
+        data = {"hoofd_thema": thema.uuid}
         response = self.client.patch(self.detail_path(thema), data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(

@@ -20,11 +20,11 @@ class TestProductTypeLink(BaseApiTestCase):
         self.data = {
             "naam": "test link",
             "url": "https://www.google.com",
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.link = LinkFactory.create(producttype=self.producttype)
 
-        self.detail_path = reverse("link-detail", args=[self.link.id])
+        self.detail_path = reverse("link-detail", args=[self.link.uuid])
 
     def test_read_link_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -43,7 +43,7 @@ class TestProductTypeLink(BaseApiTestCase):
                 "url": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -55,7 +55,7 @@ class TestProductTypeLink(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Link.objects.count(), 2)
 
-        response.data.pop("id")
+        response.data.pop("uuid")
         self.assertEqual(response.data, self.data)
 
     def test_update_link(self):
@@ -82,16 +82,16 @@ class TestProductTypeLink(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.link.id),
+                "uuid": str(self.link.uuid),
                 "naam": self.link.naam,
                 "url": self.link.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
             {
-                "id": str(link.id),
+                "uuid": str(link.uuid),
                 "naam": link.naam,
                 "url": link.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -102,10 +102,10 @@ class TestProductTypeLink(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         expected_data = {
-            "id": str(self.link.id),
+            "uuid": str(self.link.uuid),
             "naam": self.link.naam,
             "url": self.link.url,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.assertEqual(response.data, expected_data)
 

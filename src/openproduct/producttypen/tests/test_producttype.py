@@ -37,11 +37,11 @@ class TestProductType(TestCase):
         producttype.clean()
         self.assertEqual(producttype.organisaties.count(), 0)
 
-    def test_clean_with_contact_that_has_org(self):
+    def test_save_with_contact_that_has_org(self):
         contact = ContactFactory()
         producttype = ProductTypeFactory.create()
         producttype.contacten.add(contact)
-        producttype.clean()
+        producttype.save()
 
         self.assertEqual(producttype.organisaties.count(), 1)
         self.assertEqual(producttype.organisaties.get().id, contact.organisatie.id)

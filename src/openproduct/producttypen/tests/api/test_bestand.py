@@ -25,14 +25,14 @@ class TestProductTypeBestand(BaseApiTestCase):
         super().setUp()
         self.producttype = ProductTypeFactory.create()
         self.data = {
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "bestand": SimpleUploadedFile(
                 "test.txt", b"test content.", content_type="text/plain"
             ),
         }
         self.bestand = BestandFactory.create(producttype=self.producttype)
 
-        self.detail_path = reverse("bestand-detail", args=[self.bestand.id])
+        self.detail_path = reverse("bestand-detail", args=[self.bestand.uuid])
 
     def test_read_bestand_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -50,7 +50,7 @@ class TestProductTypeBestand(BaseApiTestCase):
                         string=_("Er is geen bestand opgestuurd."), code="required"
                     )
                 ],
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -62,20 +62,20 @@ class TestProductTypeBestand(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Bestand.objects.count(), 2)
 
-        id = response.data.pop("id")
-        self.assertEqual(response.data["producttype_id"], self.producttype.id)
+        uuid = response.data.pop("uuid")
+        self.assertEqual(response.data["producttype_uuid"], self.producttype.uuid)
 
         bestand_url = response.data["bestand"]
 
         self.assertRegex(bestand_url, r"http://testserver/media/test.*\.txt")
 
         self.assertEqual(
-            Bestand.objects.get(id=id).bestand.file.readline(), b"test content."
+            Bestand.objects.get(uuid=uuid).bestand.file.readline(), b"test content."
         )
 
-    def test_update_bestand_producttype_id(self):
+    def test_update_bestand_producttype_uuid(self):
         producttype = ProductTypeFactory.create()
-        data = self.data | {"producttype_id": producttype.id}
+        data = self.data | {"producttype_uuid": producttype.uuid}
         response = self.client.put(self.detail_path, data, format="multipart")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -95,9 +95,9 @@ class TestProductTypeBestand(BaseApiTestCase):
         self.assertEqual(Bestand.objects.get().bestand.url, "/media/456.txt")
         self.assertEqual(Bestand.objects.get().bestand.file.readline(), b"456 content.")
 
-    def test_partial_update_bestand_producttype_id(self):
+    def test_partial_update_bestand_producttype_uuid(self):
         producttype = ProductTypeFactory.create()
-        data = {"producttype_id": producttype.id}
+        data = {"producttype_uuid": producttype.uuid}
         response = self.client.patch(self.detail_path, data, format="multipart")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -125,14 +125,14 @@ class TestProductTypeBestand(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.bestand.id),
+                "uuid": str(self.bestand.uuid),
                 "bestand": "http://testserver" + self.bestand.bestand.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
             {
-                "id": str(bestand.id),
+                "uuid": str(bestand.uuid),
                 "bestand": "http://testserver" + bestand.bestand.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -143,9 +143,9 @@ class TestProductTypeBestand(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         expected_data = {
-            "id": str(self.bestand.id),
+            "uuid": str(self.bestand.uuid),
             "bestand": "http://testserver" + self.bestand.bestand.url,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.assertEqual(response.data, expected_data)
 

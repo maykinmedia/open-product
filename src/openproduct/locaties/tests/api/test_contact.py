@@ -20,11 +20,11 @@ class TestContact(BaseApiTestCase):
         self.data = {
             "voornaam": "bob",
             "achternaam": "de vries",
-            "organisatie_id": organisatie.id,
+            "organisatie_uuid": organisatie.uuid,
         }
         self.contact = ContactFactory.create()
 
-        self.detail_path = reverse("contact-detail", args=[self.contact.id])
+        self.detail_path = reverse("contact-detail", args=[self.contact.uuid])
 
     def test_read_contact_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -52,16 +52,16 @@ class TestContact(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Contact.objects.count(), 2)
 
-        contact = Contact.objects.get(id=response.data["id"])
+        contact = Contact.objects.get(uuid=response.data["uuid"])
         expected_data = {
-            "id": str(contact.id),
+            "uuid": str(contact.uuid),
             "voornaam": contact.voornaam,
             "achternaam": contact.achternaam,
             "email": contact.email,
             "telefoonnummer": contact.telefoonnummer,
             "rol": "",
             "organisatie": {
-                "id": str(contact.organisatie.id),
+                "uuid": str(contact.organisatie.uuid),
                 "naam": contact.organisatie.naam,
                 "code": contact.organisatie.code,
                 "email": contact.organisatie.email,
@@ -98,14 +98,14 @@ class TestContact(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.contact.id),
+                "uuid": str(self.contact.uuid),
                 "voornaam": self.contact.voornaam,
                 "achternaam": self.contact.achternaam,
                 "email": self.contact.email,
                 "telefoonnummer": self.contact.telefoonnummer,
                 "rol": self.contact.rol,
                 "organisatie": {
-                    "id": str(self.contact.organisatie.id),
+                    "uuid": str(self.contact.organisatie.uuid),
                     "naam": self.contact.organisatie.naam,
                     "code": self.contact.organisatie.code,
                     "email": self.contact.organisatie.email,
@@ -117,14 +117,14 @@ class TestContact(BaseApiTestCase):
                 },
             },
             {
-                "id": str(contact.id),
+                "uuid": str(contact.uuid),
                 "voornaam": contact.voornaam,
                 "achternaam": contact.achternaam,
                 "email": contact.email,
                 "telefoonnummer": contact.telefoonnummer,
                 "rol": contact.rol,
                 "organisatie": {
-                    "id": str(contact.organisatie.id),
+                    "uuid": str(contact.organisatie.uuid),
                     "naam": contact.organisatie.naam,
                     "code": contact.organisatie.code,
                     "email": contact.organisatie.email,
@@ -143,14 +143,14 @@ class TestContact(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(self.contact.id),
+            "uuid": str(self.contact.uuid),
             "voornaam": self.contact.voornaam,
             "achternaam": self.contact.achternaam,
             "email": self.contact.email,
             "telefoonnummer": self.contact.telefoonnummer,
             "rol": self.contact.rol,
             "organisatie": {
-                "id": str(self.contact.organisatie.id),
+                "uuid": str(self.contact.organisatie.uuid),
                 "naam": self.contact.organisatie.naam,
                 "code": self.contact.organisatie.code,
                 "email": self.contact.organisatie.email,

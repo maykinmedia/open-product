@@ -109,23 +109,23 @@ class TestProductFilters(BaseApiTestCase):
             "parkeervergunning",
         )
 
-    def test_producttype_id_filter(self):
-        producttype_id = uuid4()
-        ProductFactory.create(producttype__id=producttype_id)
-        ProductFactory.create(producttype__id=uuid4())
+    def test_producttype_uuid_filter(self):
+        producttype_uuid = uuid4()
+        ProductFactory.create(producttype__uuid=producttype_uuid)
+        ProductFactory.create(producttype__uuid=uuid4())
 
-        response = self.client.get(self.path + f"?producttype__id={producttype_id}")
+        response = self.client.get(self.path + f"?producttype__uuid={producttype_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype"]["id"], str(producttype_id)
+            response.data["results"][0]["producttype"]["uuid"], str(producttype_uuid)
         )
 
     def test_producttype_naam_filter(self):
-        producttype_id = uuid4()
+        producttype_uuid = uuid4()
         ProductFactory.create(
-            producttype__naam="parkeervergunning", producttype__id=producttype_id
+            producttype__naam="parkeervergunning", producttype__uuid=producttype_uuid
         )
         ProductFactory.create(producttype__naam="aanbouw")
 
@@ -136,7 +136,7 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype"]["id"], str(producttype_id)
+            response.data["results"][0]["producttype"]["uuid"], str(producttype_uuid)
         )
 
     def test_start_datum_filter(self):

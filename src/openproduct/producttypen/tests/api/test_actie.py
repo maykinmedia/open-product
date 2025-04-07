@@ -21,14 +21,14 @@ class TestProductTypeActie(BaseApiTestCase):
             "naam": "test actie",
             "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
             "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.actie = ActieFactory.create(
             producttype=self.producttype,
             dmn_config__tabel_endpoint="https://gemeente-a-flowable/dmn-repository/decision-tables",
         )
 
-        self.detail_path = reverse("actie-detail", args=[self.actie.id])
+        self.detail_path = reverse("actie-detail", args=[self.actie.uuid])
 
     def test_read_actie_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -47,7 +47,7 @@ class TestProductTypeActie(BaseApiTestCase):
                 "tabel_endpoint": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
                 "dmn_tabel_id": [
@@ -62,13 +62,13 @@ class TestProductTypeActie(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Actie.objects.count(), 2)
 
-        response.data.pop("id")
+        response.data.pop("uuid")
 
         self.assertEqual(
             response.data,
             {
                 "naam": self.data["naam"],
-                "producttype_id": self.data["producttype_id"],
+                "producttype_uuid": self.data["producttype_uuid"],
                 "url": f"{self.data['tabel_endpoint']}/{self.data['dmn_tabel_id']}",
             },
         )
@@ -97,16 +97,16 @@ class TestProductTypeActie(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.actie.id),
+                "uuid": str(self.actie.uuid),
                 "naam": self.actie.naam,
                 "url": self.actie.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
             {
-                "id": str(actie.id),
+                "uuid": str(actie.uuid),
                 "naam": actie.naam,
                 "url": actie.url,
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -117,10 +117,10 @@ class TestProductTypeActie(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         expected_data = {
-            "id": str(self.actie.id),
+            "uuid": str(self.actie.uuid),
             "naam": self.actie.naam,
             "url": self.actie.url,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.assertEqual(response.data, expected_data)
 

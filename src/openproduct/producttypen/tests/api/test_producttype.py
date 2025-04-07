@@ -61,7 +61,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "code": "PT=12345",
             "samenvatting": "test",
             "uniforme_product_naam": upn.naam,
-            "thema_ids": [self.thema.id],
+            "thema_uuids": [self.thema.uuid],
         }
 
         config_patch = patch(
@@ -77,7 +77,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.addCleanup(config_patch.stop)
 
     def detail_path(self, producttype):
-        return reverse("producttype-detail", args=[producttype.id])
+        return reverse("producttype-detail", args=[producttype.uuid])
 
     def test_read_producttype_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -96,7 +96,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "samenvatting": [
@@ -117,7 +117,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductType.objects.first()
         thema = producttype.themas.first()
         expected_data = {
-            "id": str(producttype.id),
+            "uuid": str(producttype.uuid),
             "naam": producttype.naam,
             "code": producttype.code,
             "samenvatting": producttype.samenvatting,
@@ -145,7 +145,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "keywords": [],
             "themas": [
                 {
-                    "id": str(thema.id),
+                    "uuid": str(thema.uuid),
                     "naam": thema.naam,
                     "gepubliceerd": True,
                     "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
@@ -159,14 +159,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
     def test_create_producttype_without_thema_returns_error(self):
         data = self.data.copy()
-        data["thema_ids"] = []
+        data["thema_uuids"] = []
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
                         string=_("Er is minimaal één thema vereist."), code="invalid"
                     )
@@ -177,7 +177,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_producttype_with_location(self):
         locatie = LocatieFactory.create()
 
-        data = self.data | {"locatie_ids": [locatie.id]}
+        data = self.data | {"locatie_uuids": [locatie.uuid]}
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -190,7 +190,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_producttype_with_organisatie(self):
         organisatie = OrganisatieFactory.create()
 
-        data = self.data | {"organisatie_ids": [organisatie.id]}
+        data = self.data | {"organisatie_uuids": [organisatie.uuid]}
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -203,7 +203,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_producttype_with_contact(self):
         contact = ContactFactory.create()
 
-        data = self.data | {"contact_ids": [contact.id]}
+        data = self.data | {"contact_uuids": [contact.uuid]}
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -324,7 +324,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_zaaktype_uuids_returns_error(
+    def test_create_producttype_with_duplicate_zaaktype_uuuuids_returns_error(
         self,
     ):
         data = self.data | {
@@ -348,7 +348,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_verzoektype_uuids_returns_error(
+    def test_create_producttype_with_duplicate_verzoektype_uuuuids_returns_error(
         self,
     ):
         data = self.data | {
@@ -372,7 +372,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_proces_uuids_returns_error(
+    def test_create_producttype_with_duplicate_proces_uuuuids_returns_error(
         self,
     ):
         data = self.data | {
@@ -396,14 +396,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_ids_returns_error(self):
+    def test_create_producttype_with_duplicate_uuids_returns_error(self):
         thema = ThemaFactory.create()
 
         locatie = LocatieFactory.create()
 
         data = self.data | {
-            "thema_ids": [thema.id, thema.id],
-            "locatie_ids": [locatie.id, locatie.id],
+            "thema_uuids": [thema.uuid, thema.uuid],
+            "locatie_uuids": [locatie.uuid, locatie.uuid],
         }
 
         response = self.client.post(self.path, data)
@@ -412,15 +412,15 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(thema.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
                         code="invalid",
                     )
                 ],
-                "locatie_ids": [
+                "locatie_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(locatie.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(locatie.uuid),
                         code="invalid",
                     )
                 ],
@@ -442,9 +442,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         )
 
         data = self.data | {
-            "locatie_ids": [locatie.id],
-            "organisatie_ids": [organisatie.id],
-            "contact_ids": [contact.id],
+            "locatie_uuids": [locatie.uuid],
+            "organisatie_uuids": [organisatie.uuid],
+            "contact_uuids": [contact.uuid],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
             "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
@@ -462,7 +462,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         thema = producttype.themas.first()
 
         expected_data = {
-            "id": str(producttype.id),
+            "uuid": str(producttype.uuid),
             "naam": producttype.naam,
             "code": producttype.code,
             "samenvatting": producttype.samenvatting,
@@ -492,7 +492,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "bestanden": [],
             "locaties": [
                 {
-                    "id": str(locatie.id),
+                    "uuid": str(locatie.uuid),
                     "naam": locatie.naam,
                     "email": locatie.email,
                     "telefoonnummer": locatie.telefoonnummer,
@@ -504,7 +504,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "organisaties": [
                 {
-                    "id": str(organisatie.id),
+                    "uuid": str(organisatie.uuid),
                     "code": str(organisatie.code),
                     "naam": organisatie.naam,
                     "email": organisatie.email,
@@ -515,7 +515,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     "stad": organisatie.stad,
                 },
                 {
-                    "id": str(contact.organisatie.id),
+                    "uuid": str(contact.organisatie.uuid),
                     "code": str(contact.organisatie.code),
                     "naam": contact.organisatie.naam,
                     "email": contact.organisatie.email,
@@ -528,14 +528,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "contacten": [
                 {
-                    "id": str(contact.id),
+                    "uuid": str(contact.uuid),
                     "voornaam": contact.voornaam,
                     "achternaam": contact.achternaam,
                     "email": contact.email,
                     "telefoonnummer": contact.telefoonnummer,
                     "rol": contact.rol,
                     "organisatie": {
-                        "id": str(contact.organisatie.id),
+                        "uuid": str(contact.organisatie.uuid),
                         "code": str(contact.organisatie.code),
                         "naam": contact.organisatie.naam,
                         "email": contact.organisatie.email,
@@ -570,7 +570,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "keywords": [],
             "themas": [
                 {
-                    "id": str(thema.id),
+                    "uuid": str(thema.uuid),
                     "naam": thema.naam,
                     "gepubliceerd": True,
                     "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
@@ -609,7 +609,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         thema = ThemaFactory.create()
 
-        data = self.data | {"thema_ids": [thema.id]}
+        data = self.data | {"thema_uuids": [thema.uuid]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -621,14 +621,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
     def test_update_producttype_removing_thema(self):
         producttype = ProductTypeFactory.create()
-        data = self.data | {"thema_ids": []}
+        data = self.data | {"thema_uuids": []}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
                         string=_("Er is minimaal één thema vereist."), code="invalid"
                     )
@@ -640,7 +640,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         locatie = LocatieFactory.create()
 
-        data = self.data | {"locatie_ids": [locatie.id]}
+        data = self.data | {"locatie_uuids": [locatie.uuid]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -654,7 +654,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         organisatie = OrganisatieFactory.create()
 
-        data = self.data | {"organisatie_ids": [organisatie.id]}
+        data = self.data | {"organisatie_uuids": [organisatie.uuid]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -668,7 +668,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         contact = ContactFactory.create()
 
-        data = self.data | {"contact_ids": [contact.id]}
+        data = self.data | {"contact_uuids": [contact.uuid]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -681,14 +681,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # contact org is added in ProductType clean
         self.assertEqual(ProductType.objects.get().organisaties.count(), 1)
 
-    def test_update_producttype_with_duplicate_ids_returns_error(self):
+    def test_update_producttype_with_duplicate_uuids_returns_error(self):
         producttype = ProductTypeFactory.create()
         thema = ThemaFactory.create()
         locatie = LocatieFactory.create()
 
         data = self.data | {
-            "thema_ids": [thema.id, thema.id],
-            "locatie_ids": [locatie.id, locatie.id],
+            "thema_uuids": [thema.uuid, thema.uuid],
+            "locatie_uuids": [locatie.uuid, locatie.uuid],
         }
 
         response = self.client.put(self.detail_path(producttype), data)
@@ -697,15 +697,15 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(thema.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
                         code="invalid",
                     )
                 ],
-                "locatie_ids": [
+                "locatie_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(locatie.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(locatie.uuid),
                         code="invalid",
                     )
                 ],
@@ -1065,12 +1065,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(producttype.locaties.count(), 1)
         self.assertEqual(producttype.naam, "update")
 
-    def test_partial_update_producttype_with_duplicate_ids_returns_error(self):
+    def test_partial_update_producttype_with_duplicate_uuids_returns_error(self):
         producttype = ProductTypeFactory.create()
         thema = ThemaFactory.create()
 
         data = {
-            "thema_ids": [thema.id, thema.id],
+            "thema_uuids": [thema.uuid, thema.uuid],
         }
 
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1079,9 +1079,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(thema.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
                         code="invalid",
                     )
                 ],
@@ -1090,14 +1090,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
     def test_partial_update_producttype_removing_thema(self):
         producttype = ProductTypeFactory.create()
-        data = {"thema_ids": []}
+        data = {"thema_uuids": []}
         response = self.client.patch(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data,
             {
-                "thema_ids": [
+                "thema_uuids": [
                     ErrorDetail(
                         string=_("Er is minimaal één thema vereist."), code="invalid"
                     )
@@ -1436,7 +1436,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = [
             {
-                "id": str(link.id),
+                "uuid": str(link.uuid),
                 "naam": link.naam,
                 "url": link.url,
             }
@@ -1453,7 +1453,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = [
             {
-                "id": str(bestand.id),
+                "uuid": str(bestand.uuid),
                 "bestand": "http://testserver" + bestand.bestand.url,
             }
         ]
@@ -1469,11 +1469,11 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = [
             {
-                "id": str(prijs.id),
+                "uuid": str(prijs.uuid),
                 "actief_vanaf": str(prijs.actief_vanaf),
                 "prijsopties": [
                     {
-                        "id": str(prijs_optie.id),
+                        "uuid": str(prijs_optie.uuid),
                         "bedrag": str(prijs_optie.bedrag),
                         "beschrijving": prijs_optie.beschrijving,
                     }
@@ -1517,7 +1517,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(producttype1.id),
+                "uuid": str(producttype1.uuid),
                 "naam": producttype1.naam,
                 "code": producttype1.code,
                 "samenvatting": producttype1.samenvatting,
@@ -1545,7 +1545,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "keywords": [],
                 "themas": [
                     {
-                        "id": str(self.thema.id),
+                        "uuid": str(self.thema.uuid),
                         "naam": self.thema.naam,
                         "gepubliceerd": True,
                         "aanmaak_datum": self.thema.aanmaak_datum.astimezone().isoformat(),
@@ -1556,7 +1556,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 ],
             },
             {
-                "id": str(producttype2.id),
+                "uuid": str(producttype2.uuid),
                 "naam": producttype2.naam,
                 "code": producttype2.code,
                 "samenvatting": producttype2.samenvatting,
@@ -1584,7 +1584,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "keywords": [],
                 "themas": [
                     {
-                        "id": str(self.thema.id),
+                        "uuid": str(self.thema.uuid),
                         "naam": self.thema.naam,
                         "gepubliceerd": True,
                         "aanmaak_datum": self.thema.aanmaak_datum.astimezone().isoformat(),
@@ -1606,7 +1606,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(producttype.id),
+            "uuid": str(producttype.uuid),
             "naam": producttype.naam,
             "code": producttype.code,
             "samenvatting": producttype.samenvatting,
@@ -1634,7 +1634,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "processen": [],
             "themas": [
                 {
-                    "id": str(self.thema.id),
+                    "uuid": str(self.thema.uuid),
                     "naam": self.thema.naam,
                     "gepubliceerd": True,
                     "aanmaak_datum": self.thema.aanmaak_datum.astimezone().isoformat(),
@@ -1714,11 +1714,11 @@ class TestProductTypeActions(BaseApiTestCase):
         self.producttype = ProductTypeFactory.create()
         self.list_path = reverse("producttype-actuele-prijzen")
         self.detail_path = reverse(
-            "producttype-actuele-prijs", args=(self.producttype.id,)
+            "producttype-actuele-prijs", args=(self.producttype.uuid,)
         )
 
         self.expected_data = {
-            "id": str(self.producttype.id),
+            "uuid": str(self.producttype.uuid),
             "code": self.producttype.code,
             "upl_naam": self.producttype.uniforme_product_naam.naam,
             "upl_uri": self.producttype.uniforme_product_naam.uri,
@@ -1775,13 +1775,13 @@ class TestProductTypeActions(BaseApiTestCase):
                 self.expected_data
                 | {
                     "actuele_prijs": {
-                        "id": str(prijs.id),
+                        "uuid": str(prijs.uuid),
                         "actief_vanaf": "2024-01-01",
                         "prijsopties": [
                             {
                                 "bedrag": str(optie.bedrag),
                                 "beschrijving": optie.beschrijving,
-                                "id": str(optie.id),
+                                "uuid": str(optie.uuid),
                             }
                         ],
                         "prijsregels": [],
@@ -1838,13 +1838,13 @@ class TestProductTypeActions(BaseApiTestCase):
             self.expected_data
             | {
                 "actuele_prijs": {
-                    "id": str(prijs.id),
+                    "uuid": str(prijs.uuid),
                     "actief_vanaf": "2024-01-01",
                     "prijsopties": [
                         {
                             "bedrag": str(optie.bedrag),
                             "beschrijving": optie.beschrijving,
-                            "id": str(optie.id),
+                            "uuid": str(optie.uuid),
                         }
                     ],
                     "prijsregels": [],
@@ -1883,7 +1883,7 @@ class TestProductTypeActions(BaseApiTestCase):
         )
 
     def test_put_vertaling(self):
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "en"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "en"))
 
         data = {"naam": "name EN", "samenvatting": "summary EN"}
         response = self.client.put(path, data)
@@ -1892,7 +1892,7 @@ class TestProductTypeActions(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "id": str(self.producttype.id),
+                "uuid": str(self.producttype.uuid),
                 "naam": "name EN",
                 "samenvatting": "summary EN",
             },
@@ -1904,7 +1904,7 @@ class TestProductTypeActions(BaseApiTestCase):
         self.assertNotEqual(self.producttype.naam, "name EN")
 
     def test_put_nl_vertaling(self):
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "nl"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "nl"))
 
         data = {"naam": "name NL", "samenvatting": "summary NL"}
         response = self.client.put(path, data)
@@ -1912,7 +1912,7 @@ class TestProductTypeActions(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_put_vertaling_with_unsupported_language(self):
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "fr"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "fr"))
 
         data = {"naam": "name FR", "samenvatting": "summary FR"}
         response = self.client.put(path, data)
@@ -1925,7 +1925,7 @@ class TestProductTypeActions(BaseApiTestCase):
         self.producttype.samenvatting = "summary EN"
         self.producttype.save()
 
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "en"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "en"))
 
         data = {"naam": "name EN 2"}
         response = self.client.patch(path, data)
@@ -1935,14 +1935,14 @@ class TestProductTypeActions(BaseApiTestCase):
         self.assertEqual(self.producttype.naam, "name EN 2")
 
     def test_delete_nonexistent_vertaling(self):
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "en"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "en"))
 
         response = self.client.delete(path)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_nl_vertaling(self):
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "nl"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "nl"))
 
         response = self.client.delete(path)
 
@@ -1954,7 +1954,7 @@ class TestProductTypeActions(BaseApiTestCase):
         self.producttype.samenvatting = "summary EN"
         self.producttype.save()
 
-        path = reverse("producttype-vertaling", args=(self.producttype.id, "en"))
+        path = reverse("producttype-vertaling", args=(self.producttype.uuid, "en"))
 
         response = self.client.delete(path)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -1966,7 +1966,7 @@ class TestProductTypeActions(BaseApiTestCase):
         element1 = ContentElementFactory.create(producttype=self.producttype)
         element2 = ContentElementFactory.create(producttype=self.producttype)
 
-        path = reverse("producttype-content", args=(self.producttype.id,))
+        path = reverse("producttype-content", args=(self.producttype.uuid,))
         response = self.client.get(path, headers={"Accept-Language": "nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1975,13 +1975,13 @@ class TestProductTypeActions(BaseApiTestCase):
             response.data,
             [
                 {
-                    "id": str(element1.id),
+                    "uuid": str(element1.uuid),
                     "taal": "nl",
                     "content": element1.content,
                     "labels": [],
                 },
                 {
-                    "id": str(element2.id),
+                    "uuid": str(element2.uuid),
                     "taal": "nl",
                     "content": element2.content,
                     "labels": [],
@@ -1997,7 +1997,7 @@ class TestProductTypeActions(BaseApiTestCase):
 
         element2 = ContentElementFactory.create(producttype=self.producttype)
 
-        path = reverse("producttype-content", args=(self.producttype.id,))
+        path = reverse("producttype-content", args=(self.producttype.uuid,))
         response = self.client.get(path, headers={"Accept-Language": "en"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2006,13 +2006,13 @@ class TestProductTypeActions(BaseApiTestCase):
             response.data,
             [
                 {
-                    "id": str(element1.id),
+                    "uuid": str(element1.uuid),
                     "taal": "en",
                     "content": "EN content",
                     "labels": [],
                 },
                 {
-                    "id": str(element2.id),
+                    "uuid": str(element2.uuid),
                     "taal": "nl",
                     "content": element2.content,
                     "labels": [],
