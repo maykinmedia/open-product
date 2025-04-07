@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
 from django.test import override_settings
@@ -45,9 +46,15 @@ class TestProduct(BaseApiTestCase):
             "eigenaren": [{"kvk_nummer": "12345678"}],
         }
 
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = "https://gemeente-a.zgw.nl/documenten"
-        config.save()
+        config_patch = patch(
+            "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
+            return_value=ExterneVerwijzingConfig(
+                documenten_url="https://gemeente-a.zgw.nl/documenten"
+            ),
+        )
+
+        self.config_mock = config_patch.start()
+        self.addCleanup(config_patch.stop)
 
     def detail_path(self, product):
         return reverse("product-detail", args=[product.id])
@@ -460,9 +467,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
     def test_create_product_without_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         response = self.client.post(self.path, self.data)
 
@@ -472,10 +477,7 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         data = self.data | {
             "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
@@ -799,9 +801,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
     def test_update_product_without_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         product = ProductFactory.create()
 
@@ -813,10 +813,7 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         product = ProductFactory.create()
 
@@ -911,9 +908,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
 
     def test_partial_update_product_without_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         product = ProductFactory.create()
 
@@ -925,10 +920,7 @@ class TestProduct(BaseApiTestCase):
     def test_partial_update_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         product = ProductFactory.create()
 
@@ -1011,9 +1003,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Document.objects.count(), 1)
 
     def test_read_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.documenten_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
 
         product = ProductFactory.create()
         document = DocumentFactory(product=product)
