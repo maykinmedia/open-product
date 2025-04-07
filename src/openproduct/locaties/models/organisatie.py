@@ -11,6 +11,7 @@ class Organisatie(BaseLocatie):
     class Meta:
         verbose_name = _("Organisatie")
         verbose_name_plural = _("Organisaties")
+        ordering = ("id",)
 
     code = models.CharField(
         verbose_name=_("code"),

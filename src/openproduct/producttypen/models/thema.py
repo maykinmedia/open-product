@@ -37,13 +37,15 @@ class Thema(BasePublishableModel):
     class Meta:
         verbose_name = _("thema")
         verbose_name_plural = _("thema's")
+        ordering = ("id",)
 
     def __str__(self):
         return self.naam
 
     def clean(self):
-        disallow_hoofd_thema_self_reference(self, self.hoofd_thema)
+        if self.pk:
+            disallow_hoofd_thema_self_reference(self, self.hoofd_thema)
 
-        validate_thema_gepubliceerd_state(
-            self.hoofd_thema, self.gepubliceerd, self.sub_themas
-        )
+            validate_thema_gepubliceerd_state(
+                self.hoofd_thema, self.gepubliceerd, self.sub_themas
+            )

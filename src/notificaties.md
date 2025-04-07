@@ -1,4 +1,5 @@
 ## Notificaties
+
 ## Berichtkenmerken voor Open Product API
 
 Kanalen worden typisch per component gedefinieerd. Producers versturen berichten op bepaalde kanalen,
@@ -22,7 +23,7 @@ op <a href="https://github.com/VNG-Realisatie/notificaties-api" rel="nofollow">h
 
 **Kenmerken**
 
-* `producttype.id`:
+* `producttype.uuid`:
 * `producttype.uniforme_product_naam`: Uniforme product naam gedefinieerd door de overheid.
 * `producttype.code`: code van het producttype.
 

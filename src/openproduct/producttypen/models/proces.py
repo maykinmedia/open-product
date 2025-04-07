@@ -26,6 +26,7 @@ class Proces(BaseModel):
         verbose_name = _("Proces")
         verbose_name_plural = _("Processen")
         unique_together = (("producttype", "uuid"),)
+        ordering = ("id",)
 
     def clean(self):
         check_externe_verwijzing_config_url("processen_url")

@@ -26,6 +26,7 @@ class ZaakType(BaseModel):
         verbose_name = _("zaaktype")
         verbose_name_plural = _("zaaktypen")
         unique_together = (("producttype", "uuid"),)
+        ordering = ("id",)
 
     def clean(self):
         check_externe_verwijzing_config_url("zaaktypen_url")

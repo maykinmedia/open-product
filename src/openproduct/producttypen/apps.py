@@ -8,6 +8,9 @@ class ProducttypenConfig(AppConfig):
     name = "openproduct.producttypen"
 
     def ready(self):
+        # load the signal receivers
+        from . import signals  # noqa
+
         unregister_camelize_filter_extension()
 
 
