@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
@@ -20,7 +21,6 @@ from openproduct.utils.filters import (
 )
 from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
-from openproduct.utils.views import OrderedModelViewSet
 
 logger = logging.getLogger(__name__)
 
@@ -124,9 +124,7 @@ class ProductFilterSet(FilterSet):
         summary="Verwijder een PRODUCT.",
     ),
 )
-class ProductViewSet(
-    AuditTrailViewSetMixin, NotificationViewSetMixin, OrderedModelViewSet
-):
+class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelViewSet):
     queryset = Product.objects.all()
     lookup_field = "uuid"
     serializer_class = ProductSerializer

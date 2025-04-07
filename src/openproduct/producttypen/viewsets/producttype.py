@@ -8,6 +8,7 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
@@ -32,7 +33,7 @@ from openproduct.utils.filters import (
     TranslationFilter,
 )
 from openproduct.utils.validators import ManyRegexValidator
-from openproduct.utils.views import OrderedModelViewSet, TranslatableViewSetMixin
+from openproduct.utils.views import TranslatableViewSetMixin
 
 logger = logging.getLogger(__name__)
 
@@ -160,7 +161,7 @@ class Meta:
     ),
 )
 class ProductTypeViewSet(
-    AuditTrailViewSetMixin, TranslatableViewSetMixin, OrderedModelViewSet
+    AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
 ):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer

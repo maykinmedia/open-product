@@ -2,12 +2,12 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Prijs
 from openproduct.producttypen.serializers import PrijsSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class PrijsFilterSet(FilterSet):
@@ -58,7 +58,7 @@ class PrijsFilterSet(FilterSet):
         summary="Verwijder een PRIJS.",
     ),
 )
-class PrijsViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class PrijsViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Prijs.objects.all()
     serializer_class = PrijsSerializer
     lookup_field = "uuid"

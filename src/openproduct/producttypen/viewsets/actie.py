@@ -2,12 +2,12 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Actie
 from openproduct.producttypen.serializers.actie import ActieSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class ActieFilterSet(FilterSet):
@@ -56,7 +56,7 @@ class ActieFilterSet(FilterSet):
         summary="Verwijder een ACTIE.",
     ),
 )
-class ActieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class ActieViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Actie.objects.all()
     serializer_class = ActieSerializer
     lookup_field = "uuid"

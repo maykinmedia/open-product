@@ -2,12 +2,12 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Link
 from openproduct.producttypen.serializers import LinkSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class LinkFilterSet(FilterSet):
@@ -54,7 +54,7 @@ class LinkFilterSet(FilterSet):
         summary="Verwijder een LINK.",
     ),
 )
-class LinkViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class LinkViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Link.objects.all()
     serializer_class = LinkSerializer
     lookup_field = "uuid"

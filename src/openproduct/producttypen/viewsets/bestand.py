@@ -3,12 +3,12 @@ from django.utils.translation import gettext_lazy as _
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.parsers import MultiPartParser
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Bestand
 from openproduct.producttypen.serializers import BestandSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class BestandFilterSet(FilterSet):
@@ -58,7 +58,7 @@ class BestandFilterSet(FilterSet):
         summary="Verwijder een BESTAND.",
     ),
 )
-class BestandViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class BestandViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Bestand.objects.all()
     parser_classes = [MultiPartParser]
     serializer_class = BestandSerializer

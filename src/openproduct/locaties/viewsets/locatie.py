@@ -1,10 +1,10 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.locaties.models import Locatie
 from openproduct.locaties.serializers import LocatieSerializer
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.utils.filters import FilterSet
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class LocatieFilterSet(FilterSet):
@@ -43,7 +43,7 @@ class LocatieFilterSet(FilterSet):
         summary="Verwijder een LOCATIE.",
     ),
 )
-class LocatieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class LocatieViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Locatie.objects.all()
     serializer_class = LocatieSerializer
     lookup_field = "uuid"
