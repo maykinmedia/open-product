@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.test import APIClient
 from reversion.models import Version
 
@@ -16,6 +17,7 @@ from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
 from openproduct.producten.models import Eigenaar, Product
 from openproduct.producten.tests.factories import EigenaarFactory, ProductFactory
+from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
@@ -163,6 +165,40 @@ class TestProduct(BaseApiTestCase):
             },
         }
         self.assertEqual(response.data, expected_data)
+
+    @freeze_time("2024-1-1")
+    def test_create_product_with_start_datum_set_to_today_changes_state_to_active(self):
+        producttype = ProductTypeFactory(
+            toegestane_statussen=[ProductStateChoices.ACTIEF]
+        )
+
+        data = self.data | {
+            "producttype_id": producttype.id,
+            "start_datum": datetime.date(2024, 1, 1),
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.data["status"], ProductStateChoices.ACTIEF)
+
+    @freeze_time("2024-1-1")
+    def test_create_product_with_eind_datum_set_to_today_changes_state_to_verlopen(
+        self,
+    ):
+        producttype = ProductTypeFactory(
+            toegestane_statussen=[ProductStateChoices.VERLOPEN]
+        )
+
+        data = self.data | {
+            "producttype_id": producttype.id,
+            "eind_datum": datetime.date(2024, 1, 1),
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.data["status"], ProductStateChoices.VERLOPEN)
 
     def test_create_product_with_invalid_verbruiksobject(self):
         json_schema = JsonSchemaFactory.create(
@@ -426,6 +462,42 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Product.objects.count(), 1)
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
+
+    @freeze_time("2024-1-1")
+    def test_update_product_with_start_datum_set_to_today_changes_state_to_active(self):
+        producttype = ProductTypeFactory(
+            toegestane_statussen=[ProductStateChoices.ACTIEF]
+        )
+        product = ProductFactory.create(producttype=producttype)
+
+        data = self.data | {
+            "producttype_id": producttype.id,
+            "start_datum": datetime.date(2024, 1, 1),
+        }
+
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.data["status"], ProductStateChoices.ACTIEF)
+
+    @freeze_time("2024-1-1")
+    def test_update_product_with_eind_datum_set_to_today_changes_state_to_verlopen(
+        self,
+    ):
+        producttype = ProductTypeFactory(
+            toegestane_statussen=[ProductStateChoices.VERLOPEN]
+        )
+        product = ProductFactory.create(producttype=producttype)
+
+        data = self.data | {
+            "producttype_id": producttype.id,
+            "eind_datum": datetime.date(2024, 1, 1),
+        }
+
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.data["status"], ProductStateChoices.VERLOPEN)
 
     def test_update_product_with_not_allowed_state(self):
         product = ProductFactory.create()
