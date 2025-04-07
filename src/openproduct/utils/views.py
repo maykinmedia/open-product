@@ -33,6 +33,7 @@ def server_error(request, template_name=ERROR_500_TEMPLATE_NAME):
     return http.HttpResponseServerError(template.render(context))
 
 
+# TODO remove?
 class OrderedModelViewSet(ModelViewSet):
     def get_queryset(self):
         return self.queryset.order_by("id")

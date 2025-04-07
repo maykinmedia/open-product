@@ -27,7 +27,7 @@ class LinkFilterSet(FilterSet):
         model = Link
         fields = {
             "producttype__code": ["exact"],
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
             "naam": ["exact", "contains"],
             "url": ["exact", "contains"],
         }
@@ -57,5 +57,5 @@ class LinkFilterSet(FilterSet):
 class LinkViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Link.objects.all()
     serializer_class = LinkSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = LinkFilterSet

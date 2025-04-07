@@ -46,5 +46,5 @@ class LocatieFilterSet(FilterSet):
 class LocatieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Locatie.objects.all()
     serializer_class = LocatieSerializer
-    lookup_field = "id"
+    lookup_field = "uuid"
     filterset_class = LocatieFilterSet

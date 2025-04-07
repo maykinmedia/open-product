@@ -33,7 +33,7 @@ class BestandFilterSet(FilterSet):
         model = Bestand
         fields = {
             "producttype__code": ["exact"],
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
         }
 
 
@@ -62,5 +62,5 @@ class BestandViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Bestand.objects.all()
     parser_classes = [MultiPartParser]
     serializer_class = BestandSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = BestandFilterSet

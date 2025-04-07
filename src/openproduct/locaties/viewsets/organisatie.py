@@ -47,5 +47,5 @@ class OrganisatieFilterSet(FilterSet):
 class OrganisatieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Organisatie.objects.all()
     serializer_class = OrganisatieSerializer
-    lookup_field = "id"
+    lookup_field = "uuid"
     filterset_class = OrganisatieFilterSet

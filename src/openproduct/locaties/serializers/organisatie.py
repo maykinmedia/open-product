@@ -9,7 +9,7 @@ from openproduct.locaties.models import Organisatie
         OpenApiExample(
             "organisatie response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "naam": "Maykin Media",
                 "code": "org-1234",
                 "email": "info@maykinmedia.nl",
@@ -41,4 +41,14 @@ class OrganisatieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organisatie
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "naam",
+            "code",
+            "email",
+            "telefoonnummer",
+            "straat",
+            "huisnummer",
+            "postcode",
+            "stad",
+        ]

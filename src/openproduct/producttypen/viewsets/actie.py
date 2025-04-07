@@ -27,7 +27,7 @@ class ActieFilterSet(FilterSet):
         model = Actie
         fields = {
             "producttype__code": ["exact"],
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
             "naam": ["exact", "contains"],
             "dmn_tabel_id": ["exact"],
             "dmn_config__naam": ["exact"],
@@ -59,5 +59,5 @@ class ActieFilterSet(FilterSet):
 class ActieViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Actie.objects.all()
     serializer_class = ActieSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = ActieFilterSet

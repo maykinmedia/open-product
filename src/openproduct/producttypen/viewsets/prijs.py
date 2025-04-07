@@ -29,7 +29,7 @@ class PrijsFilterSet(FilterSet):
     class Meta:
         model = Prijs
         fields = {
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
             "producttype__code": ["exact"],
             "actief_vanaf": ["exact", "gte", "lte"],
             "prijsopties__bedrag": ["exact", "gte", "lte"],
@@ -61,5 +61,5 @@ class PrijsFilterSet(FilterSet):
 class PrijsViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Prijs.objects.all()
     serializer_class = PrijsSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = PrijsFilterSet

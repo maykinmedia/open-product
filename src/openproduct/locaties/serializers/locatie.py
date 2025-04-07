@@ -9,7 +9,7 @@ from openproduct.locaties.models import Locatie
         OpenApiExample(
             "locatie response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "naam": "Maykin Media",
                 "email": "info@maykinmedia.nl",
                 "telefoonnummer": "+310207530523",
@@ -39,4 +39,13 @@ class LocatieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Locatie
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "naam",
+            "email",
+            "telefoonnummer",
+            "straat",
+            "huisnummer",
+            "postcode",
+            "stad",
+        ]

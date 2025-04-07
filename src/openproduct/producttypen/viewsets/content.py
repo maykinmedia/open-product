@@ -42,7 +42,7 @@ class ContentElementViewSet(
 ):
     queryset = ContentElement.objects.all()
     serializer_class = ContentElementSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
 
     @extend_schema(
         summary="De vertaling van een content element aanpassen.",
@@ -91,4 +91,4 @@ class ContentElementViewSet(
 class ContentLabelViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = ContentLabel.objects.all()
     serializer_class = ContentLabelSerializer
-    lookup_field = "id"
+    lookup_field = "uuid"

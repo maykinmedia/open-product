@@ -18,6 +18,7 @@ from openproduct.locaties.serializers import (
 )
 
 from ...utils.drf_validators import DuplicateIdValidator
+from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
 from ..models.validators import check_externe_verwijzing_config_url
@@ -34,10 +35,15 @@ from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
 
 class NestedThemaSerializer(serializers.ModelSerializer):
+    hoofd_thema = UUIDRelatedField(
+        queryset=Thema.objects.all(),
+        help_text=_("Het hoofd thema waaronder dit thema valt."),
+    )
+
     class Meta:
         model = Thema
         fields = (
-            "id",
+            "uuid",
             "naam",
             "beschrijving",
             "gepubliceerd",
@@ -52,11 +58,11 @@ class NestedThemaSerializer(serializers.ModelSerializer):
         OpenApiExample(
             "producttype response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "uniforme_product_naam": "parkeervergunning",
                 "themas": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Parkeren",
                         "beschrijving": ".....",
                         "gepubliceerd": True,
@@ -67,7 +73,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "locaties": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Maykin Media",
                         "email": "info@maykinmedia.nl",
                         "telefoonnummer": "+310207530523",
@@ -79,7 +85,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "organisaties": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Maykin Media",
                         "code": "org-1234",
                         "email": "info@maykinmedia.nl",
@@ -92,9 +98,9 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "contacten": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "organisatie": {
-                            "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                            "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                             "naam": "Maykin Media",
                             "code": "org-1234",
                             "email": "info@maykinmedia.nl",
@@ -113,10 +119,10 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "prijzen": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "prijsopties": [
                             {
-                                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                                 "bedrag": "50.99",
                                 "beschrijving": "normaal",
                             }
@@ -126,21 +132,21 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "links": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Open Product",
                         "url": "https://github.com/maykinmedia/open-product",
                     }
                 ],
                 "acties": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Parkeervergunning opzegging",
                         "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
                     },
                 ],
                 "bestanden": [
                     {
-                        "id": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
+                        "uuid": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
                         "bestand": "https://gemeente.open-product.nl/media/test.txt",
                     }
                 ],
@@ -199,10 +205,10 @@ class NestedThemaSerializer(serializers.ModelSerializer):
             "producttype request",
             value={
                 "uniforme_product_naam": "aanleunwoning",
-                "thema_ids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
-                "locatie_ids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
-                "organisatie_ids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
-                "contact_ids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
+                "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
+                "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
+                "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
+                "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
                 "gepubliceerd": False,
                 "naam": "Aanleunwoning",
                 "code": "PT-12345",
@@ -221,7 +227,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
                 "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
                 "verbruiksobject_schema_naam": "verbruik_schema",
-                "dataobject_schema": "data_schema",
+                "dataobject_schema_naam": "data_schema",
             },
             request_only=True,
         ),
@@ -233,7 +239,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     )
 
     themas = NestedThemaSerializer(many=True, read_only=True)
-    thema_ids = serializers.PrimaryKeyRelatedField(
+    thema_uuids = UUIDRelatedField(
         many=True,
         write_only=True,
         queryset=Thema.objects.all(),
@@ -241,7 +247,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     )
 
     locaties = LocatieSerializer(many=True, read_only=True)
-    locatie_ids = serializers.PrimaryKeyRelatedField(
+    locatie_uuids = UUIDRelatedField(
         many=True,
         write_only=True,
         queryset=Locatie.objects.all(),
@@ -250,7 +256,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     )
 
     organisaties = OrganisatieSerializer(many=True, read_only=True)
-    organisatie_ids = serializers.PrimaryKeyRelatedField(
+    organisatie_uuids = UUIDRelatedField(
         many=True,
         write_only=True,
         queryset=Organisatie.objects.all(),
@@ -259,7 +265,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     )
 
     contacten = ContactSerializer(many=True, read_only=True)
-    contact_ids = serializers.PrimaryKeyRelatedField(
+    contact_uuids = UUIDRelatedField(
         many=True,
         write_only=True,
         queryset=Contact.objects.all(),
@@ -362,14 +368,48 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     class Meta:
         model = ProductType
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "uniforme_product_naam",
+            "themas",
+            "thema_uuids",
+            "locaties",
+            "locatie_uuids",
+            "organisaties",
+            "organisatie_uuids",
+            "contacten",
+            "contact_uuids",
+            "prijzen",
+            "links",
+            "acties",
+            "bestanden",
+            "naam",
+            "samenvatting",
+            "taal",
+            "externe_codes",
+            "parameters",
+            "verbruiksobject_schema",
+            "verbruiksobject_schema_naam",
+            "dataobject_schema",
+            "dataobject_schema_naam",
+            "gepubliceerd",
+            "aanmaak_datum",
+            "update_datum",
+            "code",
+            "toegestane_statussen",
+            "keywords",
+            "interne_opmerkingen",
+            "zaaktypen",
+            "verzoektypen",
+            "processen",
+        ]
         validators = [
             DuplicateIdValidator(
-                ["thema_ids", "locatie_ids", "organisatie_ids", "contacten_ids"]
+                ["thema_uuids", "locatie_uuids", "organisatie_uuids", "contacten_uuids"]
             )
         ]
 
-    def validate_thema_ids(self, themas: list[Thema]) -> list[Thema]:
+    def validate_thema_uuids(self, themas: list[Thema]) -> list[Thema]:
         if len(themas) == 0:
             raise serializers.ValidationError(_("Er is minimaal één thema vereist."))
         return themas
@@ -394,32 +434,32 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
         set_nested_serializer(
             [
-                externe_code | {"producttype": producttype.id}
+                externe_code | {"producttype": producttype.pk}
                 for externe_code in externe_codes
             ],
             ExterneCodeSerializer,
         )
 
         set_nested_serializer(
-            [parameter | {"producttype": producttype.id} for parameter in parameters],
+            [parameter | {"producttype": producttype.pk} for parameter in parameters],
             ParameterSerializer,
         )
 
         set_nested_serializer(
-            [zaaktype | {"producttype": producttype.id} for zaaktype in zaaktypen],
+            [zaaktype | {"producttype": producttype.pk} for zaaktype in zaaktypen],
             ZaakTypeSerializer,
         )
 
         set_nested_serializer(
             [
-                verzoektype | {"producttype": producttype.id}
+                verzoektype | {"producttype": producttype.pk}
                 for verzoektype in verzoektypen
             ],
             VerzoekTypeSerializer,
         )
 
         set_nested_serializer(
-            [proces | {"producttype": producttype.id} for proces in processen],
+            [proces | {"producttype": producttype.pk} for proces in processen],
             ProcesSerializer,
         )
 
@@ -454,7 +494,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.externe_codes.all().delete()
             set_nested_serializer(
                 [
-                    externe_code | {"producttype": instance.id}
+                    externe_code | {"producttype": instance.pk}
                     for externe_code in externe_codes
                 ],
                 ExterneCodeSerializer,
@@ -463,14 +503,14 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if parameters is not None:
             instance.parameters.all().delete()
             set_nested_serializer(
-                [parameter | {"producttype": instance.id} for parameter in parameters],
+                [parameter | {"producttype": instance.pk} for parameter in parameters],
                 ParameterSerializer,
             )
 
         if zaaktypen is not None:
             instance.zaaktypen.all().delete()
             set_nested_serializer(
-                [zaaktype | {"producttype": instance.id} for zaaktype in zaaktypen],
+                [zaaktype | {"producttype": instance.pk} for zaaktype in zaaktypen],
                 ZaakTypeSerializer,
             )
 
@@ -478,7 +518,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.verzoektypen.all().delete()
             set_nested_serializer(
                 [
-                    verzoektype | {"producttype": instance.id}
+                    verzoektype | {"producttype": instance.pk}
                     for verzoektype in verzoektypen
                 ],
                 VerzoekTypeSerializer,
@@ -487,7 +527,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if processen is not None:
             instance.processen.all().delete()
             set_nested_serializer(
-                [proces | {"producttype": instance.id} for proces in processen],
+                [proces | {"producttype": instance.pk} for proces in processen],
                 ProcesSerializer,
             )
 
@@ -502,7 +542,7 @@ class ProductTypeActuelePrijsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductType
-        fields = ("id", "code", "upl_naam", "upl_uri", "actuele_prijs")
+        fields = ("uuid", "code", "upl_naam", "upl_uri", "actuele_prijs")
 
 
 class ProductTypeTranslationSerializer(serializers.ModelSerializer):
@@ -518,7 +558,7 @@ class ProductTypeTranslationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductType
         fields = (
-            "id",
+            "uuid",
             "naam",
             "samenvatting",
         )

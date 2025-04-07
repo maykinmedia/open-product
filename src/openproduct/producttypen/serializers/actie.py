@@ -10,6 +10,7 @@ from rest_framework import serializers
 
 from openproduct.producttypen.models import Actie, ProductType
 from openproduct.producttypen.models.dmn_config import DmnConfig
+from openproduct.utils.fields import UUIDRelatedField
 
 
 @extend_schema_serializer(
@@ -17,8 +18,8 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
         OpenApiExample(
             "actie response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
             },
@@ -27,7 +28,7 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
         OpenApiExample(
             "actie request",
             value={
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
                 "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
@@ -37,7 +38,7 @@ from openproduct.producttypen.models.dmn_config import DmnConfig
     ],
 )
 class ActieSerializer(serializers.ModelSerializer):
-    producttype_id = serializers.PrimaryKeyRelatedField(
+    producttype_uuid = UUIDRelatedField(
         source="producttype", queryset=ProductType.objects.all()
     )
 
@@ -51,7 +52,7 @@ class ActieSerializer(serializers.ModelSerializer):
 
     dmn_tabel_id = serializers.CharField(
         write_only=True,
-        help_text=_("id van de dmn tabel binnen de dmn instantie."),
+        help_text=_("uuid van de dmn tabel binnen de dmn instantie."),
     )
 
     url = serializers.SerializerMethodField(help_text=_("De url naar de dmn tabel."))
@@ -63,16 +64,16 @@ class ActieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actie
         fields = (
-            "id",
+            "uuid",
             "naam",
             "tabel_endpoint",
             "dmn_tabel_id",
             "url",
-            "producttype_id",
+            "producttype_uuid",
         )
 
 
 class NestedActieSerializer(ActieSerializer):
     class Meta:
         model = Actie
-        fields = ("id", "naam", "url")
+        fields = ("uuid", "naam", "url")

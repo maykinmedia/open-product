@@ -20,12 +20,12 @@ def get_from_serializer_data_or_instance(
         return getattr(serializer.instance, field)
 
 
-def clean_duplicate_ids_in_list(values: list, field: str, errors):
+def clean_duplicate_uuids_in_list(values: list, field: str, errors):
     value_set = set()
     errors_messages = []
     for idx, value in enumerate(values):
         if value in value_set:
-            errors_messages.append(_("Dubbel id: {} op index {}.").format(value, idx))
+            errors_messages.append(_("Dubbel uuid: {} op index {}.").format(value, idx))
 
         value_set.add(value)
 

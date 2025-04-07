@@ -20,7 +20,7 @@ class ThemaFilterSet(FilterSet):
             "gepubliceerd": ["exact"],
             "naam": ["exact"],
             "hoofd_thema__naam": ["exact"],
-            "hoofd_thema__id": ["exact"],
+            "hoofd_thema__uuid": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
         }
@@ -42,7 +42,7 @@ class ThemaFilterSet(FilterSet):
     ),
     partial_update=extend_schema(
         summary="Werk een THEMA deels bij.",
-        description="Als producttype_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als producttype_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een THEMA.",
@@ -51,7 +51,7 @@ class ThemaFilterSet(FilterSet):
 class ThemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Thema.objects.all()
     serializer_class = ThemaSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = ThemaFilterSet
 
     def destroy(self, request, *args, **kwargs):

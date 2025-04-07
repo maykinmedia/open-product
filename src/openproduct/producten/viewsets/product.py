@@ -94,7 +94,7 @@ class ProductFilterSet(FilterSet):
             "frequentie": ["exact"],
             "prijs": ["exact", "gte", "lte"],
             "producttype__code": ["exact"],
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],
@@ -128,7 +128,7 @@ class ProductViewSet(
     AuditTrailViewSetMixin, NotificationViewSetMixin, OrderedModelViewSet
 ):
     queryset = Product.objects.all()
-    lookup_url_field = "id"
+    lookup_field = "uuid"
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
     notifications_kanaal = KANAAL_PRODUCTEN

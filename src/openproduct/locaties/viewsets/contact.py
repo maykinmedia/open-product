@@ -13,7 +13,7 @@ class ContactFilterSet(FilterSet):
         model = Contact
         fields = {
             "organisatie__naam": ["exact"],
-            "organisatie__id": ["exact"],
+            "organisatie__uuid": ["exact"],
             "voornaam": ["exact"],
             "achternaam": ["exact"],
             "email": ["iexact"],
@@ -46,5 +46,5 @@ class ContactFilterSet(FilterSet):
 class ContactViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-    lookup_field = "id"
+    lookup_field = "uuid"
     filterset_class = ContactFilterSet

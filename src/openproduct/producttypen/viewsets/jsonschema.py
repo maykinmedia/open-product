@@ -38,5 +38,4 @@ class JsonSchemaFilterSet(FilterSet):
 class JsonSchemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
     queryset = JsonSchema.objects.all()
     serializer_class = JsonSchemaSerializer
-    lookup_url_kwarg = "id"
     filterset_class = JsonSchemaFilterSet
