@@ -7,8 +7,8 @@ from solo.models import SingletonModel
 class ExterneVerwijzingConfig(SingletonModel):
 
     zaaktypen_url = models.URLField(
-        verbose_name=_("zaaktypen url"),
-        help_text=_("Basis url van zaaktypen."),
+        verbose_name=_("Zaaktypen API url"),
+        help_text=_("Basis url van Zaaktypen API."),
         blank=True,
     )
     processen_url = models.URLField(
@@ -23,8 +23,8 @@ class ExterneVerwijzingConfig(SingletonModel):
     )
 
     documenten_url = models.URLField(
-        verbose_name=_("documenten url"),
-        help_text=_("Basis url van documenten."),
+        verbose_name=_("Documenten API url"),
+        help_text=_("Basis url van Documenten API."),
         blank=True,
     )
 
