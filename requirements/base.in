@@ -7,8 +7,6 @@ open-api-framework
 
 # API libraries
 # django-extra-fields
-django-markdownx
-django-localflavor
 django-parler
 django-parler-rest
 django-reversion

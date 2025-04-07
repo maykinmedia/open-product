@@ -19,9 +19,7 @@ INSTALLED_APPS += [
     # Project applications.
     "rest_framework.authtoken",
     "timeline_logger",
-    "localflavor",
     "parler",
-    "markdownx",
     "django_celery_beat",
     "reversion",
     "reversion_compare",
