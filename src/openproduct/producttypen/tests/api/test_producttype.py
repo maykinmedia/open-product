@@ -37,6 +37,7 @@ from openproduct.producttypen.tests.factories import (
     ParameterFactory,
     PrijsFactory,
     PrijsOptieFactory,
+    PrijsRegelFactory,
     ProcesFactory,
     ProductTypeFactory,
     ThemaFactory,
@@ -1477,6 +1478,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                         "beschrijving": prijs_optie.beschrijving,
                     }
                 ],
+                "prijsregels": [],
             }
         ]
         self.assertEqual(response.data["prijzen"], expected_data)
@@ -1756,7 +1758,7 @@ class TestProductTypeActions(BaseApiTestCase):
             ],
         )
 
-    def test_get_actuele_prijzen_when_producttype_has_actuele_prijs(self):
+    def test_get_actuele_prijzen_when_producttype_has_prijsregels(self):
         prijs = PrijsFactory.create(
             producttype=self.producttype,
             actief_vanaf=datetime.date(2024, 1, 1),
@@ -1782,12 +1784,45 @@ class TestProductTypeActions(BaseApiTestCase):
                                 "id": str(optie.id),
                             }
                         ],
+                        "prijsregels": [],
                     },
                 },
             ],
         )
 
-    def test_get_actuele_prijs_when_producttype_has_actuele_prijs(self):
+    def test_get_actuele_prijzen_when_producttype_has_actuele_prijs(self):
+        prijs = PrijsFactory.create(
+            producttype=self.producttype,
+            actief_vanaf=datetime.date(2024, 1, 1),
+        )
+
+        regel = PrijsRegelFactory.create(prijs=prijs)
+
+        response = self.client.get(self.list_path)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data,
+            [
+                self.expected_data
+                | {
+                    "actuele_prijs": {
+                        "id": str(prijs.id),
+                        "actief_vanaf": "2024-01-01",
+                        "prijsregels": [
+                            {
+                                "url": regel.url,
+                                "beschrijving": regel.beschrijving,
+                                "id": str(regel.id),
+                            }
+                        ],
+                        "prijsopties": [],
+                    },
+                },
+            ],
+        )
+
+    def test_get_actuele_prijs_when_producttype_has_prijsopties(self):
         prijs = PrijsFactory.create(
             producttype=self.producttype,
             actief_vanaf=datetime.date(2024, 1, 1),
@@ -1812,6 +1847,37 @@ class TestProductTypeActions(BaseApiTestCase):
                             "id": str(optie.id),
                         }
                     ],
+                    "prijsregels": [],
+                },
+            },
+        )
+
+    def test_get_actuele_prijs_when_producttype_has_prijsregels(self):
+        prijs = PrijsFactory.create(
+            producttype=self.producttype,
+            actief_vanaf=datetime.date(2024, 1, 1),
+        )
+
+        regel = PrijsRegelFactory.create(prijs=prijs)
+
+        response = self.client.get(self.detail_path)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data,
+            self.expected_data
+            | {
+                "actuele_prijs": {
+                    "id": str(prijs.id),
+                    "actief_vanaf": "2024-01-01",
+                    "prijsregels": [
+                        {
+                            "url": regel.url,
+                            "beschrijving": regel.beschrijving,
+                            "id": str(regel.id),
+                        }
+                    ],
+                    "prijsopties": [],
                 },
             },
         )

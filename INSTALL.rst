@@ -87,12 +87,26 @@ development machine.
 
 8. Create a .env file with database settings. See dotenv.example for an example.
 
-        $ cp dotenv.example .env
+   .. code-block:: bash
+
+       $ cp dotenv.example .env
 
 
 **Note:** If you are making local, machine specific, changes, add them to
 ``src/openproduct/conf/local.py``. You can base this file on the
 example file included in the same directory.
+
+9. Load in the Uniforme Productnamenlijst (UPL).
+
+   .. code-block:: bash
+
+       $ python src/manage.py load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
+
+   .. code-block:: bash
+
+       $ python src/manage.py load_upl --file ...../UPL-actueel.csv
+
+
 
 
 Update installation
@@ -182,20 +196,23 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ docker logs -f openproduct_web_1
+       $ docker compose logs -f web
 
 3. Create an admin user and load initial data. If different container names
    are shown above, use the container name ending with ``_web_1``:
 
    .. code-block:: bash
 
-       $ docker exec -it openproduct_web_1 /app/src/manage.py createsuperuser
+       $ docker compose exec -it web /app/src/manage.py createsuperuser
        Username: admin
        ...
        Superuser created successfully.
 
-       $ docker exec -it openproduct_web_1 /app/src/manage.py loaddata admin_index groups
+       $ docker compose exec -it web /app/src/manage.py loaddata admin_index groups
        Installed 5 object(s) from 2 fixture(s)
+
+       $ docker compose exec -it web /app/src/manage.py load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
+       Done
 
 4. Point your browser to ``http://localhost:8000/`` to access the project's
    management interface with the credentials used in step 3.

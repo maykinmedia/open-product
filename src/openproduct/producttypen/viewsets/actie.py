@@ -45,8 +45,6 @@ class ActieFilterSet(FilterSet):
     ),
     create=extend_schema(
         summary="Maak een ACTIE aan.",
-        description="De tabel_endpoint is een verwijzing naar url gedefinieerd in een DMNCONFIG object. "
-        "Deze objecten kunnen in de admin worden aangemaakt.",
     ),
     update=extend_schema(
         summary="Werk een ACTIE in zijn geheel bij.",
