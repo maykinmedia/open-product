@@ -24,6 +24,7 @@ services:
       - DB_HOST=db
       - CACHE_DEFAULT=redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
       # Only allow all hosts for development/testing purposes!
       - ALLOWED_HOSTS=*
     ports:
@@ -45,6 +46,7 @@ services:
     depends_on:
       - db
       - redis
+      - web
 
   celery-beat:
     build: *web_build
