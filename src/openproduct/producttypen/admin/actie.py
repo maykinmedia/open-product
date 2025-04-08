@@ -9,6 +9,7 @@ class ActieInline(admin.TabularInline):
     model = Actie
     extra = 1
     ordering = ("pk",)
+    formset = AuditLogInlineformset
 
 
 @admin.register(Actie)

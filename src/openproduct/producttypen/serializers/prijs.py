@@ -204,4 +204,4 @@ class PrijsSerializer(serializers.ModelSerializer):
 class NestedPrijsSerializer(PrijsSerializer):
     class Meta:
         model = Prijs
-        fields = ("id", "prijsopties", "actief_vanaf")
+        fields = ("id", "prijsopties", "prijsregels", "actief_vanaf")
