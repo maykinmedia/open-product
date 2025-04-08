@@ -90,6 +90,11 @@ SITE_TITLE = "API dashboard"
 PROJECT_NAME = "Open Product"
 SHOW_ALERT = True
 
+ENVIRONMENT_LABEL = config("ENVIRONMENT_LABEL", ENVIRONMENT)
+ENVIRONMENT_BACKGROUND_COLOR = config("ENVIRONMENT_BACKGROUND_COLOR", "orange")
+ENVIRONMENT_FOREGROUND_COLOR = config("ENVIRONMENT_FOREGROUND_COLOR", "black")
+SHOW_ENVIRONMENT = config("SHOW_ENVIRONMENT", default=True)
+
 # This setting is used by the csrf_failure view (accounts app).
 # You can specify any path that should match the request.path
 # Note: the LOGIN_URL Django setting is not used because you could have

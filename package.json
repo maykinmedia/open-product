@@ -2,12 +2,13 @@
     "name": "openproduct",
     "version": "0.0.5",
     "description": "open-product project",
-    "main": "src/static/open-product/js/open-product.js",
+    "main": "src/openzaak/static/bundles/openproduct-js.js",
     "directories": {
         "doc": "docs"
     },
     "scripts": {
-        "build": "npm run collect",
+        "build": "npm run bundle && npm run collect",
+        "bundle": "webpack",
         "collect": "cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js src/openproduct/static/wysimark/wysimark.js && cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js.map src/openproduct/static/wysimark/index.cjs.js.map"
     },
     "repository": {
@@ -18,6 +19,37 @@
     "license": "UNLICENSED",
     "homepage": "https://maykinmedia.nl",
     "dependencies": {
-        "wysimark-standalone": "^1.0.0"
+        "wysimark-standalone": "^1.0.0",
+        "microscope-sass": "latest"
+    },
+    "devDependencies": {
+        "@babel/core": "latest",
+        "@babel/polyfill": "latest",
+        "@babel/preset-env": "latest",
+        "@babel/runtime": "latest",
+        "autoprefixer": "latest",
+        "babel-loader": "latest",
+        "chai": "latest",
+        "css-loader": "latest",
+        "cssnano": "latest",
+        "mini-css-extract-plugin": "latest",
+        "mocha": "latest",
+        "postcss-loader": "latest",
+        "postcss-selector-lint": "latest",
+        "sass": "latest",
+        "sass-loader": "latest",
+        "simulant": "latest",
+        "sinon": "latest",
+        "url-loader": "latest",
+        "webpack": "latest",
+        "webpack-cli": "latest",
+        "webpack-dev-server": "latest",
+        "webpack-stream": "latest",
+        "yargs": "latest"
+    },
+    "overrides": {
+        "@portive/client": {
+            "axios": "^0.30.0"
+        }
     }
 }

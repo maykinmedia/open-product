@@ -15,7 +15,6 @@ from mozilla_django_oidc_db.views import AdminLoginFailure
 from openproduct.accounts.views.password_reset import PasswordResetView
 from openproduct.producten.urls import urlpatterns as product_urlpatterns
 from openproduct.producttypen.urls import urlpatterns as producttype_urlpatterns
-from openproduct.utils.views import IndexView
 
 # Configure admin
 
@@ -58,9 +57,13 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    # # redirect root to admin index.
-    # path("", RedirectView.as_view(pattern_name="admin:index")),
-    path("", TemplateView.as_view(template_name="main.html"), name="home"),
+    path(
+        "",
+        TemplateView.as_view(
+            template_name="index.html",
+        ),
+        name="home",
+    ),
     path(
         "producttypen/api/v{}/".format(settings.PRODUCTTYPEN_API_MAJOR_VERSION),
         include(producttype_urlpatterns),
@@ -68,16 +71,6 @@ urlpatterns = [
     path(
         "producten/api/v{}/".format(settings.PRODUCTEN_API_MAJOR_VERSION),
         include(product_urlpatterns),
-    ),
-    path(
-        "producten/",
-        IndexView.as_view(component="producten"),
-        name="index-producten",
-    ),
-    path(
-        "producttypen/",
-        IndexView.as_view(component="producttypen"),
-        name="index-producttypen",
     ),
     path("ref/", include("notifications_api_common.urls")),
     # path("view-config/", ViewConfigView.as_view(), name="view-config"),
