@@ -4,12 +4,12 @@ from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ProductType, Thema
 from openproduct.producttypen.serializers import ThemaSerializer
 from openproduct.utils.filters import FilterSet
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class ThemaFilterSet(FilterSet):
@@ -20,7 +20,7 @@ class ThemaFilterSet(FilterSet):
             "gepubliceerd": ["exact"],
             "naam": ["exact"],
             "hoofd_thema__naam": ["exact"],
-            "hoofd_thema__id": ["exact"],
+            "hoofd_thema__uuid": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
         }
@@ -42,16 +42,16 @@ class ThemaFilterSet(FilterSet):
     ),
     partial_update=extend_schema(
         summary="Werk een THEMA deels bij.",
-        description="Als producttype_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als producttype_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een THEMA.",
     ),
 )
-class ThemaViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Thema.objects.all()
     serializer_class = ThemaSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = ThemaFilterSet
 
     def destroy(self, request, *args, **kwargs):

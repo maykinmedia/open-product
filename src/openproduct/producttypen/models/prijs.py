@@ -32,6 +32,7 @@ class Prijs(BaseModel):
         verbose_name = _("Prijs")
         verbose_name_plural = _("Prijzen")
         unique_together = ("producttype", "actief_vanaf")
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.producttype.naam} {self.actief_vanaf}"
@@ -62,6 +63,7 @@ class PrijsOptie(BaseModel):
     class Meta:
         verbose_name = _("Prijs optie")
         verbose_name_plural = _("Prijs opties")
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.beschrijving} {self.bedrag}"
@@ -104,6 +106,7 @@ class PrijsRegel(BaseModel):
     class Meta:
         verbose_name = _("Prijs regel")
         verbose_name_plural = _("Prijs regels")
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.beschrijving} {self.url}"

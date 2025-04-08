@@ -2,12 +2,12 @@ from django.utils.translation import gettext_lazy as _
 
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Link
 from openproduct.producttypen.serializers import LinkSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
-from openproduct.utils.views import OrderedModelViewSet
 
 
 class LinkFilterSet(FilterSet):
@@ -27,7 +27,7 @@ class LinkFilterSet(FilterSet):
         model = Link
         fields = {
             "producttype__code": ["exact"],
-            "producttype__id": ["exact"],
+            "producttype__uuid": ["exact"],
             "naam": ["exact", "contains"],
             "url": ["exact", "contains"],
         }
@@ -54,8 +54,8 @@ class LinkFilterSet(FilterSet):
         summary="Verwijder een LINK.",
     ),
 )
-class LinkViewSet(AuditTrailViewSetMixin, OrderedModelViewSet):
+class LinkViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Link.objects.all()
     serializer_class = LinkSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = LinkFilterSet

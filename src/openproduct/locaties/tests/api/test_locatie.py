@@ -19,7 +19,7 @@ class TestLocatie(BaseApiTestCase):
         self.data = {"naam": "locatie", "postcode": "1111 AA", "stad": "Amsterdam"}
         self.locatie = LocatieFactory.create()
 
-        self.detail_path = reverse("locatie-detail", args=[self.locatie.id])
+        self.detail_path = reverse("locatie-detail", args=[self.locatie.uuid])
 
     def test_read_locatie_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -44,9 +44,9 @@ class TestLocatie(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Locatie.objects.count(), 2)
 
-        locatie = Locatie.objects.get(id=response.data["id"])
+        locatie = Locatie.objects.get(uuid=response.data["uuid"])
         expected_data = {
-            "id": str(locatie.id),
+            "uuid": str(locatie.uuid),
             "naam": locatie.naam,
             "email": locatie.email,
             "telefoonnummer": locatie.telefoonnummer,
@@ -81,7 +81,7 @@ class TestLocatie(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.locatie.id),
+                "uuid": str(self.locatie.uuid),
                 "naam": self.locatie.naam,
                 "email": self.locatie.email,
                 "telefoonnummer": self.locatie.telefoonnummer,
@@ -91,7 +91,7 @@ class TestLocatie(BaseApiTestCase):
                 "stad": self.locatie.stad,
             },
             {
-                "id": str(locatie.id),
+                "uuid": str(locatie.uuid),
                 "naam": locatie.naam,
                 "email": locatie.email,
                 "telefoonnummer": locatie.telefoonnummer,
@@ -108,7 +108,7 @@ class TestLocatie(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(self.locatie.id),
+            "uuid": str(self.locatie.uuid),
             "naam": self.locatie.naam,
             "email": self.locatie.email,
             "telefoonnummer": self.locatie.telefoonnummer,

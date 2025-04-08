@@ -79,3 +79,4 @@ class Eigenaar(BaseModel):
     class Meta:
         verbose_name = _("Eigenaar")
         verbose_name_plural = _("Eigenaren")
+        ordering = ("-id",)

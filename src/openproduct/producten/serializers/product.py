@@ -22,6 +22,7 @@ from openproduct.producttypen.models.validators import (
 )
 from openproduct.producttypen.serializers.thema import NestedProductTypeSerializer
 from openproduct.utils.drf_validators import NestedObjectsValidator
+from openproduct.utils.fields import UUIDRelatedField
 from openproduct.utils.serializers import (
     set_nested_serializer,
     validate_key_value_model_keys,
@@ -33,14 +34,14 @@ from openproduct.utils.serializers import (
         OpenApiExample(
             "product response",
             value={
-                "id": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
+                "uuid": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
                 "url": "https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36",
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
                 "update_datum": "2019-08-24T14:15:22Z",
                 "producttype": {
-                    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                    "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                     "code": "129380-c21231",
                     "keywords": ["auto"],
                     "uniforme_product_naam": "parkeervergunning",
@@ -52,7 +53,7 @@ from openproduct.utils.serializers import (
                 "gepubliceerd": False,
                 "eigenaren": [
                     {
-                        "id": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                        "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
                         "bsn": "111222333",
                     }
                 ],
@@ -65,7 +66,7 @@ from openproduct.utils.serializers import (
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
-                "data": {"max_uren": 150},
+                "dataobject": {"max_uren": 150},
             },
             response_only=True,
         ),
@@ -74,7 +75,7 @@ from openproduct.utils.serializers import (
             value={
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "gepubliceerd": False,
                 "eigenaren": [
                     {"bsn": "111222333"},
@@ -84,6 +85,7 @@ from openproduct.utils.serializers import (
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
+                "dataobject": {"max_uren": 150},
             },
             media_type="multipart/form-data",
             request_only=True,
@@ -91,9 +93,11 @@ from openproduct.utils.serializers import (
     ],
 )
 class ProductSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="product-detail")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="product-detail", lookup_field="uuid"
+    )
     producttype = NestedProductTypeSerializer(read_only=True)
-    producttype_id = serializers.PrimaryKeyRelatedField(
+    producttype_uuid = UUIDRelatedField(
         write_only=True, queryset=ProductType.objects.all(), source="producttype"
     )
     eigenaren = EigenaarSerializer(many=True)
@@ -101,7 +105,24 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "url",
+            "start_datum",
+            "eind_datum",
+            "aanmaak_datum",
+            "update_datum",
+            "producttype",
+            "producttype_uuid",
+            "gepubliceerd",
+            "eigenaren",
+            "documenten",
+            "status",
+            "prijs",
+            "frequentie",
+            "verbruiksobject",
+            "dataobject",
+        ]
         validators = [
             DateValidator(),
             StatusValidator(),
@@ -132,11 +153,11 @@ class ProductSerializer(serializers.ModelSerializer):
         product = super().create(validated_data)
 
         for eigenaar in eigenaren:
-            eigenaar.pop("id", None)
+            eigenaar.pop("uuid", None)
             EigenaarSerializer().create(eigenaar | {"product": product})
 
         set_nested_serializer(
-            [document | {"product": product.id} for document in documenten],
+            [document | {"product": product.pk} for document in documenten],
             DocumentSerializer,
         )
 
@@ -150,27 +171,29 @@ class ProductSerializer(serializers.ModelSerializer):
         product = super().update(instance, validated_data)
 
         if eigenaren is not None:
-            current_eigenaren_ids = set(product.eigenaren.values_list("id", flat=True))
-            seen_eigenaren_ids = set()
+            current_eigenaren_uuids = set(
+                product.eigenaren.values_list("uuid", flat=True)
+            )
+            seen_eigenaren_uuids = set()
 
             for eigenaar in eigenaren:
-                eigenaar_id = eigenaar.pop("id", None)
-                if eigenaar_id is None:
+                eigenaar_uuid = eigenaar.pop("uuid", None)
+                if eigenaar_uuid is None:
                     EigenaarSerializer().create(eigenaar | {"product": product})
 
                 else:
-                    existing_eigenaar = Eigenaar.objects.get(id=eigenaar_id)
+                    existing_eigenaar = Eigenaar.objects.get(uuid=eigenaar_uuid)
                     EigenaarSerializer().update(existing_eigenaar, eigenaar)
-                    seen_eigenaren_ids.add(eigenaar_id)
+                    seen_eigenaren_uuids.add(eigenaar_uuid)
 
             product.eigenaren.filter(
-                id__in=(current_eigenaren_ids - seen_eigenaren_ids)
+                uuid__in=(current_eigenaren_uuids - seen_eigenaren_uuids)
             ).delete()
 
         if documenten is not None:
             instance.documenten.all().delete()
             set_nested_serializer(
-                [document | {"product": instance.id} for document in documenten],
+                [document | {"product": instance.pk} for document in documenten],
                 DocumentSerializer,
             )
 

@@ -52,6 +52,7 @@ class Contact(BaseModel):
     class Meta:
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacten")
+        ordering = ("-id",)
 
     def __str__(self):
         if self.organisatie:

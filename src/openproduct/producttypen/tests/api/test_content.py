@@ -22,7 +22,7 @@ class TestContentElement(BaseApiTestCase):
         self.data = {
             "labels": [self.label.naam],
             "content": "Voorwaarden",
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.content_element = ContentElementFactory(
             content="Test Content", producttype=self.producttype
@@ -31,7 +31,7 @@ class TestContentElement(BaseApiTestCase):
         self.content_element.labels.add(self.label)
         self.content_element.save()
 
-        self.detail_path = reverse("content-detail", args=[self.content_element.id])
+        self.detail_path = reverse("content-detail", args=[self.content_element.uuid])
 
     def test_read_content_element_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -47,7 +47,7 @@ class TestContentElement(BaseApiTestCase):
                 "content": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -59,11 +59,11 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ContentElement.objects.count(), 2)
 
-        response.data.pop("id")
+        response.data.pop("uuid")
         expected_data = {
             "labels": [self.label.naam],
             "content": "Voorwaarden",
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)
@@ -90,12 +90,12 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         expected_data = {
-            "id": str(self.content_element.id),
+            "uuid": str(self.content_element.uuid),
             "content": self.content_element.content,
             "labels": [
                 self.label.naam,
             ],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)
@@ -106,7 +106,7 @@ class TestContentElement(BaseApiTestCase):
         content_element.content = "content element EN"
         content_element.save()
 
-        path = reverse("content-detail", args=[content_element.id])
+        path = reverse("content-detail", args=[content_element.uuid])
 
         response = self.client.get(path, headers={"Accept-Language": "en"})
 
@@ -116,7 +116,7 @@ class TestContentElement(BaseApiTestCase):
 
     def test_read_content_element_in_fallback_language(self):
         content_element = ContentElementFactory.create(content="content element NL")
-        path = reverse("content-detail", args=[content_element.id])
+        path = reverse("content-detail", args=[content_element.uuid])
 
         response = self.client.get(path, headers={"Accept-Language": "de"})
 
@@ -138,7 +138,7 @@ class TestContentElementActions(BaseApiTestCase):
         self.content_element = ContentElementFactory.create()
 
     def test_put_vertaling(self):
-        path = reverse("content-vertaling", args=(self.content_element.id, "en"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "en"))
 
         data = {"content": "content EN"}
         response = self.client.put(path, data)
@@ -147,7 +147,7 @@ class TestContentElementActions(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "id": str(self.content_element.id),
+                "uuid": str(self.content_element.uuid),
                 "content": "content EN",
             },
         )
@@ -158,7 +158,7 @@ class TestContentElementActions(BaseApiTestCase):
         self.assertNotEqual(self.content_element.content, "content EN")
 
     def test_put_nl_vertaling(self):
-        path = reverse("content-vertaling", args=(self.content_element.id, "nl"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "nl"))
 
         data = {"content": "content NL"}
         response = self.client.put(path, data)
@@ -166,7 +166,7 @@ class TestContentElementActions(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_put_vertaling_with_unsupported_language(self):
-        path = reverse("content-vertaling", args=(self.content_element.id, "fr"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "fr"))
 
         data = {"naam": "name FR", "samenvatting": "summary FR"}
         response = self.client.put(path, data)
@@ -174,14 +174,14 @@ class TestContentElementActions(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_nonexistent_vertaling(self):
-        path = reverse("content-vertaling", args=(self.content_element.id, "de"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "de"))
 
         response = self.client.delete(path)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_nl_vertaling(self):
-        path = reverse("content-vertaling", args=(self.content_element.id, "nl"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "nl"))
 
         response = self.client.delete(path)
 
@@ -192,7 +192,7 @@ class TestContentElementActions(BaseApiTestCase):
         self.content_element.content = "content EN"
         self.content_element.save()
 
-        path = reverse("content-vertaling", args=(self.content_element.id, "en"))
+        path = reverse("content-vertaling", args=(self.content_element.uuid, "en"))
 
         response = self.client.delete(path)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

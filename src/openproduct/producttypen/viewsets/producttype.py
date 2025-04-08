@@ -8,6 +8,7 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
@@ -32,7 +33,7 @@ from openproduct.utils.filters import (
     TranslationFilter,
 )
 from openproduct.utils.validators import ManyRegexValidator
-from openproduct.utils.views import OrderedModelViewSet, TranslatableViewSetMixin
+from openproduct.utils.views import TranslatableViewSetMixin
 
 logger = logging.getLogger(__name__)
 
@@ -153,18 +154,18 @@ class Meta:
     ),
     partial_update=extend_schema(
         summary="Werk een PRODUCTTYPE deels bij.",
-        description="Als thema_ids, locatie_ids, organisatie_ids of contact_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als thema_uuids, locatie_uuids, organisatie_uuids of contact_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een PRODUCTTYPE.",
     ),
 )
 class ProductTypeViewSet(
-    AuditTrailViewSetMixin, TranslatableViewSetMixin, OrderedModelViewSet
+    AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
 ):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
-    lookup_url_kwarg = "id"
+    lookup_field = "uuid"
     filterset_class = ProductTypeFilterSet
 
     def get_serializer_context(self):
@@ -245,7 +246,7 @@ class ProductTypeViewSet(
         serializer_class=ProductTypeActuelePrijsSerializer,
         url_path="actuele-prijs",
     )
-    def actuele_prijs(self, request, id=None):
+    def actuele_prijs(self, request, uuid=None):
         producttype = self.get_object()
         serializer = ProductTypeActuelePrijsSerializer(producttype)
         return Response(serializer.data)
@@ -278,7 +279,7 @@ class ProductTypeViewSet(
         serializer_class=NestedContentElementSerializer,
         url_path="content",
     )
-    def content(self, request, id=None):
+    def content(self, request, uuid=None):
         producttype = self.get_object()
 
         queryset = producttype.content_elementen

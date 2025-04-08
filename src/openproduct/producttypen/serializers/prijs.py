@@ -10,6 +10,7 @@ from drf_spectacular.utils import (
 from rest_framework import serializers
 
 from ...utils.drf_validators import NestedObjectsValidator
+from ...utils.fields import UUIDRelatedField
 from ..models import Prijs, PrijsOptie, ProductType
 from ..models.dmn_config import DmnConfig
 from ..models.prijs import PrijsRegel
@@ -17,15 +18,15 @@ from .validators import PrijsOptieRegelValidator
 
 
 class PrijsOptieSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(required=False)
+    uuid = serializers.UUIDField(required=False)
 
     class Meta:
         model = PrijsOptie
-        fields = ("id", "bedrag", "beschrijving")
+        fields = ("uuid", "bedrag", "beschrijving")
 
 
 class PrijsRegelSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(required=False)
+    uuid = serializers.UUIDField(required=False)
 
     tabel_endpoint = serializers.SlugRelatedField(
         slug_field="tabel_endpoint",
@@ -37,7 +38,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
 
     dmn_tabel_id = serializers.CharField(
         write_only=True,
-        help_text=_("id van de dmn tabel binnen de dmn instantie."),
+        help_text=_("uuid van de dmn tabel binnen de dmn instantie."),
     )
 
     url = serializers.SerializerMethodField(help_text=_("De url naar de dmn tabel."))
@@ -48,7 +49,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PrijsRegel
-        fields = ("id", "url", "beschrijving", "dmn_tabel_id", "tabel_endpoint")
+        fields = ("uuid", "url", "beschrijving", "dmn_tabel_id", "tabel_endpoint")
 
 
 @extend_schema_serializer(
@@ -56,11 +57,11 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
         OpenApiExample(
             "prijs met opties response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "prijsopties": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "bedrag": "50.99",
                         "beschrijving": "normaal",
                     }
@@ -72,11 +73,11 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
         OpenApiExample(
             "prijs met regels response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "prijsregels": [
                     {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
                         "beschrijving": "base",
                     }
@@ -93,7 +94,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                     {"bedrag": "50.99", "beschrijving": "normaal"},
                     {"bedrag": "70.99", "beschrijving": "spoed"},
                 ],
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "actief_vanaf": "2024-12-01",
             },
             request_only=True,
@@ -109,7 +110,7 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                         "beschrijving": "base",
                     },
                 ],
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "actief_vanaf": "2024-12-01",
             },
             request_only=True,
@@ -119,13 +120,19 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
 class PrijsSerializer(serializers.ModelSerializer):
     prijsopties = PrijsOptieSerializer(many=True, required=False)
     prijsregels = PrijsRegelSerializer(many=True, required=False)
-    producttype_id = serializers.PrimaryKeyRelatedField(
+    producttype_uuid = UUIDRelatedField(
         source="producttype", queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Prijs
-        fields = ("id", "producttype_id", "prijsopties", "prijsregels", "actief_vanaf")
+        fields = (
+            "uuid",
+            "producttype_uuid",
+            "prijsopties",
+            "prijsregels",
+            "actief_vanaf",
+        )
         validators = [
             PrijsOptieRegelValidator(),
             NestedObjectsValidator("prijsopties", PrijsOptie),
@@ -141,11 +148,11 @@ class PrijsSerializer(serializers.ModelSerializer):
         prijs = Prijs.objects.create(**validated_data, producttype=producttype)
 
         for optie in prijsopties:
-            optie.pop("id", None)
+            optie.pop("uuid", None)
             PrijsOptieSerializer().create(optie | {"prijs": prijs})
 
         for regel in prijsregels:
-            regel.pop("id", None)
+            regel.pop("uuid", None)
             PrijsRegelSerializer().create(regel | {"prijs": prijs})
 
         return prijs
@@ -157,45 +164,45 @@ class PrijsSerializer(serializers.ModelSerializer):
         prijs = super().update(instance, validated_data)
 
         if opties is not None:
-            current_optie_ids = set(prijs.prijsopties.values_list("id", flat=True))
-            seen_optie_ids = set()
+            current_optie_uuids = set(prijs.prijsopties.values_list("uuid", flat=True))
+            seen_optie_uuids = set()
 
             for optie in opties:
-                optie_id = optie.pop("id", None)
-                if optie_id is None:
+                optie_uuid = optie.pop("uuid", None)
+                if optie_uuid is None:
                     PrijsOptieSerializer().create(optie | {"prijs": prijs})
 
                 else:
-                    existing_optie = PrijsOptie.objects.get(id=optie_id)
+                    existing_optie = PrijsOptie.objects.get(uuid=optie_uuid)
                     PrijsOptieSerializer(partial=self.partial).update(
                         existing_optie, optie
                     )
-                    seen_optie_ids.add(optie_id)
+                    seen_optie_uuids.add(optie_uuid)
 
             prijs.prijsopties.filter(
-                id__in=(current_optie_ids - seen_optie_ids)
+                uuid__in=(current_optie_uuids - seen_optie_uuids)
             ).delete()
 
         if regels is not None:
-            current_regel_ids = set(
-                prijs.prijsregels.values_list("id", flat=True).distinct()
+            current_regel_uuids = set(
+                prijs.prijsregels.values_list("uuid", flat=True).distinct()
             )
-            seen_regel_ids = set()
+            seen_regel_uuids = set()
 
             for regel in regels:
-                regel_id = regel.pop("id", None)
-                if regel_id is None:
+                regel_uuid = regel.pop("uuid", None)
+                if regel_uuid is None:
                     PrijsRegelSerializer().create(regel | {"prijs": prijs})
 
                 else:
-                    existing_regel = PrijsRegel.objects.get(id=regel_id)
+                    existing_regel = PrijsRegel.objects.get(uuid=regel_uuid)
                     PrijsRegelSerializer(partial=self.partial).update(
                         existing_regel, regel
                     )
-                    seen_regel_ids.add(regel_id)
+                    seen_regel_uuids.add(regel_uuid)
 
             prijs.prijsregels.filter(
-                id__in=(current_regel_ids - seen_regel_ids)
+                uuid__in=(current_regel_uuids - seen_regel_uuids)
             ).delete()
 
         return prijs
@@ -204,4 +211,4 @@ class PrijsSerializer(serializers.ModelSerializer):
 class NestedPrijsSerializer(PrijsSerializer):
     class Meta:
         model = Prijs
-        fields = ("id", "prijsopties", "prijsregels", "actief_vanaf")
+        fields = ("uuid", "prijsopties", "prijsregels", "actief_vanaf")

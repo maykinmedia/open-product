@@ -36,7 +36,7 @@ class SendNotifTestCase(BaseApiTestCase):
 
         cls.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
         cls.data = {
-            "producttype_id": cls.producttype.id,
+            "producttype_uuid": cls.producttype.uuid,
             "status": "initieel",
             "prijs": "20.20",
             "frequentie": "eenmalig",
@@ -46,7 +46,7 @@ class SendNotifTestCase(BaseApiTestCase):
         product = ProductFactory.create(producttype=cls.producttype)
 
         cls.path = reverse("product-list")
-        cls.detail_path = reverse("product-detail", args=[product.id])
+        cls.detail_path = reverse("product-detail", args=[product.uuid])
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_create_object(self, mock_task):
@@ -64,7 +64,7 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "create",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "producttype.id": data["producttype"]["id"],
+                "producttype.uuid": data["producttype"]["uuid"],
                 "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
@@ -90,7 +90,7 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "update",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "producttype.id": data["producttype"]["id"],
+                "producttype.uuid": data["producttype"]["uuid"],
                 "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
@@ -116,7 +116,7 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "partial_update",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "producttype.id": data["producttype"]["id"],
+                "producttype.uuid": data["producttype"]["uuid"],
                 "producttype.uniformeProductNaam": data["producttype"][
                     "uniforme_product_naam"
                 ],
@@ -141,7 +141,7 @@ class SendNotifTestCase(BaseApiTestCase):
             "actie": "destroy",
             "aanmaakdatum": "2024-02-02T01:00:00+01:00",
             "kenmerken": {
-                "producttype.id": str(self.producttype.id),
+                "producttype.uuid": str(self.producttype.uuid),
                 "producttype.uniformeProductNaam": self.producttype.uniforme_product_naam.naam,
                 "producttype.code": self.producttype.code,
             },

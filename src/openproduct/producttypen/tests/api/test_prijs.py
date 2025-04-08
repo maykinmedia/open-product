@@ -1,6 +1,6 @@
 import datetime
-import uuid
 from decimal import Decimal
+from uuid import uuid4
 
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
@@ -30,7 +30,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.producttype = ProductTypeFactory()
         self.prijs_data = {
             "actief_vanaf": datetime.date(2024, 1, 2),
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.prijs = PrijsFactory.create(
             producttype=self.producttype, actief_vanaf=datetime.date(2024, 1, 2)
@@ -39,7 +39,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         DmnConfigFactory.create(tabel_endpoint="https://maykinmedia.nl")
 
         self.path = reverse("prijs-list")
-        self.detail_path = reverse("prijs-detail", args=[self.prijs.id])
+        self.detail_path = reverse("prijs-detail", args=[self.prijs.uuid])
 
     def test_read_prijs_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -55,7 +55,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                 "actief_vanaf": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_id": [
+                "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],
             },
@@ -137,7 +137,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         data = {
             "actief_vanaf": datetime.date(2024, 1, 3),
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.post(self.path, data)
@@ -150,12 +150,12 @@ class TestProductTypePrijs(BaseApiTestCase):
             Decimal("74.99"),
         )
 
-    def test_create_prijs_with_optie_with_id(self):
-        id = uuid.uuid4()
+    def test_create_prijs_with_optie_with_uuid(self):
+        uuid = uuid4()
         data = {
             "actief_vanaf": datetime.date(2024, 1, 3),
-            "prijsopties": [{"id": id, "bedrag": "74.99", "beschrijving": "spoed"}],
-            "producttype_id": self.producttype.id,
+            "prijsopties": [{"uuid": uuid, "bedrag": "74.99", "beschrijving": "spoed"}],
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.post(self.path, data)
@@ -163,21 +163,21 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Prijs.objects.count(), 2)
         self.assertEqual(PrijsOptie.objects.count(), 1)
-        self.assertNotEqual(PrijsOptie.objects.get().id, id)
+        self.assertNotEqual(PrijsOptie.objects.get().uuid, uuid)
 
-    def test_create_prijs_with_regel_with_id(self):
-        id = uuid.uuid4()
+    def test_create_prijs_with_regel_with_uuid(self):
+        uuid = uuid4()
         data = {
             "actief_vanaf": datetime.date(2024, 1, 3),
             "prijsregels": [
                 {
-                    "id": id,
+                    "uuid": uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "base",
                 }
             ],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.post(self.path, data)
@@ -185,7 +185,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Prijs.objects.count(), 2)
         self.assertEqual(PrijsRegel.objects.count(), 1)
-        self.assertNotEqual(PrijsRegel.objects.get().id, id)
+        self.assertNotEqual(PrijsRegel.objects.get().uuid, uuid)
 
     def test_create_prijs_with_prijs_regels(self):
         data = {
@@ -197,7 +197,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                     "beschrijving": "spoed",
                 }
             ],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.post(self.path, data)
@@ -221,7 +221,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                     "beschrijving": "spoed",
                 }
             ],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.post(self.path, data)
@@ -245,7 +245,7 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [],
         }
 
@@ -272,7 +272,7 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [],
         }
 
@@ -298,7 +298,7 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [
                 {
                     "tabel_endpoint": "https://maykinmedia.nl",
@@ -322,7 +322,7 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [],
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
         }
@@ -342,10 +342,10 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [
                 {
-                    "id": optie_to_be_updated.id,
+                    "uuid": optie_to_be_updated.uuid,
                     "bedrag": "20",
                     "beschrijving": optie_to_be_updated.beschrijving,
                 }
@@ -358,7 +358,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(Prijs.objects.count(), 1)
         self.assertEqual(PrijsOptie.objects.count(), 1)
         self.assertEqual(PrijsOptie.objects.get().bedrag, Decimal("20"))
-        self.assertEqual(PrijsOptie.objects.get().id, optie_to_be_updated.id)
+        self.assertEqual(PrijsOptie.objects.get().uuid, optie_to_be_updated.uuid)
 
     def test_update_prijs_updating_and_removing_regels(self):
 
@@ -367,10 +367,10 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [
                 {
-                    "id": regel_to_be_updated.id,
+                    "uuid": regel_to_be_updated.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_to_be_updated.beschrijving,
@@ -387,7 +387,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             response.data["prijsregels"][0]["url"],
             "https://maykinmedia.nl/iqjowijdoanwda",
         )
-        self.assertEqual(PrijsRegel.objects.get().id, regel_to_be_updated.id)
+        self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
     def test_update_prijs_creating_and_deleting_opties(self):
 
@@ -396,7 +396,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsopties": [{"bedrag": "20", "beschrijving": "test"}],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.put(self.detail_path, data)
@@ -419,7 +419,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                     "beschrijving": "test",
                 }
             ],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
 
         response = self.client.put(self.detail_path, data)
@@ -438,9 +438,9 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [
-                {"id": optie.id, "bedrag": "20", "beschrijving": optie.beschrijving}
+                {"uuid": optie.uuid, "bedrag": "20", "beschrijving": optie.beschrijving}
             ],
         }
 
@@ -453,8 +453,8 @@ class TestProductTypePrijs(BaseApiTestCase):
                 "prijsopties": [
                     ErrorDetail(
                         string=_(
-                            "Prijs optie id {} op index 0 is niet onderdeel van het Prijs object."
-                        ).format(optie.id),
+                            "Prijs optie uuid {} op index 0 is niet onderdeel van het Prijs object."
+                        ).format(optie.uuid),
                         code="invalid",
                     )
                 ]
@@ -467,10 +467,10 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [
                 {
-                    "id": regel.id,
+                    "uuid": regel.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
@@ -487,23 +487,23 @@ class TestProductTypePrijs(BaseApiTestCase):
                 "prijsregels": [
                     ErrorDetail(
                         string=_(
-                            "Prijs regel id {} op index 0 is niet onderdeel van het Prijs object."
-                        ).format(regel.id),
+                            "Prijs regel uuid {} op index 0 is niet onderdeel van het Prijs object."
+                        ).format(regel.uuid),
                         code="invalid",
                     )
                 ]
             },
         )
 
-    def test_update_prijs_with_optie_with_unknown_id_returns_error(self):
+    def test_update_prijs_with_optie_with_unknown_uuid_returns_error(self):
 
-        non_existing_id = uuid.uuid4()
+        non_existing_uuid = uuid4()
 
         data = {
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsopties": [
-                {"id": non_existing_id, "bedrag": "20", "beschrijving": "test"}
+                {"uuid": non_existing_uuid, "bedrag": "20", "beschrijving": "test"}
             ],
         }
 
@@ -515,8 +515,8 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsopties": [
                     ErrorDetail(
-                        string=_("Prijs optie id {} op index 0 bestaat niet.").format(
-                            non_existing_id
+                        string=_("Prijs optie uuid {} op index 0 bestaat niet.").format(
+                            non_existing_uuid
                         ),
                         code="invalid",
                     )
@@ -524,16 +524,16 @@ class TestProductTypePrijs(BaseApiTestCase):
             },
         )
 
-    def test_update_prijs_with_regel_with_unknown_id_returns_error(self):
+    def test_update_prijs_with_regel_with_unknown_uuid_returns_error(self):
 
-        non_existing_id = uuid.uuid4()
+        non_existing_uuid = uuid4()
 
         data = {
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsregels": [
                 {
-                    "id": non_existing_id,
+                    "uuid": non_existing_uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
@@ -549,8 +549,8 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsregels": [
                     ErrorDetail(
-                        string=_("Prijs regel id {} op index 0 bestaat niet.").format(
-                            non_existing_id
+                        string=_("Prijs regel uuid {} op index 0 bestaat niet.").format(
+                            non_existing_uuid
                         ),
                         code="invalid",
                     )
@@ -558,16 +558,24 @@ class TestProductTypePrijs(BaseApiTestCase):
             },
         )
 
-    def test_update_prijs_with_duplicate_optie_ids_returns_error(self):
+    def test_update_prijs_with_duplicate_optie_uuids_returns_error(self):
 
         optie = PrijsOptieFactory.create(prijs=self.prijs)
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [
-                {"id": optie.id, "bedrag": "20", "beschrijving": optie.beschrijving},
-                {"id": optie.id, "bedrag": "40", "beschrijving": optie.beschrijving},
+                {
+                    "uuid": optie.uuid,
+                    "bedrag": "20",
+                    "beschrijving": optie.beschrijving,
+                },
+                {
+                    "uuid": optie.uuid,
+                    "bedrag": "40",
+                    "beschrijving": optie.beschrijving,
+                },
             ],
         }
 
@@ -579,29 +587,29 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsopties": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(optie.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(optie.uuid),
                         code="invalid",
                     )
                 ]
             },
         )
 
-    def test_update_prijs_with_duplicate_regel_ids_returns_error(self):
+    def test_update_prijs_with_duplicate_regel_uuids_returns_error(self):
 
         regel = PrijsRegelFactory.create(prijs=self.prijs)
 
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsregels": [
                 {
-                    "id": regel.id,
+                    "uuid": regel.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
-                    "id": regel.id,
+                    "uuid": regel.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
@@ -617,7 +625,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsregels": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(regel.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(regel.uuid),
                         code="invalid",
                     )
                 ]
@@ -627,7 +635,7 @@ class TestProductTypePrijs(BaseApiTestCase):
     def test_update_prijs_with_opties_and_regels(self):
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
             "prijsregels": [
                 {
@@ -678,7 +686,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsopties": [
                 {
-                    "id": optie_to_be_updated.id,
+                    "uuid": optie_to_be_updated.uuid,
                     "bedrag": "20",
                     "beschrijving": optie_to_be_updated.beschrijving,
                 }
@@ -691,7 +699,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(Prijs.objects.count(), 1)
         self.assertEqual(PrijsOptie.objects.count(), 1)
         self.assertEqual(PrijsOptie.objects.get().bedrag, Decimal("20"))
-        self.assertEqual(PrijsOptie.objects.get().id, optie_to_be_updated.id)
+        self.assertEqual(PrijsOptie.objects.get().uuid, optie_to_be_updated.uuid)
 
     def test_partial_update_prijs_updating_and_removing_regels(self):
 
@@ -702,7 +710,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsregels": [
                 {
-                    "id": regel_to_be_updated.id,
+                    "uuid": regel_to_be_updated.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_to_be_updated.beschrijving,
@@ -719,7 +727,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             response.data["prijsregels"][0]["url"],
             "https://maykinmedia.nl/iqjowijdoanwda",
         )
-        self.assertEqual(PrijsRegel.objects.get().id, regel_to_be_updated.id)
+        self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
     def test_partial_update_prijs_creating_and_deleting_opties(self):
 
@@ -771,18 +779,26 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         optie = PrijsOptieFactory.create(prijs=self.prijs)
         optie_of_other_prijs = PrijsOptieFactory.create(prijs=PrijsFactory.create())
-        non_existing_optie = uuid.uuid4()
+        non_existing_optie = uuid4()
 
         data = {
             "prijsopties": [
-                {"id": optie.id, "bedrag": "20", "beschrijving": optie.beschrijving},
-                {"id": optie.id, "bedrag": "20", "beschrijving": optie.beschrijving},
                 {
-                    "id": optie_of_other_prijs.id,
+                    "uuid": optie.uuid,
+                    "bedrag": "20",
+                    "beschrijving": optie.beschrijving,
+                },
+                {
+                    "uuid": optie.uuid,
+                    "bedrag": "20",
+                    "beschrijving": optie.beschrijving,
+                },
+                {
+                    "uuid": optie_of_other_prijs.uuid,
                     "bedrag": "30",
                     "beschrijving": optie_of_other_prijs.beschrijving,
                 },
-                {"id": non_existing_optie, "bedrag": "30", "beschrijving": "test"},
+                {"uuid": non_existing_optie, "bedrag": "30", "beschrijving": "test"},
             ]
         }
 
@@ -794,17 +810,17 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsopties": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(optie.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(optie.uuid),
                         code="invalid",
                     ),
                     ErrorDetail(
                         string=_(
-                            "Prijs optie id {} op index 2 is niet onderdeel van het Prijs object."
-                        ).format(optie_of_other_prijs.id),
+                            "Prijs optie uuid {} op index 2 is niet onderdeel van het Prijs object."
+                        ).format(optie_of_other_prijs.uuid),
                         code="invalid",
                     ),
                     ErrorDetail(
-                        string=_("Prijs optie id {} op index 3 bestaat niet.").format(
+                        string=_("Prijs optie uuid {} op index 3 bestaat niet.").format(
                             non_existing_optie
                         ),
                         code="invalid",
@@ -817,30 +833,30 @@ class TestProductTypePrijs(BaseApiTestCase):
 
         regel = PrijsRegelFactory.create(prijs=self.prijs)
         regel_of_other_prijs = PrijsRegelFactory.create(prijs=PrijsFactory.create())
-        non_existing_regel = uuid.uuid4()
+        non_existing_regel = uuid4()
 
         data = {
             "prijsregels": [
                 {
-                    "id": regel.id,
+                    "uuid": regel.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
-                    "id": regel.id,
+                    "uuid": regel.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
-                    "id": regel_of_other_prijs.id,
+                    "uuid": regel_of_other_prijs.uuid,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_of_other_prijs.beschrijving,
                 },
                 {
-                    "id": non_existing_regel,
+                    "uuid": non_existing_regel,
                     "tabel_endpoint": "https://maykinmedia.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
@@ -856,17 +872,17 @@ class TestProductTypePrijs(BaseApiTestCase):
             {
                 "prijsregels": [
                     ErrorDetail(
-                        string=_("Dubbel id: {} op index 1.").format(regel.id),
+                        string=_("Dubbel uuid: {} op index 1.").format(regel.uuid),
                         code="invalid",
                     ),
                     ErrorDetail(
                         string=_(
-                            "Prijs regel id {} op index 2 is niet onderdeel van het Prijs object."
-                        ).format(regel_of_other_prijs.id),
+                            "Prijs regel uuid {} op index 2 is niet onderdeel van het Prijs object."
+                        ).format(regel_of_other_prijs.uuid),
                         code="invalid",
                     ),
                     ErrorDetail(
-                        string=_("Prijs regel id {} op index 3 bestaat niet.").format(
+                        string=_("Prijs regel uuid {} op index 3 bestaat niet.").format(
                             non_existing_regel
                         ),
                         code="invalid",
@@ -878,7 +894,7 @@ class TestProductTypePrijs(BaseApiTestCase):
     def test_partial_update_prijs_with_opties_and_regels(self):
         data = {
             "actief_vanaf": self.prijs.actief_vanaf,
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
             "prijsregels": [
                 {
@@ -914,18 +930,18 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.prijs.id),
+                "uuid": str(self.prijs.uuid),
                 "actief_vanaf": str(self.prijs.actief_vanaf),
                 "prijsopties": [],
                 "prijsregels": [],
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
             {
-                "id": str(prijs.id),
+                "uuid": str(prijs.uuid),
                 "actief_vanaf": str(prijs.actief_vanaf),
                 "prijsopties": [],
                 "prijsregels": [],
-                "producttype_id": self.producttype.id,
+                "producttype_uuid": self.producttype.uuid,
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -934,11 +950,11 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.get(self.detail_path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(self.prijs.id),
+            "uuid": str(self.prijs.uuid),
             "actief_vanaf": str(self.prijs.actief_vanaf),
             "prijsopties": [],
             "prijsregels": [],
-            "producttype_id": self.producttype.id,
+            "producttype_uuid": self.producttype.uuid,
         }
         self.assertEqual(response.data, expected_data)
 

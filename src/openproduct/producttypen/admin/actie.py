@@ -8,7 +8,6 @@ class ActieInline(admin.TabularInline):
     formset = AuditLogInlineformset
     model = Actie
     extra = 1
-    ordering = ("pk",)
     formset = AuditLogInlineformset
 
 

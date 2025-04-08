@@ -42,19 +42,19 @@ class TestThemaFilters(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema.id)
+        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema.uuid)
 
-    def test_hoofd_thema_id_filter(self):
-        hoofd_thema_id = uuid4()
-        hoofd_thema = ThemaFactory.create(id=hoofd_thema_id)
+    def test_hoofd_thema_uuid_filter(self):
+        hoofd_thema_uuid = uuid4()
+        hoofd_thema = ThemaFactory.create(uuid=hoofd_thema_uuid)
         ThemaFactory.create(hoofd_thema=hoofd_thema)
         ThemaFactory.create()
 
-        response = self.client.get(self.path + f"?hoofd_thema__id={hoofd_thema_id}")
+        response = self.client.get(self.path + f"?hoofd_thema__uuid={hoofd_thema_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema_id)
+        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema_uuid)
 
     def test_aanmaak_datum_filter(self):
         with freeze_time("2024-06-07"):

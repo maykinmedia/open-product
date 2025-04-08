@@ -10,6 +10,7 @@ from parler_rest.serializers import TranslatableModelSerializer
 from rest_framework import serializers
 
 from openproduct.producttypen.models import ContentElement, ContentLabel, ProductType
+from openproduct.utils.fields import UUIDRelatedField
 
 
 @extend_schema_serializer(
@@ -17,11 +18,11 @@ from openproduct.producttypen.models import ContentElement, ContentLabel, Produc
         OpenApiExample(
             "content element response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
                 "taal": "nl",
-                "producttype_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
+                "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             response_only=True,
         ),
@@ -30,7 +31,7 @@ from openproduct.producttypen.models import ContentElement, ContentLabel, Produc
             value={
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
-                "producttype_id": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
+                "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             request_only=True,
         ),
@@ -50,7 +51,7 @@ class ContentElementSerializer(TranslatableModelSerializer):
         help_text=_("De content van dit content element."),
     )
 
-    producttype_id = serializers.PrimaryKeyRelatedField(
+    producttype_uuid = UUIDRelatedField(
         source="producttype", queryset=ProductType.objects.all()
     )
 
@@ -65,7 +66,7 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     class Meta:
         model = ContentElement
-        fields = ("id", "content", "labels", "producttype_id", "taal")
+        fields = ("uuid", "content", "labels", "producttype_uuid", "taal")
 
 
 class NestedContentElementSerializer(ContentElementSerializer):
@@ -73,7 +74,7 @@ class NestedContentElementSerializer(ContentElementSerializer):
     class Meta:
         model = ContentElement
         fields = (
-            "id",
+            "uuid",
             "taal",
             "content",
             "labels",
@@ -88,7 +89,7 @@ class ContentElementTranslationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContentElement
-        fields = ("id", "content")
+        fields = ("uuid", "content")
 
 
 class ContentLabelSerializer(serializers.ModelSerializer):

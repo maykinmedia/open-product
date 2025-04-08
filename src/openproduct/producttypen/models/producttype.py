@@ -150,12 +150,10 @@ class ProductType(BasePublishableModel, TranslatableModel):
     class Meta:
         verbose_name = _("Producttype")
         verbose_name_plural = _("Producttypen")
+        ordering = ("-id",)
 
     def __str__(self):
         return self.naam
-
-    def clean(self, *args, **kwargs):
-        self.add_contact_organisaties()
 
     def add_contact_organisaties(self):
         for contact in self.contacten.all():
@@ -197,3 +195,4 @@ class ProductTypeTranslation(TranslatedFieldsModel):
         unique_together = ("language_code", "master")
         verbose_name = _("Producttype vertaling")
         verbose_name_plural = _("Producttype vertalingen")
+        ordering = ("-id",)

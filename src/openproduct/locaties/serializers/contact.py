@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from openproduct.locaties.models import Contact, Organisatie
 
+from ...utils.fields import UUIDRelatedField
 from .organisatie import OrganisatieSerializer
 
 
@@ -11,9 +12,9 @@ from .organisatie import OrganisatieSerializer
         OpenApiExample(
             "contact response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "organisatie": {
-                    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                    "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                     "naam": "Maykin Media",
                     "code": "org-1234",
                     "email": "info@maykinmedia.nl",
@@ -34,7 +35,7 @@ from .organisatie import OrganisatieSerializer
         OpenApiExample(
             "contact request",
             value={
-                "organisatie_id": "73a745d4-7df0-4510-991e-abfb19f0d861",
+                "organisatie_uuid": "73a745d4-7df0-4510-991e-abfb19f0d861",
                 "voornaam": "Bob",
                 "achternaam": "de Vries",
                 "email": "bob@example.com",
@@ -47,7 +48,7 @@ from .organisatie import OrganisatieSerializer
 )
 class ContactSerializer(serializers.ModelSerializer):
     organisatie = OrganisatieSerializer(read_only=True)
-    organisatie_id = serializers.PrimaryKeyRelatedField(
+    organisatie_uuid = UUIDRelatedField(
         queryset=Organisatie.objects.all(),
         source="organisatie",
         write_only=True,
@@ -56,4 +57,13 @@ class ContactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contact
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "organisatie",
+            "organisatie_uuid",
+            "voornaam",
+            "achternaam",
+            "email",
+            "telefoonnummer",
+            "rol",
+        ]

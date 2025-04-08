@@ -87,9 +87,7 @@ django==4.2.17
     #   django-filter
     #   django-formtools
     #   django-jsonform
-    #   django-localflavor
     #   django-log-outgoing-requests
-    #   django-markdownx
     #   django-markup
     #   django-otp
     #   django-parler
@@ -145,12 +143,8 @@ django-jsonform==2.23.1
     # via
     #   mozilla-django-oidc-db
     #   open-api-framework
-django-localflavor==4.0
-    # via -r requirements/base.in
 django-log-outgoing-requests==0.6.1
     # via open-api-framework
-django-markdownx==4.0.7
-    # via -r requirements/base.in
 django-markup==1.8.1
     # via open-api-framework
 django-ordered-model==3.7.4
@@ -264,8 +258,6 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 kombu==5.4.2
     # via celery
-markdown==3.3.6
-    # via django-markdownx
 markdown-it-py==3.0.0
     # via rich
 markupsafe==3.0.2
@@ -289,9 +281,7 @@ oyaml==1.0
 phonenumberslite==8.13.50
     # via django-two-factor-auth
 pillow==11.0.0
-    # via
-    #   -r requirements/base.in
-    #   django-markdownx
+    # via -r requirements/base.in
 prometheus-client==0.21.0
     # via flower
 prompt-toolkit==3.0.48
@@ -323,8 +313,6 @@ python-decouple==3.8
     # via open-api-framework
 python-dotenv==1.0.1
     # via open-api-framework
-python-stdnum==1.20
-    # via django-localflavor
 pytz==2024.2
     # via flower
 pyyaml==6.0.2

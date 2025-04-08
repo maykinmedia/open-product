@@ -17,6 +17,11 @@ class ContentLabel(BaseModel):
     def __str__(self):
         return self.naam
 
+    class Meta:
+        verbose_name = _("Label")
+        verbose_name_plural = _("Labels")
+        ordering = ("-id",)
+
 
 class ContentElementQuerySet(TranslatableQuerySet, OrderedModelQuerySet):
     pass
@@ -74,3 +79,4 @@ class ContentElementTranslation(TranslatedFieldsModel):
         unique_together = ("language_code", "master")
         verbose_name = _("Content element vertaling")
         verbose_name_plural = _("Content element vertalingen")
+        ordering = ("-id",)

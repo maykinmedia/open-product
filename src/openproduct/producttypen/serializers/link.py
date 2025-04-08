@@ -2,6 +2,7 @@ from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
 
 from openproduct.producttypen.models import Link, ProductType
+from openproduct.utils.fields import UUIDRelatedField
 
 
 @extend_schema_serializer(
@@ -9,8 +10,8 @@ from openproduct.producttypen.models import Link, ProductType
         OpenApiExample(
             "link response",
             value={
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Open Product",
                 "url": "https://github.com/maykinmedia/open-product",
             },
@@ -19,7 +20,7 @@ from openproduct.producttypen.models import Link, ProductType
         OpenApiExample(
             "link request",
             value={
-                "producttype_id": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Open Product",
                 "url": "https://github.com/maykinmedia/open-product",
             },
@@ -28,16 +29,16 @@ from openproduct.producttypen.models import Link, ProductType
     ],
 )
 class LinkSerializer(serializers.ModelSerializer):
-    producttype_id = serializers.PrimaryKeyRelatedField(
+    producttype_uuid = UUIDRelatedField(
         source="producttype", queryset=ProductType.objects.all()
     )
 
     class Meta:
         model = Link
-        fields = ("id", "naam", "url", "producttype_id")
+        fields = ("uuid", "naam", "url", "producttype_uuid")
 
 
 class NestedLinkSerializer(LinkSerializer):
     class Meta:
         model = Link
-        fields = ("id", "naam", "url")
+        fields = ("uuid", "naam", "url")

@@ -20,7 +20,7 @@ info:
 
     **Kenmerken**
 
-    * `producttype.id`: uuid van het producttype
+    * `producttype.uuid`: uuid van het producttype
     * `producttype.uniforme_product_naam`: Uniforme product naam gedefinieerd door de overheid.
     * `producttype.code`: code van het producttype.
 
@@ -174,15 +174,15 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
-        name: producttype__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: start_datum
         schema:
@@ -297,14 +297,14 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       start_datum: '2024-12-01'
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                       producttype:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         code: 129380-c21231
                         keywords:
                         - auto
@@ -316,7 +316,7 @@ paths:
                         update_datum: '2019-08-24T14:15:22Z'
                       gepubliceerd: false
                       eigenaren:
-                      - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                         bsn: '111222333'
                       documenten:
                       - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
@@ -325,7 +325,7 @@ paths:
                       frequentie: eenmalig
                       verbruiksobject:
                         uren: 130
-                      data:
+                      dataobject:
                         max_uren: 150
                   summary: product response
           description: ''
@@ -374,14 +374,14 @@ paths:
               examples:
                 ProductResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -393,7 +393,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                     gepubliceerd: false
                     eigenaren:
-                    - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
@@ -402,7 +402,7 @@ paths:
                     frequentie: eenmalig
                     verbruiksobject:
                       uren: 130
-                    data:
+                    dataobject:
                       max_uren: 150
                   summary: product response
           description: ''
@@ -428,17 +428,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producten/{id}/:
+  /producten/{uuid}/:
     get:
       operationId: producten_retrieve
       summary: Een specifiek PRODUCT opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Product.
         required: true
       tags:
       - producten
@@ -454,14 +453,14 @@ paths:
               examples:
                 ProductResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -473,7 +472,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                     gepubliceerd: false
                     eigenaren:
-                    - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
@@ -482,7 +481,7 @@ paths:
                     frequentie: eenmalig
                     verbruiksobject:
                       uren: 130
-                    data:
+                    dataobject:
                       max_uren: 150
                   summary: product response
           description: ''
@@ -513,11 +512,10 @@ paths:
       summary: Werk een PRODUCT in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Product.
         required: true
       tags:
       - producten
@@ -539,14 +537,14 @@ paths:
               examples:
                 ProductResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -558,7 +556,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                     gepubliceerd: false
                     eigenaren:
-                    - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
@@ -567,7 +565,7 @@ paths:
                     frequentie: eenmalig
                     verbruiksobject:
                       uren: 130
-                    data:
+                    dataobject:
                       max_uren: 150
                   summary: product response
           description: ''
@@ -598,11 +596,10 @@ paths:
       summary: Werk een PRODUCT deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Product.
         required: true
       tags:
       - producten
@@ -623,14 +620,14 @@ paths:
               examples:
                 ProductResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -642,7 +639,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                     gepubliceerd: false
                     eigenaren:
-                    - id: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
@@ -651,7 +648,7 @@ paths:
                     frequentie: eenmalig
                     verbruiksobject:
                       uren: 130
-                    data:
+                    dataobject:
                       max_uren: 150
                   summary: product response
           description: ''
@@ -682,11 +679,10 @@ paths:
       summary: Verwijder een PRODUCT.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Product.
         required: true
       tags:
       - producten
@@ -730,7 +726,7 @@ components:
     Eigenaar:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         bsn:
@@ -755,7 +751,7 @@ components:
     EigenaarRequest:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         bsn:
@@ -824,7 +820,7 @@ components:
     NestedProductType:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -862,9 +858,9 @@ components:
       required:
       - aanmaak_datum
       - code
-      - id
       - uniforme_product_naam
       - update_datum
+      - uuid
     NestedProductTypeRequest:
       type: object
       properties:
@@ -920,21 +916,6 @@ components:
     PatchedProductRequest:
       type: object
       properties:
-        producttype_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        eigenaren:
-          type: array
-          items:
-            $ref: '#/components/schemas/EigenaarRequest'
-        documenten:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedDocumentRequest'
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
         start_datum:
           type: string
           format: date
@@ -951,6 +932,21 @@ components:
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
             de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
+        producttype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        gepubliceerd:
+          type: boolean
+          description: Geeft aan of het object getoond kan worden.
+        eigenaren:
+          type: array
+          items:
+            $ref: '#/components/schemas/EigenaarRequest'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocumentRequest'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -989,7 +985,7 @@ components:
     Product:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -1001,31 +997,6 @@ components:
           maxLength: 1000
           description: URL-referentie naar dit object. Dit is de unieke identificatie
             en locatie van dit object.
-        producttype:
-          allOf:
-          - $ref: '#/components/schemas/NestedProductType'
-          readOnly: true
-        eigenaren:
-          type: array
-          items:
-            $ref: '#/components/schemas/Eigenaar'
-        documenten:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedDocument'
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
-        aanmaak_datum:
-          type: string
-          format: date-time
-          readOnly: true
-          description: De datum waarop het object is aangemaakt.
-        update_datum:
-          type: string
-          format: date-time
-          readOnly: true
-          description: De datum waarop het object voor het laatst is gewijzigd.
         start_datum:
           type: string
           format: date
@@ -1042,6 +1013,31 @@ components:
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
             de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
+        aanmaak_datum:
+          type: string
+          format: date-time
+          readOnly: true
+          description: De datum waarop het object is aangemaakt.
+        update_datum:
+          type: string
+          format: date-time
+          readOnly: true
+          description: De datum waarop het object voor het laatst is gewijzigd.
+        producttype:
+          allOf:
+          - $ref: '#/components/schemas/NestedProductType'
+          readOnly: true
+        gepubliceerd:
+          type: boolean
+          description: Geeft aan of het object getoond kan worden.
+        eigenaren:
+          type: array
+          items:
+            $ref: '#/components/schemas/Eigenaar'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocument'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -1081,29 +1077,14 @@ components:
       - aanmaak_datum
       - eigenaren
       - frequentie
-      - id
       - prijs
       - producttype
       - update_datum
       - url
+      - uuid
     ProductRequest:
       type: object
       properties:
-        producttype_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        eigenaren:
-          type: array
-          items:
-            $ref: '#/components/schemas/EigenaarRequest'
-        documenten:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedDocumentRequest'
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
         start_datum:
           type: string
           format: date
@@ -1120,6 +1101,21 @@ components:
             het product automatisch naar VERLOPEN worden gezet. Op het moment dat
             de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
+        producttype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        gepubliceerd:
+          type: boolean
+          description: Geeft aan of het object getoond kan worden.
+        eigenaren:
+          type: array
+          items:
+            $ref: '#/components/schemas/EigenaarRequest'
+        documenten:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedDocumentRequest'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -1159,7 +1155,7 @@ components:
       - eigenaren
       - frequentie
       - prijs
-      - producttype_id
+      - producttype_uuid
     StatusEnum:
       enum:
       - initieel

@@ -8,11 +8,11 @@ from openproduct.producten.serializers.validators import (
 
 
 class EigenaarSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(required=False)
+    uuid = serializers.UUIDField(required=False)
 
     class Meta:
         model = Eigenaar
-        fields = ["id", "bsn", "kvk_nummer", "vestigingsnummer", "klantnummer"]
+        fields = ["uuid", "bsn", "kvk_nummer", "vestigingsnummer", "klantnummer"]
         validators = [
             EigenaarIdentifierValidator(),
             EigenaarVestigingsnummerValidator(),

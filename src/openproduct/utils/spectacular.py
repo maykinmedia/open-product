@@ -9,7 +9,7 @@ def custom_postprocessing_hook(result, generator, request, public):
     """
     DRF Spectacular adds default = [] to the item inside an array on PrimaryKeyRelatedField fields with many=True like
 
-    `producttype_ids = serializers.PrimaryKeyRelatedField(
+    `producttype_uuids = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=ProductType.objects.all(),
         default=[],
@@ -20,7 +20,7 @@ def custom_postprocessing_hook(result, generator, request, public):
 
     This generates the following schema:
 
-    producttype_ids:
+    producttype_uuids:
       type: array
       items:
         type: string

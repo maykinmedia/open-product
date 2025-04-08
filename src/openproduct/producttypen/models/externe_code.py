@@ -36,6 +36,7 @@ class ExterneCode(BaseModel):
         verbose_name = _("externe producttype code")
         verbose_name_plural = _("externe producttype codes")
         unique_together = (("producttype", "naam"),)
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.naam}: {self.code}"

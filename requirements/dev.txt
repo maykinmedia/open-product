@@ -209,9 +209,7 @@ django==4.2.17
     #   django-filter
     #   django-formtools
     #   django-jsonform
-    #   django-localflavor
     #   django-log-outgoing-requests
-    #   django-markdownx
     #   django-markup
     #   django-otp
     #   django-parler
@@ -294,19 +292,11 @@ django-jsonform==2.23.1
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
     #   open-api-framework
-django-localflavor==4.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 django-log-outgoing-requests==0.6.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-markdownx==4.0.7
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 django-markup==1.8.1
     # via
     #   -c requirements/ci.txt
@@ -606,7 +596,6 @@ markdown==3.3.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   django-markdownx
     #   sphinx-markdown-tables
 markdown-it-py==3.0.0
     # via
@@ -694,7 +683,6 @@ pillow==11.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   django-markdownx
 platformdirs==4.3.6
     # via
     #   -c requirements/ci.txt
@@ -811,11 +799,6 @@ python-dotenv==1.0.1
     #   -r requirements/ci.txt
     #   open-api-framework
     #   pydantic-settings
-python-stdnum==1.20
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-localflavor
 pytz==2024.2
     # via
     #   -c requirements/ci.txt

@@ -8,4 +8,3 @@ class ExterneCodeInline(admin.TabularInline):
     formset = AuditLogInlineformset
     model = ExterneCode
     extra = 1
-    ordering = ("pk",)

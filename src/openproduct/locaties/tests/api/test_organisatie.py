@@ -25,7 +25,7 @@ class TestOrganisatie(BaseApiTestCase):
         }
         self.organisatie = OrganisatieFactory.create()
 
-        self.detail_path = reverse("organisatie-detail", args=[self.organisatie.id])
+        self.detail_path = reverse("organisatie-detail", args=[self.organisatie.uuid])
 
     def test_read_organisatie_without_credentials_returns_error(self):
         response = APIClient().get(self.path)
@@ -52,9 +52,9 @@ class TestOrganisatie(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Organisatie.objects.count(), 2)
-        organisatie = Organisatie.objects.get(id=response.data["id"])
+        organisatie = Organisatie.objects.get(uuid=response.data["uuid"])
         expected_data = {
-            "id": str(organisatie.id),
+            "uuid": str(organisatie.uuid),
             "naam": organisatie.naam,
             "code": organisatie.code,
             "email": organisatie.email,
@@ -90,7 +90,7 @@ class TestOrganisatie(BaseApiTestCase):
         self.assertEqual(response.data["count"], 2)
         expected_data = [
             {
-                "id": str(self.organisatie.id),
+                "uuid": str(self.organisatie.uuid),
                 "naam": self.organisatie.naam,
                 "code": self.organisatie.code,
                 "email": self.organisatie.email,
@@ -101,7 +101,7 @@ class TestOrganisatie(BaseApiTestCase):
                 "stad": self.organisatie.stad,
             },
             {
-                "id": str(organisatie.id),
+                "uuid": str(organisatie.uuid),
                 "naam": organisatie.naam,
                 "code": organisatie.code,
                 "email": organisatie.email,
@@ -119,7 +119,7 @@ class TestOrganisatie(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
-            "id": str(self.organisatie.id),
+            "uuid": str(self.organisatie.uuid),
             "naam": self.organisatie.naam,
             "code": self.organisatie.code,
             "email": self.organisatie.email,

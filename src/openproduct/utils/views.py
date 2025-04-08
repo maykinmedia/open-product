@@ -9,7 +9,6 @@ from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 
 
 @requires_csrf_token
@@ -31,11 +30,6 @@ def server_error(request, template_name=ERROR_500_TEMPLATE_NAME):
         )
     context = {"request": request}
     return http.HttpResponseServerError(template.render(context))
-
-
-class OrderedModelViewSet(ModelViewSet):
-    def get_queryset(self):
-        return self.queryset.order_by("id")
 
 
 class IndexView(TemplateView):

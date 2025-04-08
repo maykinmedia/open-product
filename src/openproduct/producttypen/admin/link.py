@@ -10,7 +10,6 @@ class LinkInline(admin.TabularInline):
     formset = AuditLogInlineformset
     model = Link
     extra = 1
-    ordering = ("pk",)
 
 
 @admin.register(Link)
