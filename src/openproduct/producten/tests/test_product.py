@@ -70,8 +70,6 @@ class TestProductStateTask(TestCase):
             start_datum=date(2024, 1, 1),
         )
 
-        product.handle_start_datum()
-
         self.assertEqual(product.status, "actief")
 
     def test_product_status_is_set_to_active_on_earlier_date(self):
@@ -81,8 +79,6 @@ class TestProductStateTask(TestCase):
             start_datum=date(2023, 12, 31),
         )
 
-        product.handle_start_datum()
-
         self.assertEqual(product.status, "actief")
 
     def test_product_status_is_not_set_to_active_on_later_date(self):
@@ -91,8 +87,6 @@ class TestProductStateTask(TestCase):
             producttype=self.producttype,
             start_datum=date(2024, 10, 1),
         )
-
-        product.handle_start_datum()
 
         self.assertEqual(product.status, "initieel")
 
@@ -113,7 +107,6 @@ class TestProductStateTask(TestCase):
                     producttype=self.producttype,
                     start_datum=date(2024, 1, 1),
                 )
-                product.handle_start_datum()
                 self.assertEqual(product.status, state.value)
                 mock_audit_automation_update.assert_not_called()
 
@@ -121,8 +114,6 @@ class TestProductStateTask(TestCase):
         product = ProductFactory.create(
             status="actief", producttype=self.producttype, eind_datum=date(2024, 1, 1)
         )
-
-        product.handle_eind_datum()
 
         self.assertEqual(product.status, "verlopen")
 
@@ -133,8 +124,6 @@ class TestProductStateTask(TestCase):
             eind_datum=date(2023, 12, 31),
         )
 
-        product.handle_eind_datum()
-
         self.assertEqual(product.status, "verlopen")
 
     def test_product_status_is_not_set_to_verlopen_on_later_date(self):
@@ -143,8 +132,6 @@ class TestProductStateTask(TestCase):
             producttype=self.producttype,
             eind_datum=date(2024, 10, 1),
         )
-
-        product.handle_eind_datum()
 
         self.assertEqual(product.status, "actief")
 
@@ -164,7 +151,6 @@ class TestProductStateTask(TestCase):
                     producttype=self.producttype,
                     eind_datum=date(2024, 1, 1),
                 )
-                product.handle_eind_datum()
                 self.assertEqual(product.status, state.value)
                 mock_audit_automation_update.assert_not_called()
 

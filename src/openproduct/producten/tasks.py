@@ -5,8 +5,9 @@ from openproduct.producten.models import Product
 
 
 def updated_based_on_dates():
-    for product in Product.objects.all():
-        product.save()
+    for product in Product.objects.iterator():
+        if product.check_start_datum() or product.check_eind_datum():
+            product.save()
 
 
 @app.task

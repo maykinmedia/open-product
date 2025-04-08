@@ -101,24 +101,33 @@ class Product(BasePublishableModel):
         validate_product_dates(self.start_datum, self.eind_datum)
 
     def save(self, *args, **kwargs):
-        self.handle_start_datum()
-        self.handle_eind_datum()
-        super().save(*args, **kwargs)
+        if self.check_start_datum():
+            self.status = ProductStateChoices.ACTIEF
+            super().save(*args, **kwargs)
+            audit_automation_update(
+                self, _("Status is naar ACTIEF gezet vanwege de start datum.")
+            )
 
-    def handle_start_datum(self):
-        if (
+        elif self.check_eind_datum():
+            self.status = ProductStateChoices.VERLOPEN
+            super().save(*args, **kwargs)
+            audit_automation_update(
+                self, _("Status is naar VERLOPEN gezet vanwege de eind datum.")
+            )
+
+        else:
+            super().save(*args, **kwargs)
+
+    def check_start_datum(self):
+        return (
             self.start_datum
             and self.start_datum <= date.today()
             and self.status
             in (ProductStateChoices.INITIEEL, ProductStateChoices.GEREED)
-        ):
-            audit_automation_update(
-                self, _("Status gezet naar ACTIEF vanwege de start datum.")
-            )
-            self.status = ProductStateChoices.ACTIEF
+        )
 
-    def handle_eind_datum(self):
-        if (
+    def check_eind_datum(self):
+        return (
             self.eind_datum
             and self.eind_datum <= date.today()
             and self.status
@@ -127,11 +136,7 @@ class Product(BasePublishableModel):
                 ProductStateChoices.GEREED,
                 ProductStateChoices.ACTIEF,
             )
-        ):
-            audit_automation_update(
-                self, _("Status gezet naar VERLOPEN vanwege de eind datum.")
-            )
-            self.status = ProductStateChoices.VERLOPEN
+        )
 
     def __str__(self):
         return f"{self.producttype.naam} instantie."
