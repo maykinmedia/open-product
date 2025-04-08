@@ -26,7 +26,6 @@ from openproduct.utils.views import TranslatableViewSetMixin
     ),
     partial_update=extend_schema(
         summary="Werk een CONTENTELEMENT deels bij.",
-        description="Als producttype_ids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een CONTENTELEMENT.",
