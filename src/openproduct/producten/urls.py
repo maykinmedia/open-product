@@ -12,9 +12,9 @@ ProductRouter = DefaultRouter()
 ProductRouter.register("producten", ProductViewSet, basename="product")
 
 description = f"""
-Een Api voor Producten.
+Een API voor Producten.
 
-Een product is een instantie van een producttype (zie producttypen api), In een product wordt onder andere de gegevens van de eigenaar, de nodige data voor het product en bijvoorbeeld de status vastgelegd.
+Een product is een instantie van een producttype (zie producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
 
 ### Notificaties
 
@@ -34,25 +34,25 @@ custom_settings = {
 ## Opvragen en bewerken van PRODUCTEN.
 
 ### Opmerkingen
-- Bij het aanmaken van kunnen één of meerdere eigenaren worden toegevoegd, een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+- Bij het aanmaken van een PRODUCT kunnen één of meerdere eigenaren worden toegevoegd, een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
 - De status opties van een PRODUCT zijn afhankelijk van de `toegestane_statussen` van het producttype.
 - Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet.
     - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
     - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
-- `verbruiksobject` & `dataobject` zijn json velden en worden gevalideerd vanuit `vebruiksobject_schema` & `dataobject_schema` van het producttype.
+- `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `vebruiksobject_schema` & `dataobject_schema` van het producttype.
 - Het veld `documenten` wordt samen met het producttype genest aangemaakt of gewijzigd.
     - dit veld is een lijst van objecten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
-    - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
+    - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
     - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
     Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
 - Het veld `eigenaren` wordt samen met het producttype genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-    - In een PUT of PATCH kan in een eigenaar object een bestaand id worden meegegeven zodat een bestaande eigenaar blijft bestaan.
+    - In een PUT of PATCH kan in een eigenaar object een bestaand `uuid` worden meegegeven zodat een bestaande eigenaar blijft bestaan.
     Zo kan ook een bestaande eigenaar worden gewijzigd.
-    - eigenaren zonder id zullen worden aangemaakt in een PUT of PATCH.
+    - eigenaren zonder `uuid` zullen worden aangemaakt in een PUT of PATCH.
     - bestaande eigenaren die niet in de lijst voorkomen met hun id zullen worden verwijderd.
 """,
         },

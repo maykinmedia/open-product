@@ -42,17 +42,17 @@ ProductTypenRouter.register(
 )
 
 description = """
-Een Api voor Producttypen.
+Een API voor Producttypen.
 
-Een Producttype is de definitie van een Product. hierin word alle relevante data opgeslagen zoals informatie over de aanvraag.
+Een Producttype is de definitie van een Product. Hierin wordt alle relevante data opgeslagen zoals informatie over de aanvraag.
 
-Een product is een instantie van een producttype (zie producttypen api), In een product wordt onder andere de gegevens van de eigenaar, de nodige data voor het product en bijvoorbeeld de status vastgelegd.
+Een product is een instantie van een producttype (zie Producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
 
-Een producttype valt onder één of meerdere thema. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
+Een producttype valt onder één of meerdere thema's. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
 
 Een producttype kan worden gelinkt één of meerdere locaties, organisaties en/of contacten.
 
-Daarnaast kunnen de volgende modellen per product worden aangemaakt:
+Daarnaast kunnen de volgende objecten per producttype worden aangemaakt:
 - externe codes
 - parameters
 - zaaktypen
@@ -86,7 +86,7 @@ custom_settings = {
 - Een thema kan niet het hoofd thema van zichzelf zijn.
 - Een thema moet gepubliceerd zijn voordat zijn sub thema's kunnen worden gepubliceerd.
 - Een thema kan niet ongepubliceerd worden als het gepubliceerde sub thema's heeft.
-- Een thema niet worden verwijderd als het sub thema's heeft of als er door de verwijdering producttypen zonder thema's komen te zitten.
+- Een thema niet worden verwijderd als het sub thema's heeft of als er producttypen zijn die aleen gekoppeld zijn aan dit thema.
 """,
         },
         {
@@ -99,7 +99,7 @@ custom_settings = {
     - `thema_uuids` moet minimaal 1 uuid bevatten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-- Bij het veld `uniforme_product_naam` gaat het om de naam uit de Uniforme productnamenlijst.
+- Bij het veld `uniforme_product_naam` gaat het om de naam uit de Uniforme productnamenlijst (UPL).
 - Bij de velden `verbruiksobject_schema_naam` en `dataobject_schema_naam` gaat het om de naam van een JSONSCHEMA.
 - De velden `externe_codes`, `parameters`, `zaaktypen`, `verzoektypen` en `processen` worden samen met het producttype genest aangemaakt of gewijzigd.
     - Deze velden zijn een lijst van objecten.
@@ -111,8 +111,8 @@ Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze
 #### vertalingen
 - De velden `naam` en `samenvatting` zijn meertalig, waarbij Nederlands verplicht is en Engels optioneel is.
 - Via de reguliere create & update methodes kunnen alleen de Nederlands teksten worden aangemaakt/gewijzigd.
-- Via producttypen/<uuid>/vertaling/<taal> kan de engelse variant worden gewijzigd.
-- met de `Content-Language` header language kan worden aangegeven welke taal de response moet zijn.
+- Via `producttypen/<uuid>/vertaling/<taal>` kan de engelse variant worden gewijzigd.
+- met de `Content-Language` header kan worden aangegeven welke taal de response moet zijn.
     - Mocht een producttype de gevraagde vertaling niet hebben, zal worden teruggevallen op Nederlands.
     - via `taal` in de response is te zien welke taal een bepaald producttype is.
 
@@ -128,11 +128,11 @@ Opvragen en bewerken van PRODUCTTYPE CONTENT.
 
 ### Opmerkingen
 - Contentelementen kunnen meerdere labels hebben om aan te geven waar de content overgaat.
-- via producttypen/<uuid>/content/ kunnen alle contentelementen van een producttype worden opgehaald.
+- via `producttypen/<uuid>/content/` kunnen alle contentelementen van een producttype worden opgehaald.
 - Contentelementen zijn meertalig, waarbij Nederlands verplicht is en Engels optioneel is.
 - Via de reguliere create & update methodes kunnen alleen de Nederlands teksten worden aangemaakt/gewijzigd.
-- Via contentelementen/<uuid>/vertaling/<taal> kan de engelse variant worden gewijzigd.
-- met de `Content-Language` header language kan worden aangegeven welke taal de response moet zijn.
+- Via `contentelementen/<uuid>/vertaling/<taal>` kan de engelse variant worden gewijzigd.
+- met de `Content-Language` header kan worden aangegeven welke taal de response moet zijn.
     - Mocht een content element de gevraagde vertaling niet hebben, zal worden teruggevallen op Nederlands.
     - via `taal` in de response is te zien welke taal een bepaald contentelement is.
 """,
@@ -176,7 +176,7 @@ identifier van de tabel in de dmn omgeving.
 ## Opvragen en bewerken van JSON SCHEMA'S.
 
 ### Opmerkingen
-- Jsonschema's zijn json objecten die worden gebruikt om andere json te valideren. [zie jsonschema](https://json-schema.org)
+- Jsonschema's zijn JSON objecten die worden gebruikt om andere JSON te valideren ([zie jsonschema](https://json-schema.org))
 - In Open producten worden jsonschemas gebruikt voor verbruiksobjecten & dataobjecten.
 """,
         },

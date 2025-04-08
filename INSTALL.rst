@@ -100,11 +100,11 @@ example file included in the same directory.
 
    .. code-block:: bash
 
-       $ python src/manage load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
+       $ python src/manage.py load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
 
    .. code-block:: bash
 
-       $ python src/manage load_upl --file ...../UPL-actueel.csv
+       $ python src/manage.py load_upl --file ...../UPL-actueel.csv
 
 
 
@@ -196,22 +196,22 @@ The easiest way to get the project started is by using `Docker Compose`_.
 
    .. code-block:: bash
 
-       $ docker logs -f openproduct_web_1
+       $ docker compose logs -f web
 
 3. Create an admin user and load initial data. If different container names
    are shown above, use the container name ending with ``_web_1``:
 
    .. code-block:: bash
 
-       $ docker exec -it openproduct_web_1 /app/src/manage.py createsuperuser
+       $ docker compose exec -it web /app/src/manage.py createsuperuser
        Username: admin
        ...
        Superuser created successfully.
 
-       $ docker exec -it openproduct_web_1 /app/src/manage.py loaddata admin_index groups
+       $ docker compose exec -it web /app/src/manage.py loaddata admin_index groups
        Installed 5 object(s) from 2 fixture(s)
 
-       $ docker exec -it openproduct_web_1 /app/src/manage.py load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
+       $ docker compose exec -it web /app/src/manage.py load_upl --url https://standaarden.overheid.nl/owms/oquery/UPL-actueel.csv
        Done
 
 4. Point your browser to ``http://localhost:8000/`` to access the project's
