@@ -20,7 +20,7 @@ class OrganisatieAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         ),
         (_("Contact"), {"fields": ("email", "telefoonnummer")}),
         (
-            _("Address"),
+            _("Adres"),
             {"fields": ("straat", "huisnummer", "postcode", "stad")},
         ),
     )

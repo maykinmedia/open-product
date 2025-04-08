@@ -2,7 +2,7 @@
 Open Product
 ============
 
-:Version: 0.0.5
+:Version: 1.0.0
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``products``
 
@@ -17,8 +17,6 @@ Introduction
 
 Open Product is an application where product types and products can be managed in a single place.
 Other applications like Open Inwoner and Open Formulieren can integrate Open Product using its REST API to for example show product type information, create products or to get the current price for a product type.
-
-This Project is currently in the development fase.
 
 Open Product can store Product types and products, A product type is for example a parking permit and contains all relevant information such as what the rules are and how different parking zones work etc.
 A product in this example is a parking permit of a person and contains in this instance the license plate and personal information.
@@ -41,6 +39,8 @@ Version         Release date    API specification
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
+1.0.0           2025-04-8      ``ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.0.0/src/producten-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.0.0/src/producten-openapi.yaml>`_
 ==============  ==============  =============================
 
 Product types
@@ -50,7 +50,9 @@ Product types
 Version         Release date    API specification
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
-                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_
+1.0.0           2025-04-8      ``ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.0.0/src/producttypen-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.0.0/src/producttypen-openapi.yaml>`_
 ==============  ==============  =============================
 
 There a two ways to connect to authenticate with the API:

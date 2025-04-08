@@ -1,3 +1,36 @@
+
+1.0.0 (08-04-2025)
+------------------
+
+**New features**
+
+* [#81] Added product documenten verwijzing.
+* [#9] Added Audit logging & reversion to all models.
+* [#15] Added producttypen externe verwijzingen.
+* [#50] Added oidc authentication to api.
+* [#66] Added json filters for product dataobject & verbruiksobject.
+* [#14] Added prijsregels & productype acties.
+* [#46] Added product eigenaar.
+* [#43] Added filters to all viewsets.
+* [#26] Added producttype dataobject_schema & product dataobject.
+
+**Bugfixes**
+
+* [#85] Fixed product admin error.
+* [#95] Fixed translation viewset issue.
+
+**Project maintenance**
+
+* [#98] Updated landing page and admin styling.
+* [#9] Removed sites.
+* [#48] Renamed product_type to producttype.
+* [#78] Renamed project to open product.
+* [#76] Updated api docs.
+* [#89] Fixed docker compose example.
+* [#70] Recreated migrations.
+
+
+
 0.0.5 (11-03-2025)
 ------------------
 
@@ -7,7 +40,7 @@
 * [#13] Added externe codes to producttype.
 * [#12] Added parameters to producttype.
 * [#18] Added integration with Open Notificaties.
-* [#31] Added producttype verbruiksobject_schema & product verbruiksobject/
+* [#31] Added producttype verbruiksobject_schema & product verbruiksobject.
 
 
 

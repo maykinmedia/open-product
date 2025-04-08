@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Producttypen API
-  version: 0.0.1
+  version: 1.0.0
   description: |2+
 
     Een API voor Producttypen.
@@ -7697,7 +7697,7 @@ components:
       name: Authorization
       description: Token-based authentication with required prefix "Token"
 servers:
-- url: /producttypen/api/v0
+- url: /producttypen/api/v1
 tags:
 - name: themas
   description: |2
