@@ -1,6 +1,6 @@
 import logging
 
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
 from drf_spectacular.types import OpenApiTypes
@@ -167,6 +167,14 @@ class ProductTypeViewSet(
     serializer_class = ProductTypeSerializer
     lookup_field = "uuid"
     filterset_class = ProductTypeFilterSet
+
+    def initial(self, request, *args, **kwargs):
+        # passing the translated fields to  the create call will set them for the language in the Accept-Language header.
+        # but a POST/PUT/PATCH should only set the required language
+        # (other languages can be added in the vertaling viewset action)
+        if self.action in ["create", "update", "partial_update"]:
+            activate("nl")
+        return super().initial(request, *args, **kwargs)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

@@ -68,6 +68,21 @@ class TestContentElement(BaseApiTestCase):
         }
         self.assertEqual(response.data, expected_data)
 
+    def test_create_content_element_with_language_header(self):
+
+        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+            with self.subTest(f"{header} should set default language only"):
+                response = self.client.post(self.path, self.data, headers=header)
+
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+                self.assertEqual(response.data["taal"], "nl")
+                self.assertEqual(response.data["content"], self.data["content"])
+                self.assertEqual(response.headers["Content-Language"], "nl")
+
+                element = ContentElement.objects.get(uuid=response.data["uuid"])
+                element.set_current_language("nl")
+                self.assertEqual(element.content, self.data["content"])
+
     def test_update_content_element(self):
         data = self.data | {"content": "update"}
         response = self.client.put(self.detail_path, data)
@@ -75,6 +90,21 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ContentElement.objects.count(), 1)
         self.assertEqual(ContentElement.objects.get().content, "update")
+
+    def test_update_content_element_with_language_header(self):
+
+        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+            with self.subTest(f"{header} should set default language only"):
+                response = self.client.put(self.detail_path, self.data, headers=header)
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["taal"], "nl")
+                self.assertEqual(response.data["content"], self.data["content"])
+                self.assertEqual(response.headers["Content-Language"], "nl")
+
+                element = ContentElement.objects.get(uuid=response.data["uuid"])
+                element.set_current_language("nl")
+                self.assertEqual(element.content, self.data["content"])
 
     def test_partial_update_content_element(self):
         data = {"content": "update"}
