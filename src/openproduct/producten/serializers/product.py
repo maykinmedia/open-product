@@ -22,11 +22,11 @@ from openproduct.producttypen.models.validators import (
 )
 from openproduct.producttypen.serializers.thema import NestedProductTypeSerializer
 from openproduct.utils.drf_validators import NestedObjectsValidator
+from openproduct.utils.fields import UUIDRelatedField
 from openproduct.utils.serializers import (
     set_nested_serializer,
     validate_key_value_model_keys,
 )
-from openproduct.utils.fields import UUIDRelatedField
 
 
 @extend_schema_serializer(
@@ -116,6 +116,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "producttype_uuid",
             "gepubliceerd",
             "eigenaren",
+            "documenten",
             "status",
             "prijs",
             "frequentie",
@@ -156,7 +157,7 @@ class ProductSerializer(serializers.ModelSerializer):
             EigenaarSerializer().create(eigenaar | {"product": product})
 
         set_nested_serializer(
-            [document | {"product": product.id} for document in documenten],
+            [document | {"product": product.pk} for document in documenten],
             DocumentSerializer,
         )
 
@@ -192,7 +193,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if documenten is not None:
             instance.documenten.all().delete()
             set_nested_serializer(
-                [document | {"product": instance.id} for document in documenten],
+                [document | {"product": instance.pk} for document in documenten],
                 DocumentSerializer,
             )
 

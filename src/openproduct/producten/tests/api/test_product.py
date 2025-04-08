@@ -1,6 +1,6 @@
 import datetime
-from uuid import uuid4
 from unittest.mock import patch
+from uuid import uuid4
 
 from django.contrib.contenttypes.models import ContentType
 from django.test import override_settings
@@ -190,7 +190,7 @@ class TestProduct(BaseApiTestCase):
         )
 
         data = self.data | {
-            "producttype_id": producttype.id,
+            "producttype_uuid": producttype.uuid,
             "start_datum": datetime.date(2024, 1, 1),
         }
 
@@ -208,7 +208,7 @@ class TestProduct(BaseApiTestCase):
         )
 
         data = self.data | {
-            "producttype_id": producttype.id,
+            "producttype_uuid": producttype.uuid,
             "eind_datum": datetime.date(2024, 1, 1),
         }
 
@@ -544,7 +544,7 @@ class TestProduct(BaseApiTestCase):
         product = ProductFactory.create(producttype=producttype)
 
         data = self.data | {
-            "producttype_id": producttype.id,
+            "producttype_uuid": producttype.uuid,
             "start_datum": datetime.date(2024, 1, 1),
         }
 
@@ -563,7 +563,7 @@ class TestProduct(BaseApiTestCase):
         product = ProductFactory.create(producttype=producttype)
 
         data = self.data | {
-            "producttype_id": producttype.id,
+            "producttype_uuid": producttype.uuid,
             "eind_datum": datetime.date(2024, 1, 1),
         }
 
