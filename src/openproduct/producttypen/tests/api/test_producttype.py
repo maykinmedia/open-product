@@ -504,17 +504,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "organisaties": [
                 {
-                    "uuid": str(organisatie.uuid),
-                    "code": str(organisatie.code),
-                    "naam": organisatie.naam,
-                    "email": organisatie.email,
-                    "telefoonnummer": organisatie.telefoonnummer,
-                    "straat": organisatie.straat,
-                    "huisnummer": organisatie.huisnummer,
-                    "postcode": organisatie.postcode,
-                    "stad": organisatie.stad,
-                },
-                {
                     "uuid": str(contact.organisatie.uuid),
                     "code": str(contact.organisatie.code),
                     "naam": contact.organisatie.naam,
@@ -524,6 +513,17 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     "huisnummer": contact.organisatie.huisnummer,
                     "postcode": contact.organisatie.postcode,
                     "stad": contact.organisatie.stad,
+                },
+                {
+                    "uuid": str(organisatie.uuid),
+                    "code": str(organisatie.code),
+                    "naam": organisatie.naam,
+                    "email": organisatie.email,
+                    "telefoonnummer": organisatie.telefoonnummer,
+                    "straat": organisatie.straat,
+                    "huisnummer": organisatie.huisnummer,
+                    "postcode": organisatie.postcode,
+                    "stad": organisatie.stad,
                 },
             ],
             "contacten": [
@@ -1807,13 +1807,13 @@ class TestProductTypeActions(BaseApiTestCase):
                 self.expected_data
                 | {
                     "actuele_prijs": {
-                        "id": str(prijs.id),
+                        "uuid": str(prijs.uuid),
                         "actief_vanaf": "2024-01-01",
                         "prijsregels": [
                             {
                                 "url": regel.url,
                                 "beschrijving": regel.beschrijving,
-                                "id": str(regel.id),
+                                "uuid": str(regel.uuid),
                             }
                         ],
                         "prijsopties": [],
@@ -1868,13 +1868,13 @@ class TestProductTypeActions(BaseApiTestCase):
             self.expected_data
             | {
                 "actuele_prijs": {
-                    "id": str(prijs.id),
+                    "uuid": str(prijs.uuid),
                     "actief_vanaf": "2024-01-01",
                     "prijsregels": [
                         {
                             "url": regel.url,
                             "beschrijving": regel.beschrijving,
-                            "id": str(regel.id),
+                            "uuid": str(regel.uuid),
                         }
                     ],
                     "prijsopties": [],

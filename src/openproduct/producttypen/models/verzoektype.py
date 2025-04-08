@@ -26,7 +26,7 @@ class VerzoekType(BaseModel):
         verbose_name = _("verzoektype")
         verbose_name_plural = _("verzoektypen")
         unique_together = (("producttype", "uuid"),)
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def clean(self):
         check_externe_verwijzing_config_url("verzoektypen_url")

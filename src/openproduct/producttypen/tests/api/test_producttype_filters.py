@@ -213,14 +213,14 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["openingstijden", "main"])
+            self.assertEqual(response.data[0]["labels"], ["main", "openingstijden"])
 
         with self.subTest("multiple labels same content"):
             response = self.client.get(path, {"labels": "openingstijden,main"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["openingstijden", "main"])
+            self.assertEqual(response.data[0]["labels"], ["main", "openingstijden"])
 
         with self.subTest("multiple labels different content"):
             response = self.client.get(path, {"labels": "openingstijden,stappenplan"})

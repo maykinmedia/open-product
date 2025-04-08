@@ -24,4 +24,4 @@ class DmnConfig(BaseModel):
     class Meta:
         verbose_name = _("DMN configuratie")
         verbose_name_plural = _("DMN configuraties")
-        ordering = ("id",)
+        ordering = ("-id",)

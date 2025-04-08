@@ -54,7 +54,7 @@ class TestThemaAdmin(TestCase):
             [
                 f"Producttype <a href='/admin/producttypen/producttype/{producttype.id}/change/'>"
                 f"producttype</a> moet aan een minimaal één thema zijn gelinkt. "
-                f"Huidige thema's: thema, thema 2."
+                f"Huidige thema's: thema 2, thema."
             ],
         )
 

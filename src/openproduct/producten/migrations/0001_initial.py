@@ -203,7 +203,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Eigenaar",
                 "verbose_name_plural": "Eigenaren",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(

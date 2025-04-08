@@ -22,7 +22,7 @@ class Bestand(BaseModel):
     class Meta:
         verbose_name = _("Producttype bestand")
         verbose_name_plural = _("Producttype bestanden")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.producttype}: {self.bestand.name}"

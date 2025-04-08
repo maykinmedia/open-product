@@ -150,7 +150,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
     class Meta:
         verbose_name = _("Producttype")
         verbose_name_plural = _("Producttypen")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.naam
@@ -195,4 +195,4 @@ class ProductTypeTranslation(TranslatedFieldsModel):
         unique_together = ("language_code", "master")
         verbose_name = _("Producttype vertaling")
         verbose_name_plural = _("Producttype vertalingen")
-        ordering = ("id",)
+        ordering = ("-id",)

@@ -26,7 +26,7 @@ class JsonSchema(models.Model):
     class Meta:
         verbose_name = _("Json schema")
         verbose_name_plural = _("Json Schemas")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.naam

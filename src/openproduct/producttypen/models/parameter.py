@@ -36,7 +36,7 @@ class Parameter(BaseModel):
         verbose_name = _("parameter")
         verbose_name_plural = _("parameters")
         unique_together = (("producttype", "naam"),)
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.naam}: {self.waarde}"

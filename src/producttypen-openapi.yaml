@@ -84,15 +84,15 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
-        name: producttype__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: uniforme_product_naam
         schema:
@@ -116,8 +116,8 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   summary: actie response
@@ -157,7 +157,7 @@ paths:
             examples:
               ActieRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
@@ -175,8 +175,8 @@ paths:
               examples:
                 ActieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   summary: actie response
@@ -203,17 +203,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /acties/{id}/:
+  /acties/{uuid}/:
     get:
       operationId: acties_retrieve
       summary: Een specifieke ACTIE opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this actie.
         required: true
       tags:
       - acties
@@ -229,8 +228,8 @@ paths:
               examples:
                 ActieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   summary: actie response
@@ -262,11 +261,10 @@ paths:
       summary: Werk een ACTIE in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this actie.
         required: true
       tags:
       - acties
@@ -278,7 +276,7 @@ paths:
             examples:
               ActieRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
@@ -296,8 +294,8 @@ paths:
               examples:
                 ActieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   summary: actie response
@@ -329,11 +327,10 @@ paths:
       summary: Werk een ACTIE deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this actie.
         required: true
       tags:
       - acties
@@ -345,7 +342,7 @@ paths:
             examples:
               ActieRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
@@ -362,8 +359,8 @@ paths:
               examples:
                 ActieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   summary: actie response
@@ -395,11 +392,10 @@ paths:
       summary: Verwijder een ACTIE.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this actie.
         required: true
       tags:
       - acties
@@ -460,15 +456,15 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
-        name: producttype__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: uniforme_product_naam
         schema:
@@ -492,9 +488,9 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
-                      producttype_id: b035578b-e855-4b72-9f63-7868b8c4b630
+                      producttype_uuid: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
         '400':
@@ -533,7 +529,7 @@ paths:
               BestandRequest:
                 value:
                   bestand: test.txt
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                 summary: bestand request
         required: true
       security:
@@ -548,9 +544,9 @@ paths:
               examples:
                 BestandResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     bestand: https://gemeente.open-product.nl/media/test.txt
-                    producttype_id: b035578b-e855-4b72-9f63-7868b8c4b630
+                    producttype_uuid: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
         '400':
@@ -575,17 +571,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /bestanden/{id}/:
+  /bestanden/{uuid}/:
     get:
       operationId: bestanden_retrieve
       summary: Een specifiek BESTAND opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype bestand.
         required: true
       tags:
       - bestanden
@@ -601,9 +596,9 @@ paths:
               examples:
                 BestandResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     bestand: https://gemeente.open-product.nl/media/test.txt
-                    producttype_id: b035578b-e855-4b72-9f63-7868b8c4b630
+                    producttype_uuid: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
         '400':
@@ -633,11 +628,10 @@ paths:
       summary: Werk een BESTAND in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype bestand.
         required: true
       tags:
       - bestanden
@@ -650,7 +644,7 @@ paths:
               BestandRequest:
                 value:
                   bestand: test.txt
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                 summary: bestand request
         required: true
       security:
@@ -665,9 +659,9 @@ paths:
               examples:
                 BestandResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     bestand: https://gemeente.open-product.nl/media/test.txt
-                    producttype_id: b035578b-e855-4b72-9f63-7868b8c4b630
+                    producttype_uuid: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
         '400':
@@ -697,11 +691,10 @@ paths:
       summary: Werk een BESTAND deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype bestand.
         required: true
       tags:
       - bestanden
@@ -714,7 +707,7 @@ paths:
               BestandRequest:
                 value:
                   bestand: test.txt
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                 summary: bestand request
       security:
       - jwtAuth: []
@@ -728,9 +721,9 @@ paths:
               examples:
                 BestandResponse:
                   value:
-                    id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     bestand: https://gemeente.open-product.nl/media/test.txt
-                    producttype_id: b035578b-e855-4b72-9f63-7868b8c4b630
+                    producttype_uuid: b035578b-e855-4b72-9f63-7868b8c4b630
                   summary: bestand response
           description: ''
         '400':
@@ -760,11 +753,10 @@ paths:
       summary: Verwijder een BESTAND.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype bestand.
         required: true
       tags:
       - bestanden
@@ -813,14 +805,14 @@ paths:
           type: string
         description: email van het contact
       - in: query
-        name: organisatie__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: organisatie__naam
         schema:
           type: string
+      - in: query
+        name: organisatie__uuid
+        schema:
+          type: string
+          format: uuid
       - name: page
         required: false
         in: query
@@ -866,9 +858,9 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -919,7 +911,7 @@ paths:
             examples:
               ContactRequest:
                 value:
-                  organisatie_id: 73a745d4-7df0-4510-991e-abfb19f0d861
+                  organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
                   voornaam: Bob
                   achternaam: de Vries
                   email: bob@example.com
@@ -939,9 +931,9 @@ paths:
               examples:
                 ContactResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -979,17 +971,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /contacten/{id}/:
+  /contacten/{uuid}/:
     get:
       operationId: contacten_retrieve
       summary: Een specifiek CONTACT opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Contact.
         required: true
       tags:
       - contacten
@@ -1005,9 +996,9 @@ paths:
               examples:
                 ContactResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -1050,11 +1041,10 @@ paths:
       summary: Werk een CONTACT in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Contact.
         required: true
       tags:
       - contacten
@@ -1066,7 +1056,7 @@ paths:
             examples:
               ContactRequest:
                 value:
-                  organisatie_id: 73a745d4-7df0-4510-991e-abfb19f0d861
+                  organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
                   voornaam: Bob
                   achternaam: de Vries
                   email: bob@example.com
@@ -1086,9 +1076,9 @@ paths:
               examples:
                 ContactResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -1132,11 +1122,10 @@ paths:
       summary: Werk een CONTACT deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Contact.
         required: true
       tags:
       - contacten
@@ -1148,7 +1137,7 @@ paths:
             examples:
               ContactRequest:
                 value:
-                  organisatie_id: 73a745d4-7df0-4510-991e-abfb19f0d861
+                  organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
                   voornaam: Bob
                   achternaam: de Vries
                   email: bob@example.com
@@ -1167,9 +1156,9 @@ paths:
               examples:
                 ContactResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
-                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -1212,11 +1201,10 @@ paths:
       summary: Verwijder een CONTACT.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Contact.
         required: true
       tags:
       - contacten
@@ -1265,7 +1253,7 @@ paths:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
-                  producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                  producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
         required: true
       security:
@@ -1280,12 +1268,12 @@ paths:
               examples:
                 ContentElementResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
-                    producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
           description: ''
         '400':
@@ -1310,17 +1298,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /content/{id}/:
+  /content/{uuid}/:
     get:
       operationId: content_retrieve
       summary: Een specifiek CONTENTELEMENT opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this content element.
         required: true
       tags:
       - content
@@ -1336,12 +1323,12 @@ paths:
               examples:
                 ContentElementResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
-                    producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
           description: ''
         '400':
@@ -1371,11 +1358,10 @@ paths:
       summary: Werk een CONTENTELEMENT in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this content element.
         required: true
       tags:
       - content
@@ -1390,7 +1376,7 @@ paths:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
-                  producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                  producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
         required: true
       security:
@@ -1405,12 +1391,12 @@ paths:
               examples:
                 ContentElementResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
-                    producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
           description: ''
         '400':
@@ -1440,11 +1426,10 @@ paths:
       summary: Werk een CONTENTELEMENT deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this content element.
         required: true
       tags:
       - content
@@ -1459,7 +1444,7 @@ paths:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
-                  producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                  producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
       security:
       - jwtAuth: []
@@ -1473,12 +1458,12 @@ paths:
               examples:
                 ContentElementResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
-                    producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
           description: ''
         '400':
@@ -1508,11 +1493,10 @@ paths:
       summary: Verwijder een CONTENTELEMENT.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this content element.
         required: true
       tags:
       - content
@@ -1544,23 +1528,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /content/{id}/vertaling/{taal}/:
+  /content/{uuid}/vertaling/{taal}/:
     put:
       operationId: content_vertaling_update
       description: nl kan worden aangepast via het model.
       summary: De vertaling van een content element aanpassen.
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this content element.
-        required: true
-      - in: path
         name: taal
         schema:
           type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
         required: true
       tags:
       - content
@@ -1608,16 +1591,15 @@ paths:
       summary: De vertaling van een content element verwijderen.
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this content element.
-        required: true
-      - in: path
         name: taal
         schema:
           type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
         required: true
       tags:
       - content
@@ -1735,15 +1717,15 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
-        name: producttype__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: uniforme_product_naam
         schema:
@@ -1777,8 +1759,8 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Open Product
                       url: https://github.com/maykinmedia/open-product
                   summary: link response
@@ -1818,7 +1800,7 @@ paths:
             examples:
               LinkRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Open Product
                   url: https://github.com/maykinmedia/open-product
                 summary: link request
@@ -1835,8 +1817,8 @@ paths:
               examples:
                 LinkResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Open Product
                     url: https://github.com/maykinmedia/open-product
                   summary: link response
@@ -1863,17 +1845,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /links/{id}/:
+  /links/{uuid}/:
     get:
       operationId: links_retrieve
       summary: Een specifieke LINK opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype link.
         required: true
       tags:
       - links
@@ -1889,8 +1870,8 @@ paths:
               examples:
                 LinkResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Open Product
                     url: https://github.com/maykinmedia/open-product
                   summary: link response
@@ -1922,11 +1903,10 @@ paths:
       summary: Werk een LINK in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype link.
         required: true
       tags:
       - links
@@ -1938,7 +1918,7 @@ paths:
             examples:
               LinkRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Open Product
                   url: https://github.com/maykinmedia/open-product
                 summary: link request
@@ -1955,8 +1935,8 @@ paths:
               examples:
                 LinkResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Open Product
                     url: https://github.com/maykinmedia/open-product
                   summary: link response
@@ -1988,11 +1968,10 @@ paths:
       summary: Werk een LINK deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype link.
         required: true
       tags:
       - links
@@ -2004,7 +1983,7 @@ paths:
             examples:
               LinkRequest:
                 value:
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Open Product
                   url: https://github.com/maykinmedia/open-product
                 summary: link request
@@ -2020,8 +1999,8 @@ paths:
               examples:
                 LinkResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Open Product
                     url: https://github.com/maykinmedia/open-product
                   summary: link response
@@ -2053,11 +2032,10 @@ paths:
       summary: Verwijder een LINK.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype link.
         required: true
       tags:
       - links
@@ -2153,7 +2131,7 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
@@ -2219,7 +2197,7 @@ paths:
               examples:
                 LocatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     email: info@maykinmedia.nl
                     telefoonnummer: '+310207530523'
@@ -2251,17 +2229,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /locaties/{id}/:
+  /locaties/{uuid}/:
     get:
       operationId: locaties_retrieve
       summary: Een specifieke LOCATIE opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Locatie.
         required: true
       tags:
       - locaties
@@ -2277,7 +2254,7 @@ paths:
               examples:
                 LocatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     email: info@maykinmedia.nl
                     telefoonnummer: '+310207530523'
@@ -2314,11 +2291,10 @@ paths:
       summary: Werk een LOCATIE in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Locatie.
         required: true
       tags:
       - locaties
@@ -2351,7 +2327,7 @@ paths:
               examples:
                 LocatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     email: info@maykinmedia.nl
                     telefoonnummer: '+310207530523'
@@ -2388,11 +2364,10 @@ paths:
       summary: Werk een LOCATIE deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Locatie.
         required: true
       tags:
       - locaties
@@ -2424,7 +2399,7 @@ paths:
               examples:
                 LocatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     email: info@maykinmedia.nl
                     telefoonnummer: '+310207530523'
@@ -2461,11 +2436,10 @@ paths:
       summary: Verwijder een LOCATIE.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Locatie.
         required: true
       tags:
       - locaties
@@ -2566,7 +2540,7 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -2634,7 +2608,7 @@ paths:
               examples:
                 OrganisatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     code: org-1234
                     email: info@maykinmedia.nl
@@ -2667,17 +2641,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /organisaties/{id}/:
+  /organisaties/{uuid}/:
     get:
       operationId: organisaties_retrieve
       summary: Een specifieke ORGANISATIE opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Organisatie.
         required: true
       tags:
       - organisaties
@@ -2693,7 +2666,7 @@ paths:
               examples:
                 OrganisatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     code: org-1234
                     email: info@maykinmedia.nl
@@ -2731,11 +2704,10 @@ paths:
       summary: Werk een ORGANISATIE in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Organisatie.
         required: true
       tags:
       - organisaties
@@ -2769,7 +2741,7 @@ paths:
               examples:
                 OrganisatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     code: org-1234
                     email: info@maykinmedia.nl
@@ -2807,11 +2779,10 @@ paths:
       summary: Werk een ORGANISATIE deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Organisatie.
         required: true
       tags:
       - organisaties
@@ -2844,7 +2815,7 @@ paths:
               examples:
                 OrganisatieResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Maykin Media
                     code: org-1234
                     email: info@maykinmedia.nl
@@ -2882,11 +2853,10 @@ paths:
       summary: Verwijder een ORGANISATIE.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Organisatie.
         required: true
       tags:
       - organisaties
@@ -2990,15 +2960,15 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
-        name: producttype__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: uniforme_product_naam
         schema:
@@ -3022,10 +2992,10 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       prijsopties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         bedrag: '50.99'
                         beschrijving: normaal
                       actief_vanaf: '2019-08-24'
@@ -3036,10 +3006,10 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       prijsregels:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                         beschrijving: base
                       actief_vanaf: '2019-08-24'
@@ -3085,7 +3055,7 @@ paths:
                     beschrijving: normaal
                   - bedrag: '70.99'
                     beschrijving: spoed
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met opties request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3096,7 +3066,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3114,20 +3084,20 @@ paths:
               examples:
                 PrijsMetOptiesResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsopties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       bedrag: '50.99'
                       beschrijving: normaal
                     actief_vanaf: '2019-08-24'
                   summary: prijs met opties response
                 PrijsMetRegelsResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsregels:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
                     actief_vanaf: '2019-08-24'
@@ -3155,17 +3125,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /prijzen/{id}/:
+  /prijzen/{uuid}/:
     get:
       operationId: prijzen_retrieve
       summary: Een specifieke PRIJS opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Prijs.
         required: true
       tags:
       - prijzen
@@ -3181,20 +3150,20 @@ paths:
               examples:
                 PrijsMetOptiesResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsopties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       bedrag: '50.99'
                       beschrijving: normaal
                     actief_vanaf: '2019-08-24'
                   summary: prijs met opties response
                 PrijsMetRegelsResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsregels:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
                     actief_vanaf: '2019-08-24'
@@ -3227,11 +3196,10 @@ paths:
       summary: Werk een PRIJS in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Prijs.
         required: true
       tags:
       - prijzen
@@ -3248,7 +3216,7 @@ paths:
                     beschrijving: normaal
                   - bedrag: '70.99'
                     beschrijving: spoed
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met opties request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3259,7 +3227,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3277,20 +3245,20 @@ paths:
               examples:
                 PrijsMetOptiesResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsopties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       bedrag: '50.99'
                       beschrijving: normaal
                     actief_vanaf: '2019-08-24'
                   summary: prijs met opties response
                 PrijsMetRegelsResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsregels:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
                     actief_vanaf: '2019-08-24'
@@ -3323,11 +3291,10 @@ paths:
       summary: Werk een PRIJS deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Prijs.
         required: true
       tags:
       - prijzen
@@ -3344,7 +3311,7 @@ paths:
                     beschrijving: normaal
                   - bedrag: '70.99'
                     beschrijving: spoed
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met opties request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3355,7 +3322,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                  producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
                 description: prijsOptie bedragen kunnen worden ingevuld als een getal
@@ -3372,20 +3339,20 @@ paths:
               examples:
                 PrijsMetOptiesResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsopties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       bedrag: '50.99'
                       beschrijving: normaal
                     actief_vanaf: '2019-08-24'
                   summary: prijs met opties response
                 PrijsMetRegelsResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    producttype_id: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     prijsregels:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
                     actief_vanaf: '2019-08-24'
@@ -3418,11 +3385,10 @@ paths:
       summary: Verwijder een PRIJS.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Prijs.
         required: true
       tags:
       - prijzen
@@ -3627,10 +3593,10 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       uniforme_product_naam: parkeervergunning
                       themas:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeren
                         beschrijving: '.....'
                         gepubliceerd: true
@@ -3638,7 +3604,7 @@ paths:
                         update_datum: '2019-08-24T14:15:22Z'
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       locaties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
@@ -3647,7 +3613,7 @@ paths:
                         postcode: 1043 GR
                         stad: Amsterdam
                       organisaties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -3657,9 +3623,9 @@ paths:
                         postcode: 1043 GR
                         stad: Amsterdam
                       contacten:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         organisatie:
-                          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                           naam: Maykin Media
                           code: org-1234
                           email: info@maykinmedia.nl
@@ -3674,22 +3640,22 @@ paths:
                         telefoonnummer: '0611223344'
                         rol: medewerker
                       prijzen:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         prijsopties:
-                        - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                           bedrag: '50.99'
                           beschrijving: normaal
                         actief_vanaf: '2019-08-24'
                       links:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Open Product
                         url: https://github.com/maykinmedia/open-product
                       acties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeervergunning opzegging
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       bestanden:
-                      - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                      - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                         bestand: https://gemeente.open-product.nl/media/test.txt
                       naam: Parkeervergunning
                       samenvatting: korte samenvatting...
@@ -3773,13 +3739,13 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
-                  thema_ids:
+                  thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                  locatie_ids:
+                  locatie_uuids:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
-                  organisatie_ids:
+                  organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
-                  contact_ids:
+                  contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   gepubliceerd: false
                   naam: Aanleunwoning
@@ -3806,7 +3772,7 @@ paths:
                   processen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
-                  dataobject_schema: data_schema
+                  dataobject_schema_naam: data_schema
                 summary: producttype request
         required: true
       security:
@@ -3821,10 +3787,10 @@ paths:
               examples:
                 ProducttypeResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
                     themas:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
                       beschrijving: '.....'
                       gepubliceerd: true
@@ -3832,7 +3798,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
@@ -3841,7 +3807,7 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -3851,9 +3817,9 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     contacten:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -3868,22 +3834,22 @@ paths:
                       telefoonnummer: '0611223344'
                       rol: medewerker
                     prijzen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         bedrag: '50.99'
                         beschrijving: normaal
                       actief_vanaf: '2019-08-24'
                     links:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Open Product
                       url: https://github.com/maykinmedia/open-product
                     acties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
@@ -3953,17 +3919,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{id}/:
+  /producttypen/{uuid}/:
     get:
       operationId: producttypen_retrieve
       summary: Een specifiek PRODUCTTYPE opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype.
         required: true
       tags:
       - producttypen
@@ -3979,10 +3944,10 @@ paths:
               examples:
                 ProducttypeResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
                     themas:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
                       beschrijving: '.....'
                       gepubliceerd: true
@@ -3990,7 +3955,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
@@ -3999,7 +3964,7 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -4009,9 +3974,9 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     contacten:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -4026,22 +3991,22 @@ paths:
                       telefoonnummer: '0611223344'
                       rol: medewerker
                     prijzen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         bedrag: '50.99'
                         beschrijving: normaal
                       actief_vanaf: '2019-08-24'
                     links:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Open Product
                       url: https://github.com/maykinmedia/open-product
                     acties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
@@ -4116,11 +4081,10 @@ paths:
       summary: Werk een PRODUCTTYPE in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype.
         required: true
       tags:
       - producttypen
@@ -4133,13 +4097,13 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
-                  thema_ids:
+                  thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                  locatie_ids:
+                  locatie_uuids:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
-                  organisatie_ids:
+                  organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
-                  contact_ids:
+                  contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   gepubliceerd: false
                   naam: Aanleunwoning
@@ -4166,7 +4130,7 @@ paths:
                   processen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
-                  dataobject_schema: data_schema
+                  dataobject_schema_naam: data_schema
                 summary: producttype request
         required: true
       security:
@@ -4181,10 +4145,10 @@ paths:
               examples:
                 ProducttypeResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
                     themas:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
                       beschrijving: '.....'
                       gepubliceerd: true
@@ -4192,7 +4156,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
@@ -4201,7 +4165,7 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -4211,9 +4175,9 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     contacten:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -4228,22 +4192,22 @@ paths:
                       telefoonnummer: '0611223344'
                       rol: medewerker
                     prijzen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         bedrag: '50.99'
                         beschrijving: normaal
                       actief_vanaf: '2019-08-24'
                     links:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Open Product
                       url: https://github.com/maykinmedia/open-product
                     acties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
@@ -4315,16 +4279,15 @@ paths:
           description: ''
     patch:
       operationId: producttypen_partial_update
-      description: Als thema_ids, locatie_ids, organisatie_ids of contact_ids in een
-        patch request wordt meegegeven wordt deze lijst geheel overschreven.
+      description: Als thema_uuids, locatie_uuids, organisatie_uuids of contact_uuids
+        in een patch request wordt meegegeven wordt deze lijst geheel overschreven.
       summary: Werk een PRODUCTTYPE deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype.
         required: true
       tags:
       - producttypen
@@ -4337,13 +4300,13 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
-                  thema_ids:
+                  thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                  locatie_ids:
+                  locatie_uuids:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
-                  organisatie_ids:
+                  organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
-                  contact_ids:
+                  contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   gepubliceerd: false
                   naam: Aanleunwoning
@@ -4370,7 +4333,7 @@ paths:
                   processen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
-                  dataobject_schema: data_schema
+                  dataobject_schema_naam: data_schema
                 summary: producttype request
       security:
       - jwtAuth: []
@@ -4384,10 +4347,10 @@ paths:
               examples:
                 ProducttypeResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
                     themas:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
                       beschrijving: '.....'
                       gepubliceerd: true
@@ -4395,7 +4358,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
@@ -4404,7 +4367,7 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
                       code: org-1234
                       email: info@maykinmedia.nl
@@ -4414,9 +4377,9 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     contacten:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
-                        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
                         code: org-1234
                         email: info@maykinmedia.nl
@@ -4431,22 +4394,22 @@ paths:
                       telefoonnummer: '0611223344'
                       rol: medewerker
                     prijzen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         bedrag: '50.99'
                         beschrijving: normaal
                       actief_vanaf: '2019-08-24'
                     links:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Open Product
                       url: https://github.com/maykinmedia/open-product
                     acties:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     bestanden:
-                    - id: da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
                     naam: Parkeervergunning
                     samenvatting: korte samenvatting...
@@ -4521,11 +4484,10 @@ paths:
       summary: Verwijder een PRODUCTTYPE.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype.
         required: true
       tags:
       - producttypen
@@ -4557,18 +4519,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{id}/actuele-prijs/:
+  /producttypen/{uuid}/actuele-prijs/:
     get:
       operationId: actuele_prijs
       description: Geeft de huidige prijzen van alle PRODUCTTYPEN terug.
       summary: De actuele PRIJS van een PRODUCTTYPE opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this Producttype.
         required: true
       tags:
       - producttypen
@@ -4604,7 +4565,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{id}/content/:
+  /producttypen/{uuid}/content/:
     get:
       operationId: content
       description: Geeft de content van een PRODUCTTYPE terug.
@@ -4618,13 +4579,6 @@ paths:
             type: string
         description: Sluit content met bepaalde labels uit.
         explode: false
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this Producttype.
-        required: true
       - in: query
         name: labels
         schema:
@@ -4633,6 +4587,12 @@ paths:
             type: string
         description: Filter content op basis van de labels.
         explode: false
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
       tags:
       - producttypen
       security:
@@ -4647,12 +4607,12 @@ paths:
               examples:
                 ContentElementResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
-                    producttype_id: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
           description: ''
         '400':
@@ -4677,23 +4637,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{id}/vertaling/{taal}/:
+  /producttypen/{uuid}/vertaling/{taal}/:
     put:
       operationId: producttypen_vertaling_update
       description: nl kan worden aangepast via het model.
       summary: De vertaling van een producttype aanpassen.
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this Producttype.
-        required: true
-      - in: path
         name: taal
         schema:
           type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
         required: true
       tags:
       - producttypen
@@ -4741,16 +4700,15 @@ paths:
       summary: De vertaling van een producttype aanpassen.
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this Producttype.
-        required: true
-      - in: path
         name: taal
         schema:
           type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
         required: true
       tags:
       - producttypen
@@ -4797,16 +4755,15 @@ paths:
       summary: De vertaling van een producttype verwijderen.
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this Producttype.
-        required: true
-      - in: path
         name: taal
         schema:
           type: string
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
         required: true
       tags:
       - producttypen
@@ -5296,15 +5253,15 @@ paths:
           type: boolean
         description: Geeft aan of het object getoond kan worden.
       - in: query
-        name: hoofd_thema__id
-        schema:
-          type: string
-          format: uuid
-      - in: query
         name: hoofd_thema__naam
         schema:
           type: string
         description: Naam van het thema.
+      - in: query
+        name: hoofd_thema__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: naam
         schema:
@@ -5358,7 +5315,7 @@ paths:
                     next: http://api.example.org/accounts/?page=4
                     previous: http://api.example.org/accounts/?page=2
                     results:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
                       beschrijving: Parkeren in gemeente ABC
                       gepubliceerd: true
@@ -5366,7 +5323,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       producttypen:
-                      - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         code: 129380-c21231
                         keywords:
                         - auto
@@ -5414,7 +5371,7 @@ paths:
               ThemaRequest:
                 value:
                   hoofd_thema: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  producttype_ids:
+                  producttype_uuids:
                   - 95792000-d57f-4d3a-b14c-c4c7aa964907
                   gepubliceerd: true
                   naam: Parkeren
@@ -5433,7 +5390,7 @@ paths:
               examples:
                 ThemaResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Parkeren
                     beschrijving: Parkeren in gemeente ABC
                     gepubliceerd: true
@@ -5441,7 +5398,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -5475,17 +5432,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /themas/{id}/:
+  /themas/{uuid}/:
     get:
       operationId: themas_retrieve
       summary: Een specifiek THEMA opvragen.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this thema.
         required: true
       tags:
       - themas
@@ -5501,7 +5457,7 @@ paths:
               examples:
                 ThemaResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Parkeren
                     beschrijving: Parkeren in gemeente ABC
                     gepubliceerd: true
@@ -5509,7 +5465,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -5548,11 +5504,10 @@ paths:
       summary: Werk een THEMA in zijn geheel bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this thema.
         required: true
       tags:
       - themas
@@ -5565,7 +5520,7 @@ paths:
               ThemaRequest:
                 value:
                   hoofd_thema: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  producttype_ids:
+                  producttype_uuids:
                   - 95792000-d57f-4d3a-b14c-c4c7aa964907
                   gepubliceerd: true
                   naam: Parkeren
@@ -5584,7 +5539,7 @@ paths:
               examples:
                 ThemaResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Parkeren
                     beschrijving: Parkeren in gemeente ABC
                     gepubliceerd: true
@@ -5592,7 +5547,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -5628,16 +5583,15 @@ paths:
           description: ''
     patch:
       operationId: themas_partial_update
-      description: Als producttype_ids in een patch request wordt meegegeven wordt
+      description: Als producttype_uuids in een patch request wordt meegegeven wordt
         deze lijst geheel overschreven.
       summary: Werk een THEMA deels bij.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this thema.
         required: true
       tags:
       - themas
@@ -5650,7 +5604,7 @@ paths:
               ThemaRequest:
                 value:
                   hoofd_thema: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  producttype_ids:
+                  producttype_uuids:
                   - 95792000-d57f-4d3a-b14c-c4c7aa964907
                   gepubliceerd: true
                   naam: Parkeren
@@ -5668,7 +5622,7 @@ paths:
               examples:
                 ThemaResponse:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     naam: Parkeren
                     beschrijving: Parkeren in gemeente ABC
                     gepubliceerd: true
@@ -5676,7 +5630,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       code: 129380-c21231
                       keywords:
                       - auto
@@ -5715,11 +5669,10 @@ paths:
       summary: Verwijder een THEMA.
       parameters:
       - in: path
-        name: id
+        name: uuid
         schema:
           type: string
           format: uuid
-        description: A UUID string identifying this thema.
         required: true
       tags:
       - themas
@@ -5756,7 +5709,7 @@ components:
     Actie:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -5769,14 +5722,14 @@ components:
           format: uri
           readOnly: true
           description: De url naar de dmn tabel.
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
-      - id
       - naam
-      - producttype_id
+      - producttype_uuid
       - url
+      - uuid
     ActieRequest:
       type: object
       properties:
@@ -5796,48 +5749,48 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: id van de dmn tabel binnen de dmn instantie.
-        producttype_id:
+          description: uuid van de dmn tabel binnen de dmn instantie.
+        producttype_uuid:
           type: string
           format: uuid
       required:
       - dmn_tabel_id
       - naam
-      - producttype_id
+      - producttype_uuid
       - tabel_endpoint
     Bestand:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
         bestand:
           type: string
           format: uri
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
       - bestand
-      - id
-      - producttype_id
+      - producttype_uuid
+      - uuid
     BestandRequest:
       type: object
       properties:
         bestand:
           type: string
           format: binary
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
       - bestand
-      - producttype_id
+      - producttype_uuid
     Contact:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -5869,13 +5822,13 @@ components:
           maxLength: 100
       required:
       - achternaam
-      - id
       - organisatie
+      - uuid
       - voornaam
     ContactRequest:
       type: object
       properties:
-        organisatie_id:
+        organisatie_uuid:
           type: string
           format: uuid
           writeOnly: true
@@ -5910,7 +5863,7 @@ components:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -5922,7 +5875,7 @@ components:
           type: array
           items:
             type: string
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
         taal:
@@ -5931,9 +5884,9 @@ components:
           description: De huidige taal van het content element.
       required:
       - content
-      - id
-      - producttype_id
+      - producttype_uuid
       - taal
+      - uuid
     ContentElementRequest:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
@@ -5948,16 +5901,16 @@ components:
           items:
             type: string
             minLength: 1
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
       - content
-      - producttype_id
+      - producttype_uuid
     ContentElementTranslation:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -5966,7 +5919,7 @@ components:
           description: De content van dit content element.
       required:
       - content
-      - id
+      - uuid
     ContentElementTranslationRequest:
       type: object
       properties:
@@ -6035,7 +5988,7 @@ components:
     Link:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6048,14 +6001,14 @@ components:
           format: uri
           description: Url van de link.
           maxLength: 200
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
-      - id
       - naam
-      - producttype_id
+      - producttype_uuid
       - url
+      - uuid
     LinkRequest:
       type: object
       properties:
@@ -6070,17 +6023,17 @@ components:
           minLength: 1
           description: Url van de link.
           maxLength: 200
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
       required:
       - naam
-      - producttype_id
+      - producttype_uuid
       - url
     Locatie:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6109,8 +6062,8 @@ components:
           type: string
           maxLength: 255
       required:
-      - id
       - naam
+      - uuid
     LocatieRequest:
       type: object
       properties:
@@ -6144,7 +6097,7 @@ components:
     NestedActie:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6158,9 +6111,9 @@ components:
           readOnly: true
           description: De url naar de dmn tabel.
       required:
-      - id
       - naam
       - url
+      - uuid
     NestedActieRequest:
       type: object
       properties:
@@ -6174,7 +6127,7 @@ components:
     NestedBestand:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6183,7 +6136,7 @@ components:
           format: uri
       required:
       - bestand
-      - id
+      - uuid
     NestedBestandRequest:
       type: object
       properties:
@@ -6196,7 +6149,7 @@ components:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6214,8 +6167,8 @@ components:
             type: string
       required:
       - content
-      - id
       - taal
+      - uuid
     NestedExterneCode:
       type: object
       properties:
@@ -6253,7 +6206,7 @@ components:
     NestedLink:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6267,9 +6220,9 @@ components:
           description: Url van de link.
           maxLength: 200
       required:
-      - id
       - naam
       - url
+      - uuid
     NestedLinkRequest:
       type: object
       properties:
@@ -6324,7 +6277,7 @@ components:
     NestedPrijs:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6343,7 +6296,7 @@ components:
           description: De datum vanaf wanneer de prijs actief is.
       required:
       - actief_vanaf
-      - id
+      - uuid
     NestedPrijsRequest:
       type: object
       properties:
@@ -6385,7 +6338,7 @@ components:
     NestedProductType:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6423,9 +6376,9 @@ components:
       required:
       - aanmaak_datum
       - code
-      - id
       - uniforme_product_naam
       - update_datum
+      - uuid
     NestedProductTypeRequest:
       type: object
       properties:
@@ -6458,7 +6411,7 @@ components:
     NestedThema:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -6485,13 +6438,13 @@ components:
         hoofd_thema:
           type: string
           format: uuid
-          nullable: true
-          description: Het hoofd thema van het thema.
+          description: Het hoofd thema waaronder dit thema valt.
       required:
       - aanmaak_datum
-      - id
+      - hoofd_thema
       - naam
       - update_datum
+      - uuid
     NestedThemaRequest:
       type: object
       properties:
@@ -6509,9 +6462,9 @@ components:
         hoofd_thema:
           type: string
           format: uuid
-          nullable: true
-          description: Het hoofd thema van het thema.
+          description: Het hoofd thema waaronder dit thema valt.
       required:
+      - hoofd_thema
       - naam
     NestedVerzoekType:
       type: object
@@ -6556,12 +6509,16 @@ components:
     Organisatie:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
         naam:
           type: string
+          maxLength: 255
+        code:
+          type: string
+          description: code van de organisatie.
           maxLength: 255
         email:
           type: string
@@ -6584,14 +6541,10 @@ components:
         stad:
           type: string
           maxLength: 255
-        code:
-          type: string
-          description: code van de organisatie.
-          maxLength: 255
       required:
       - code
-      - id
       - naam
+      - uuid
     OrganisatieRequest:
       type: object
       properties:
@@ -6599,6 +6552,11 @@ components:
           type: string
           minLength: 1
           maxLength: 255
+        code:
+          type: string
+          minLength: 1
+          description: code van de organisatie.
+          maxLength: 255
         email:
           type: string
           format: email
@@ -6619,11 +6577,6 @@ components:
           maxLength: 7
         stad:
           type: string
-          maxLength: 255
-        code:
-          type: string
-          minLength: 1
-          description: code van de organisatie.
           maxLength: 255
       required:
       - code
@@ -6900,8 +6853,8 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: id van de dmn tabel binnen de dmn instantie.
-        producttype_id:
+          description: uuid van de dmn tabel binnen de dmn instantie.
+        producttype_uuid:
           type: string
           format: uuid
     PatchedBestandRequest:
@@ -6910,13 +6863,13 @@ components:
         bestand:
           type: string
           format: binary
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
     PatchedContactRequest:
       type: object
       properties:
-        organisatie_id:
+        organisatie_uuid:
           type: string
           format: uuid
           writeOnly: true
@@ -6958,7 +6911,7 @@ components:
           items:
             type: string
             minLength: 1
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
     PatchedJsonSchemaRequest:
@@ -6986,7 +6939,7 @@ components:
           minLength: 1
           description: Url van de link.
           maxLength: 200
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
     PatchedLocatieRequest:
@@ -7024,6 +6977,11 @@ components:
           type: string
           minLength: 1
           maxLength: 255
+        code:
+          type: string
+          minLength: 1
+          description: code van de organisatie.
+          maxLength: 255
         email:
           type: string
           format: email
@@ -7045,15 +7003,10 @@ components:
         stad:
           type: string
           maxLength: 255
-        code:
-          type: string
-          minLength: 1
-          description: code van de organisatie.
-          maxLength: 255
     PatchedPrijsRequest:
       type: object
       properties:
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
         prijsopties:
@@ -7077,46 +7030,34 @@ components:
           type: string
           minLength: 1
           description: Uniforme product naam
-        thema_ids:
+        thema_uuids:
           type: array
           items:
             type: string
             format: uuid
             writeOnly: true
           writeOnly: true
-        locatie_ids:
+        locatie_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        organisatie_ids:
+        organisatie_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        contact_ids:
+        contact_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        verbruiksobject_schema_naam:
-          type: string
-          minLength: 1
-          description: JSON schema om het verbruiksobject van een gerelateerd product
-            te valideren.
-          writeOnly: true
-        dataobject_schema_naam:
-          type: string
-          minLength: 1
-          description: JSON schema om het dataobject van een gerelateerd product te
-            valideren.
-          writeOnly: true
         naam:
           type: string
           minLength: 1
@@ -7134,18 +7075,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
-        zaaktypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedZaakTypeRequest'
-        verzoektypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
-        processen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedProcesRequest'
+        verbruiksobject_schema_naam:
+          type: string
+          minLength: 1
+          description: JSON schema om het verbruiksobject van een gerelateerd product
+            te valideren.
+          writeOnly: true
+        dataobject_schema_naam:
+          type: string
+          minLength: 1
+          description: JSON schema om het dataobject van een gerelateerd product te
+            valideren.
+          writeOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7168,6 +7109,18 @@ components:
         interne_opmerkingen:
           type: string
           description: Interne opmerkingen over het producttype.
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProcesRequest'
     PatchedProductTypeTranslationRequest:
       type: object
       properties:
@@ -7199,7 +7152,7 @@ components:
           format: uuid
           nullable: true
           description: Het hoofd thema waaronder dit thema valt.
-        producttype_ids:
+        producttype_uuids:
           type: array
           items:
             type: string
@@ -7209,11 +7162,11 @@ components:
     Prijs:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
         prijsopties:
@@ -7231,12 +7184,12 @@ components:
           description: De datum vanaf wanneer de prijs actief is.
       required:
       - actief_vanaf
-      - id
-      - producttype_id
+      - producttype_uuid
+      - uuid
     PrijsOptie:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         bedrag:
@@ -7254,7 +7207,7 @@ components:
     PrijsOptieRequest:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         bedrag:
@@ -7273,7 +7226,7 @@ components:
     PrijsRegel:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         url:
@@ -7291,7 +7244,7 @@ components:
     PrijsRegelRequest:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
         beschrijving:
@@ -7303,7 +7256,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: id van de dmn tabel binnen de dmn instantie.
+          description: uuid van de dmn tabel binnen de dmn instantie.
         tabel_endpoint:
           type: string
           format: uri
@@ -7318,7 +7271,7 @@ components:
     PrijsRequest:
       type: object
       properties:
-        producttype_id:
+        producttype_uuid:
           type: string
           format: uuid
         prijsopties:
@@ -7336,12 +7289,12 @@ components:
           description: De datum vanaf wanneer de prijs actief is.
       required:
       - actief_vanaf
-      - producttype_id
+      - producttype_uuid
     ProductType:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -7378,23 +7331,15 @@ components:
           items:
             $ref: '#/components/schemas/NestedLink'
           readOnly: true
-        bestanden:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedBestand'
-          readOnly: true
         acties:
           type: array
           items:
             $ref: '#/components/schemas/NestedActie'
           readOnly: true
-        verbruiksobject_schema:
-          allOf:
-          - $ref: '#/components/schemas/JsonSchema'
-          readOnly: true
-        dataobject_schema:
-          allOf:
-          - $ref: '#/components/schemas/JsonSchema'
+        bestanden:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedBestand'
           readOnly: true
         naam:
           type: string
@@ -7415,18 +7360,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameter'
-        zaaktypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedZaakType'
-        verzoektypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedVerzoekType'
-        processen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedProces'
+        verbruiksobject_schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonSchema'
+          readOnly: true
+        dataobject_schema:
+          allOf:
+          - $ref: '#/components/schemas/JsonSchema'
+          readOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7458,6 +7399,18 @@ components:
         interne_opmerkingen:
           type: string
           description: Interne opmerkingen over het producttype.
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakType'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekType'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProces'
       required:
       - aanmaak_datum
       - acties
@@ -7465,7 +7418,6 @@ components:
       - code
       - contacten
       - dataobject_schema
-      - id
       - links
       - locaties
       - naam
@@ -7476,11 +7428,12 @@ components:
       - themas
       - uniforme_product_naam
       - update_datum
+      - uuid
       - verbruiksobject_schema
     ProductTypeActuelePrijs:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -7504,9 +7457,9 @@ components:
       required:
       - actuele_prijs
       - code
-      - id
       - upl_naam
       - upl_uri
+      - uuid
     ProductTypeRequest:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
@@ -7515,46 +7468,34 @@ components:
           type: string
           minLength: 1
           description: Uniforme product naam
-        thema_ids:
+        thema_uuids:
           type: array
           items:
             type: string
             format: uuid
             writeOnly: true
           writeOnly: true
-        locatie_ids:
+        locatie_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        organisatie_ids:
+        organisatie_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        contact_ids:
+        contact_uuids:
           type: array
           items:
             type: string
             format: uuid
           writeOnly: true
           default: []
-        verbruiksobject_schema_naam:
-          type: string
-          minLength: 1
-          description: JSON schema om het verbruiksobject van een gerelateerd product
-            te valideren.
-          writeOnly: true
-        dataobject_schema_naam:
-          type: string
-          minLength: 1
-          description: JSON schema om het dataobject van een gerelateerd product te
-            valideren.
-          writeOnly: true
         naam:
           type: string
           minLength: 1
@@ -7572,18 +7513,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedParameterRequest'
-        zaaktypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedZaakTypeRequest'
-        verzoektypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
-        processen:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedProcesRequest'
+        verbruiksobject_schema_naam:
+          type: string
+          minLength: 1
+          description: JSON schema om het verbruiksobject van een gerelateerd product
+            te valideren.
+          writeOnly: true
+        dataobject_schema_naam:
+          type: string
+          minLength: 1
+          description: JSON schema om het dataobject van een gerelateerd product te
+            valideren.
+          writeOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
@@ -7606,16 +7547,28 @@ components:
         interne_opmerkingen:
           type: string
           description: Interne opmerkingen over het producttype.
+        zaaktypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakTypeRequest'
+        verzoektypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedVerzoekTypeRequest'
+        processen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedProcesRequest'
       required:
       - code
       - naam
       - samenvatting
-      - thema_ids
+      - thema_uuids
       - uniforme_product_naam
     ProductTypeTranslation:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -7627,9 +7580,9 @@ components:
           type: string
           description: Korte beschrijving van het producttype.
       required:
-      - id
       - naam
       - samenvatting
+      - uuid
     ProductTypeTranslationRequest:
       type: object
       properties:
@@ -7648,7 +7601,7 @@ components:
     Thema:
       type: object
       properties:
-        id:
+        uuid:
           type: string
           format: uuid
           readOnly: true
@@ -7685,10 +7638,10 @@ components:
       required:
       - aanmaak_datum
       - hoofd_thema
-      - id
       - naam
       - producttypen
       - update_datum
+      - uuid
     ThemaRequest:
       type: object
       properties:
@@ -7708,7 +7661,7 @@ components:
           format: uuid
           nullable: true
           description: Het hoofd thema waaronder dit thema valt.
-        producttype_ids:
+        producttype_uuids:
           type: array
           items:
             type: string
@@ -7718,7 +7671,7 @@ components:
       required:
       - hoofd_thema
       - naam
-      - producttype_ids
+      - producttype_uuids
     ToegestaneStatussenEnum:
       enum:
       - gereed

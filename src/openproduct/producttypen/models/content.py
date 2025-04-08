@@ -20,7 +20,7 @@ class ContentLabel(BaseModel):
     class Meta:
         verbose_name = _("Label")
         verbose_name_plural = _("Labels")
-        ordering = ("id",)
+        ordering = ("-id",)
 
 
 class ContentElementQuerySet(TranslatableQuerySet, OrderedModelQuerySet):
@@ -79,4 +79,4 @@ class ContentElementTranslation(TranslatedFieldsModel):
         unique_together = ("language_code", "master")
         verbose_name = _("Content element vertaling")
         verbose_name_plural = _("Content element vertalingen")
-        ordering = ("id",)
+        ordering = ("-id",)

@@ -25,7 +25,7 @@ class Link(BaseModel):
     class Meta:
         verbose_name = _("Producttype link")
         verbose_name_plural = _("Producttype links")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return f"{self.producttype}: {self.naam}"

@@ -1,5 +1,3 @@
-from operator import attrgetter
-
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
@@ -45,4 +43,4 @@ class UUIDRelatedField(serializers.RelatedField):
             self.fail("invalid")
 
     def to_representation(self, obj):
-        return attrgetter("uuid")(obj)
+        return getattr(obj, "uuid")

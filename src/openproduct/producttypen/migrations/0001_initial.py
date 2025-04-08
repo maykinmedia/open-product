@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Label",
                 "verbose_name_plural": "Labels",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "DMN configuratie",
                 "verbose_name_plural": "DMN configuraties",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -143,7 +143,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Json schema",
                 "verbose_name_plural": "Json Schemas",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -167,7 +167,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Prijs",
                 "verbose_name_plural": "Prijzen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -204,7 +204,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Uniforme product naam",
                 "verbose_name_plural": "Uniforme product namen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -269,7 +269,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "thema",
                 "verbose_name_plural": "thema's",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -426,7 +426,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Producttype",
                 "verbose_name_plural": "Producttypen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
             bases=(parler.models.TranslatableModelMixin, models.Model),
         ),
@@ -475,7 +475,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Prijs regel",
                 "verbose_name_plural": "Prijs regels",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -517,7 +517,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Prijs optie",
                 "verbose_name_plural": "Prijs opties",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.AddField(
@@ -562,7 +562,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Producttype link",
                 "verbose_name_plural": "Producttype links",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -624,7 +624,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Producttype bestand",
                 "verbose_name_plural": "Producttype bestanden",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -672,7 +672,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "actie",
                 "verbose_name_plural": "acties",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -699,7 +699,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "zaaktype",
                 "verbose_name_plural": "zaaktypen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("producttype", "uuid")},
             },
         ),
@@ -727,7 +727,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "verzoektype",
                 "verbose_name_plural": "verzoektypen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("producttype", "uuid")},
             },
         ),
@@ -778,7 +778,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Producttype vertaling",
                 "verbose_name_plural": "Producttype vertalingen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("language_code", "master")},
             },
             bases=(parler.models.TranslatedFieldsModelMixin, models.Model),
@@ -807,7 +807,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Proces",
                 "verbose_name_plural": "Processen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("producttype", "uuid")},
             },
         ),
@@ -856,7 +856,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "parameter",
                 "verbose_name_plural": "parameters",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("producttype", "naam")},
             },
         ),
@@ -901,7 +901,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "externe producttype code",
                 "verbose_name_plural": "externe producttype codes",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("producttype", "naam")},
             },
         ),
@@ -943,7 +943,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Content element vertaling",
                 "verbose_name_plural": "Content element vertalingen",
-                "ordering": ("id",),
+                "ordering": ("-id",),
                 "unique_together": {("language_code", "master")},
             },
             bases=(parler.models.TranslatedFieldsModelMixin, models.Model),

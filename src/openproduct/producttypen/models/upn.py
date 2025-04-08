@@ -29,7 +29,7 @@ class UniformeProductNaam(BaseModel):
     class Meta:
         verbose_name = _("Uniforme product naam")
         verbose_name_plural = _("Uniforme product namen")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.naam

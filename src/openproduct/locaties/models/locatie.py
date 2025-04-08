@@ -56,7 +56,7 @@ class Locatie(BaseLocatie):
     class Meta:
         verbose_name = _("Locatie")
         verbose_name_plural = _("Locaties")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self) -> str:
         return f"{self.naam}: {self.address}"

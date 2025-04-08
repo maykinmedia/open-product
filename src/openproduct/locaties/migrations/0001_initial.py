@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Locatie",
                 "verbose_name_plural": "Locaties",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -131,7 +131,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Organisatie",
                 "verbose_name_plural": "Organisaties",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
         migrations.CreateModel(
@@ -199,7 +199,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "Contact",
                 "verbose_name_plural": "Contacten",
-                "ordering": ("id",),
+                "ordering": ("-id",),
             },
         ),
     ]

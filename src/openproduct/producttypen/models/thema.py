@@ -37,7 +37,7 @@ class Thema(BasePublishableModel):
     class Meta:
         verbose_name = _("thema")
         verbose_name_plural = _("thema's")
-        ordering = ("id",)
+        ordering = ("-id",)
 
     def __str__(self):
         return self.naam

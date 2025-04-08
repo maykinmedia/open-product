@@ -49,4 +49,4 @@ class Actie(BaseModel):
     class Meta:
         verbose_name = _("actie")
         verbose_name_plural = _("acties")
-        ordering = ("id",)
+        ordering = ("-id",)
