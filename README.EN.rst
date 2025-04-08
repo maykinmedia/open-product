@@ -120,7 +120,7 @@ Licensed under the EUPL_
 
 .. _`EUPL`: LICENSE.md
 
-.. |build-status| image:: https://github.com/maykinmedia/open-product/workflows/ci/badge.svg?branch=master
+.. |build-status| image:: https://github.com/maykinmedia/open-product/actions/workflows/ci.yml/badge.svg?branch=master
     :alt: Build status
     :target: https://github.com/maykinmedia/open-product/actions?query=workflow%3Aci
 
