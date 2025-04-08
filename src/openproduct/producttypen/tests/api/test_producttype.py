@@ -1,4 +1,5 @@
 import datetime
+from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
@@ -62,11 +63,17 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "thema_ids": [self.thema.id],
         }
 
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = "https://gemeente-a.zgw.nl/zaaktypen"
-        config.verzoektypen_url = "https://gemeente-a.zgw.nl/verzoektypen"
-        config.processen_url = "https://gemeente-a.zgw.nl/processen"
-        config.save()
+        config_patch = patch(
+            "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
+            return_value=ExterneVerwijzingConfig(
+                zaaktypen_url="https://gemeente-a.zgw.nl/zaaktypen",
+                verzoektypen_url="https://gemeente-a.zgw.nl/verzoektypen",
+                processen_url="https://gemeente-a.zgw.nl/processen",
+            ),
+        )
+
+        self.config_mock = config_patch.start()
+        self.addCleanup(config_patch.stop)
 
     def detail_path(self, producttype):
         return reverse("producttype-detail", args=[producttype.id])
@@ -268,11 +275,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         )
 
     def test_create_producttype_without_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         response = self.client.post(self.path, self.data)
 
@@ -282,12 +287,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_producttype_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         data = self.data | {
             "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
@@ -800,11 +802,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(Parameter.objects.count(), 1)
 
     def test_update_producttype_without_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         producttype = ProductTypeFactory.create()
 
@@ -816,11 +816,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_update_producttype_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         producttype = ProductTypeFactory.create()
 
@@ -1199,11 +1197,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_partial_update_producttype_without_externe_verwijzingen_without_config(
         self,
     ):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         producttype = ProductTypeFactory.create()
 
@@ -1215,11 +1211,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_partial_update_producttype_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         producttype = ProductTypeFactory.create()
 
@@ -1488,11 +1482,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.data["prijzen"], expected_data)
 
     def test_read_externe_verwijzingen_without_config(self):
-        config = ExterneVerwijzingConfig.get_solo()
-        config.zaaktypen_url = ""
-        config.verzoektypen_url = ""
-        config.processen_url = ""
-        config.save()
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            zaaktypen_url="", verzoektypen_url="", processen_url=""
+        )
 
         producttype = ProductTypeFactory.create()
         zaaktype = ZaakTypeFactory(producttype=producttype)

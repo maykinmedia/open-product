@@ -11,8 +11,6 @@ class ZaakType(BaseModel):
 
     uuid = models.UUIDField(
         verbose_name=_("uuid"),
-        null=True,
-        blank=True,
         help_text=_("Uuid van het zaaktype."),
     )
 

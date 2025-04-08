@@ -5,6 +5,10 @@ from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
 
 from openproduct.producten.models import Eigenaar, Product
+from openproduct.producten.serializers.document import (
+    DocumentSerializer,
+    NestedDocumentSerializer,
+)
 from openproduct.producten.serializers.eigenaar import EigenaarSerializer
 from openproduct.producten.serializers.validators import (
     DataObjectValidator,
@@ -13,8 +17,15 @@ from openproduct.producten.serializers.validators import (
     VerbruiksObjectValidator,
 )
 from openproduct.producttypen.models import ProductType
+from openproduct.producttypen.models.validators import (
+    check_externe_verwijzing_config_url,
+)
 from openproduct.producttypen.serializers.thema import NestedProductTypeSerializer
 from openproduct.utils.drf_validators import NestedObjectsValidator
+from openproduct.utils.serializers import (
+    set_nested_serializer,
+    validate_key_value_model_keys,
+)
 
 
 @extend_schema_serializer(
@@ -45,6 +56,11 @@ from openproduct.utils.drf_validators import NestedObjectsValidator
                         "bsn": "111222333",
                     }
                 ],
+                "documenten": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
@@ -63,6 +79,7 @@ from openproduct.utils.drf_validators import NestedObjectsValidator
                 "eigenaren": [
                     {"bsn": "111222333"},
                 ],
+                "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
@@ -80,6 +97,7 @@ class ProductSerializer(serializers.ModelSerializer):
         write_only=True, queryset=ProductType.objects.all(), source="producttype"
     )
     eigenaren = EigenaarSerializer(many=True)
+    documenten = NestedDocumentSerializer(many=True, required=False)
 
     class Meta:
         model = Product
@@ -97,9 +115,19 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_("Er is minimaal één eigenaar vereist."))
         return eigenaren
 
+    def validate_documenten(self, documenten: list[dict]):
+        check_externe_verwijzing_config_url("documenten_url")
+
+        return validate_key_value_model_keys(
+            documenten,
+            "uuid",
+            _("Er bestaat al een document met de uuid {} voor dit Product."),
+        )
+
     @transaction.atomic()
     def create(self, validated_data):
         eigenaren = validated_data.pop("eigenaren", [])
+        documenten = validated_data.pop("documenten", [])
 
         product = super().create(validated_data)
 
@@ -107,11 +135,18 @@ class ProductSerializer(serializers.ModelSerializer):
             eigenaar.pop("id", None)
             EigenaarSerializer().create(eigenaar | {"product": product})
 
+        set_nested_serializer(
+            [document | {"product": product.id} for document in documenten],
+            DocumentSerializer,
+        )
+
         return product
 
     @transaction.atomic()
     def update(self, instance, validated_data):
         eigenaren = validated_data.pop("eigenaren", None)
+        documenten = validated_data.pop("documenten", None)
+
         product = super().update(instance, validated_data)
 
         if eigenaren is not None:
@@ -131,5 +166,12 @@ class ProductSerializer(serializers.ModelSerializer):
             product.eigenaren.filter(
                 id__in=(current_eigenaren_ids - seen_eigenaren_ids)
             ).delete()
+
+        if documenten is not None:
+            instance.documenten.all().delete()
+            set_nested_serializer(
+                [document | {"product": instance.id} for document in documenten],
+                DocumentSerializer,
+            )
 
         return product
