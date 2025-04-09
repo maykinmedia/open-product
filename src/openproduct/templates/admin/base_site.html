@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a></h1>
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a>
+    </h1>
 {% endblock %}
 
 {% block welcome-msg %}
@@ -29,7 +30,7 @@
         <a href="{{ 2fa_account_security_url }}">{% trans "Account security" %}</a> /
     {% endif %}
     {% if user.has_usable_password %}
-    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+        <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
     {% endif %}
     <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
 {% endblock %}
@@ -40,5 +41,5 @@
     {{ block.super }}
 
     {# Load the custom JS #}
-    <script src="{% static 'bundles/objects-js.js' %}"></script>
+    <script src="{% static 'bundles/openproduct-js.js' %}"></script>
 {% endblock %}
