@@ -1,0 +1,45 @@
+{% extends "open_api_framework/admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | {{ settings.PROJECT_NAME }}{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bundles/admin_overrides.css' %}">
+
+    <link rel="icon" type="image/png" href="{% static 'ico/favicon.png' %}">
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ settings.PROJECT_NAME }} {% trans 'Administration' %}</a>
+    </h1>
+{% endblock %}
+
+{% block welcome-msg %}
+    {% trans 'Logged in as' %}
+    <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+{% endblock %}
+
+{% block userlinks %}
+    {% if site_url %}
+        <a href="{{ site_url }}">{{ settings.SITE_TITLE }}</a> /
+    {% endif %}
+    {% url 'maykin_2fa:account_security' as 2fa_account_security_url %}
+    {% if 2fa_account_security_url %}
+        <a href="{{ 2fa_account_security_url }}">{% trans "Account security" %}</a> /
+    {% endif %}
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}
+    {{ block.super }}
+
+    {# Load the custom JS #}
+    <script src="{% static 'bundles/openproduct-js.js' %}"></script>
+{% endblock %}

@@ -2,60 +2,70 @@
 
 {% block content %}
 
-  <div class="header">
-    <h1 class="header__title">{{ settings.PROJECT_NAME }} startpunt</h1>
-    <p class="header__description">{{ settings.SITE_TITLE }}</p>
-  </div>
+    <div class="title">
+        <h1 class="title__header">{{ settings.PROJECT_NAME }} API</h1>
+        <p class="title__description">{{ settings.SITE_TITLE }}</p>
+    </div>
 
-  <div class="container container--center">
+    <div class="container container--center">
+        <nav class="nav">
+            <ul class="nav__list">
+                <li class="nav__item" data-id="en">English</li>
+                <li class="nav__item" data-id="nl">Nederlands</li>
+            </ul>
 
-    {% block docs %}
-      <h2>{{ component|capfirst }}</h2>
-
-      <div class="cardlist">
-
-        {% block docs_oas %}
-          <div class="cardlist__item">
-            <div class="card">
-              <h5 class="card__title"><i class="fas fa-wifi"></i> API specificatie</h5>
-              <p>Technische API documentatie in de vorm van een Open API Specificatie (OAS).</p>
-              <a href="{% url "schema-redoc-"|add:component %}" class="button button--primary">API specificaties</a>
+            <div class="nav__content">
+                <div class="nav__pane" id="en">
+                    <p>
+                        Open Product is an application where product types and products can be managed in a single
+                        place. The API is split into two specifications, producten en producttypen.
+                    </p>
+                    <p>
+                        A product type is the definition of a product, it contains all relevant data such as information
+                        on how to request, prices, useful links or documents and more. A product is the instance of a
+                        producttype, it contains among other things the information of
+                        the owner, the required data for the product and, for example the status.
+                    </p>
+                </div>
+                <div class="nav__pane" id="nl">
+                    <p>
+                        Open Product is een applicatie waarin producttypen en producten op een enkele plek kunnen worden
+                        beheerd. De API is opgesplitst in twee specificaties, producten en producttypen.
+                    </p>
+                    <p>
+                        Een producttype is de definitie van een product. Hierin wordt alle relevante data opgeslagen
+                        zoals informatie over de aanvraag, prijzen, handige links of documenten en meer. Een product is
+                        de instantie van een producttype. Hierin worden onder andere de gegevens van de
+                        eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
+                    </p>
+                </div>
             </div>
-          </div>
-        {% endblock %}
+        </nav>
 
-{#        {% block docs_scopes %}#}
-{#          <div class="cardlist__item">#}
-{#            <div class="card">#}
-{#              <h5 class="card__title"><i class="fas fa-shield-alt"></i> API scopes</h5>#}
-{#              <p>Alle scopes binnen deze API voor gebruik in JWT's t.b.v. autorisaties.</p>#}
-{#              <a href="{% url 'vng_api_common:scopes' %}" class="button button--primary">API scopes</a>#}
-{#            </div>#}
-{#          </div>#}
-{#        {% endblock %}#}
+        <p>
+            <b>Licensed under the <a class="link"
+                                     href="https://github.com/maykinmedia/open-product/blob/master/LICENSE.md">
+                European Union Public License (EUPL) 1.2</a></b>
+        </p>
 
-      {% if component == "producten" %}
-        {% block extra_docs %}
-          <div class="cardlist__item">
-            <div class="card">
-              <h5 class="card__title"><i class="fas fa-bullhorn"></i> Notificaties</h5>
-              <p>Gebeurtenissen waarover dit component notificaties verstuurt.</p>
-              <a href="https://github.com/maykinmedia/open-product/blob/{{ github_ref }}/src/notificaties.md#{{ component }}" class="button button--primary">Notificaties</a>
-            </div>
-          </div>
-        {% endblock %}
-      {% endif %}
+        <p>
+            <a href="{% url "schema-redoc-producten" %}" class="button"><i class="fas fa-file-alt"></i> Producten
+                API
+                specification</a>
 
-     </div>
+            <a href="{% url "schema-redoc-producttypen" %}" class="button"><i class="fas fa-file-alt"></i> Producttypen
+                API
+                specification</a>
+            <a href="https://github.com/maykinmedia/open-product/blob/master/src/notificaties.md" class="button"><i
+                    class="fas fa-bullhorn"></i> Notifications</a>
+        </p>
 
-    {% endblock %}
 
-    {% block admin_link %}
-      <p>
-        <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i> Beheer</a>
-      </p>
-    {% endblock %}
+        <p>
+            <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i>
+                Administration</a>
+        </p>
 
-  </div>
+    </div>
 
 {% endblock %}
