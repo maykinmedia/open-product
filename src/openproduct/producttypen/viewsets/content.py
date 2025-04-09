@@ -1,3 +1,5 @@
+from django.utils.translation import activate
+
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins
@@ -43,6 +45,14 @@ class ContentElementViewSet(
     queryset = ContentElement.objects.all()
     serializer_class = ContentElementSerializer
     lookup_field = "uuid"
+
+    def initial(self, request, *args, **kwargs):
+        # passing the translated fields to  the create call will set them for the language in the Accept-Language header.
+        # but a POST/PUT/PATCH should only set the required language
+        # (other languages can be added in the vertaling viewset action)
+        if self.action in ["create", "update", "partial_update"]:
+            activate("nl")
+        return super().initial(request, *args, **kwargs)
 
     @extend_schema(
         summary="De vertaling van een content element aanpassen.",

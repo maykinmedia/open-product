@@ -157,6 +157,23 @@ class TestProducttypeViewSet(BaseApiTestCase):
         }
         self.assertEqual(response.data, expected_data)
 
+    def test_create_producttype_with_language_header(self):
+
+        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+            with self.subTest(f"{header} should set default language only"):
+                response = self.client.post(
+                    self.path, self.data | {"code": str(header)}, headers=header
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+                self.assertEqual(response.data["taal"], "nl")
+                self.assertEqual(response.data["naam"], self.data["naam"])
+                self.assertEqual(response.headers["Content-Language"], "nl")
+
+                producttype = ProductType.objects.get(uuid=response.data["uuid"])
+                producttype.set_current_language("nl")
+                self.assertEqual(producttype.naam, self.data["naam"])
+
     def test_create_producttype_without_thema_returns_error(self):
         data = self.data.copy()
         data["thema_uuids"] = []
@@ -604,6 +621,26 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ProductType.objects.count(), 1)
+
+    def test_update_producttype_with_language_header(self):
+
+        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+            with self.subTest(f"{header} should set default language only"):
+                producttype = ProductTypeFactory.create()
+                response = self.client.put(
+                    self.detail_path(producttype),
+                    self.data | {"code": str(header)},
+                    headers=header,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["taal"], "nl")
+                self.assertEqual(response.data["naam"], self.data["naam"])
+                self.assertEqual(response.headers["Content-Language"], "nl")
+
+                producttype = ProductType.objects.get(uuid=response.data["uuid"])
+                producttype.set_current_language("nl")
+                self.assertEqual(producttype.naam, self.data["naam"])
 
     def test_update_producttype_with_thema(self):
         producttype = ProductTypeFactory.create()
