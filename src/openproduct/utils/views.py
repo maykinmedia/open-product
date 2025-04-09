@@ -4,7 +4,6 @@ from django.template import TemplateDoesNotExist, loader
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.defaults import ERROR_500_TEMPLATE_NAME
-from django.views.generic import TemplateView
 
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ParseError
@@ -30,23 +29,6 @@ def server_error(request, template_name=ERROR_500_TEMPLATE_NAME):
         )
     context = {"request": request}
     return http.HttpResponseServerError(template.render(context))
-
-
-class IndexView(TemplateView):
-    template_name = "index.html"
-    # custom context
-    github_ref = "master"
-    component = ""
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {
-                "component": self.component,
-                "github_ref": self.github_ref,
-            }
-        )
-        return context
 
 
 class TranslatableViewSetMixin:

@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # copy configuration/build files
-#COPY ./build /app/build/
+COPY ./build /app/build/
 COPY ./*.json ./*.js /app/
 # ./.babelrc
 
