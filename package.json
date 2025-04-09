@@ -2,7 +2,7 @@
     "name": "openproduct",
     "version": "0.0.5",
     "description": "open-product project",
-    "main": "src/openzaak/static/bundles/openproduct-js.js",
+    "main": "src/openproduct/static/bundles/openproduct-js.js",
     "directories": {
         "doc": "docs"
     },
