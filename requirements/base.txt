@@ -66,7 +66,7 @@ coreschema==0.0.4
     # via coreapi
 cron-descriptor==1.4.5
     # via django-celery-beat
-cryptography==44.0.0
+cryptography==44.0.2
     # via
     #   django-simple-certmanager
     #   josepy
@@ -75,7 +75,7 @@ cryptography==44.0.0
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==4.2.17
+django==4.2.20
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -246,7 +246,7 @@ isodate==0.7.2
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
-jinja2==3.1.4
+jinja2==3.1.6
     # via coreschema
 josepy==1.14.0
     # via mozilla-django-oidc

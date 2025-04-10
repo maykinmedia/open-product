@@ -85,7 +85,9 @@ class ProductTypeFilterSet(FilterSet):
         for val in value:
             value_list = val.strip("[]").split(":")
             if len(value_list) != 2:
-                raise ParseError(_("Invalid format for externe_code query parameter."))
+                raise ParseError(
+                    _("Ongeldig format voor externe_code query parameter.")
+                )
 
             naam, code = value_list
             queryset = queryset.filter(
@@ -97,7 +99,7 @@ class ProductTypeFilterSet(FilterSet):
         for val in value:
             value_list = val.strip("[]").split(":")
             if len(value_list) != 2:
-                raise ParseError(_("Invalid format for parameter query parameter."))
+                raise ParseError(_("Ongeldig format voor parameter query parameter."))
 
             naam, waarde = value_list
             queryset = queryset.filter(parameters__naam=naam, parameters__waarde=waarde)

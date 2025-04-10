@@ -1,6 +1,6 @@
 {
     "name": "openproduct",
-    "version": "0.0.5",
+    "version": "1.0.0",
     "description": "open-product project",
     "main": "src/openproduct/static/bundles/openproduct-js.js",
     "directories": {
