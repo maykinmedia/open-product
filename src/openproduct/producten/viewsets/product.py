@@ -17,6 +17,7 @@ from openproduct.utils.filters import (
     FilterSet,
     ManyCharFilter,
     TranslationFilter,
+    TranslationInFilter,
     filter_data_attr_value_part,
 )
 from openproduct.utils.helpers import display_choice_values_for_help_text
@@ -72,6 +73,11 @@ class ProductFilterSet(FilterSet):
         help_text=DATA_ATTR_HELP_TEXT,
     )
 
+    producttype__naam__in = TranslationInFilter(
+        field_name="producttype__naam",
+        help_text=_("Naam van het producttype."),
+    )
+
     def filter_dataobject_attr(self, queryset, name, value: list):
         for value_part in value:
             queryset = filter_data_attr_value_part(value_part, "dataobject", queryset)
@@ -93,13 +99,18 @@ class ProductFilterSet(FilterSet):
             "status": ["exact"],
             "frequentie": ["exact"],
             "prijs": ["exact", "gte", "lte"],
-            "producttype__code": ["exact"],
-            "producttype__uuid": ["exact"],
+            "producttype__code": ["exact", "in"],
+            "producttype__uuid": ["exact", "in"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
             "documenten__uuid": ["exact"],
+            "eigenaren__uuid": ["exact"],
+            "eigenaren__bsn": ["exact"],
+            "eigenaren__kvk_nummer": ["exact"],
+            "eigenaren__vestigingsnummer": ["exact"],
+            "eigenaren__klantnummer": ["exact"],
         }
 
 

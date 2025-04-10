@@ -34,6 +34,10 @@ class ChoiceArrayFilter(django_filters.BaseInFilter, django_filters.ChoiceFilter
     pass
 
 
+class UUIDFInFilter(django_filters.BaseInFilter, django_filters.UUIDFilter):
+    pass
+
+
 class ManyWidget(forms.Widget):
     def value_from_datadict(self, data, files, name):
         if name not in data:
@@ -96,6 +100,10 @@ class TranslationFilter(django_filters.CharFilter):
 
         qs = self.get_method(qs)(**{lookup: value, language_lookup: language_code})
         return qs
+
+
+class TranslationInFilter(django_filters.BaseInFilter, TranslationFilter):
+    pass
 
 
 def filter_data_attr_value_part(

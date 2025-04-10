@@ -80,3 +80,9 @@ class Eigenaar(BaseModel):
         verbose_name = _("Eigenaar")
         verbose_name_plural = _("Eigenaren")
         ordering = ("-id",)
+        unique_together = (
+            ("bsn", "product"),
+            ("kvk_nummer", "product"),
+            ("vestigingsnummer", "product"),
+            ("klantnummer", "product"),
+        )
