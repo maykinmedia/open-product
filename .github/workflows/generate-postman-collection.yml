@@ -3,7 +3,7 @@ name: generate-postman-collection
 on:
   push:
     paths:
-      - "src/openproduct/*-openapi.yaml"
+      - "src/*-openapi.yaml"
       - ".github/workflows/generate-postman-collection.yml"
     branches:
       - '**'
@@ -18,4 +18,4 @@ jobs:
           - producten
           - producttypen
     with:
-      schema-path: 'src/openproduct/${{ matrix.component }}-openapi.yaml'
+      schema-path: 'src/${{ matrix.component }}-openapi.yaml'
