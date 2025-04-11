@@ -98,8 +98,7 @@ paths:
         name: eigenaren__bsn
         schema:
           type: string
-        description: Het BSN van de product eigenaar, BSN van 8 karakters moet met
-          een extra 0 beginnen.
+        description: Het BSN van een product eigenaar.
       - in: query
         name: eigenaren__klantnummer
         schema:
@@ -109,7 +108,7 @@ paths:
         name: eigenaren__kvk_nummer
         schema:
           type: string
-        description: Het kvk nummer van de product eigenaar
+        description: Het kvk nummer van een product eigenaar.
       - in: query
         name: eigenaren__uuid
         schema:
