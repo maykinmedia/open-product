@@ -17,6 +17,7 @@ from openproduct.utils.filters import (
     FilterSet,
     ManyCharFilter,
     TranslationFilter,
+    TranslationInFilter,
     filter_data_attr_value_part,
 )
 from openproduct.utils.helpers import display_choice_values_for_help_text
@@ -72,6 +73,39 @@ class ProductFilterSet(FilterSet):
         help_text=DATA_ATTR_HELP_TEXT,
     )
 
+    producttype__naam__in = TranslationInFilter(
+        field_name="producttype__naam",
+        help_text=_("Naam van het producttype."),
+    )
+
+    eigenaren__bsn = django_filters.CharFilter(
+        field_name="eigenaren__bsn",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=_("Het BSN van een product eigenaar."),
+    )
+
+    eigenaren__kvk_nummer = django_filters.CharFilter(
+        field_name="eigenaren__kvk_nummer",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=_("Het kvk nummer van een product eigenaar."),
+    )
+
+    eigenaren__vestigingsnummer = django_filters.CharFilter(
+        field_name="eigenaren__vestigingsnummer",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=_("Een korte unieke aanduiding van een vestiging."),
+    )
+
+    eigenaren__klantnummer = django_filters.CharFilter(
+        field_name="eigenaren__klantnummer",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=_("generiek veld voor de identificatie van een klant."),
+    )
+
     def filter_dataobject_attr(self, queryset, name, value: list):
         for value_part in value:
             queryset = filter_data_attr_value_part(value_part, "dataobject", queryset)
@@ -93,13 +127,14 @@ class ProductFilterSet(FilterSet):
             "status": ["exact"],
             "frequentie": ["exact"],
             "prijs": ["exact", "gte", "lte"],
-            "producttype__code": ["exact"],
-            "producttype__uuid": ["exact"],
+            "producttype__code": ["exact", "in"],
+            "producttype__uuid": ["exact", "in"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
             "documenten__uuid": ["exact"],
+            "eigenaren__uuid": ["exact"],
         }
 
 

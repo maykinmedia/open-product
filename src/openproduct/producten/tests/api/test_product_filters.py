@@ -10,7 +10,11 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 
 from openproduct.producten.models.product import PrijsFrequentieChoices
-from openproduct.producten.tests.factories import DocumentFactory, ProductFactory
+from openproduct.producten.tests.factories import (
+    DocumentFactory,
+    EigenaarFactory,
+    ProductFactory,
+)
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
@@ -82,15 +86,24 @@ class TestProductFilters(BaseApiTestCase):
         ProductFactory.create(producttype__code="123")
         ProductFactory.create(producttype__code="8234098q2730492873")
 
-        response = self.client.get(
-            self.path, {"producttype__code": "8234098q2730492873"}
-        )
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__code": "8234098q2730492873"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(
-            response.data["results"][0]["producttype"]["code"], "8234098q2730492873"
-        )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype"]["code"], "8234098q2730492873"
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path,
+                {"producttype__code__in": "8234098q2730492873,123"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
 
     def test_producttype_upn_filter(self):
         ProductFactory.create(
@@ -111,16 +124,29 @@ class TestProductFilters(BaseApiTestCase):
 
     def test_producttype_uuid_filter(self):
         producttype_uuid = uuid4()
+        producttype_uuid_2 = uuid4()
         ProductFactory.create(producttype__uuid=producttype_uuid)
-        ProductFactory.create(producttype__uuid=uuid4())
+        ProductFactory.create(producttype__uuid=producttype_uuid_2)
 
-        response = self.client.get(self.path + f"?producttype__uuid={producttype_uuid}")
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__uuid": str(producttype_uuid)}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(
-            response.data["results"][0]["producttype"]["uuid"], str(producttype_uuid)
-        )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype"]["uuid"],
+                str(producttype_uuid),
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path,
+                {"producttype__uuid__in": f"{producttype_uuid},{producttype_uuid_2}"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
 
     def test_producttype_naam_filter(self):
         producttype_uuid = uuid4()
@@ -129,15 +155,24 @@ class TestProductFilters(BaseApiTestCase):
         )
         ProductFactory.create(producttype__naam="aanbouw")
 
-        response = self.client.get(
-            self.path, {"producttype__naam": "parkeervergunning"}
-        )
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__naam": "parkeervergunning"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(
-            response.data["results"][0]["producttype"]["uuid"], str(producttype_uuid)
-        )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype"]["uuid"],
+                str(producttype_uuid),
+            )
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"producttype__naam__in": "parkeervergunning,aanbouw"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
 
     def test_start_datum_filter(self):
         ProductFactory.create(start_datum=date(2024, 6, 7))
@@ -674,3 +709,145 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertIn(str(uuid), response.data["results"][0]["documenten"][0]["url"])
+
+    def test_eigenaar_uuid_filter(self):
+        uuid = uuid4()
+
+        product = ProductFactory.create()
+        product.eigenaren.add(EigenaarFactory(uuid=uuid))
+        product.save()
+
+        product_2 = ProductFactory.create()
+        product_2.eigenaren.add(EigenaarFactory(uuid=uuid4()))
+        product_2.save()
+
+        response = self.client.get(self.path, {"eigenaren__uuid": str(uuid)})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["eigenaren"][0]["uuid"], str(uuid))
+
+    def test_eigenaar_bsn_filter(self):
+        product = ProductFactory.create()
+        product.eigenaren.add(EigenaarFactory(bsn="111222333"))
+        product.save()
+
+        product_2 = ProductFactory.create()
+        product_2.eigenaren.add(EigenaarFactory(bsn="999998328"))
+        product_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"eigenaren__bsn": "111222333"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["bsn"], "111222333"
+            )
+
+        with self.subTest("distinct"):
+            product.eigenaren.add(EigenaarFactory(bsn="111222333"))
+            product.save()
+
+            response = self.client.get(self.path, {"eigenaren__bsn": "111222333"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["bsn"], "111222333"
+            )
+
+    def test_eigenaar_kvk_nummer_filter(self):
+        product = ProductFactory.create()
+        product.eigenaren.add(EigenaarFactory(kvk_nummer="12345678"))
+        product.save()
+
+        product_2 = ProductFactory.create()
+        product_2.eigenaren.add(EigenaarFactory(kvk_nummer="87654321"))
+        product_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"eigenaren__kvk_nummer": "12345678"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["kvk_nummer"], "12345678"
+            )
+
+        with self.subTest("distinct"):
+            product.eigenaren.add(EigenaarFactory(kvk_nummer="12345678"))
+            product.save()
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["kvk_nummer"], "12345678"
+            )
+
+    def test_eigenaar_klantnummer_filter(self):
+        product = ProductFactory.create()
+        product.eigenaren.add(EigenaarFactory(klantnummer="12345678"))
+        product.save()
+
+        product_2 = ProductFactory.create()
+        product_2.eigenaren.add(EigenaarFactory(klantnummer="87654321"))
+        product_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"eigenaren__klantnummer": "12345678"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["klantnummer"], "12345678"
+            )
+
+        with self.subTest("distinct"):
+            product.eigenaren.add(EigenaarFactory(klantnummer="12345678"))
+            product.save()
+
+            response = self.client.get(
+                self.path, {"eigenaren__klantnummer": "12345678"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["klantnummer"], "12345678"
+            )
+
+    def test_eigenaar_vestigingsnummer_filter(self):
+        product = ProductFactory.create()
+        product.eigenaren.add(EigenaarFactory(vestigingsnummer="12345678"))
+        product.save()
+
+        product_2 = ProductFactory.create()
+        product_2.eigenaren.add(EigenaarFactory(vestigingsnummer="87654321"))
+        product_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"eigenaren__vestigingsnummer": "12345678"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["vestigingsnummer"],
+                "12345678",
+            )
+
+        with self.subTest("distinct"):
+            response = self.client.get(
+                self.path, {"eigenaren__vestigingsnummer": "12345678"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["eigenaren"][0]["vestigingsnummer"],
+                "12345678",
+            )

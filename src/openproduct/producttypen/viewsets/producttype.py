@@ -31,6 +31,7 @@ from openproduct.utils.filters import (
     FilterSet,
     ManyCharFilter,
     TranslationFilter,
+    UUIDFInFilter,
 )
 from openproduct.utils.validators import ManyRegexValidator
 from openproduct.utils.views import TranslatableViewSetMixin
@@ -81,6 +82,18 @@ class ProductTypeFilterSet(FilterSet):
         help_text=_("toegestane statussen voor producten van dit type."),
     )
 
+    themas__naam__in = CharArrayFilter(
+        field_name="themas__naam",
+        distinct=True,
+        help_text=_("Lijst van thema namen waarop kan worden gezocht."),
+    )
+
+    themas__uuid__in = UUIDFInFilter(
+        field_name="themas__uuid",
+        distinct=True,
+        help_text=_("Lijst van thema uuids waarop kan worden gezocht."),
+    )
+
     def filter_by_externe_code(self, queryset, name, value):
         for val in value:
             value_list = val.strip("[]").split(":")
@@ -116,6 +129,8 @@ class ProductTypeFilterSet(FilterSet):
             "zaaktypen__uuid": ["exact"],
             "verzoektypen__uuid": ["exact"],
             "processen__uuid": ["exact"],
+            "themas__naam": ["exact"],
+            "themas__uuid": ["exact"],
         }
 
 
