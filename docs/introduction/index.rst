@@ -27,4 +27,5 @@ a separate package, `Open Notificaties`_.
 
    team
    architecture
+   diagrams
    open-source/index
