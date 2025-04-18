@@ -44,7 +44,7 @@ DATABASES = {
 
 MIDDLEWARE.insert(
     MIDDLEWARE.index("django.middleware.common.CommonMiddleware"),
-    "django.middleware.locale.LocaleMiddleware",
+    "openproduct.utils.middleware.APILocaleMiddleware",
 )
 
 MIDDLEWARE.append("reversion.middleware.RevisionMiddleware")
