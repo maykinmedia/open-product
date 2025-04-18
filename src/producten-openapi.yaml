@@ -6,7 +6,21 @@ info:
 
     Een API voor Producten.
 
+    De Producten Api heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+
+    ### Product
     Een product is een instantie van een producttype (zie producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
+    Specifieke product data kan worden opgeslagen in de json velden `dataobject` en `verbruiksobject`. Deze velden worden gevalideerd door de `verbruiksobject_schema` & `dataobject_schema` velden van het producttype. ([zie jsonschema](https://json-schema.org))
+    De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
+
+    ### Eigenaar
+    Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een klant (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
+
+    ### Document
+    Een document is een verwijzing naar een document uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
+
+    ---
+    *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
 
     ### Notificaties
 
@@ -1299,15 +1313,15 @@ tags:
     - Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet.
         - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
         - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
-    - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `vebruiksobject_schema` & `dataobject_schema` van het producttype.
-    - Het veld `documenten` wordt samen met het producttype genest aangemaakt of gewijzigd.
+    - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `verbruiksobject_schema` & `dataobject_schema` van het producttype.
+    - Het veld `documenten` wordt samen met het product genest aangemaakt of gewijzigd.
         - dit veld is een lijst van objecten.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
         - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
         Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
-    - Het veld `eigenaren` wordt samen met het producttype genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
+    - Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
         - In een PUT of PATCH kan in een eigenaar object een bestaand `uuid` worden meegegeven zodat een bestaande eigenaar blijft bestaan.
