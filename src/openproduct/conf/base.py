@@ -99,6 +99,10 @@ LOGIN_URLS = [reverse_lazy("admin:login")]
 # Default (connection timeout, read timeout) for the requests library (in seconds)
 REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 
+# bootstrapcdn is used in 500.html & 503.html
+CSP_STYLE_SRC = CSP_STYLE_SRC + ["maxcdn.bootstrapcdn.com"]
+CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ["maxcdn.bootstrapcdn.com"]
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #

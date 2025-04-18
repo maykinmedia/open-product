@@ -3498,6 +3498,35 @@ paths:
           format: uuid
         description: Uuid van het proces.
       - in: query
+        name: themas__naam
+        schema:
+          type: string
+        description: Naam van het thema.
+      - in: query
+        name: themas__naam__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Lijst van thema namen waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
+        name: themas__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: themas__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van thema uuids waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
         name: toegestane_statussen
         schema:
           type: array

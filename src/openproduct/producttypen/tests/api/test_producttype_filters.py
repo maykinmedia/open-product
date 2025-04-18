@@ -14,6 +14,7 @@ from openproduct.producttypen.tests.factories import (
     ParameterFactory,
     ProcesFactory,
     ProductTypeFactory,
+    ThemaFactory,
     UniformeProductNaamFactory,
     VerzoekTypeFactory,
     ZaakTypeFactory,
@@ -546,3 +547,66 @@ class TestProductTypeFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertIn(str(uuid), response.data["results"][0]["processen"][0]["url"])
+
+    def test_thema_naam_filter(self):
+        producttype = ProductTypeFactory.create()
+        producttype.themas.add(ThemaFactory.create(naam="thema"))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.themas.add(ThemaFactory.create(naam="test"))
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"themas__naam": "thema"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn("thema", response.data["results"][0]["themas"][0]["naam"])
+
+        with self.subTest("in"):
+            producttype.themas.add(ThemaFactory.create(naam="abc"))
+            producttype.save()
+
+            response = self.client.get(self.path, {"themas__naam__in": "thema,abc"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertCountEqual(
+                ["thema", "abc"],
+                [response.data["results"][0]["themas"][i]["naam"] for i in range(2)],
+            )
+
+    def test_thema_uuid_filter(self):
+        uuid = uuid4()
+
+        producttype = ProductTypeFactory.create()
+        producttype.themas.add(ThemaFactory.create(uuid=uuid))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.themas.add(ThemaFactory.create())
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"themas__uuid": uuid})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["themas"][0]["uuid"])
+
+        with self.subTest("in"):
+            uuid_2 = uuid4()
+            producttype.themas.add(ThemaFactory.create(uuid=uuid_2))
+            producttype.save()
+
+            response = self.client.get(
+                self.path, {"themas__uuid__in": f"{uuid},{uuid_2}"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertCountEqual(
+                [str(uuid), str(uuid_2)],
+                [response.data["results"][0]["themas"][i]["uuid"] for i in range(2)],
+            )

@@ -95,6 +95,31 @@ paths:
           format: uuid
         description: Uuid van het document.
       - in: query
+        name: eigenaren__bsn
+        schema:
+          type: string
+        description: Het BSN van een product eigenaar.
+      - in: query
+        name: eigenaren__klantnummer
+        schema:
+          type: string
+        description: generiek veld voor de identificatie van een klant.
+      - in: query
+        name: eigenaren__kvk_nummer
+        schema:
+          type: string
+        description: Het kvk nummer van een product eigenaar.
+      - in: query
+        name: eigenaren__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: eigenaren__vestigingsnummer
+        schema:
+          type: string
+        description: Een korte unieke aanduiding van een vestiging.
+      - in: query
         name: eind_datum
         schema:
           type: string
@@ -174,15 +199,43 @@ paths:
           type: string
         description: code van het producttype.
       - in: query
+        name: producttype__code__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Meerdere waarden kunnen gescheiden worden door komma's.
+        explode: false
+        style: form
+      - in: query
         name: producttype__naam
         schema:
           type: string
         description: Naam van het producttype.
       - in: query
+        name: producttype__naam__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Naam van het producttype.
+        explode: false
+        style: form
+      - in: query
         name: producttype__uuid
         schema:
           type: string
           format: uuid
+      - in: query
+        name: producttype__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Meerdere waarden kunnen gescheiden worden door komma's.
+        explode: false
+        style: form
       - in: query
         name: start_datum
         schema:
