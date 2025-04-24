@@ -1,12 +1,14 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from ordered_model.admin import OrderedInlineModelAdminMixin
-from parler.admin import TranslatableAdmin
 from parler.forms import TranslatableModelForm
 from reversion_compare.admin import CompareVersionAdmin
+
+from openproduct.utils.admin import TranslatableAdmin
 
 from ...logging.admin_tools import AdminAuditLogMixin
 from ...utils.widgets import WysimarkWidget
@@ -33,6 +35,22 @@ class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     @admin.display(description="Producttype")
     def producttype(self, obj):
         return obj.master
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """
+        Translations should only be deleted by the cascade on the producttype and not by themselves.
+        When a producttype is deleted via the admin this function is still called and should return True.
+        """
+        if reverse("admin:producttypen_producttype_changelist") in request.path:
+            return True
+
+        return False
 
 
 class ProductTypeAdminForm(TranslatableModelForm):
