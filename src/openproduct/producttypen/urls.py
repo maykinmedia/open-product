@@ -79,7 +79,7 @@ Externe codes zijn bedoeld voor de producttype code van hetzelfde product uit ex
 Parameters zijn bedoeld voor attributen voor een specifiek producttype (en al zijn producten).
 
 ### Content & ContentLabel
-Per producttype kunnen contentelementen worden aangemaakt, Dit zijn (markdown) content blokken waarin verschillende informatie kan worden ingevuld om te tonen op bijvoorbeeld de gemeente website.
+Per producttype kunnen contentelementen worden aangemaakt. Dit zijn (markdown) content blokken waarin verschillende informatie kan worden ingevuld om te tonen op bijvoorbeeld de gemeente website.
 Aan een content element kunnen labels worden gelinkt om aan te geven wat het element bevat.
 
 ### Prijs
@@ -95,14 +95,14 @@ Schema's kunnen worden gelink aan een producttype als `dataobject_schema` of `ve
 Aan een producttype kunnen handige links en bestanden worden gekoppeld waar meer informatie over het producttype te vinden is.
 
 ### Actie
-Aan een prducttype kunnen meerdere acties worden gekoppeld. dit is een verwijzing naar een dmn tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
+Aan een prducttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een dmn tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
 
 ### Locatie
 Een locatie kan aan een producttype worden gelinkt om bijvoorbeeld aan te geven waar het product is aan te vragen.
 
 ### Organisatie & Contact
 Een organisatie kan aan een producttype worden gelinkt om aan te geven welke organisaties & instanties betrokken zijn hij het producttype.
-Daarnaast kan ook een contact(persoon) van een organsaties aan een producttype worden gelinkt.
+Daarnaast kan ook een contact (persoon) van een organsaties aan een producttype worden gelinkt.
 
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
