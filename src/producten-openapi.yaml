@@ -6,18 +6,20 @@ info:
 
     Een API voor Producten.
 
-    De Producten Api heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+    De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+
+    ## Uitleg per resource
 
     ### Product
     Een product is een instantie van een producttype (zie producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
-    Specifieke product data kan worden opgeslagen in de json velden `dataobject` en `verbruiksobject`. Deze velden worden gevalideerd door de `verbruiksobject_schema` & `dataobject_schema` velden van het producttype. ([zie jsonschema](https://json-schema.org))
+    Specifieke product data kan worden opgeslagen in de JSON velden `dataobject` en `verbruiksobject`. Deze velden worden gevalideerd door de `verbruiksobject_schema` & `dataobject_schema` velden van het producttype ([zie jsonschema](https://json-schema.org)).
     De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
 
     ### Eigenaar
     Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een klant (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
 
     ### Document
-    Een document is een verwijzing naar een document uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
+    Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
 
     ---
     *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*

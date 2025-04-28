@@ -41,6 +41,8 @@ ProductTypenRouter.register(
 description = """
 Een API voor Producttypen.
 
+## Uitleg per resource
+
 ### Thema
 Een thema is een verzameling van producttypen. Producttypen vallen onder één of meerdere thema's.
 Thema's hebben een boomstructuur en kunnen onderdeel zijn van een ander thema.
@@ -73,10 +75,10 @@ Een zaaktype is een verwijzing naar een zaaktype uit de [catalogi API](https://v
 Verzoektype & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
 
 #### Externe code
-Externe codes zijn bedoeld voor de producttype code van hetzelfde product uit externe systemen.
+Externe codes zijn bedoeld voor de producttype code van hetzelfde soort product uit externe systemen.
 
 #### Parameter
-Parameters zijn bedoeld voor attributen voor een specifiek producttype (en al zijn producten).
+Parameters zijn bedoeld voor attributen voor een specifiek producttype (en alle bijbehorende producten).
 
 ### Content & ContentLabel
 Per producttype kunnen contentelementen worden aangemaakt. Dit zijn (markdown) content blokken waarin verschillende informatie kan worden ingevuld om te tonen op bijvoorbeeld de gemeente website.
@@ -84,25 +86,25 @@ Aan een content element kunnen labels worden gelinkt om aan te geven wat het ele
 
 ### Prijs
 Voor producttypen kunnen prijzen worden toegevoegd die op een bepaalde datum ingaan. Een prijs kan één of meerdere opties of één of meerdere regels hebben.
-Opties zijn bedoeld voor producten met bijvoorbeeld alleen een normale & spoed prijs. Prijs regels is bedoeld voor complexere logica en is een link naar een dmn tabel in een externe applicatie.
+Opties zijn bedoeld voor producten met bijvoorbeeld alleen een normale & spoed prijs. Prijs regels is bedoeld voor complexere logica en is een link naar een DMN tabel in een externe applicatie.
 
 ### Schema
 Jsonschema's zijn JSON objecten die worden gebruikt om andere JSON te valideren ([zie jsonschema](https://json-schema.org)).
-Schema's kunnen worden gelink aan een producttype als `dataobject_schema` of `verbruiksobject_schema` om de velden `dataobject` & `verbruiksobject` van producten te valideren.
+Schema's kunnen worden gelinkt aan een producttype als `dataobject_schema` of `verbruiksobject_schema` om de velden `dataobject` & `verbruiksobject` van producten te valideren.
 
 
 ### Link & Bestand
 Aan een producttype kunnen handige links en bestanden worden gekoppeld waar meer informatie over het producttype te vinden is.
 
 ### Actie
-Aan een prducttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een dmn tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
+Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
 
 ### Locatie
 Een locatie kan aan een producttype worden gelinkt om bijvoorbeeld aan te geven waar het product is aan te vragen.
 
 ### Organisatie & Contact
-Een organisatie kan aan een producttype worden gelinkt om aan te geven welke organisaties & instanties betrokken zijn hij het producttype.
-Daarnaast kan ook een contact (persoon) van een organsaties aan een producttype worden gelinkt.
+Een organisatie kan aan een producttype worden gelinkt om aan te geven welke organisaties & instanties betrokken zijn bij het producttype.
+Daarnaast kan ook een contact (persoon) van een organisaties aan een producttype worden gelinkt.
 
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
@@ -195,10 +197,10 @@ Opvragen en bewerken van PRODUCTTYPE CONTENT.
 - Een prijs kan één of meerdere opties of één of meerdere regels hebben.
 - Via `actief_vanaf` kunnen prijswijzigingen van te voren worden aangemaakt.
 - Een prijs optie bestaat uit een bedrag en een beschrijving en is bedoeld voor simple opties zoals een normale en een spoed prijs.
-- Een prijs regel is voor complexere logica en is een link naar een dmn tabel in een externe applicatie.
-- Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+- Een prijs regel is voor complexere logica en is een link naar een DMN tabel in een externe applicatie.
+- Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
 - Bij het aanmaken of wijzigen van een regel refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-identifier van de tabel in de dmn omgeving.
+identifier van de tabel in de DMN omgeving.
 - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 
 - De velden `prijsopties` en `prijsregels` worden samen met het producttype genest aangemaakt of gewijzigd.
@@ -236,10 +238,10 @@ identifier van de tabel in de dmn omgeving.
 ## Opvragen en bewerken van ACTIES.
 
 ### Opmerkingen
-- Een producttype actie is een link naar een dmn tabel uit een externe applicatie.
-- Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+- Een producttype actie is een link naar een DMN tabel uit een externe applicatie.
+- Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
 - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-identifier van de tabel in de dmn omgeving.
+identifier van de tabel in de DMN omgeving.
 - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 """,
         },
