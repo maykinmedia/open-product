@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 
 from ordered_model.admin import OrderedInlineMixin
 from parler.admin import TranslatableStackedInline
@@ -29,6 +30,22 @@ class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     @admin.display(description="contentelement")
     def contentelement(self, obj):
         return obj.master
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """
+        Translations should only be deleted by the cascade on the producttype contentelement and not by themselves.
+        When a producttype is deleted via the admin this function is still called and should return True.
+        """
+        if reverse("admin:producttypen_producttype_changelist") in request.path:
+            return True
+
+        return False
 
 
 class ContentElementInlineForm(TranslatableModelForm):

@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib import admin, messages
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import path, reverse
@@ -8,6 +9,7 @@ from django.utils.translation import gettext as _
 
 from django_celery_beat.admin import PeriodicTaskAdmin as _PeriodicTaskAdmin
 from django_celery_beat.models import PeriodicTask
+from parler.admin import TranslatableAdmin as _TranslatableAdmin
 
 from openproduct.celery import app
 
@@ -40,3 +42,19 @@ class PeriodicTaskAdmin(_PeriodicTaskAdmin):
 
 admin.site.unregister(PeriodicTask)
 admin.site.register(PeriodicTask, PeriodicTaskAdmin)
+
+
+class TranslatableAdmin(_TranslatableAdmin):
+    """
+    Parler adds a tab to the change view for each PARLER LANGUAGE. This made it possible to create a producttype without the dutch translation.
+
+    This class overrides get_language_tabs so that only the NL tab is shown on create.
+    """
+
+    def get_language_tabs(self, request, obj, available_languages, css_class=None):
+        tabs = super().get_language_tabs(request, obj, available_languages, css_class)
+
+        if obj is None:
+            tabs[:] = [tab for tab in tabs if settings.LANGUAGE_CODE in tab]
+
+        return tabs
