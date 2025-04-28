@@ -24,7 +24,7 @@ Specifieke product data kan worden opgeslagen in de JSON velden `dataobject` en 
 De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
 
 ### Eigenaar
-Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een klant (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
+Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Partij (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
 
 ### Document
 Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
@@ -50,7 +50,7 @@ custom_settings = {
 ## Opvragen en bewerken van PRODUCTEN.
 
 ### Opmerkingen
-- Bij het aanmaken van een PRODUCT kunnen één of meerdere eigenaren worden toegevoegd, een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+- Bij het aanmaken van een PRODUCT kunnen één of meerdere eigenaren worden toegevoegd, een eigenaar moet een bsn (en/of partijnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
 - De status opties van een PRODUCT zijn afhankelijk van de `toegestane_statussen` van het producttype.
 - Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet.
     - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.

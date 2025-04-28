@@ -21,14 +21,14 @@ def validate_bsn(bsn: str):
         raise ValidationError(_("Ongeldig bsn number."))
 
 
-def validate_eigenaar_identifier(bsn, kvk_nummer, klantnummer):
+def validate_eigenaar_identifier(bsn, kvk_nummer, partijnummer):
 
-    if (not (bsn or klantnummer) and not kvk_nummer) or (
-        (bsn or klantnummer) and kvk_nummer
+    if (not (bsn or partijnummer) and not kvk_nummer) or (
+        (bsn or partijnummer) and kvk_nummer
     ):
         raise ValidationError(
             _(
-                "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+                "Een eigenaar moet een bsn (en/of partijnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
             )
         )
 

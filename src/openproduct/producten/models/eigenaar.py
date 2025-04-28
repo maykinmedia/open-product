@@ -1,4 +1,4 @@
-from django.core.validators import MinLengthValidator, RegexValidator
+from django.core.validators import MinLengthValidator, RegexValidator, validate_integer
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -49,10 +49,11 @@ class Eigenaar(BaseModel):
         help_text=_("Een korte unieke aanduiding van een vestiging."),
     )
 
-    klantnummer = models.CharField(
-        _("Klantnummer"),
-        help_text=_("generiek veld voor de identificatie van een klant."),
-        max_length=50,
+    partijnummer = models.CharField(
+        _("Partijnummer"),
+        help_text=_("generiek veld voor de identificatie van een partij."),
+        validators=[validate_integer],
+        max_length=10,
         blank=True,
     )
 
@@ -60,14 +61,14 @@ class Eigenaar(BaseModel):
         validate_eigenaar_vestingsnummer_only_with_kvk(
             self.kvk_nummer, self.vestigingsnummer
         )
-        validate_eigenaar_identifier(self.bsn, self.kvk_nummer, self.klantnummer)
+        validate_eigenaar_identifier(self.bsn, self.kvk_nummer, self.partijnummer)
 
     def __str__(self):
         if self.bsn:
             return f"BSN {self.bsn}"
 
-        if self.klantnummer:
-            return f"klantnummer {self.klantnummer}"
+        if self.partijnummer:
+            return f"partijnummer {self.partijnummer}"
 
         if self.kvk_nummer:
             return f"KVK {self.kvk_nummer}" + (

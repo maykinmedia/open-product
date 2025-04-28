@@ -24,11 +24,11 @@ class EigenaarIdentifierValidator:
         kvk_nummer = get_from_serializer_data_or_instance(
             "kvk_nummer", value, serializer
         )
-        klantnummer = get_from_serializer_data_or_instance(
-            "klantnummer", value, serializer
+        partijnummer = get_from_serializer_data_or_instance(
+            "partijnummer", value, serializer
         )
         try:
-            validate_eigenaar_identifier(bsn, kvk_nummer, klantnummer)
+            validate_eigenaar_identifier(bsn, kvk_nummer, partijnummer)
         except ValidationError as e:
             raise serializers.ValidationError(e.message)
 

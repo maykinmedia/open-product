@@ -7844,10 +7844,10 @@ tags:
     - Een prijs kan één of meerdere opties of één of meerdere regels hebben.
     - Via `actief_vanaf` kunnen prijswijzigingen van te voren worden aangemaakt.
     - Een prijs optie bestaat uit een bedrag en een beschrijving en is bedoeld voor simple opties zoals een normale en een spoed prijs.
-    - Een prijs regel is voor complexere logica en is een link naar een dmn tabel in een externe applicatie.
-    - Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+    - Een prijs regel is voor complexere logica en is een link naar een DMN tabel in een externe applicatie.
+    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
     - Bij het aanmaken of wijzigen van een regel refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-    identifier van de tabel in de dmn omgeving.
+    identifier van de tabel in de DMN omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 
     - De velden `prijsopties` en `prijsregels` worden samen met het producttype genest aangemaakt of gewijzigd.
@@ -7880,10 +7880,10 @@ tags:
     ## Opvragen en bewerken van ACTIES.
 
     ### Opmerkingen
-    - Een producttype actie is een link naar een dmn tabel uit een externe applicatie.
-    - Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+    - Een producttype actie is een link naar een DMN tabel uit een externe applicatie.
+    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
     - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-    identifier van de tabel in de dmn omgeving.
+    identifier van de tabel in de DMN omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 - name: locaties
   description: '## Opvragen en bewerken van LOCATIES.'

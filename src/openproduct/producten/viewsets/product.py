@@ -99,8 +99,8 @@ class ProductFilterSet(FilterSet):
         help_text=_("Een korte unieke aanduiding van een vestiging."),
     )
 
-    eigenaren__klantnummer = django_filters.CharFilter(
-        field_name="eigenaren__klantnummer",
+    eigenaren__partijnummer = django_filters.CharFilter(
+        field_name="eigenaren__partijnummer",
         lookup_expr="exact",
         distinct=True,
         help_text=_("generiek veld voor de identificatie van een klant."),

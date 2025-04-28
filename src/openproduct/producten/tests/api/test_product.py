@@ -110,7 +110,7 @@ class TestProduct(BaseApiTestCase):
                     "bsn": "",
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
-                    "klantnummer": "",
+                    "partijnummer": "",
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
@@ -165,7 +165,7 @@ class TestProduct(BaseApiTestCase):
                     "bsn": "",
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
-                    "klantnummer": "",
+                    "partijnummer": "",
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
@@ -284,7 +284,7 @@ class TestProduct(BaseApiTestCase):
                     "bsn": "",
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
-                    "klantnummer": "",
+                    "partijnummer": "",
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
@@ -360,7 +360,7 @@ class TestProduct(BaseApiTestCase):
             "eigenaren": [
                 {"bsn": "111222333"},
                 {"kvk_nummer": "11122233"},
-                {"klantnummer": "123"},
+                {"partijnummer": "123"},
             ]
         }
         response = self.client.post(self.path, data)
@@ -394,7 +394,7 @@ class TestProduct(BaseApiTestCase):
                         "model_errors": [
                             ErrorDetail(
                                 string=_(
-                                    "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+                                    "Een eigenaar moet een bsn (en/of partijnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
                                 ),
                                 code="invalid",
                             )
@@ -635,7 +635,7 @@ class TestProduct(BaseApiTestCase):
             "eigenaren": [
                 {
                     "uuid": eigenaar_to_be_updated.uuid,
-                    "klantnummer": "1234",
+                    "partijnummer": "1234",
                     "bsn": "",
                 }
             ]
@@ -644,7 +644,7 @@ class TestProduct(BaseApiTestCase):
         expected_data = [
             {
                 "uuid": str(eigenaar_to_be_updated.uuid),
-                "klantnummer": "1234",
+                "partijnummer": "1234",
                 "bsn": "",
                 "kvk_nummer": "",
                 "vestigingsnummer": "",
@@ -670,21 +670,21 @@ class TestProduct(BaseApiTestCase):
         product = ProductFactory.create()
         EigenaarFactory.create(product=product, kvk_nummer="12345678")
 
-        data = {"eigenaren": [{"klantnummer": "1234"}]}
+        data = {"eigenaren": [{"partijnummer": "1234"}]}
 
         with self.subTest("PUT"):
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(Eigenaar.objects.count(), 1)
-            self.assertEqual(Eigenaar.objects.get().klantnummer, "1234")
+            self.assertEqual(Eigenaar.objects.get().partijnummer, "1234")
 
         with self.subTest("PATCH"):
             response = self.client.patch(self.detail_path(product), data)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(Eigenaar.objects.count(), 1)
-            self.assertEqual(Eigenaar.objects.get().klantnummer, "1234")
+            self.assertEqual(Eigenaar.objects.get().partijnummer, "1234")
 
     def test_update_product_with_eigenaar_not_part_of_product(self):
         product = ProductFactory.create()
@@ -692,7 +692,7 @@ class TestProduct(BaseApiTestCase):
 
         data = {
             "eigenaren": [
-                {"uuid": eigenaar_of_other_product.uuid, "klantnummer": "1234"}
+                {"uuid": eigenaar_of_other_product.uuid, "partijnummer": "1234"}
             ]
         }
 
@@ -724,7 +724,7 @@ class TestProduct(BaseApiTestCase):
 
         eigenaar_uuid = uuid4()
 
-        data = {"eigenaren": [{"uuid": eigenaar_uuid, "klantnummer": "1234"}]}
+        data = {"eigenaren": [{"uuid": eigenaar_uuid, "partijnummer": "1234"}]}
 
         expected_error = {
             "eigenaren": [
@@ -768,8 +768,8 @@ class TestProduct(BaseApiTestCase):
 
         data = {
             "eigenaren": [
-                {"uuid": eigenaar_to_be_updated.uuid, "klantnummer": "1234"},
-                {"uuid": eigenaar_to_be_updated.uuid, "klantnummer": "5678"},
+                {"uuid": eigenaar_to_be_updated.uuid, "partijnummer": "1234"},
+                {"uuid": eigenaar_to_be_updated.uuid, "partijnummer": "5678"},
             ]
         }
 
@@ -1044,7 +1044,7 @@ class TestProduct(BaseApiTestCase):
                         "bsn": "",
                         "kvk_nummer": "12345678",
                         "vestigingsnummer": "",
-                        "klantnummer": "",
+                        "partijnummer": "",
                         "uuid": str(product1.eigenaren.get().uuid),
                     }
                 ],
@@ -1078,7 +1078,7 @@ class TestProduct(BaseApiTestCase):
                         "bsn": "",
                         "kvk_nummer": "12345678",
                         "vestigingsnummer": "",
-                        "klantnummer": "",
+                        "partijnummer": "",
                         "uuid": str(product2.eigenaren.get().uuid),
                     }
                 ],
@@ -1124,7 +1124,7 @@ class TestProduct(BaseApiTestCase):
                     "bsn": "",
                     "kvk_nummer": "12345678",
                     "vestigingsnummer": "",
-                    "klantnummer": "",
+                    "partijnummer": "",
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],

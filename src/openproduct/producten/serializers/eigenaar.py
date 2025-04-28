@@ -12,7 +12,7 @@ class EigenaarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Eigenaar
-        fields = ["uuid", "bsn", "kvk_nummer", "vestigingsnummer", "klantnummer"]
+        fields = ["uuid", "bsn", "kvk_nummer", "vestigingsnummer", "partijnummer"]
         validators = [
             EigenaarIdentifierValidator(),
             EigenaarVestigingsnummerValidator(),

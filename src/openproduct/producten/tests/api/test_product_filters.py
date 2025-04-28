@@ -785,38 +785,38 @@ class TestProductFilters(BaseApiTestCase):
                 response.data["results"][0]["eigenaren"][0]["kvk_nummer"], "12345678"
             )
 
-    def test_eigenaar_klantnummer_filter(self):
+    def test_eigenaar_partijnummer_filter(self):
         product = ProductFactory.create()
-        product.eigenaren.add(EigenaarFactory(klantnummer="12345678"))
+        product.eigenaren.add(EigenaarFactory(partijnummer="12345678"))
         product.save()
 
         product_2 = ProductFactory.create()
-        product_2.eigenaren.add(EigenaarFactory(klantnummer="87654321"))
+        product_2.eigenaren.add(EigenaarFactory(partijnummer="87654321"))
         product_2.save()
 
         with self.subTest("exact"):
             response = self.client.get(
-                self.path, {"eigenaren__klantnummer": "12345678"}
+                self.path, {"eigenaren__partijnummer": "12345678"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertEqual(
-                response.data["results"][0]["eigenaren"][0]["klantnummer"], "12345678"
+                response.data["results"][0]["eigenaren"][0]["partijnummer"], "12345678"
             )
 
         with self.subTest("distinct"):
-            product.eigenaren.add(EigenaarFactory(klantnummer="12345678"))
+            product.eigenaren.add(EigenaarFactory(partijnummer="12345678"))
             product.save()
 
             response = self.client.get(
-                self.path, {"eigenaren__klantnummer": "12345678"}
+                self.path, {"eigenaren__partijnummer": "12345678"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertEqual(
-                response.data["results"][0]["eigenaren"][0]["klantnummer"], "12345678"
+                response.data["results"][0]["eigenaren"][0]["partijnummer"], "12345678"
             )
 
     def test_eigenaar_vestigingsnummer_filter(self):
