@@ -7,6 +7,11 @@ amqp==5.3.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   kombu
+annotated-types==0.7.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   pydantic
 ape-pie==0.2.0
     # via
     #   -c requirements/base.txt
@@ -319,7 +324,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-django-setup-configuration==0.3.0
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -384,6 +389,9 @@ djangorestframework-inclusions==1.2.0
     #   open-api-framework
 docutils==0.21.2
     # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-setup-configuration
     #   recommonmark
     #   sphinx
     #   sphinx-rtd-theme
@@ -614,6 +622,22 @@ pycparser==2.22
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   cffi
+pydantic==2.11.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-setup-configuration
+    #   pydantic-settings
+pydantic-core==2.33.2
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   pydantic
+pydantic-settings==2.9.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-setup-configuration
 pyflakes==3.2.0
     # via flake8
 pygments==2.18.0
@@ -670,6 +694,7 @@ python-dotenv==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+    #   pydantic-settings
 pytz==2024.2
     # via
     #   -c requirements/base.txt
@@ -681,6 +706,7 @@ pyyaml==6.0.2
     #   -r requirements/base.txt
     #   drf-spectacular
     #   oyaml
+    #   pydantic-settings
     #   vcrpy
 qrcode==7.4.2
     # via
@@ -730,6 +756,16 @@ rpds-py==0.21.0
     #   -r requirements/base.txt
     #   jsonschema
     #   referencing
+ruamel-yaml==0.18.10
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   django-setup-configuration
+ruamel-yaml-clib==0.2.12
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   ruamel-yaml
 sentry-sdk==2.19.0
     # via
     #   -c requirements/base.txt
@@ -803,8 +839,17 @@ typing-extensions==4.12.2
     #   -r requirements/base.txt
     #   faker
     #   mozilla-django-oidc-db
+    #   pydantic
+    #   pydantic-core
     #   qrcode
+    #   typing-inspection
     #   zgw-consumers
+typing-inspection==0.4.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   pydantic
+    #   pydantic-settings
 tzdata==2024.2
     # via
     #   -c requirements/base.txt

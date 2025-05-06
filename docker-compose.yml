@@ -30,7 +30,26 @@ services:
     ports:
       - 8000:8000
     depends_on:
+      db:
+        condition: service_started
+      web-init:
+        condition: service_completed_successfully
+
+  web-init:
+    build: .
+    environment:
+      <<: *web_env
+      # Django-setup-configuration
+      RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
+      # UPL
+      LOAD_UPL: ${LOAD_UPL:-true}
+    command: /setup_configuration.sh && /load_upl.sh
+    volumes:
+      - log:/app/log
+      - ./docker/setup_configuration:/app/setup_configuration
+    depends_on:
       - db
+      - redis
 
   celery:
     build: *web_build

@@ -11,7 +11,10 @@ amqp==5.3.1
     #   -r requirements/ci.txt
     #   kombu
 annotated-types==0.7.0
-    # via pydantic
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pydantic
 anyio==4.8.0
     # via httpx
 ape-pie==0.2.0
@@ -365,7 +368,7 @@ django-sessionprofile==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-django-setup-configuration==0.3.0
+django-setup-configuration==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -434,6 +437,7 @@ docutils==0.21.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   django-setup-configuration
     #   recommonmark
     #   sphinx
     #   sphinx-rtd-theme
@@ -725,14 +729,24 @@ pycparser==2.22
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   cffi
-pydantic==2.10.6
+pydantic==2.11.4
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   bump-my-version
+    #   django-setup-configuration
     #   pydantic-settings
-pydantic-core==2.27.2
-    # via pydantic
-pydantic-settings==2.7.1
-    # via bump-my-version
+pydantic-core==2.33.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pydantic
+pydantic-settings==2.9.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   bump-my-version
+    #   django-setup-configuration
 pyflakes==3.2.0
     # via
     #   -c requirements/ci.txt
@@ -810,6 +824,7 @@ pyyaml==6.0.2
     #   -r requirements/ci.txt
     #   drf-spectacular
     #   oyaml
+    #   pydantic-settings
     #   vcrpy
 qrcode==7.4.2
     # via
@@ -866,6 +881,16 @@ rpds-py==0.21.0
     #   -r requirements/ci.txt
     #   jsonschema
     #   referencing
+ruamel-yaml==0.18.10
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-setup-configuration
+ruamel-yaml-clib==0.2.12
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   ruamel-yaml
 sentry-sdk==2.19.0
     # via
     #   -c requirements/ci.txt
@@ -979,7 +1004,14 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   qrcode
     #   rich-click
+    #   typing-inspection
     #   zgw-consumers
+typing-inspection==0.4.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   pydantic
+    #   pydantic-settings
 tzdata==2024.2
     # via
     #   -c requirements/ci.txt

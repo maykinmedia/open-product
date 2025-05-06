@@ -110,6 +110,16 @@ CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ["maxcdn.bootstrapcdn.com"]
 ##############################
 
 #
+# Django setup configuration
+#
+SETUP_CONFIGURATION_STEPS = (
+    "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
+    "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
+    "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
+)
+
+
+#
 # Django-Admin-Index
 #
 ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (

@@ -2,6 +2,8 @@
 #    ./bin/compile_dependencies.sh
 amqp==5.3.1
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 ape-pie==0.2.0
     # via
     #   commonground-api-common
@@ -177,7 +179,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.3.0
+django-setup-configuration==0.7.2
     # via open-api-framework
 django-simple-certmanager==2.4.1
     # via zgw-consumers
@@ -212,6 +214,8 @@ djangorestframework-gis==1.1
     # via open-api-framework
 djangorestframework-inclusions==1.2.0
     # via open-api-framework
+docutils==0.21.2
+    # via django-setup-configuration
 drf-nested-routers==0.94.1
     # via commonground-api-common
 drf-spectacular==0.28.0
@@ -290,6 +294,14 @@ psycopg2==2.9.10
     # via open-api-framework
 pycparser==2.22
     # via cffi
+pydantic==2.11.4
+    # via
+    #   django-setup-configuration
+    #   pydantic-settings
+pydantic-core==2.33.2
+    # via pydantic
+pydantic-settings==2.9.1
+    # via django-setup-configuration
 pygments==2.18.0
     # via rich
 pyjwt==2.10.1
@@ -312,13 +324,16 @@ python-dateutil==2.9.0.post0
 python-decouple==3.8
     # via open-api-framework
 python-dotenv==1.0.1
-    # via open-api-framework
+    # via
+    #   open-api-framework
+    #   pydantic-settings
 pytz==2024.2
     # via flower
 pyyaml==6.0.2
     # via
     #   drf-spectacular
     #   oyaml
+    #   pydantic-settings
 qrcode==7.4.2
     # via django-two-factor-auth
 redis==5.2.0
@@ -345,6 +360,10 @@ rpds-py==0.21.0
     # via
     #   jsonschema
     #   referencing
+ruamel-yaml==0.18.10
+    # via django-setup-configuration
+ruamel-yaml-clib==0.2.12
+    # via ruamel-yaml
 sentry-sdk==2.19.0
     # via open-api-framework
 six==1.16.0
@@ -359,8 +378,15 @@ tornado==6.4.2
 typing-extensions==4.12.2
     # via
     #   mozilla-django-oidc-db
+    #   pydantic
+    #   pydantic-core
     #   qrcode
+    #   typing-inspection
     #   zgw-consumers
+typing-inspection==0.4.0
+    # via
+    #   pydantic
+    #   pydantic-settings
 tzdata==2024.2
     # via
     #   celery
