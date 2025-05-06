@@ -27,3 +27,10 @@ notifications_config:
   notification_delivery_max_retries: 1
   notification_delivery_retry_backoff: 2
   notification_delivery_retry_backoff_max: 3
+
+externeverwijzing_config_enable: true
+externeverwijzing_config:
+  zaaktypen_url: https://catalogi-api.gemeente.cloud/api/v1/zaaktypen
+  processen_url: https://processen-api.gemeente.cloud/api/v1/processen
+  verzoektypen_url: https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen
+  documenten_url: https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten

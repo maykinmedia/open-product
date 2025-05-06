@@ -116,6 +116,7 @@ SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
+    "openproduct.setup_configuration.steps.ExterneVerwijzingConfigConfigurationStep",
 )
 
 
@@ -127,11 +128,6 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
 )
 
 ADMIN_INDEX_SHOW_REMAINING_APPS = False
-
-#
-# markdownx
-#
-MARKDOWNX_EDITOR_RESIZABLE = False
 
 
 #
