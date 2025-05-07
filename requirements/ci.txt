@@ -548,7 +548,7 @@ mozilla-django-oidc==4.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-mozilla-django-oidc-db==0.19.0
+mozilla-django-oidc-db==0.23.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -914,7 +914,7 @@ wrapt==1.17.0
     #   vcrpy
 yarl==1.18.3
     # via vcrpy
-zgw-consumers==0.35.1
+zgw-consumers==0.38.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
