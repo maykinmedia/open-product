@@ -117,6 +117,7 @@ SETUP_CONFIGURATION_STEPS = (
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
     "openproduct.setup_configuration.steps.ExterneVerwijzingConfigConfigurationStep",
+    "openproduct.setup_configuration.steps.DmnConfigsConfigurationStep",
 )
 
 

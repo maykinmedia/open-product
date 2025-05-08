@@ -17,9 +17,9 @@ zgw_consumers:
     api_root: https://notificaties.gemeente.local/api/v1/
     api_type: nrc
     auth_type: zgw
-    client_id: open-klant
-    user_id: open-klant
-    secret: open-klant-secret
+    client_id: open-product
+    user_id: open-product
+    secret: open-product-secret
 
 notifications_config_enable: true
 notifications_config:
@@ -34,3 +34,12 @@ externeverwijzing_config:
   processen_url: https://processen-api.gemeente.cloud/api/v1/processen
   verzoektypen_url: https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen
   documenten_url: https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten
+
+dmn_config_enable: true
+dmn_config:
+  configs:
+  - tabel_endpoint: https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: main repository
+
+  - tabel_endpoint: https://new.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: new repository

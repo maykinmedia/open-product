@@ -1,0 +1,8 @@
+dmn_config_enable: true
+dmn_config:
+  configs:
+  - tabel_endpoint: https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: main repository
+
+  - tabel_endpoint: https://new.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: new repository
