@@ -132,7 +132,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -142,7 +142,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - acties
       security:
@@ -504,7 +504,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -514,7 +514,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - bestanden
       security:
@@ -1765,7 +1765,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -1775,7 +1775,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: url
         schema:
@@ -3008,7 +3008,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -3018,7 +3018,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - prijzen
       security:
@@ -3613,7 +3613,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: update_datum
         schema:
@@ -5823,7 +5823,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
           format: uuid
@@ -5943,7 +5943,7 @@ components:
           readOnly: true
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -5968,7 +5968,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -5990,7 +5990,7 @@ components:
           readOnly: true
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
       required:
       - content
       - uuid
@@ -6000,7 +6000,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
       required:
       - content
     ContentLabel:
@@ -6233,7 +6233,7 @@ components:
           description: De huidige taal van het content element.
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -6406,7 +6406,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het proces.
+          description: Uuid van het proces.
       required:
       - uuid
     NestedProductType:
@@ -6557,7 +6557,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het verzoektype.
+          description: Uuid van het verzoektype.
       required:
       - uuid
     NestedZaakType:
@@ -6577,7 +6577,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het zaaktype.
+          description: Uuid van het zaaktype.
       required:
       - uuid
     Organisatie:
@@ -6927,7 +6927,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
           format: uuid
@@ -6978,7 +6978,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -7140,7 +7140,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         externe_codes:
           type: array
           items:
@@ -7206,7 +7206,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
     PatchedThemaRequest:
       type: object
       properties:
@@ -7330,7 +7330,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         tabel_endpoint:
           type: string
           format: uri
@@ -7421,7 +7421,7 @@ components:
           maxLength: 255
         samenvatting:
           type: string
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         taal:
           type: string
           readOnly: true
@@ -7578,7 +7578,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         externe_codes:
           type: array
           items:
@@ -7652,7 +7652,7 @@ components:
           maxLength: 255
         samenvatting:
           type: string
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
       required:
       - naam
       - samenvatting
@@ -7668,7 +7668,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
       required:
       - naam
       - samenvatting

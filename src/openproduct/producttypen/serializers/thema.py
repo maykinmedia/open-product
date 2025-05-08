@@ -1,8 +1,8 @@
 from django.db import transaction
-from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import ProductType, Thema, UniformeProductNaam
 
@@ -74,7 +74,7 @@ class ThemaSerializer(serializers.ModelSerializer):
     hoofd_thema = UUIDRelatedField(
         queryset=Thema.objects.all(),
         allow_null=True,
-        help_text=_("Het hoofd thema waaronder dit thema valt."),
+        help_text=get_help_text("producttypen.Thema", "hoofd_thema"),
     )
     producttypen = NestedProductTypeSerializer(many=True, read_only=True)
 
