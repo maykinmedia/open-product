@@ -51,7 +51,9 @@ class Eigenaar(BaseModel):
 
     partijnummer = models.CharField(
         _("Partijnummer"),
-        help_text=_("generiek veld voor de identificatie van een partij."),
+        help_text=_(
+            "generiek veld voor de identificatie van een Partij (gedefinieerd in de Klantinteracties API)."
+        ),
         validators=[validate_integer],
         max_length=10,
         blank=True,
