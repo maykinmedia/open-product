@@ -1,33 +1,63 @@
+1.1.0 (09-05-2025)
+------------------
+
+**New features**
+
+* [:open-product:`104`] Added filters
+
+    * ProductType themas__naam__in
+    * ProductType themas__uuid__in
+    * Product productype__naam__in
+    * Product eigenaren__bsn
+    * Product eigenaren__kvk_nummer
+    * Product eigenaren__vestigingsnummer
+    * Product eigenaren__klantnummer
+
+**Project maintenance**
+
+* [:open-product:`20`] Added support for django-setup-configuration. see :ref:`installation_configuration_cli`
+
+* [:open-product:`100`] Added demodata fixture
+* [:open-product:`88`] Updated CI workflows
+* [:open-product:`116`] Fixed parler admin issues
+* [:open-product:`106`] Fixed localemiddleware to only be active for the API
+* Fixed readme links
+* Fixed csp errors
+
+**Documentation**
+
+* [:open-product:`77`] Added datamodel diagrams
+* [:open-product:`77`] Updated information model diagram
 
 1.0.0 (08-04-2025)
 ------------------
 
 **New features**
 
-* [#81] Added product documenten verwijzing.
-* [#9] Added Audit logging & reversion to all models.
-* [#15] Added producttypen externe verwijzingen.
-* [#50] Added oidc authentication to api.
-* [#66] Added json filters for product dataobject & verbruiksobject.
-* [#14] Added prijsregels & productype acties.
-* [#46] Added product eigenaar.
-* [#43] Added filters to all viewsets.
-* [#26] Added producttype dataobject_schema & product dataobject.
+* [:open-product:`81`] Added product documenten verwijzing.
+* [:open-product:`9`] Added Audit logging & reversion to all models.
+* [:open-product:`15`] Added producttypen externe verwijzingen.
+* [:open-product:`50`] Added oidc authentication to api.
+* [:open-product:`66`] Added json filters for product dataobject & verbruiksobject.
+* [:open-product:`14`] Added prijsregels & productype acties.
+* [:open-product:`46`] Added product eigenaar.
+* [:open-product:`43`] Added filters to all viewsets.
+* [:open-product:`26`] Added producttype dataobject_schema & product dataobject.
 
 **Bugfixes**
 
-* [#85] Fixed product admin error.
-* [#95] Fixed translation viewset issue.
+* [:open-product:`85`] Fixed product admin error.
+* [:open-product:`95`] Fixed translation viewset issue.
 
 **Project maintenance**
 
-* [#98] Updated landing page and admin styling.
-* [#9] Removed sites.
-* [#48] Renamed product_type to producttype.
-* [#78] Renamed project to open product.
-* [#76] Updated api docs.
-* [#89] Fixed docker compose example.
-* [#70] Recreated migrations.
+* [:open-product:`98`] Updated landing page and admin styling.
+* [:open-product:`9`] Removed sites.
+* [:open-product:`48`] Renamed product_type to producttype.
+* [:open-product:`78`] Renamed project to open product.
+* [:open-product:`76`] Updated api docs.
+* [:open-product:`89`] Fixed docker compose example.
+* [:open-product:`70`] Recreated migrations.
 
 
 
@@ -36,11 +66,11 @@
 
 **New features**
 
-* [#52] Added interne opmerkingen field to producttype.
-* [#13] Added externe codes to producttype.
-* [#12] Added parameters to producttype.
-* [#18] Added integration with Open Notificaties.
-* [#31] Added producttype verbruiksobject_schema & product verbruiksobject.
+* [:open-product:`52`] Added interne opmerkingen field to producttype.
+* [:open-product:`13`] Added externe codes to producttype.
+* [:open-product:`12`] Added parameters to producttype.
+* [:open-product:`18`] Added integration with Open Notificaties.
+* [:open-product:`31`] Added producttype verbruiksobject_schema & product verbruiksobject.
 
 
 
@@ -49,12 +79,12 @@
 
 **Project maintenance**
 
-* [#29] added docs github action job
+* [:open-product:`29`] added docs github action job
 
 **Documentation**
 
-* [#29] Added Read the Docs documentation
-* [#29] Added CHANGELOG file
+* [:open-product:`29`] Added Read the Docs documentation
+* [:open-product:`29`] Added CHANGELOG file
 
 **New features**
 

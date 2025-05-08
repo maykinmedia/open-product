@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-09 13:12+0200\n"
+"POT-Creation-Date: 2025-05-08 16:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,19 +82,19 @@ msgstr ""
 msgid "You cannot create or update a user with more permissions than yourself."
 msgstr "U kunt een gebruiker niet meer rechten geven dan u zelf heeft."
 
-#: conf/base.py:199
+#: conf/base.py:203
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: conf/base.py:200
+#: conf/base.py:204
 msgid "English"
 msgstr "Engels"
 
-#: conf/base.py:221
+#: conf/base.py:225
 msgid "A page number within the paginated result set."
 msgstr "Een pagina binnen de gepagineerde set resultaten."
 
-#: conf/base.py:222
+#: conf/base.py:226
 msgid "Number of results to return per page."
 msgstr "Het aantal resultaten terug te geven per pagina."
 
@@ -389,7 +389,7 @@ msgstr ""
 msgid "Vestigingsnummer"
 msgstr ""
 
-#: producten/models/eigenaar.py:49
+#: producten/models/eigenaar.py:49 producten/viewsets/product.py:99
 msgid "Een korte unieke aanduiding van een vestiging."
 msgstr ""
 
@@ -397,7 +397,7 @@ msgstr ""
 msgid "Klantnummer"
 msgstr ""
 
-#: producten/models/eigenaar.py:54
+#: producten/models/eigenaar.py:54 producten/viewsets/product.py:106
 msgid "generiek veld voor de identificatie van een klant."
 msgstr ""
 
@@ -616,21 +616,21 @@ msgstr ""
 msgid "Status 'Gereed' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:587
+#: producten/tests/api/test_product_filters.py:622
 msgid ""
 "Filter '{}' moet de format 'key__operator__value' hebben, komma's kunnen "
 "alleen in de `waarde` worden toegevoegd"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:609
+#: producten/tests/api/test_product_filters.py:644
 msgid "Filter '{}' heeft niet de format 'key__operator__waarde'"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:628
+#: producten/tests/api/test_product_filters.py:663
 msgid "operator `{}` is niet bekend/ondersteund"
 msgstr ""
 
-#: producten/viewsets/product.py:28
+#: producten/viewsets/product.py:29
 msgid ""
 "\n"
 "Een json filter parameter heeft de format `key__operator__waarde`.\n"
@@ -657,28 +657,36 @@ msgid ""
 "B&objectdata_attr=zone__exact__B`\n"
 msgstr ""
 
-#: producten/viewsets/product.py:54 producttypen/viewsets/actie.py:17
+#: producten/viewsets/product.py:55 producttypen/viewsets/actie.py:17
 #: producttypen/viewsets/bestand.py:18 producttypen/viewsets/link.py:17
-#: producttypen/viewsets/prijs.py:17 producttypen/viewsets/producttype.py:58
+#: producttypen/viewsets/prijs.py:17 producttypen/viewsets/producttype.py:59
 msgid "Uniforme product naam vanuit de UPL."
 msgstr ""
 
-#: producten/viewsets/product.py:60 producttypen/viewsets/actie.py:23
-#: producttypen/viewsets/bestand.py:29 producttypen/viewsets/link.py:23
-#: producttypen/viewsets/prijs.py:23
+#: producten/viewsets/product.py:61 producten/viewsets/product.py:78
+#: producttypen/viewsets/actie.py:23 producttypen/viewsets/bestand.py:29
+#: producttypen/viewsets/link.py:23 producttypen/viewsets/prijs.py:23
 msgid "Naam van het producttype."
 msgstr ""
 
-#: producttypen/admin/producttype.py:48 producttypen/models/producttype.py:111
+#: producten/viewsets/product.py:85
+msgid "Het BSN van een product eigenaar."
+msgstr ""
+
+#: producten/viewsets/product.py:92
+msgid "Het kvk nummer van een product eigenaar."
+msgstr ""
+
+#: producttypen/admin/producttype.py:66 producttypen/models/producttype.py:111
 #: producttypen/models/thema.py:39
 msgid "thema's"
 msgstr ""
 
-#: producttypen/admin/producttype.py:51
+#: producttypen/admin/producttype.py:69
 msgid "Thema"
 msgstr ""
 
-#: producttypen/admin/producttype.py:57
+#: producttypen/admin/producttype.py:75
 #: producttypen/serializers/producttype.py:414
 #: producttypen/tests/api/test_producttype.py:188
 #: producttypen/tests/api/test_producttype.py:670
@@ -757,8 +765,8 @@ msgstr ""
 msgid "labels"
 msgstr ""
 
-#: producttypen/models/content.py:41 producttypen/viewsets/producttype.py:126
-#: producttypen/viewsets/producttype.py:134
+#: producttypen/models/content.py:41 producttypen/viewsets/producttype.py:141
+#: producttypen/viewsets/producttype.py:149
 msgid "De labels van dit content element"
 msgstr ""
 
@@ -1067,7 +1075,7 @@ msgid "toegestane statussen"
 msgstr ""
 
 #: producttypen/models/producttype.py:90
-#: producttypen/viewsets/producttype.py:81
+#: producttypen/viewsets/producttype.py:82
 msgid "toegestane statussen voor producten van dit type."
 msgstr ""
 
@@ -1076,7 +1084,7 @@ msgid "Keywords"
 msgstr ""
 
 #: producttypen/models/producttype.py:98
-#: producttypen/viewsets/producttype.py:74
+#: producttypen/viewsets/producttype.py:75
 msgid "Lijst van keywords waarop kan worden gezocht."
 msgstr ""
 
@@ -1395,25 +1403,33 @@ msgstr ""
 msgid "Naam van het bestand."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:47
+#: producttypen/viewsets/producttype.py:48
 msgid "Producttype codes uit externe omgevingen. [naam:code]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:53
+#: producttypen/viewsets/producttype.py:54
 msgid "Producttype parameters. [naam:waarde]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:66
+#: producttypen/viewsets/producttype.py:67
 msgid ""
 "Filter op de eerste letter van de naam van het producttype (in de meegegeven "
 "`Accept-Language` taal)."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:89
-msgid "Ongeldig format voor externe_code query parameter."
+#: producttypen/viewsets/producttype.py:88
+msgid "Lijst van thema namen waarop kan worden gezocht."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:94
+msgid "Lijst van thema uuids waarop kan worden gezocht."
 msgstr ""
 
 #: producttypen/viewsets/producttype.py:102
+msgid "Ongeldig format voor externe_code query parameter."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:115
 msgid "Ongeldig format voor parameter query parameter."
 msgstr ""
 
@@ -1480,7 +1496,7 @@ msgstr ""
 msgid "Go back to history list"
 msgstr "Ga terug naar geschiedenislijst"
 
-#: utils/admin.py:36
+#: utils/admin.py:38
 msgid "Start taak"
 msgstr ""
 

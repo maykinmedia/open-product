@@ -39,6 +39,7 @@ release = openproduct.__version__
 # ones.
 extensions = [
     "sphinx.ext.todo",
+    "sphinx.ext.extlinks",
     "recommonmark",
     "sphinx_markdown_tables",
     "sphinx_tabs.tabs",
@@ -87,3 +88,11 @@ linkcheck_ignore = [
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]
+
+extlinks = {
+    "open-product": ("https://github.com/maykinmedia/open-product/issues/%s", "#%s"),
+    "open-api-framework": (
+        "https://github.com/maykinmedia/open-api-framework/issues/%s",
+        "#%s",
+    ),
+}
