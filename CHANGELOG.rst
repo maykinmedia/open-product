@@ -1,3 +1,33 @@
+1.1.0 (09-05-2025)
+------------------
+
+**New features**
+
+* [#104] Added filters
+
+    * ProductType themas__naam__in
+    * ProductType themas__uuid__in
+    * Product productype__naam__in
+    * Product eigenaren__bsn
+    * Product eigenaren__kvk_nummer
+    * Product eigenaren__vestigingsnummer
+    * Product eigenaren__klantnummer
+
+**Project maintenance**
+
+* [#20] Added support for django-setup-configuration. see `documentation <https://open-product.readthedocs.io/en/latest/installation/config/openproduct_config_cli.html>`_
+
+* [#100] Added demodata fixture
+* [#88] Updated CI workflows
+* [#116] Fixed parler admin issues
+* [#106] Fixed localemiddleware to only be active for the API
+* Fixed readme links
+* Fixed csp errors
+
+**Documentation**
+
+* [#77] Added datamodel diagrams
+* [#77] Updated information model diagram
 
 1.0.0 (08-04-2025)
 ------------------
