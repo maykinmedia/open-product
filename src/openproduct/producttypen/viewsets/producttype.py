@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from vng_api_common.utils import get_help_text
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
@@ -56,7 +57,7 @@ class ProductTypeFilterSet(FilterSet):
 
     uniforme_product_naam = django_filters.CharFilter(
         field_name="uniforme_product_naam__naam",
-        help_text=_("Uniforme product naam vanuit de UPL."),
+        help_text=get_help_text("producttypen.UniformeProductNaam", "naam"),
     )
 
     letter = TranslationFilter(
@@ -72,14 +73,14 @@ class ProductTypeFilterSet(FilterSet):
     keywords = CharArrayFilter(
         field_name="keywords",
         lookup_expr="overlap",
-        help_text=_("Lijst van keywords waarop kan worden gezocht."),
+        help_text=get_help_text("producttypen.ProductType", "keywords"),
     )
 
     toegestane_statussen = ChoiceArrayFilter(
         field_name="toegestane_statussen",
         lookup_expr="overlap",
         choices=ProductStateChoices.choices,
-        help_text=_("toegestane statussen voor producten van dit type."),
+        help_text=get_help_text("producttypen.ProductType", "toegestane_statussen"),
     )
 
     themas__naam__in = CharArrayFilter(
@@ -138,7 +139,7 @@ class ContentFilterSet(FilterSet):
     labels = django_filters.BaseInFilter(
         field_name="labels__naam",
         lookup_expr="in",
-        help_text=_("De labels van dit content element"),
+        help_text=get_help_text("producttypen.ContentElement", "labels"),
         distinct=True,
     )
 
@@ -146,7 +147,7 @@ class ContentFilterSet(FilterSet):
         field_name="labels__naam",
         lookup_expr="in",
         exclude=True,
-        help_text=_("De labels van dit content element"),
+        help_text=get_help_text("producttypen.ContentElement", "labels"),
     )
 
 

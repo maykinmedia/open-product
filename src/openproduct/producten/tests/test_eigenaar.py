@@ -44,13 +44,13 @@ class TestEigenaar(TestCase):
         with self.assertRaisesMessage(
             ValidationError,
             _(
-                "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+                "Een eigenaar moet een bsn (en/of partijnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
             ),
         ):
             eigenaar.clean()
 
         EigenaarFactory.create(bsn="111222333").full_clean()
-        EigenaarFactory.create(klantnummer="123").full_clean()
+        EigenaarFactory.create(partijnummer="123").full_clean()
         EigenaarFactory.create(kvk_nummer="12345678").full_clean()
 
     def test_vestigingsnummer_without_kvk(self):
@@ -70,21 +70,21 @@ class TestEigenaar(TestCase):
 
     def test_identifier(self):
         expected_message = _(
-            "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+            "Een eigenaar moet een bsn (en/of partijnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
         )
 
         with self.subTest("bsn & kvk"):
             with self.assertRaisesMessage(ValidationError, expected_message):
                 EigenaarFactory.create(bsn="111222333", kvk_nummer="12345678").clean()
 
-        with self.subTest("klantnummer & kvk"):
+        with self.subTest("partijnummer & kvk"):
             with self.assertRaisesMessage(ValidationError, expected_message):
                 EigenaarFactory.create(
-                    klantnummer="111222333", kvk_nummer="12345678"
+                    partijnummer="111222333", kvk_nummer="12345678"
                 ).clean()
 
-        with self.subTest("bsn & klantnummer"):
-            EigenaarFactory.create(bsn="111222333", klantnummer="111222333").clean()
+        with self.subTest("bsn & partijnummer"):
+            EigenaarFactory.create(bsn="111222333", partijnummer="111222333").clean()
 
     def test_eigenaar_str(self):
 
@@ -92,9 +92,9 @@ class TestEigenaar(TestCase):
             eigenaar = EigenaarFactory.create(bsn="111222333")
             self.assertEqual(str(eigenaar), "BSN 111222333")
 
-        with self.subTest("klantnummer"):
-            eigenaar = EigenaarFactory.create(klantnummer="123")
-            self.assertEqual(str(eigenaar), "klantnummer 123")
+        with self.subTest("partijnummer"):
+            eigenaar = EigenaarFactory.create(partijnummer="123")
+            self.assertEqual(str(eigenaar), "partijnummer 123")
 
         with self.subTest("kvk"):
             eigenaar = EigenaarFactory.create(kvk_nummer="12345678")
