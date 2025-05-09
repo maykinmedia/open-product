@@ -17,20 +17,38 @@ services:
       context: .
     image: maykinmedia/open-product:latest
     environment: &web_env
-      - DJANGO_SETTINGS_MODULE=openproduct.conf.docker
-      - SECRET_KEY=${SECRET_KEY:-django-insecure-@4wj9(+*bu7*v&%on7+e_8!d1ckl%r=6+sz#d2!pw^@lb0+=}
-      - DB_NAME=openproduct
-      - DB_USER=openproduct
-      - DB_HOST=db
-      - CACHE_DEFAULT=redis:6379/0
-      - CELERY_BROKER_URL=redis://redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      DJANGO_SETTINGS_MODULE: openproduct.conf.docker
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-@4wj9(+*bu7*v&%on7+e_8!d1ckl%r=6+sz#d2!pw^@lb0+=}
+      DB_NAME: openproduct
+      DB_USER: openproduct
+      DB_HOST: db
+      CACHE_DEFAULT: redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
       # Only allow all hosts for development/testing purposes!
-      - ALLOWED_HOSTS=*
+      ALLOWED_HOSTS: '*'
     ports:
       - 8000:8000
     depends_on:
+      db:
+        condition: service_started
+      web-init:
+        condition: service_completed_successfully
+
+  web-init:
+    build: *web_build
+    environment:
+      <<: *web_env
+      # Django-setup-configuration
+      RUN_SETUP_CONFIG: ${RUN_SETUP_CONFIG:-true}
+      # UPL
+      LOAD_UPL: ${LOAD_UPL:-true}
+    command: sh -c "/setup_configuration.sh && /load_upl.sh"
+    volumes:
+      - ./docker/setup_configuration:/app/setup_configuration
+    depends_on:
       - db
+      - redis
 
   celery:
     build: *web_build

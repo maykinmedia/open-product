@@ -1,0 +1,45 @@
+oidc_db_config_enable: true
+oidc_db_config_admin_auth:
+  items:
+    - identifier: keycloak-oidc
+      oidc_rp_client_id: client-id
+      oidc_rp_client_secret: secret
+      endpoint_config:
+        oidc_op_authorization_endpoint: http://localhost:8080/realms/test/protocol/openid-connect/auth
+        oidc_op_token_endpoint: http://localhost:8080/realms/test/protocol/openid-connect/token
+        oidc_op_user_endpoint: http://localhost:8080/realms/test/protocol/openid-connect/userinfo
+
+zgw_consumers_config_enable: true
+zgw_consumers:
+  services:
+  - identifier: open-notificaties
+    label: Open Notificaties
+    api_root: https://notificaties.gemeente.local/api/v1/
+    api_type: nrc
+    auth_type: zgw
+    client_id: open-product
+    user_id: open-product
+    secret: open-product-secret
+
+notifications_config_enable: true
+notifications_config:
+  notifications_api_service_identifier: open-notificaties
+  notification_delivery_max_retries: 1
+  notification_delivery_retry_backoff: 2
+  notification_delivery_retry_backoff_max: 3
+
+externeverwijzing_config_enable: true
+externeverwijzing_config:
+  zaaktypen_url: https://catalogi-api.gemeente.cloud/api/v1/zaaktypen
+  processen_url: https://processen-api.gemeente.cloud/api/v1/processen
+  verzoektypen_url: https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen
+  documenten_url: https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten
+
+dmn_config_enable: true
+dmn_config:
+  configs:
+  - tabel_endpoint: https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: main repository
+
+  - tabel_endpoint: https://new.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
+    naam: new repository
