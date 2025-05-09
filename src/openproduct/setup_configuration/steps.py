@@ -50,16 +50,9 @@ class DmnConfigsConfigurationStep(BaseConfigurationStep):
 
         for config in model.configs:
 
-            dmn_config_qs = DmnConfig.objects.filter(
-                tabel_endpoint=config.tabel_endpoint
+            DmnConfig.objects.update_or_create(
+                tabel_endpoint=config.tabel_endpoint,
+                defaults={
+                    "naam": config.naam,
+                },
             )
-            if dmn_config_qs.exists():
-                dmn_config = dmn_config_qs.get()
-                dmn_config.naam = config.naam
-                dmn_config.save()
-
-            else:
-                DmnConfig.objects.create(
-                    naam=config.naam,
-                    tabel_endpoint=config.tabel_endpoint,
-                )

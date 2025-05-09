@@ -6,8 +6,11 @@
 set -e
 
 if [[ "${RUN_SETUP_CONFIG,,}" =~ ^(true|1|yes)$ ]]; then
+    # Figure out abspath of this script
+    SCRIPT=$(readlink -f "$0")
+    SCRIPTPATH=$(dirname "$SCRIPT")
     # wait for required services
-    /wait_for_db.sh
+    ${SCRIPTPATH}/wait_for_db.sh
 
     src/manage.py migrate
     src/manage.py setup_configuration --yaml-file setup_configuration/data.yaml
