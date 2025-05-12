@@ -90,9 +90,9 @@ class TestTranslationsAdmin(WebTest):
         response = self.app.get(delete_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertIn("Weet u het zeker?", response.text)
+        self.assertIn("Ja, ik weet het zeker", response.text)
 
-        form = response.forms[0]
+        form = response.forms[1]
         form.submit({"post": "yes"})
 
         self.assertEqual(ProductTypeTranslation.objects.count(), 0)
