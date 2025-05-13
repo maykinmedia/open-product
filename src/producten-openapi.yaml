@@ -35,7 +35,7 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /producten/:
+  /producten:
     get:
       operationId: producten_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -481,7 +481,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producten/{uuid}/:
+  /producten/{uuid}:
     get:
       operationId: producten_retrieve
       summary: Een specifiek PRODUCT opvragen.
