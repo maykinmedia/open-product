@@ -8,7 +8,7 @@ from rest_framework.routers import DefaultRouter
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.viewsets import ProductViewSet
 
-ProductRouter = DefaultRouter()
+ProductRouter = DefaultRouter(trailing_slash=False)
 ProductRouter.register("producten", ProductViewSet, basename="product")
 
 description = f"""
