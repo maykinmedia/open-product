@@ -25,7 +25,7 @@ Specifieke product data kan worden opgeslagen in de JSON velden `dataobject` en 
 De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
 
 ### Eigenaar
-Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een klant (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
+Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Klant/Partij (Klantinteracties API), natuurlijk of niet natuurlijke persoon zijn.
 
 ### Document
 Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).

@@ -50,7 +50,7 @@ class Eigenaar(BaseModel):
 
     klantnummer = models.CharField(
         _("Klantnummer"),
-        help_text=_("generiek veld voor de identificatie van een klant."),
+        help_text=_("generiek veld voor de identificatie van een klant of partij."),
         max_length=50,
         blank=True,
     )

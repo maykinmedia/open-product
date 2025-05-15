@@ -16,7 +16,7 @@ info:
     De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
 
     ### Eigenaar
-    Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een klant (Open Klant), natuurlijk of niet natuurlijke persoon zijn.
+    Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Klant/Partij (Klantinteracties API), natuurlijk of niet natuurlijke persoon zijn.
 
     ### Document
     Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
@@ -114,17 +114,18 @@ paths:
         name: eigenaren__bsn
         schema:
           type: string
-        description: Het BSN van een product eigenaar.
+        description: Het BSN van de product eigenaar, BSN van 8 karakters moet met
+          een extra 0 beginnen.
       - in: query
         name: eigenaren__klantnummer
         schema:
           type: string
-        description: generiek veld voor de identificatie van een klant.
+        description: generiek veld voor de identificatie van een klant of partij.
       - in: query
         name: eigenaren__kvk_nummer
         schema:
           type: string
-        description: Het kvk nummer van een product eigenaar.
+        description: Het kvk nummer van de product eigenaar
       - in: query
         name: eigenaren__uuid
         schema:
@@ -232,14 +233,14 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__naam__in
         schema:
           type: array
           items:
             type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
         explode: false
         style: form
       - in: query
@@ -305,7 +306,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: update_datum
         schema:
@@ -825,7 +826,7 @@ components:
           maxLength: 24
         klantnummer:
           type: string
-          description: generiek veld voor de identificatie van een klant.
+          description: generiek veld voor de identificatie van een klant of partij.
           maxLength: 50
     EigenaarRequest:
       type: object
@@ -850,7 +851,7 @@ components:
           maxLength: 24
         klantnummer:
           type: string
-          description: generiek veld voor de identificatie van een klant.
+          description: generiek veld voor de identificatie van een klant of partij.
           maxLength: 50
     Error:
       type: object
@@ -893,7 +894,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het document.
+          description: Uuid van het document.
       required:
       - uuid
     NestedProductType:

@@ -7,6 +7,7 @@ from drf_spectacular.utils import (
     extend_schema_serializer,
 )
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import Actie, ProductType
 from openproduct.producttypen.models.dmn_config import DmnConfig
@@ -52,7 +53,7 @@ class ActieSerializer(serializers.ModelSerializer):
 
     dmn_tabel_id = serializers.CharField(
         write_only=True,
-        help_text=_("uuid van de dmn tabel binnen de dmn instantie."),
+        help_text=get_help_text("producttypen.Actie", "dmn_tabel_id"),
     )
 
     url = serializers.SerializerMethodField(help_text=_("De url naar de dmn tabel."))
