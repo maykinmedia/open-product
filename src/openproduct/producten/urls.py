@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.urls import include, path
 
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
+from drf_spectacular.views import SpectacularRedocView
 from notifications_api_common.utils import notification_documentation
 from rest_framework.routers import DefaultRouter
 
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.viewsets import ProductViewSet
+from openproduct.utils.spectacular import SpectacularJSONAPIView, SpectacularYAMLAPIView
 
 ProductRouter = DefaultRouter(trailing_slash=False)
 ProductRouter.register("producten", ProductViewSet, basename="product")
@@ -63,17 +64,25 @@ custom_settings = {
 urlpatterns = [
     # API documentation
     path(
-        "schema/openapi.yaml",
-        SpectacularAPIView.as_view(
+        "openapi.yaml",
+        SpectacularYAMLAPIView.as_view(
             urlconf="openproduct.producten.urls",
             custom_settings=custom_settings,
         ),
-        name="schema-producten",
+        name="schema-producten-yaml",
+    ),
+    path(
+        "openapi.json",
+        SpectacularJSONAPIView.as_view(
+            urlconf="openproduct.producten.urls",
+            custom_settings=custom_settings,
+        ),
+        name="schema-producten-json",
     ),
     path(
         "schema/",
         SpectacularRedocView.as_view(
-            url_name="schema-producten", title=custom_settings["TITLE"]
+            url_name="schema-producten-yaml", title=custom_settings["TITLE"]
         ),
         name="schema-redoc-producten",
     ),

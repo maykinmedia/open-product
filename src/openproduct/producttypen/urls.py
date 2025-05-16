@@ -3,6 +3,7 @@ from django.urls import include, path
 
 from drf_spectacular.views import (
     SpectacularAPIView,
+    SpectacularJSONAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
@@ -215,17 +216,25 @@ identifier van de tabel in de dmn omgeving.
 urlpatterns = [
     # API documentation
     path(
-        "schema/openapi.yaml",
+        "openapi.yaml",
         SpectacularAPIView.as_view(
             urlconf="openproduct.producttypen.urls",
             custom_settings=custom_settings,
         ),
-        name="schema-producttypen",
+        name="schema-producttypen-yaml",
+    ),
+    path(
+        "openapi.json",
+        SpectacularJSONAPIView.as_view(
+            urlconf="openproduct.producttypen.urls",
+            custom_settings=custom_settings,
+        ),
+        name="schema-producttypen-json",
     ),
     path(
         "schema/",
         SpectacularRedocView.as_view(
-            url_name="schema-producttypen", title=custom_settings["TITLE"]
+            url_name="schema-producttypen-yaml", title=custom_settings["TITLE"]
         ),
         name="schema-redoc-producttypen",
     ),
