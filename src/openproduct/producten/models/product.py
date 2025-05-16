@@ -31,7 +31,12 @@ class Product(BasePublishableModel):
         help_text=_("Het type van dit product"),
         related_name="producten",
     )
-
+    naam = models.CharField(
+        _("naam"),
+        max_length=255,
+        blank=True,
+        help_text=_("De naam van dit product."),
+    )
     start_datum = models.DateField(
         _("start datum"),
         help_text=_(

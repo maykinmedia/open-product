@@ -61,6 +61,12 @@ class ProductFilterSet(FilterSet):
         help_text=_("Naam van het producttype."),
     )
 
+    naam = django_filters.CharFilter(
+        field_name="naam",
+        lookup_expr="exact",
+        help_text=_("De naam van dit product."),
+    )
+
     dataobject_attr = ManyCharFilter(
         method="filter_dataobject_attr",
         validators=[validate_data_attr],
@@ -129,6 +135,7 @@ class ProductFilterSet(FilterSet):
             "prijs": ["exact", "gte", "lte"],
             "producttype__code": ["exact", "in"],
             "producttype__uuid": ["exact", "in"],
+            "naam": ["exact"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],
