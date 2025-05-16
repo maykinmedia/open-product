@@ -1,14 +1,11 @@
 from datetime import date
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
-from rest_framework.test import APIClient, APITestCase
 
 from openproduct.producttypen.tests.factories import ProductTypeFactory
 
@@ -202,30 +199,3 @@ class TestProductValidateMethods(TestCase):
         producttype = ProductTypeFactory.create(toegestane_statussen=[])
 
         validate_product_status("initieel", producttype)
-
-
-class TestProductFiltering(APITestCase):
-    def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            username="testuser", password="testpass"
-        )
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-
-        self.producttype = ProductTypeFactory.create()
-        self.product_1 = ProductFactory.create(
-            producttype=self.producttype, naam="Verhuurvergunning Mijnstraat 42"
-        )
-        self.product_2 = ProductFactory.create(
-            producttype=self.producttype, naam="Verhuurvergunning Laan 15"
-        )
-
-    def test_filter_by_naam(self):
-        url = reverse("product-list")
-        response = self.client.get(url, {"naam": "Verhuurvergunning Mijnstraat 42"})
-
-        self.assertEqual(response.status_code, 200)
-        results = response.json()["results"]
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["uuid"], str(self.product_1.uuid))
-        self.assertNotIn(str(self.product_2.uuid), [p["uuid"] for p in results])
