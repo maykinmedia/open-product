@@ -100,6 +100,7 @@ class ProductAdminForm(forms.ModelForm):
 class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = (
         "producttype_name",
+        "naam",
         "aanmaak_datum",
         "start_datum",
         "eind_datum",

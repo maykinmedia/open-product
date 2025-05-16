@@ -36,6 +36,7 @@ from openproduct.utils.serializers import (
             value={
                 "uuid": "da0df49a-cd71-4e24-9bae-5be8b01f2c36",
                 "url": "https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36",
+                "naam": "verhuurvergunning: straatweg 14",
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
@@ -73,6 +74,7 @@ from openproduct.utils.serializers import (
         OpenApiExample(
             "product request",
             value={
+                "naam": "verhuurvergunning: straatweg 14",
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
@@ -108,6 +110,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             "uuid",
             "url",
+            "naam",
             "start_datum",
             "eind_datum",
             "aanmaak_datum",

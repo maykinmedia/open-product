@@ -166,6 +166,11 @@ paths:
         schema:
           type: boolean
         description: Geeft aan of het object getoond kan worden.
+      - in: query
+        name: naam
+        schema:
+          type: string
+        description: De naam van dit product.
       - name: page
         required: false
         in: query
@@ -352,6 +357,7 @@ paths:
                     results:
                     - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                      naam: 'verhuurvergunning: straatweg 14'
                       start_datum: '2024-12-01'
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -429,6 +435,7 @@ paths:
                   value:
                     uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    naam: 'verhuurvergunning: straatweg 14'
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -508,6 +515,7 @@ paths:
                   value:
                     uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    naam: 'verhuurvergunning: straatweg 14'
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -592,6 +600,7 @@ paths:
                   value:
                     uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    naam: 'verhuurvergunning: straatweg 14'
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -675,6 +684,7 @@ paths:
                   value:
                     uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                     url: https://gemeente.open-product.nl/producten/api/v0/producten/da0df49a-cd71-4e24-9bae-5be8b01f2c36
+                    naam: 'verhuurvergunning: straatweg 14'
                     start_datum: '2024-12-01'
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
@@ -969,6 +979,10 @@ components:
     PatchedProductRequest:
       type: object
       properties:
+        naam:
+          type: string
+          description: De naam van dit product.
+          maxLength: 255
         start_datum:
           type: string
           format: date
@@ -1050,6 +1064,10 @@ components:
           maxLength: 1000
           description: URL-referentie naar dit object. Dit is de unieke identificatie
             en locatie van dit object.
+        naam:
+          type: string
+          description: De naam van dit product.
+          maxLength: 255
         start_datum:
           type: string
           format: date
@@ -1138,6 +1156,10 @@ components:
     ProductRequest:
       type: object
       properties:
+        naam:
+          type: string
+          description: De naam van dit product.
+          maxLength: 255
         start_datum:
           type: string
           format: date
