@@ -5309,6 +5309,21 @@ paths:
         schema:
           type: integer
       - in: query
+        name: producttypen__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: producttypen__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter thema's op basis van een lijst met producttype uuid's.
+        explode: false
+        style: form
+      - in: query
         name: update_datum
         schema:
           type: string
