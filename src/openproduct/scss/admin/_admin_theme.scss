@@ -71,6 +71,17 @@ body {
   }
 }
 
+#user-tools button {
+  border-bottom: none;
+  text-decoration: underline;
+
+  &:focus,
+  &:hover {
+    color: var(--header-link-color);
+    margin-bottom: 0;
+  }
+}
+
 div.breadcrumbs {
   a {
     &:focus,
@@ -124,16 +135,20 @@ div.breadcrumbs {
 .addlink {
   background: url("../img/admin/plus-square-regular.svg") 0 0/14px 14px no-repeat;
 }
+
 .changelink,
 .inlinechangelink {
   background: url("../img/admin/edit-regular.svg") 0 0/14px 14px no-repeat;
 }
+
 .deletelink {
   background: url("../img/admin/trash-alt-regular.svg") 0 0/14px 14px no-repeat;
 }
+
 .datetimeshortcuts .clock-icon {
   background: url("../img/admin/clock-regular.svg") 0 0/14px 14px no-repeat !important;
 }
+
 .datetimeshortcuts .date-icon {
   background: url("../img/admin/calendar-alt-regular.svg") 0 0/14px 14px no-repeat !important;
 }
@@ -226,6 +241,7 @@ div:has(> div.help ) {
   display: inline-block;
   margin-left: inherit !important;
 }
+
 .aligned label + div.help {
   margin-left: 2px !important;
 }
