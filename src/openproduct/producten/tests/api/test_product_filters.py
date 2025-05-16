@@ -852,7 +852,7 @@ class TestProductFilters(BaseApiTestCase):
                 "12345678",
             )
 
-    def test_filter_by_naam(self):
+    def test_naam_filter(self):
         product_1 = ProductFactory.create(naam="Verhuurvergunning Mijnstraat 42")
         ProductFactory.create(naam="Verhuurvergunning Laan 15")
         with self.subTest("exact"):
