@@ -3,6 +3,10 @@ from sys import stdout
 from drf_spectacular.plumbing import (
     get_lib_doc_excludes as default_get_lib_doc_excludes,
 )
+from drf_spectacular.views import (
+    SpectacularJSONAPIView as _SpectacularJSONAPIView,
+    SpectacularYAMLAPIView as _SpectacularYAMLAPIView,
+)
 
 
 def custom_postprocessing_hook(result, generator, request, public):
@@ -54,3 +58,24 @@ def get_lib_doc_excludes():
     from openproduct.logging.api_tools import AuditTrailViewSetMixin
 
     return default_get_lib_doc_excludes() + [AuditTrailViewSetMixin]
+
+
+class AllowAllOriginsMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        response["Access-Control-Allow-Origin"] = "*"
+        return response
+
+
+class SpectacularYAMLAPIView(_SpectacularYAMLAPIView):
+    """Spectacular YAML API view with Access-Control-Allow-Origin set to allow all"""
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        response["Access-Control-Allow-Origin"] = "*"
+        return response
+
+
+class SpectacularJSONAPIView(AllowAllOriginsMixin, _SpectacularJSONAPIView):
+    """Spectacular JSON API view with Access-Control-Allow-Origin set to allow all"""
