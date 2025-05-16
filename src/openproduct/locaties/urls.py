@@ -6,7 +6,7 @@ from openproduct.locaties.viewsets import (
     OrganisatieViewSet,
 )
 
-LocatieRouter = DefaultRouter()
+LocatieRouter = DefaultRouter(trailing_slash=False)
 
 LocatieRouter.register("locaties", LocatieViewSet, basename="locatie")
 LocatieRouter.register("organisaties", OrganisatieViewSet, basename="organisatie")

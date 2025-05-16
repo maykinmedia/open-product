@@ -21,7 +21,7 @@ from openproduct.producttypen.viewsets import (
     ThemaViewSet,
 )
 
-ProductTypenRouter = DefaultRouter()
+ProductTypenRouter = DefaultRouter(trailing_slash=False)
 ProductTypenRouter.register("producttypen", ProductTypeViewSet)
 
 ProductTypenRouter.register("links", LinkViewSet, basename="link")

@@ -35,7 +35,7 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /acties/:
+  /acties:
     get:
       operationId: acties_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -203,7 +203,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /acties/{uuid}/:
+  /acties/{uuid}:
     get:
       operationId: acties_retrieve
       summary: Een specifieke ACTIE opvragen.
@@ -427,7 +427,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /bestanden/:
+  /bestanden:
     get:
       operationId: bestanden_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -571,7 +571,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /bestanden/{uuid}/:
+  /bestanden/{uuid}:
     get:
       operationId: bestanden_retrieve
       summary: Een specifiek BESTAND opvragen.
@@ -788,7 +788,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /contacten/:
+  /contacten:
     get:
       operationId: contacten_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -971,7 +971,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /contacten/{uuid}/:
+  /contacten/{uuid}:
     get:
       operationId: contacten_retrieve
       summary: Een specifiek CONTACT opvragen.
@@ -1236,7 +1236,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /content/:
+  /content:
     post:
       operationId: content_create
       summary: Maak een CONTENTELEMENT aan.
@@ -1298,7 +1298,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /content/{uuid}/:
+  /content/{uuid}:
     get:
       operationId: content_retrieve
       summary: Een specifiek CONTENTELEMENT opvragen.
@@ -1528,7 +1528,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /content/{uuid}/vertaling/{taal}/:
+  /content/{uuid}/vertaling/{taal}:
     put:
       operationId: content_vertaling_update
       description: nl kan worden aangepast via het model.
@@ -1631,7 +1631,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /contentlabels/:
+  /contentlabels:
     get:
       operationId: contentlabels_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -1683,7 +1683,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /links/:
+  /links:
     get:
       operationId: links_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -1845,7 +1845,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /links/{uuid}/:
+  /links/{uuid}:
     get:
       operationId: links_retrieve
       summary: Een specifieke LINK opvragen.
@@ -2067,7 +2067,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /locaties/:
+  /locaties:
     get:
       operationId: locaties_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -2229,7 +2229,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /locaties/{uuid}/:
+  /locaties/{uuid}:
     get:
       operationId: locaties_retrieve
       summary: Een specifieke LOCATIE opvragen.
@@ -2471,7 +2471,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /organisaties/:
+  /organisaties:
     get:
       operationId: organisaties_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -2641,7 +2641,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /organisaties/{uuid}/:
+  /organisaties/{uuid}:
     get:
       operationId: organisaties_retrieve
       summary: Een specifieke ORGANISATIE opvragen.
@@ -2888,7 +2888,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /prijzen/:
+  /prijzen:
     get:
       operationId: prijzen_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -3125,7 +3125,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /prijzen/{uuid}/:
+  /prijzen/{uuid}:
     get:
       operationId: prijzen_retrieve
       summary: Een specifieke PRIJS opvragen.
@@ -3420,7 +3420,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/:
+  /producttypen:
     get:
       operationId: producttypen_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -3948,7 +3948,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{uuid}/:
+  /producttypen/{uuid}:
     get:
       operationId: producttypen_retrieve
       summary: Een specifiek PRODUCTTYPE opvragen.
@@ -4548,7 +4548,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{uuid}/actuele-prijs/:
+  /producttypen/{uuid}/actuele-prijs:
     get:
       operationId: actuele_prijs
       description: Geeft de huidige prijzen van alle PRODUCTTYPEN terug.
@@ -4594,7 +4594,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{uuid}/content/:
+  /producttypen/{uuid}/content:
     get:
       operationId: content
       description: Geeft de content van een PRODUCTTYPE terug.
@@ -4666,7 +4666,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/{uuid}/vertaling/{taal}/:
+  /producttypen/{uuid}/vertaling/{taal}:
     put:
       operationId: producttypen_vertaling_update
       description: nl kan worden aangepast via het model.
@@ -4824,7 +4824,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /producttypen/actuele-prijzen/:
+  /producttypen/actuele-prijzen:
     get:
       operationId: actuele_prijzen
       description: Geeft de huidige prijzen van alle PRODUCTTYPEN terug.
@@ -4863,7 +4863,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /schemas/:
+  /schemas:
     get:
       operationId: schemas_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -5008,7 +5008,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /schemas/{id}/:
+  /schemas/{id}:
     get:
       operationId: schemas_retrieve
       summary: Een specifiek SCHEMA opvragen.
@@ -5252,7 +5252,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /themas/:
+  /themas:
     get:
       operationId: themas_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -5461,7 +5461,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
-  /themas/{uuid}/:
+  /themas/{uuid}:
     get:
       operationId: themas_retrieve
       summary: Een specifiek THEMA opvragen.
