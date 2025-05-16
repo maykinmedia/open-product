@@ -4,36 +4,30 @@ from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.producttypen.models.dmn_config import DmnConfig
 from openproduct.setup_configuration.models import (
     DmnConfigsConfigurationModel,
-    ExterneVerwijzingConfigConfigurationModel,
+    ExterneVerwijzingConfigsConfigurationModel,
 )
 
 
-class ExterneVerwijzingConfigConfigurationStep(BaseConfigurationStep):
+class ExterneVerwijzingConfigsConfigurationStep(BaseConfigurationStep):
     """
-    Configure settings for ExterneVerwijzingConfig
+    Configure settings for ExterneVerwijzingConfigs
     """
 
     verbose_name = "ExterneVerwijzingConfig Configuration"
-    config_model = ExterneVerwijzingConfigConfigurationModel
+    config_model = ExterneVerwijzingConfigsConfigurationModel
     namespace = "externeverwijzing_config"
     enable_setting = "externeverwijzing_config_enable"
 
-    def execute(self, model: ExterneVerwijzingConfigConfigurationModel):
-        config = ExterneVerwijzingConfig.get_solo()
+    def execute(self, model: ExterneVerwijzingConfigsConfigurationModel):
 
-        if model.zaaktypen_url:
-            config.zaaktypen_url = model.zaaktypen_url
-
-        if model.processen_url:
-            config.processen_url = model.processen_url
-
-        if model.verzoektypen_url:
-            config.verzoektypen_url = model.verzoektypen_url
-
-        if model.documenten_url:
-            config.documenten_url = model.documenten_url
-
-        config.save()
+        for config in model.configs:
+            ExterneVerwijzingConfig.objects.update_or_create(
+                naam=config.naam,
+                defaults={
+                    "basis_url": config.basis_url,
+                    "type": config.type,
+                },
+            )
 
 
 class DmnConfigsConfigurationStep(BaseConfigurationStep):

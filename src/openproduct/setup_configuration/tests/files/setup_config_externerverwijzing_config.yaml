@@ -1,6 +1,10 @@
 externeverwijzing_config_enable: true
 externeverwijzing_config:
-  zaaktypen_url: https://catalogi-api.gemeente.cloud/api/v1/zaaktypen
-  processen_url: https://processen-api.gemeente.cloud/api/v1/processen
-  verzoektypen_url: https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen
-  documenten_url: https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten
+  configs:
+  - naam: documenten api 1
+    basis_url: https://documenten-api.gemeente.cloud/api/v1/enkelvoudiginformatieobjecten
+    type: documenten
+
+  - naam: zaaktypen api 1
+    basis_url: https://catalogi-api.gemeente.cloud/api/v1/zaaktypen
+    type: zaaktypen

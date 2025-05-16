@@ -4,7 +4,11 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from openproduct.producttypen.models import ProductType, VerzoekType
+from openproduct.producttypen.models import (
+    ExterneVerwijzingConfig,
+    ProductType,
+    VerzoekType,
+)
 
 
 class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
@@ -16,7 +20,7 @@ class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.URI)
     def get_url(self, obj):
-        return f"{self.context['externe_verwijzing_config'].verzoektypen_url.rstrip('/')}/{obj.uuid}"
+        return f"{obj.verzoektypen_api.basis_url.rstrip('/')}/{obj.uuid}"
 
     class Meta:
         model = VerzoekType
@@ -28,6 +32,14 @@ class VerzoekTypeSerializer(serializers.ModelSerializer):
         write_only=True, queryset=ProductType.objects.all()
     )
 
+    basis_url = serializers.SlugRelatedField(
+        slug_field="basis_url",
+        queryset=ExterneVerwijzingConfig.objects.all(),
+        source="verzoektypen_api",
+        write_only=True,
+        help_text=_("url van een bestaande externe verwijzing config."),
+    )
+
     class Meta:
         model = VerzoekType
-        fields = ("uuid", "producttype")
+        fields = ("uuid", "producttype", "basis_url")

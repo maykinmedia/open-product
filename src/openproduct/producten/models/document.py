@@ -1,11 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.producttypen.models.validators import (
-    check_externe_verwijzing_config_url,
-)
 from openproduct.utils.models import BaseModel
 
+from ...producttypen.models import ExterneVerwijzingConfig
+from ...producttypen.models.externeverwijzingconfig import VerwijzingTypes
 from .product import Product
 
 
@@ -24,13 +23,19 @@ class Document(BaseModel):
         help_text=_("Het product waarbij dit document hoort."),
     )
 
+    documenten_api = models.ForeignKey(
+        ExterneVerwijzingConfig,
+        limit_choices_to={"type": VerwijzingTypes.VERZOEKTYPEN},
+        verbose_name=_("documenten api"),
+        related_name="documenten",
+        on_delete=models.PROTECT,
+        help_text=_("de api waar dit document zich bevind."),
+    )
+
     class Meta:
         verbose_name = _("Document")
         verbose_name_plural = _("Documenten")
         unique_together = (("product", "uuid"),)
-
-    def clean(self):
-        check_externe_verwijzing_config_url("documenten_url")
 
     def __str__(self):
         return str(self.uuid)

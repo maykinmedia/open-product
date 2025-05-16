@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from openproduct.utils.models import BaseModel
 
+from .externeverwijzingconfig import ExterneVerwijzingConfig, VerwijzingTypes
 from .producttype import ProductType
-from .validators import check_externe_verwijzing_config_url
 
 
 class ZaakType(BaseModel):
@@ -22,14 +22,20 @@ class ZaakType(BaseModel):
         help_text=_("Het producttype waarbij dit zaaktype hoort."),
     )
 
+    zaaktypen_api = models.ForeignKey(
+        ExterneVerwijzingConfig,
+        limit_choices_to={"type": VerwijzingTypes.ZAAKTYPEN},
+        verbose_name=_("zaaktypen api"),
+        related_name="zaaktypen",
+        on_delete=models.PROTECT,
+        help_text=_("de api waar dit zaaktype zich bevind."),
+    )
+
     class Meta:
         verbose_name = _("zaaktype")
         verbose_name_plural = _("zaaktypen")
         unique_together = (("producttype", "uuid"),)
         ordering = ("-id",)
-
-    def clean(self):
-        check_externe_verwijzing_config_url("zaaktypen_url")
 
     def __str__(self):
         return str(self.uuid)

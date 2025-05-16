@@ -1,5 +1,4 @@
 import datetime
-from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
@@ -20,7 +19,6 @@ from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
 from openproduct.producttypen.models import (
     ExterneCode,
-    ExterneVerwijzingConfig,
     Link,
     Parameter,
     Proces,
@@ -63,18 +61,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "uniforme_product_naam": upn.naam,
             "thema_uuids": [self.thema.uuid],
         }
-
-        config_patch = patch(
-            "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
-            return_value=ExterneVerwijzingConfig(
-                zaaktypen_url="https://gemeente-a.zgw.nl/zaaktypen",
-                verzoektypen_url="https://gemeente-a.zgw.nl/verzoektypen",
-                processen_url="https://gemeente-a.zgw.nl/processen",
-            ),
-        )
-
-        self.config_mock = config_patch.start()
-        self.addCleanup(config_patch.stop)
 
     def detail_path(self, producttype):
         return reverse("producttype-detail", args=[producttype.uuid])
@@ -289,55 +275,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
                         code="unique",
                     )
                 ]
-            },
-        )
-
-    def test_create_producttype_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        response = self.client.post(self.path, self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_create_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
             },
         )
 
@@ -839,59 +776,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
-    def test_update_producttype_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        response = self.client.put(self.detail_path(producttype), self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_update_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.put(self.detail_path(producttype), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_update_producttype_with_zaaktype(self):
         producttype = ProductTypeFactory.create()
 
@@ -1232,61 +1116,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
-    def test_partial_update_producttype_without_externe_verwijzingen_without_config(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        response = self.client.patch(self.detail_path(producttype), {"naam": "test"})
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_partial_update_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.patch(self.detail_path(producttype), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_partial_update_producttype_with_zaaktype(self):
         producttype = ProductTypeFactory.create()
 
@@ -1519,25 +1348,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             }
         ]
         self.assertEqual(response.data["prijzen"], expected_data)
-
-    def test_read_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-        zaaktype = ZaakTypeFactory(producttype=producttype)
-        verzoektype = VerzoekTypeFactory(producttype=producttype)
-        proces = ProcesFactory(producttype=producttype)
-
-        response = self.client.get(self.detail_path(producttype))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["zaaktypen"], [{"url": f"/{zaaktype.uuid}"}])
-        self.assertEqual(
-            response.data["verzoektypen"], [{"url": f"/{verzoektype.uuid}"}]
-        )
-        self.assertEqual(response.data["processen"], [{"url": f"/{proces.uuid}"}])
 
     def test_read_producttypen(self):
         producttype1 = ProductTypeFactory.create()

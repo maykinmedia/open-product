@@ -21,6 +21,7 @@ from ..models import (
     ZaakType,
 )
 from ..models.dmn_config import DmnConfig
+from ..models.externeverwijzingconfig import ExterneVerwijzingConfig, VerwijzingTypes
 
 fake = Faker()
 
@@ -151,9 +152,19 @@ class ParameterFactory(factory.django.DjangoModelFactory):
         model = Parameter
 
 
+class ExterneVerwijzingConfigFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: f"verwijzing {n}")
+    basis_url = factory.Faker("url")
+    type = factory.fuzzy.FuzzyChoice(VerwijzingTypes)
+
+    class Meta:
+        model = ExterneVerwijzingConfig
+
+
 class ZaakTypeFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
     uuid = factory.Faker("uuid4")
+    zaaktypen_api = factory.SubFactory(ExterneVerwijzingConfigFactory)
 
     class Meta:
         model = ZaakType
@@ -162,6 +173,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
 class VerzoekTypeFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
     uuid = factory.Faker("uuid4")
+    verzoektypen_api = factory.SubFactory(ExterneVerwijzingConfigFactory)
 
     class Meta:
         model = VerzoekType
@@ -170,6 +182,7 @@ class VerzoekTypeFactory(factory.django.DjangoModelFactory):
 class ProcesFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
     uuid = factory.Faker("uuid4")
+    processen_api = factory.SubFactory(ExterneVerwijzingConfigFactory)
 
     class Meta:
         model = Proces

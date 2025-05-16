@@ -11,7 +11,6 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
-from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     FilterSet,
@@ -165,15 +164,3 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
     notifications_kanaal = KANAAL_PRODUCTEN
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
-
-        if externe_verwijzing_config.documenten_url == "":
-            logger.warning(
-                "De documenten url is niet geconfigureerd in de externe verwijzing config."
-            )
-
-        context["externe_verwijzing_config"] = externe_verwijzing_config
-        return context

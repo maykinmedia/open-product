@@ -7,7 +7,6 @@ from rest_framework import serializers
 from openproduct.producten.models import Eigenaar, Product
 from openproduct.producten.serializers.document import (
     DocumentSerializer,
-    NestedDocumentSerializer,
 )
 from openproduct.producten.serializers.eigenaar import EigenaarSerializer
 from openproduct.producten.serializers.validators import (
@@ -17,16 +16,10 @@ from openproduct.producten.serializers.validators import (
     VerbruiksObjectValidator,
 )
 from openproduct.producttypen.models import ProductType
-from openproduct.producttypen.models.validators import (
-    check_externe_verwijzing_config_url,
-)
 from openproduct.producttypen.serializers.thema import NestedProductTypeSerializer
 from openproduct.utils.drf_validators import NestedObjectsValidator
 from openproduct.utils.fields import UUIDRelatedField
-from openproduct.utils.serializers import (
-    set_nested_serializer,
-    validate_key_value_model_keys,
-)
+from openproduct.utils.serializers import set_nested_serializer
 
 
 @extend_schema_serializer(
@@ -80,7 +73,9 @@ from openproduct.utils.serializers import (
                 "eigenaren": [
                     {"bsn": "111222333"},
                 ],
-                "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "documenten": [
+                    {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}
+                ],  # TODO
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
@@ -101,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
         write_only=True, queryset=ProductType.objects.all(), source="producttype"
     )
     eigenaren = EigenaarSerializer(many=True)
-    documenten = NestedDocumentSerializer(many=True, required=False)
+    documenten = DocumentSerializer(many=True, required=False)
 
     class Meta:
         model = Product
@@ -135,15 +130,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if len(eigenaren) == 0:
             raise serializers.ValidationError(_("Er is minimaal één eigenaar vereist."))
         return eigenaren
-
-    def validate_documenten(self, documenten: list[dict]):
-        check_externe_verwijzing_config_url("documenten_url")
-
-        return validate_key_value_model_keys(
-            documenten,
-            "uuid",
-            _("Er bestaat al een document met de uuid {} voor dit Product."),
-        )
 
     @transaction.atomic()
     def create(self, validated_data):

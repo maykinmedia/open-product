@@ -11,11 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
-from openproduct.producttypen.models import (
-    ContentElement,
-    ExterneVerwijzingConfig,
-    ProductType,
-)
+from openproduct.producttypen.models import ContentElement, ProductType
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.serializers import (
     ProductTypeActuelePrijsSerializer,
@@ -192,22 +188,6 @@ class ProductTypeViewSet(
         if self.action in ["create", "update", "partial_update"]:
             activate("nl")
         return super().initial(request, *args, **kwargs)
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
-
-        if "" in (
-            externe_verwijzing_config.zaaktypen_url,
-            externe_verwijzing_config.verzoektypen_url,
-            externe_verwijzing_config.processen_url,
-        ):
-            logger.warning(
-                "One or more urls are not configured in the externe verwijzing config."
-            )
-
-        context["externe_verwijzing_config"] = externe_verwijzing_config
-        return context
 
     @extend_schema(
         summary="De vertaling van een producttype aanpassen.",

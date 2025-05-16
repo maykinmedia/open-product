@@ -21,7 +21,6 @@ from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
-from ..models.validators import check_externe_verwijzing_config_url
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -337,33 +336,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             parameters,
             "naam",
             _("Er bestaat al een parameter met de naam {} voor dit ProductType."),
-        )
-
-    def validate_zaaktypen(self, zaaktypen: list[dict]):
-        check_externe_verwijzing_config_url("zaaktypen_url")
-
-        return validate_key_value_model_keys(
-            zaaktypen,
-            "uuid",
-            _("Er bestaat al een zaaktype met de uuid {} voor dit ProductType."),
-        )
-
-    def validate_verzoektypen(self, verzoektypen: list[dict]):
-        check_externe_verwijzing_config_url("verzoektypen_url")
-
-        return validate_key_value_model_keys(
-            verzoektypen,
-            "uuid",
-            _("Er bestaat al een verzoektype met de uuid {} voor dit ProductType."),
-        )
-
-    def validate_processen(self, processen: list[dict]):
-        check_externe_verwijzing_config_url("processen_url")
-
-        return validate_key_value_model_keys(
-            processen,
-            "uuid",
-            _("Er bestaat al een proces met de uuid {} voor dit ProductType."),
         )
 
     class Meta:

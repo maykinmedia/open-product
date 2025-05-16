@@ -1,32 +1,40 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from solo.models import SingletonModel
+
+class VerwijzingTypes(models.TextChoices):
+    DMN = "DMN", _("DMN")
+    DOCUMENTEN = "documenten", _("Documenten")
+    ZAAKTYPEN = "zaaktypen", _("Zaaktypen")
+    PROCESSEN = "processen", _("Processen")
+    VERZOEKTYPEN = "verzoektypen", _("Verzoektypen")
+
+    # GH 134
+    # TAKEN
+    # ZAKEN
 
 
-class ExterneVerwijzingConfig(SingletonModel):
-
-    zaaktypen_url = models.URLField(
-        verbose_name=_("Zaaktypen API url"),
-        help_text=_("Basis url van Zaaktypen API."),
-        blank=True,
+class ExterneVerwijzingConfig(models.Model):
+    naam = models.CharField(
+        verbose_name=_("naam"),
+        max_length=255,
+        help_text=_("naam van de externe verwijzing."),
+        unique=True,
     )
-    processen_url = models.URLField(
-        verbose_name=_("processen url"),
-        help_text=_("Basis url van processen."),
+
+    basis_url = models.URLField(
+        verbose_name=_("basis url"),
+        help_text=_("Basis url van van de externe verwijzing."),
         blank=True,
-    )
-    verzoektypen_url = models.URLField(
-        verbose_name=_("verzoektypen url"),
-        help_text=_("Basis url van verzoektypen."),
-        blank=True,
+        unique=True,
     )
 
-    documenten_url = models.URLField(
-        verbose_name=_("Documenten API url"),
-        help_text=_("Basis url van Documenten API."),
-        blank=True,
+    type = models.CharField(
+        verbose_name=_("type"),
+        help_text=_("type van de externe verwijzing."),
+        choices=VerwijzingTypes.choices,
     )
 
     class Meta:
         verbose_name = _("Externe verwijzingen configuratie")
+        verbose_name_plural = _("Externe verwijzingen configuraties")

@@ -8,34 +8,31 @@ class ExterneVerwijzingConfigConfigurationModel(ConfigurationModel):
     class Meta:
         django_model_refs = {
             ExterneVerwijzingConfig: (
-                "zaaktypen_url",
-                "processen_url",
-                "verzoektypen_url",
-                "documenten_url",
+                "naam",
+                "basis_url",
+                "type",
             )
         }
         extra_kwargs = {
-            "zaaktypen_url": {
-                "examples": ["https://catalogi-api.gemeente.cloud/api/v1/zaaktypen"],
-                "description": "Base url of the zaaktypen API.",
+            "naam": {
+                "examples": ["documenten api 1"],
+                "description": "Name of the externe verwijzing.",
             },
-            "processen_url": {
-                "examples": ["https://processen-api.gemeente.cloud/api/v1/processen"],
-                "description": "Base url of processen.",
-            },
-            "verzoektypen_url": {
-                "examples": [
-                    "https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen"
-                ],
-                "description": "Base url of the verzoektypen.",
-            },
-            "documenten_url": {
+            "basis_url": {
                 "examples": [
                     "https://documenten-api.gemeente.cloud/api/v1/enkelvoudiginformatieobjecten"
                 ],
-                "description": "Base url of the Documenten API.",
+                "description": "Base url the externe verwijzing.",
+            },
+            "type": {
+                "examples": ["documenten"],
+                "description": "Type of the externe verwijzing. ",  # TODO POSSIBLE VALUES
             },
         }
+
+
+class ExterneVerwijzingConfigsConfigurationModel(ConfigurationModel):
+    configs: list[ExterneVerwijzingConfigConfigurationModel]
 
 
 class DmnConfigConfigurationModel(ConfigurationModel):
