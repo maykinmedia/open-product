@@ -70,6 +70,7 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": self.data["naam"],
                 "producttype_uuid": self.data["producttype_uuid"],
                 "url": f"{self.data['tabel_endpoint']}/{self.data['dmn_tabel_id']}",
+                "mapping": None,
             },
         )
 
@@ -101,12 +102,14 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": self.actie.naam,
                 "url": self.actie.url,
                 "producttype_uuid": self.producttype.uuid,
+                "mapping": self.actie.mapping,
             },
             {
                 "uuid": str(actie.uuid),
                 "naam": actie.naam,
                 "url": actie.url,
                 "producttype_uuid": self.producttype.uuid,
+                "mapping": self.actie.mapping,
             },
         ]
         self.assertCountEqual(response.data["resultaten"], expected_data)
@@ -121,6 +124,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "naam": self.actie.naam,
             "url": self.actie.url,
             "producttype_uuid": self.producttype.uuid,
+            "mapping": self.actie.mapping,
         }
         self.assertEqual(response.data, expected_data)
 

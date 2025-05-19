@@ -120,6 +120,7 @@ paths:
                       producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping: {}
                   summary: actie response
           description: ''
         '400':
@@ -161,6 +162,7 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping: {}
                 summary: actie request
         required: true
       security:
@@ -179,6 +181,7 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: {}
                   summary: actie response
           description: ''
         '400':
@@ -232,6 +235,7 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: {}
                   summary: actie response
           description: ''
         '400':
@@ -280,6 +284,7 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping: {}
                 summary: actie request
         required: true
       security:
@@ -298,6 +303,7 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: {}
                   summary: actie response
           description: ''
         '400':
@@ -346,6 +352,7 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping: {}
                 summary: actie request
       security:
       - jwtAuth: []
@@ -363,6 +370,7 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: {}
                   summary: actie response
           description: ''
         '400':
@@ -3012,6 +3020,7 @@ paths:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                         beschrijving: base
+                        mapping: {}
                       actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3066,6 +3075,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
+                    mapping: {}
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3100,6 +3110,7 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
+                      mapping: {}
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3166,6 +3177,7 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
+                      mapping: {}
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3227,6 +3239,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
+                    mapping: {}
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3261,6 +3274,7 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
+                      mapping: {}
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3322,6 +3336,7 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
+                    mapping: {}
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3355,6 +3370,7 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
+                      mapping: {}
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -5769,6 +5785,11 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - naam
       - producttype_uuid
@@ -5797,6 +5818,11 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - dmn_tabel_id
       - naam
@@ -6154,6 +6180,11 @@ components:
           format: uri
           readOnly: true
           description: De url naar de dmn tabel.
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - naam
       - url
@@ -6166,6 +6197,11 @@ components:
           minLength: 1
           description: naam van de actie.
           maxLength: 255
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - naam
     NestedBestand:
@@ -6903,6 +6939,11 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
     PatchedBestandRequest:
       type: object
       properties:
@@ -7285,6 +7326,11 @@ components:
           type: string
           description: Korte beschrijving van de prijs regel.
           maxLength: 255
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - beschrijving
       - url
@@ -7311,6 +7357,11 @@ components:
           title: Url
           description: tabel endpoint van een bestaande dmn config.
           writeOnly: true
+        mapping:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: De mapping tussen de velden in Open Product & DMN variabele
       required:
       - beschrijving
       - dmn_tabel_id
