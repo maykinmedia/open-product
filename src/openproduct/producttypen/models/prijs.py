@@ -1,6 +1,7 @@
 import datetime
 from decimal import Decimal
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -97,6 +98,14 @@ class PrijsRegel(BaseModel):
         verbose_name=_("dmn tabel id"),
         max_length=255,
         help_text=_("id van de dmn tabel binnen de dmn instantie."),
+    )
+
+    mapping = models.JSONField(
+        _("mapping"),
+        null=True,
+        blank=True,
+        help_text=_("De mapping tussen de velden in Open Product & DMN variabele"),
+        encoder=DjangoJSONEncoder,
     )
 
     @property
