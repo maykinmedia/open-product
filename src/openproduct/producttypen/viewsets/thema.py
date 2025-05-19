@@ -16,6 +16,7 @@ class ThemaFilterSet(FilterSet):
     producttypen__uuid__in = UUIDFInFilter(
         field_name="producttypen__uuid",
         lookup_expr="in",
+        distinct=True,
         help_text="Filter thema's op basis van een lijst met producttype uuid's.",
     )
 

@@ -138,7 +138,7 @@ class TestThemaFilters(BaseApiTestCase):
         thema2 = ThemaFactory()
         thema3 = ThemaFactory()
 
-        thema1.producttypen.add(producttype1)
+        thema1.producttypen.set([producttype1, producttype2])
         thema2.producttypen.add(producttype2)
         thema3.producttypen.add(producttype3)
 
@@ -153,8 +153,19 @@ class TestThemaFilters(BaseApiTestCase):
         with self.subTest("in filter"):
             uuids_in = f"{producttype1.uuid},{producttype2.uuid}"
             response = self.client.get(self.path, {"producttypen__uuid__in": uuids_in})
+
             self.assertEqual(response.status_code, status.HTTP_200_OK)
+
             returned_uuids = {result["uuid"] for result in response.data["results"]}
+
             self.assertIn(str(thema1.uuid), returned_uuids)
             self.assertIn(str(thema2.uuid), returned_uuids)
             self.assertNotIn(str(thema3.uuid), returned_uuids)
+
+        with self.subTest("distinct"):
+            uuids_in = f"{producttype1.uuid},{producttype2.uuid}"
+            response = self.client.get(self.path, {"producttypen__uuid__in": uuids_in})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            result_uuids = [result["uuid"] for result in response.data["results"]]
+            self.assertEqual(result_uuids.count(str(thema1.uuid)), 1)
