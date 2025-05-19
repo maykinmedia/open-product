@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from freezegun import freeze_time
 from rest_framework import status
 
-from openproduct.producttypen.tests.factories import ThemaFactory
+from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFactory
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -128,3 +128,44 @@ class TestThemaFilters(BaseApiTestCase):
             self.assertEqual(
                 response.data["results"][0]["update_datum"], "2025-06-07T02:00:00+02:00"
             )
+
+    def test_producttypen_uuid_filter(self):
+        producttype1 = ProductTypeFactory()
+        producttype2 = ProductTypeFactory()
+        producttype3 = ProductTypeFactory()
+
+        thema1 = ThemaFactory()
+        thema2 = ThemaFactory()
+        thema3 = ThemaFactory()
+
+        thema1.producttypen.set([producttype1, producttype2])
+        thema2.producttypen.add(producttype2)
+        thema3.producttypen.add(producttype3)
+
+        with self.subTest("exact filter"):
+            response = self.client.get(
+                self.path, {"producttypen__uuid": str(producttype1.uuid)}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["uuid"], str(thema1.uuid))
+
+        with self.subTest("in filter"):
+            uuids_in = f"{producttype1.uuid},{producttype2.uuid}"
+            response = self.client.get(self.path, {"producttypen__uuid__in": uuids_in})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            returned_uuids = {result["uuid"] for result in response.data["results"]}
+
+            self.assertIn(str(thema1.uuid), returned_uuids)
+            self.assertIn(str(thema2.uuid), returned_uuids)
+            self.assertNotIn(str(thema3.uuid), returned_uuids)
+
+        with self.subTest("distinct"):
+            uuids_in = f"{producttype1.uuid},{producttype2.uuid}"
+            response = self.client.get(self.path, {"producttypen__uuid__in": uuids_in})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            result_uuids = [result["uuid"] for result in response.data["results"]]
+            self.assertEqual(result_uuids.count(str(thema1.uuid)), 1)
