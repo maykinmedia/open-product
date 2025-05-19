@@ -3,6 +3,7 @@ from pathlib import Path
 
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 import requests
 import vcr
@@ -81,7 +82,7 @@ class TestApiOidcAuthentication(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
 
     @vcr.use_cassette(str(TEST_FILES / "invalid_token"))
     @mock_admin_oidc_config()
@@ -171,4 +172,4 @@ class TestApiOidcAuthentication(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)

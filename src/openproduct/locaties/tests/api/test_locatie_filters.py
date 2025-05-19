@@ -1,4 +1,5 @@
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -16,8 +17,8 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam__iexact": "Maykin Media"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["naam"], "Maykin Media")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["naam"], "Maykin Media")
 
     def test_email_filter(self):
         LocatieFactory.create(email="bob@maykinmedia.nl")
@@ -26,8 +27,10 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"email__iexact": "Bob@MaykinMedia.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["email"], "bob@maykinmedia.nl")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(
+            response.data[_("resultaten")][0]["email"], "bob@maykinmedia.nl"
+        )
 
     def test_telefoonnummer_filter(self):
         LocatieFactory.create(telefoonnummer="0611223344")
@@ -36,8 +39,10 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"telefoonnummer__contains": "344"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["telefoonnummer"], "0611223344")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(
+            response.data[_("resultaten")][0]["telefoonnummer"], "0611223344"
+        )
 
     def test_straat_filter(self):
         LocatieFactory.create(straat="Kingsfortweg")
@@ -46,8 +51,8 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"straat__iexact": "kingsfortweg"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["straat"], "Kingsfortweg")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["straat"], "Kingsfortweg")
 
     def test_huisnummer_filter(self):
         LocatieFactory.create(huisnummer="132AA")
@@ -56,8 +61,8 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"huisnummer__iexact": "132aa"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["huisnummer"], "132AA")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["huisnummer"], "132AA")
 
     def test_postcode_filter(self):
         LocatieFactory.create(postcode="1111 AA")
@@ -66,8 +71,8 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"postcode": "1111 AA"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["postcode"], "1111 AA")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["postcode"], "1111 AA")
 
     def test_stad_filter(self):
         LocatieFactory.create(stad="Amsterdam")
@@ -76,5 +81,5 @@ class TestLocatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"stad": "Amsterdam"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["stad"], "Amsterdam")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["stad"], "Amsterdam")
