@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -18,8 +19,8 @@ class TestActieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam": "verlegging"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["naam"], "verlegging")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["naam"], "verlegging")
 
     def test_naam_contains_filter(self):
         ActieFactory.create(naam="verlegging")
@@ -28,8 +29,8 @@ class TestActieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam__contains": "opzeg"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["naam"], "opzegging")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["naam"], "opzegging")
 
     def test_dmn_tabel_id_filter(self):
         dmn_config = DmnConfigFactory(
@@ -47,9 +48,9 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["url"],
+            response.data[_("resultaten")][0]["url"],
             f"{dmn_config.tabel_endpoint}/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
         )
 
@@ -72,9 +73,9 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["url"],
+            response.data[_("resultaten")][0]["url"],
             f"{dmn_config.tabel_endpoint}/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
         )
 
@@ -99,9 +100,9 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["url"],
+            response.data[_("resultaten")][0]["url"],
             f"{dmn_config.tabel_endpoint}/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
         )
 
@@ -117,9 +118,9 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype_uuid
+            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_uuid_filter(self):
@@ -130,9 +131,9 @@ class TestActieFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?producttype__uuid={producttype_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype_uuid
+            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_upn_filter(self):
@@ -148,9 +149,9 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype_uuid
+            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_naam_filter(self):
@@ -165,7 +166,7 @@ class TestActieFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data[_("aantal")], 1)
         self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype_uuid
+            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
         )

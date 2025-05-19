@@ -1026,7 +1026,7 @@ class TestProduct(BaseApiTestCase):
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 2)
+        self.assertEqual(response.data[_("aantal")], 2)
         expected_data = [
             {
                 "url": f"http://testserver{self.detail_path(product1)}",
@@ -1099,7 +1099,7 @@ class TestProduct(BaseApiTestCase):
                 },
             },
         ]
-        self.assertCountEqual(response.data["results"], expected_data)
+        self.assertCountEqual(response.data[_("resultaten")], expected_data)
 
     @freeze_time("2025-12-31")
     def test_read_product(self):

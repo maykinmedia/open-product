@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
 from rest_framework import status
@@ -19,8 +20,8 @@ class TestThemaFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"gepubliceerd": "true"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["gepubliceerd"], True)
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["gepubliceerd"], True)
 
     def test_naam_filter(self):
         ThemaFactory.create(naam="organisatie a")
@@ -29,8 +30,8 @@ class TestThemaFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam": "organisatie b"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["naam"], "organisatie b")
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data[_("resultaten")][0]["naam"], "organisatie b")
 
     def test_hoofd_thema_naam_filter(self):
         hoofd_thema = ThemaFactory.create(naam="vervoer")
@@ -40,8 +41,10 @@ class TestThemaFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"hoofd_thema__naam": "vervoer"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema.uuid)
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(
+            response.data[_("resultaten")][0]["hoofd_thema"], hoofd_thema.uuid
+        )
 
     def test_hoofd_thema_uuid_filter(self):
         hoofd_thema_uuid = uuid4()
@@ -52,8 +55,10 @@ class TestThemaFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?hoofd_thema__uuid={hoofd_thema_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["hoofd_thema"], hoofd_thema_uuid)
+        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(
+            response.data[_("resultaten")][0]["hoofd_thema"], hoofd_thema_uuid
+        )
 
     def test_aanmaak_datum_filter(self):
         with freeze_time("2024-06-07"):
@@ -67,9 +72,9 @@ class TestThemaFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["aanmaak_datum"],
+                response.data[_("resultaten")][0]["aanmaak_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -77,9 +82,9 @@ class TestThemaFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"aanmaak_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["aanmaak_datum"],
+                response.data[_("resultaten")][0]["aanmaak_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -87,9 +92,9 @@ class TestThemaFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"aanmaak_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["aanmaak_datum"],
+                response.data[_("resultaten")][0]["aanmaak_datum"],
                 "2025-06-07T02:00:00+02:00",
             )
 
@@ -105,27 +110,30 @@ class TestThemaFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["update_datum"], "2024-06-07T02:00:00+02:00"
+                response.data[_("resultaten")][0]["update_datum"],
+                "2024-06-07T02:00:00+02:00",
             )
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"update_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["update_datum"], "2024-06-07T02:00:00+02:00"
+                response.data[_("resultaten")][0]["update_datum"],
+                "2024-06-07T02:00:00+02:00",
             )
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"update_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data[_("aantal")], 1)
             self.assertEqual(
-                response.data["results"][0]["update_datum"], "2025-06-07T02:00:00+02:00"
+                response.data[_("resultaten")][0]["update_datum"],
+                "2025-06-07T02:00:00+02:00",
             )
 
     def test_producttypen_uuid_filter(self):
