@@ -63,8 +63,6 @@ billiard==4.2.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-black==24.10.0
-    # via -r requirements/dev.in
 bleach==6.2.0
     # via
     #   -c requirements/ci.txt
@@ -116,7 +114,6 @@ click==8.1.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   bump-my-version
     #   celery
     #   click-didyoumean
@@ -138,8 +135,6 @@ click-repl==0.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-colorama==0.4.6
-    # via isort
 commonground-api-common==2.5.1
     # via
     #   -c requirements/ci.txt
@@ -479,8 +474,6 @@ faker==33.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-flake8==7.1.1
-    # via -r requirements/dev.in
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -552,7 +545,6 @@ isort==5.13.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   -r requirements/dev.in
     #   pylint
 itypes==1.2.0
     # via
@@ -614,7 +606,6 @@ mccabe==0.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   flake8
     #   pylint
 mdurl==0.1.2
     # via
@@ -636,8 +627,6 @@ multidict==6.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-mypy-extensions==1.0.0
-    # via black
 notifications-api-common==0.6.0
     # via
     #   -c requirements/ci.txt
@@ -661,11 +650,8 @@ packaging==24.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   pytest
     #   sphinx
-pathspec==0.12.1
-    # via black
 phonenumberslite==8.13.50
     # via
     #   -c requirements/ci.txt
@@ -679,7 +665,6 @@ platformdirs==4.3.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   black
     #   pylint
 pluggy==1.5.0
     # via
@@ -707,8 +692,6 @@ psycopg2==2.9.10
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-pycodestyle==2.12.1
-    # via flake8
 pycparser==2.22
     # via
     #   -c requirements/ci.txt
@@ -732,8 +715,6 @@ pydantic-settings==2.9.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
-pyflakes==3.2.0
-    # via flake8
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt

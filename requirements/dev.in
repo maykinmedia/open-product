@@ -5,11 +5,6 @@
 bump-my-version
 gitpython
 
-# Code formatting
-black
-isort[colors]
-flake8
-
 # Debug tooling
 django-debug-toolbar
 django-extensions
