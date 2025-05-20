@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from celery.schedules import crontab
-from open_api_framework.conf.base import *
+from open_api_framework.conf.base import *  # noqa: F403
 from open_api_framework.conf.utils import config
 
 # Internationalization

@@ -41,20 +41,19 @@ args = parser.parse_args()
 
 def replace_or_append(file_path, search_val, replace_val):
     file_handle, abs_path = mkstemp()
-    new_file = open(abs_path, "w")
-    old_file = open(file_path, "r")
     found = False
-    for line in old_file:
-        if line.startswith(search_val):
-            new_file.write(replace_val)
-            found = True
-        else:
-            new_file.write(line)
-    if not found:
-        new_file.write("\n" + replace_val)
-    new_file.close()
+
+    with open(file_path, "r") as old_file, open(abs_path, "w") as new_file:
+        for line in old_file:
+            if line.startswith(search_val):
+                new_file.write(replace_val)
+                found = True
+            else:
+                new_file.write(line)
+        if not found:
+            new_file.write("\n" + replace_val)
+
     os.close(file_handle)
-    old_file.close()
     os.remove(file_path)
     move(abs_path, file_path)
     os.chmod(file_path, 436)
