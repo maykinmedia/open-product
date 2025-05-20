@@ -6,7 +6,6 @@ from .factories import ThemaFactory
 
 
 class TestThema(TestCase):
-
     def test_hoofd_thema_must_be_published_when_publishing_sub_thema(self):
         hoofd_thema = ThemaFactory.create(gepubliceerd=False)
         sub_thema = ThemaFactory.create(gepubliceerd=True, hoofd_thema=hoofd_thema)

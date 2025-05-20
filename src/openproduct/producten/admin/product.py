@@ -21,7 +21,6 @@ from .eigenaar import EigenaarInline
 
 
 def get_status_choices(producttype_id, instance):
-
     if instance:
         return [
             choice
@@ -44,7 +43,6 @@ def get_status_choices(producttype_id, instance):
 
 
 class ProductAdminForm(forms.ModelForm):
-
     class Meta:
         model = Product
         fields = "__all__"

@@ -655,7 +655,6 @@ class TestProduct(BaseApiTestCase):
         ]
 
         with self.subTest("PUT"):
-
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1258,7 +1257,6 @@ class TestProduct(BaseApiTestCase):
             with self.subTest(
                 f"Test {test['field']} is checked when producttype is changed."
             ):
-
                 data = {
                     "prijs": "10",
                     "frequentie": "eenmalig",
@@ -1330,7 +1328,6 @@ class TestProduct(BaseApiTestCase):
             with self.subTest(
                 f"Test {test['field']} is checked when producttype is changed."
             ):
-
                 data = {
                     "status": "initieel",
                     "prijs": "10",

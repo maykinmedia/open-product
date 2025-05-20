@@ -8,7 +8,6 @@ from .validators import check_externe_verwijzing_config_url
 
 
 class VerzoekType(BaseModel):
-
     uuid = models.UUIDField(
         verbose_name=_("uuid"),
         help_text=_("Uuid van het verzoektype."),

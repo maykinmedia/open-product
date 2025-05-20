@@ -10,7 +10,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestThemaFilters(BaseApiTestCase):
-
     path = reverse_lazy("thema-list")
 
     def test_gepubliceerd_filter(self):

@@ -49,7 +49,6 @@ class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 
 
 class ContentElementInlineForm(TranslatableModelForm):
-
     class Meta:
         model = ContentElement
         fields = "__all__"

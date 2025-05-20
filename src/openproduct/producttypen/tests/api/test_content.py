@@ -69,7 +69,6 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(response.data, expected_data)
 
     def test_create_content_element_with_language_header(self):
-
         for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
             with self.subTest(f"{header} should set default language only"):
                 response = self.client.post(self.path, self.data, headers=header)
@@ -92,7 +91,6 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(ContentElement.objects.get().content, "update")
 
     def test_update_content_element_with_language_header(self):
-
         for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
             with self.subTest(f"{header} should set default language only"):
                 response = self.client.put(self.detail_path, self.data, headers=header)
@@ -162,7 +160,6 @@ class TestContentElement(BaseApiTestCase):
 
 
 class TestContentElementActions(BaseApiTestCase):
-
     def setUp(self):
         super().setUp()
         self.content_element = ContentElementFactory.create()

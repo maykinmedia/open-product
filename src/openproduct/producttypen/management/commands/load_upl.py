@@ -28,7 +28,6 @@ def _check_if_csv_extension(path: str):
 
 
 class Command(BaseCommand):
-
     def __init__(self):
         self.help = (
             "Load upn to the database from a given local csv file or csv file url."

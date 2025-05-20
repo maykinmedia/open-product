@@ -10,7 +10,6 @@ from .product import Product
 
 
 class Document(BaseModel):
-
     uuid = models.UUIDField(
         verbose_name=_("uuid"),
         help_text=_("Uuid van het document."),

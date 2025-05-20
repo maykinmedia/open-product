@@ -14,7 +14,6 @@ CONFIG_FILE_PATH = str(CONFIG_FILES / "setup_config_dmn_config.yaml")
 
 class TestDmnConfigStep(TestCase):
     def make_assertions(self):
-
         self.assertEqual(DmnConfig.objects.all().count(), 2)
 
         self.assertEqual(
@@ -27,13 +26,11 @@ class TestDmnConfigStep(TestCase):
         )
 
     def test_execute_configuration_step_success(self):
-
         execute_single_step(DmnConfigsConfigurationStep, yaml_source=CONFIG_FILE_PATH)
 
         self.make_assertions()
 
     def test_execute_configuration_step_update_existing(self):
-
         DmnConfig.objects.create(
             tabel_endpoint="https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/",
             naam="test",
@@ -44,7 +41,6 @@ class TestDmnConfigStep(TestCase):
         self.make_assertions()
 
     def test_execute_configuration_step_idempotent(self):
-
         execute_single_step(DmnConfigsConfigurationStep, yaml_source=CONFIG_FILE_PATH)
 
         self.make_assertions()

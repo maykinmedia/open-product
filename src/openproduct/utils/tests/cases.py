@@ -5,7 +5,6 @@ from openproduct.accounts.models import User
 
 
 class BaseApiTestCase(APITestCase):
-
     def setUp(self):
         user = User.objects.create_user(username="testuser", password="testpassword")
         token = Token.objects.create(user=user)

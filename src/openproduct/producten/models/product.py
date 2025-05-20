@@ -16,7 +16,6 @@ from openproduct.utils.models import BasePublishableModel
 
 
 class PrijsFrequentieChoices(models.TextChoices):
-
     EENMALIG = "eenmalig", _("Eenmalig")
     MAANDELIJKS = "maandelijks", _("Maandelijks")
     JAARLIJKS = "jaarlijks", _("Jaarlijks")

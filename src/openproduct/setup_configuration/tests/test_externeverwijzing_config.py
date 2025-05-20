@@ -36,7 +36,6 @@ class TestExterneverwijzingConfigStep(TestCase):
         )
 
     def test_execute_configuration_step_success(self):
-
         execute_single_step(
             ExterneVerwijzingConfigConfigurationStep, yaml_source=CONFIG_FILE_PATH
         )
@@ -44,7 +43,6 @@ class TestExterneverwijzingConfigStep(TestCase):
         self.make_assertions()
 
     def test_execute_configuration_step_update_existing(self):
-
         config = ExterneVerwijzingConfig.get_solo()
         config.zaaktypen_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
         config.processen_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
@@ -59,7 +57,6 @@ class TestExterneverwijzingConfigStep(TestCase):
         self.make_assertions()
 
     def test_execute_configuration_step_idempotent(self):
-
         execute_single_step(
             ExterneVerwijzingConfigConfigurationStep, yaml_source=CONFIG_FILE_PATH
         )

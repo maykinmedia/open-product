@@ -5,7 +5,6 @@ from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
 def validate_prijs_optie_xor_regel(optie_count: int, regel_count: int):
-
     if optie_count and regel_count:
         raise ValidationError(_("Een prijs kan niet zowel opties als regels hebben."))
 

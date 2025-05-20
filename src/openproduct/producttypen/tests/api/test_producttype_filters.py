@@ -23,7 +23,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductTypeFilters(BaseApiTestCase):
-
     path = reverse_lazy("producttype-list")
 
     def test_gepubliceerd_filter(self):

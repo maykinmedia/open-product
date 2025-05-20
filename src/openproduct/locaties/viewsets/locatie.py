@@ -8,7 +8,6 @@ from openproduct.utils.filters import FilterSet
 
 
 class LocatieFilterSet(FilterSet):
-
     class Meta:
         model = Locatie
         fields = {

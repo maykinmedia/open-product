@@ -4,7 +4,6 @@ from ..serializers import clean_duplicate_uuids_in_list
 
 
 class TestDuplicateIds(TestCase):
-
     def test_list_has_duplicates(self):
         errors = dict()
         values = ["123", "123"]

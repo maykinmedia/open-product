@@ -40,7 +40,6 @@ class TestApiOidcAuthentication(TestCase):
         UserFactory.create(superuser=True, username="testtest")
 
     def generate_token_with_password(self, config):
-
         payload = {
             "client_id": config.oidc_rp_client_id,
             "client_secret": config.oidc_rp_client_secret,
@@ -139,7 +138,6 @@ class TestApiOidcAuthentication(TestCase):
     @vcr.use_cassette(str(TEST_FILES / "missing_openid_scope"))
     @mock_admin_oidc_config()
     def test_missing_openid_scope(self):
-
         config = OpenIDConnectConfig.get_solo()
 
         payload = {
@@ -164,7 +162,6 @@ class TestApiOidcAuthentication(TestCase):
     @vcr.use_cassette(str(TEST_FILES / "valid_cc_token"))
     @mock_admin_oidc_config()
     def test_valid_client_credentials_token(self):
-
         UserFactory.create(username="service-account-open-product", superuser=True)
 
         token = self.generate_client_credentials(OpenIDConnectConfig.get_solo())
