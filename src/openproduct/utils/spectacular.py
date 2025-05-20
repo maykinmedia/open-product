@@ -68,13 +68,8 @@ class AllowAllOriginsMixin:
         return response
 
 
-class SpectacularYAMLAPIView(_SpectacularYAMLAPIView):
+class SpectacularYAMLAPIView(AllowAllOriginsMixin, _SpectacularYAMLAPIView):
     """Spectacular YAML API view with Access-Control-Allow-Origin set to allow all"""
-
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        response["Access-Control-Allow-Origin"] = "*"
-        return response
 
 
 class SpectacularJSONAPIView(AllowAllOriginsMixin, _SpectacularJSONAPIView):

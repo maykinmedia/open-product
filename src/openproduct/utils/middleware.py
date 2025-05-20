@@ -25,7 +25,7 @@ class APILocaleMiddleware(_LocaleMiddleware):
 def get_version_mapping() -> Dict[str, str]:
     return {
         f"/producten/api/v{PRODUCTEN_API_MAJOR_VERSION}": PRODUCTEN_API_VERSION,
-        f"/producttypen/v{PRODUCTTYPEN_API_MAJOR_VERSION}": PRODUCTTYPEN_API_VERSION,
+        f"/producttypen/api/v{PRODUCTTYPEN_API_MAJOR_VERSION}": PRODUCTTYPEN_API_VERSION,
     }
 
 
