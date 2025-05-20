@@ -10,8 +10,12 @@ body:
     attributes:
       label: Thema / Theme
       options:
-        - "TODO"
+        - "API"
         - "Admin"
+        - "Import/Export"
+        - "Authenticatie"
+        - "Security"
+        - "Release"
         - "Other"
     validations:
       required: true
