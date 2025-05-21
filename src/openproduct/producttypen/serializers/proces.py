@@ -8,7 +8,6 @@ from openproduct.producttypen.models import Proces, ProductType
 
 
 class NestedProcesSerializer(serializers.ModelSerializer):
-
     url = serializers.SerializerMethodField(help_text=_("De url naar het proces."))
     uuid = serializers.UUIDField(write_only=True, help_text=_("Uuid naar het proces."))
 

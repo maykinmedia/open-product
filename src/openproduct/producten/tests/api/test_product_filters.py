@@ -24,7 +24,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductFilters(BaseApiTestCase):
-
     path = reverse_lazy("product-list")
 
     def test_gepubliceerd_filter(self):
@@ -649,7 +648,6 @@ class TestProductFilters(BaseApiTestCase):
         )
 
     def test_verbruiksobject_attr_filter_with_unknown_operator(self):
-
         response = self.client.get(
             self.path,
             {"verbruiksobject_attr": "naam__contains__test"},

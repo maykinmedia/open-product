@@ -19,7 +19,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 class SendNotifTestCase(BaseApiTestCase):
     @classmethod
     def setUpTestData(cls):
-
         service, _ = Service.objects.update_or_create(
             api_root="https://notificaties-api.vng.cloud/api/v1/",
             defaults=dict(

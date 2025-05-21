@@ -8,7 +8,6 @@ from openproduct.producten.models import Document, Product
 
 
 class NestedDocumentSerializer(serializers.ModelSerializer):
-
     url = serializers.SerializerMethodField(help_text=_("De url naar het document."))
     uuid = serializers.UUIDField(
         write_only=True, help_text=_("Uuid naar het document.")

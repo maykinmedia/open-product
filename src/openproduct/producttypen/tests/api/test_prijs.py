@@ -336,7 +336,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.count(), 1)
 
     def test_update_prijs_updating_and_removing_opties(self):
-
         optie_to_be_updated = PrijsOptieFactory.create(prijs=self.prijs)
         PrijsOptieFactory.create(prijs=self.prijs)
 
@@ -361,7 +360,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.get().uuid, optie_to_be_updated.uuid)
 
     def test_update_prijs_updating_and_removing_regels(self):
-
         regel_to_be_updated = PrijsRegelFactory.create(prijs=self.prijs)
         PrijsRegelFactory.create(prijs=self.prijs)
 
@@ -390,7 +388,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
     def test_update_prijs_creating_and_deleting_opties(self):
-
         PrijsOptieFactory.create(prijs=self.prijs)
 
         data = {
@@ -407,7 +404,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.get().bedrag, Decimal("20"))
 
     def test_update_prijs_creating_and_deleting_regels(self):
-
         PrijsRegelFactory.create(prijs=self.prijs)
 
         data = {
@@ -433,7 +429,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_optie_not_part_of_prijs_returns_error(self):
-
         optie = PrijsOptieFactory.create(prijs=PrijsFactory.create())
 
         data = {
@@ -462,7 +457,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_regel_not_part_of_prijs_returns_error(self):
-
         regel = PrijsRegelFactory.create(prijs=PrijsFactory.create())
 
         data = {
@@ -496,7 +490,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_optie_with_unknown_uuid_returns_error(self):
-
         non_existing_uuid = uuid4()
 
         data = {
@@ -525,7 +518,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_regel_with_unknown_uuid_returns_error(self):
-
         non_existing_uuid = uuid4()
 
         data = {
@@ -559,7 +551,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_duplicate_optie_uuids_returns_error(self):
-
         optie = PrijsOptieFactory.create(prijs=self.prijs)
 
         data = {
@@ -595,7 +586,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_update_prijs_with_duplicate_regel_uuids_returns_error(self):
-
         regel = PrijsRegelFactory.create(prijs=self.prijs)
 
         data = {
@@ -662,7 +652,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_partial_update_prijs(self):
-
         PrijsOptieFactory.create(prijs=self.prijs)
 
         data = {"actief_vanaf": datetime.date(2024, 1, 4)}
@@ -678,7 +667,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.count(), 1)
 
     def test_partial_update_prijs_updating_and_removing_opties(self):
-
         optie_to_be_updated = PrijsOptieFactory.create(prijs=self.prijs)
         PrijsOptieFactory.create(prijs=self.prijs)
 
@@ -702,7 +690,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.get().uuid, optie_to_be_updated.uuid)
 
     def test_partial_update_prijs_updating_and_removing_regels(self):
-
         regel_to_be_updated = PrijsRegelFactory.create(prijs=self.prijs)
         PrijsRegelFactory.create(prijs=self.prijs)
 
@@ -730,7 +717,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
     def test_partial_update_prijs_creating_and_deleting_opties(self):
-
         PrijsOptieFactory.create(prijs=self.prijs)
 
         data = {
@@ -750,7 +736,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.get().beschrijving, "test")
 
     def test_partial_update_prijs_creating_and_deleting_regels(self):
-
         PrijsRegelFactory.create(prijs=self.prijs)
 
         data = {
@@ -776,7 +761,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.first().beschrijving, "test")
 
     def test_partial_update_with_multiple_optie_errors(self):
-
         optie = PrijsOptieFactory.create(prijs=self.prijs)
         optie_of_other_prijs = PrijsOptieFactory.create(prijs=PrijsFactory.create())
         non_existing_optie = uuid4()
@@ -830,7 +814,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         )
 
     def test_partial_update_with_multiple_regel_errors(self):
-
         regel = PrijsRegelFactory.create(prijs=self.prijs)
         regel_of_other_prijs = PrijsRegelFactory.create(prijs=PrijsFactory.create())
         non_existing_regel = uuid4()
@@ -959,7 +942,6 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(response.data, expected_data)
 
     def test_delete_prijs(self):
-
         response = self.client.delete(self.detail_path)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

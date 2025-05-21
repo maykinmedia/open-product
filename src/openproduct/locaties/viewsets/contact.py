@@ -8,7 +8,6 @@ from openproduct.utils.filters import FilterSet
 
 
 class ContactFilterSet(FilterSet):
-
     class Meta:
         model = Contact
         fields = {

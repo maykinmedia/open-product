@@ -7,7 +7,6 @@ from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFa
 
 
 class TestThemaAdmin(TestCase):
-
     def setUp(self):
         self.admin = ThemaAdmin(Thema, AdminSite())
 

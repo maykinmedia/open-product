@@ -16,7 +16,6 @@ from openproduct.producttypen.tests.factories import (
 
 @disable_admin_mfa()
 class TestTranslationsAdmin(WebTest):
-
     def setUp(self):
         super().setUp()
         self.user = UserFactory.create(superuser=True)
@@ -26,7 +25,6 @@ class TestTranslationsAdmin(WebTest):
         self.contentelement = ContentElementFactory.create(producttype=self.producttype)
 
     def test_producttype_translation_cannot_be_deleted_from_admin(self):
-
         translation = ProductTypeTranslation.objects.get(master=self.producttype)
 
         translation_url = reverse(
@@ -39,7 +37,6 @@ class TestTranslationsAdmin(WebTest):
         self.assertNotIn("Verwijderen", response.text)
 
     def test_contentelement_translation_cannot_be_deleted_from_admin(self):
-
         translation = ContentElementTranslation.objects.get(master=self.contentelement)
 
         translation_url = reverse(

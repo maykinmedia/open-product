@@ -18,7 +18,6 @@ from .upn import UniformeProductNaam
 
 
 class ProductStateChoices(models.TextChoices):
-
     INITIEEL = "initieel", _("Initieel")
     GEREED = "gereed", _("Gereed")
     ACTIEF = "actief", _("Actief")
@@ -44,7 +43,6 @@ class ProductStateChoices(models.TextChoices):
     )
 )
 class ProductType(BasePublishableModel, TranslatableModel):
-
     code = models.CharField(
         verbose_name=_("code"),
         max_length=255,

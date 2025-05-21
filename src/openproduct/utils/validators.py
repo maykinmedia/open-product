@@ -102,7 +102,6 @@ def validate_data_attr(value: list):
 
 
 class ManyRegexValidator(RegexValidator):
-
     def __call__(self, values):
         for value in values:
             super().__call__(value)

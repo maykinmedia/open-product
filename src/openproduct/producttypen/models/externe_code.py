@@ -9,7 +9,6 @@ from openproduct.utils.models import BaseModel
 
 @reversion.register()
 class ExterneCode(BaseModel):
-
     naam = models.CharField(
         verbose_name=_("naam"),
         max_length=255,

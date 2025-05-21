@@ -127,6 +127,7 @@ When updating an existing installation:
 
        $ git pull
        $ pip install -r requirements/dev.txt
+       $ pre-commit install
        $ npm install
        $ npm run build
 

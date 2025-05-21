@@ -158,7 +158,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.data, expected_data)
 
     def test_create_producttype_with_language_header(self):
-
         for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
             with self.subTest(f"{header} should set default language only"):
                 response = self.client.post(
@@ -445,7 +444,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         )
 
     def test_create_complete_producttype(self):
-
         locatie = LocatieFactory.create()
         organisatie = OrganisatieFactory.create()
         contact = ContactFactory.create()
@@ -623,7 +621,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(ProductType.objects.count(), 1)
 
     def test_update_producttype_with_language_header(self):
-
         for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
             with self.subTest(f"{header} should set default language only"):
                 producttype = ProductTypeFactory.create()
@@ -1745,7 +1742,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
 @freeze_time("2024-01-01")
 class TestProductTypeActions(BaseApiTestCase):
-
     def setUp(self):
         super().setUp()
         self.producttype = ProductTypeFactory.create()

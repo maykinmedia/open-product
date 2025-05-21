@@ -6,7 +6,6 @@ from openproduct.producten.tests.factories import EigenaarFactory, ProductFactor
 
 
 class TestEigenaar(TestCase):
-
     def test_bsn_validation_raises_on_invalid_value(self):
         invalid_values = [
             "123",  # min length
@@ -87,7 +86,6 @@ class TestEigenaar(TestCase):
             EigenaarFactory.create(bsn="111222333", klantnummer="111222333").clean()
 
     def test_eigenaar_str(self):
-
         with self.subTest("bsn"):
             eigenaar = EigenaarFactory.create(bsn="111222333")
             self.assertEqual(str(eigenaar), "BSN 111222333")

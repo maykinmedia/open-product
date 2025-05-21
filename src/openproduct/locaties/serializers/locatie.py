@@ -36,7 +36,6 @@ from openproduct.locaties.models import Locatie
     ],
 )
 class LocatieSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Locatie
         fields = [

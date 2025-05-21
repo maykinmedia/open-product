@@ -22,7 +22,6 @@ def validate_bsn(bsn: str):
 
 
 def validate_eigenaar_identifier(bsn, kvk_nummer, klantnummer):
-
     if (not (bsn or klantnummer) and not kvk_nummer) or (
         (bsn or klantnummer) and kvk_nummer
     ):
@@ -71,7 +70,6 @@ def validate_product_dates(start_datum, eind_datum):
 
 
 def validate_product_start_datum(start_datum, producttype):
-
     if (
         start_datum
         and ProductStateChoices.ACTIEF not in producttype.toegestane_statussen

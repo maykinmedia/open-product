@@ -10,7 +10,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestBestandFilters(BaseApiTestCase):
-
     path = reverse_lazy("bestand-list")
 
     def test_naam_filter(self):

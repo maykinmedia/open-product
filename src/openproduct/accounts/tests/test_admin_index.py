@@ -6,7 +6,6 @@ from .. import apps as accounts_apps
 
 
 class DjangoAdminConfigTests(TestCase):
-
     @override_settings(INSTALLED_APPS=[])
     def test_update_admin_index_without_admin_index(self):
         with self.assertLogs(accounts_apps.__name__, level="WARNING") as cm:
