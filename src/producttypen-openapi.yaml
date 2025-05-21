@@ -3644,7 +3644,7 @@ paths:
                       organisaties:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
-                        code: org-1234
+                        code: ORG-1234
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
@@ -3656,7 +3656,7 @@ paths:
                         organisatie:
                           uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                           naam: Maykin Media
-                          code: org-1234
+                          code: ORG-1234
                           email: info@maykinmedia.nl
                           telefoonnummer: '+310207530523'
                           straat: Kingsfortweg
@@ -3838,7 +3838,7 @@ paths:
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
-                      code: org-1234
+                      code: ORG-1234
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
@@ -3850,7 +3850,7 @@ paths:
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
-                        code: org-1234
+                        code: ORG-1234
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
@@ -3995,7 +3995,7 @@ paths:
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
-                      code: org-1234
+                      code: ORG-1234
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
@@ -4007,7 +4007,7 @@ paths:
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
-                        code: org-1234
+                        code: ORG-1234
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
@@ -4196,7 +4196,7 @@ paths:
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
-                      code: org-1234
+                      code: ORG-1234
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
@@ -4208,7 +4208,7 @@ paths:
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
-                        code: org-1234
+                        code: ORG-1234
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
@@ -4398,7 +4398,7 @@ paths:
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Maykin Media
-                      code: org-1234
+                      code: ORG-1234
                       email: info@maykinmedia.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
@@ -4410,7 +4410,7 @@ paths:
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Maykin Media
-                        code: org-1234
+                        code: ORG-1234
                         email: info@maykinmedia.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
@@ -5368,7 +5368,7 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       producttypen:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        code: 129380-c21231
+                        code: 129380-C21231
                         keywords:
                         - auto
                         uniforme_product_naam: parkeervergunning
@@ -5443,7 +5443,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      code: 129380-c21231
+                      code: 129380-C21231
                       keywords:
                       - auto
                       uniforme_product_naam: parkeervergunning
@@ -5510,7 +5510,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      code: 129380-c21231
+                      code: 129380-C21231
                       keywords:
                       - auto
                       uniforme_product_naam: parkeervergunning
@@ -5592,7 +5592,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      code: 129380-c21231
+                      code: 129380-C21231
                       keywords:
                       - auto
                       uniforme_product_naam: parkeervergunning
@@ -5675,7 +5675,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      code: 129380-c21231
+                      code: 129380-C21231
                       keywords:
                       - auto
                       uniforme_product_naam: parkeervergunning
@@ -6389,6 +6389,7 @@ components:
         code:
           type: string
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         keywords:
           type: array
@@ -6430,6 +6431,7 @@ components:
           type: string
           minLength: 1
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         keywords:
           type: array
@@ -7138,6 +7140,7 @@ components:
           type: string
           minLength: 1
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         toegestane_statussen:
           type: array
@@ -7428,6 +7431,7 @@ components:
         code:
           type: string
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         toegestane_statussen:
           type: array
@@ -7484,6 +7488,7 @@ components:
         code:
           type: string
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         upl_naam:
           type: string
@@ -7576,6 +7581,7 @@ components:
           type: string
           minLength: 1
           description: code van het producttype.
+          pattern: ^[A-Z0-9-]+$
           maxLength: 255
         toegestane_statussen:
           type: array

@@ -1,10 +1,12 @@
 from datetime import date
 
-from django.test import TestCase
+from django.core.exceptions import ValidationError
+from django.test import SimpleTestCase, TestCase
 
 from freezegun import freeze_time
 
 from ...locaties.tests.factories import ContactFactory
+from ..models.validators import validate_producttype_code
 from .factories import PrijsFactory, ProductTypeFactory
 
 
@@ -45,3 +47,32 @@ class TestProductType(TestCase):
 
         self.assertEqual(producttype.organisaties.count(), 1)
         self.assertEqual(producttype.organisaties.get().id, contact.organisatie.id)
+
+
+class ValidateProductTypeCodeTest(SimpleTestCase):
+    def test_valid_codes(self):
+        valid_codes = [
+            "ABC",
+            "A1B2C3",
+            "PRODUCT-001",
+            "CODE-123-XYZ",
+            "Z9",
+        ]
+        for code in valid_codes:
+            try:
+                validate_producttype_code(code)
+            except ValidationError:
+                self.fail(f"ValidationError raised for valid code: {code}")
+
+    def test_invalid_codes(self):
+        invalid_codes = [
+            "abc",
+            "abc-123",
+            "A B C",
+            "A@B#C",
+            "A_B_C",
+        ]
+
+        for code in invalid_codes:
+            with self.assertRaises(ValidationError, msg=f"Failed on: {code}"):
+                validate_producttype_code(code)

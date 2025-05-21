@@ -1,7 +1,7 @@
-import re
-
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
+from openproduct.utils.validators import CustomRegexValidator
 
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 
@@ -36,11 +36,10 @@ def validate_thema_gepubliceerd_state(hoofd_thema, gepubliceerd, sub_themas=None
         )
 
 
-def validate_producttype_code(value):
-    if not re.match(r"^[A-Z0-9-]+$", value):
-        raise ValidationError(
-            _("Code mag alleen hoofdletters, cijfers en koppeltekens bevatten."),
-        )
+validate_producttype_code = CustomRegexValidator(
+    regex="^[A-Z0-9-]+$",
+    message=_("Code mag alleen hoofdletters, cijfers en koppeltekens bevatten."),
+)
 
 
 def disallow_hoofd_thema_self_reference(thema, hoofd_thema):
