@@ -44,3 +44,10 @@ class UUIDRelatedField(serializers.RelatedField):
 
     def to_representation(self, obj):
         return getattr(obj, "uuid")
+
+
+@extend_schema_field({"type": "object", "additionalProperties": True})
+class JSONObjectField(serializers.JSONField):
+    """
+    serializers.JSONField does not have a type by default and will show `any` in api spec.
+    """
