@@ -76,7 +76,7 @@ See: `All versions and changes <https://github.com/maykinmedia/open-product/blob
 Developers
 ==========
 
-|build-status| |coverage| |black| |python-versions|
+|build-status| |coverage| |ruff| |python-versions|
 
 This repository contains the source code for Open Product. To quickly
 get started, we recommend using the Docker image. You can also build the
@@ -137,9 +137,9 @@ Licensed under the EUPL_
     :alt: Coverage
     :target: https://codecov.io/gh/maykinmedia/open-product
 
-.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :alt: Code style
-    :target: https://github.com/psf/black
+.. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
 
 .. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
     :alt: Supported Python version

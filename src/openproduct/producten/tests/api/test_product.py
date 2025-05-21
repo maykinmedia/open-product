@@ -99,6 +99,7 @@ class TestProduct(BaseApiTestCase):
             "verbruiksobject": None,
             "dataobject": None,
             "gepubliceerd": False,
+            "naam": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -154,6 +155,7 @@ class TestProduct(BaseApiTestCase):
             "verbruiksobject": {"naam": "Test"},
             "dataobject": None,
             "gepubliceerd": False,
+            "naam": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -269,6 +271,7 @@ class TestProduct(BaseApiTestCase):
         expected_data = {
             "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
+            "naam": "",
             "status": product.status,
             "verbruiksobject": None,
             "dataobject": {"naam": "Test"},
@@ -652,7 +655,6 @@ class TestProduct(BaseApiTestCase):
         ]
 
         with self.subTest("PUT"):
-
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1033,6 +1035,7 @@ class TestProduct(BaseApiTestCase):
                 "verbruiksobject": None,
                 "dataobject": None,
                 "gepubliceerd": False,
+                "naam": "",
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product1.prijs),
@@ -1067,6 +1070,7 @@ class TestProduct(BaseApiTestCase):
                 "verbruiksobject": None,
                 "dataobject": None,
                 "gepubliceerd": False,
+                "naam": "",
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product2.prijs),
@@ -1113,6 +1117,7 @@ class TestProduct(BaseApiTestCase):
             "verbruiksobject": None,
             "dataobject": None,
             "gepubliceerd": False,
+            "naam": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -1252,7 +1257,6 @@ class TestProduct(BaseApiTestCase):
             with self.subTest(
                 f"Test {test['field']} is checked when producttype is changed."
             ):
-
                 data = {
                     "prijs": "10",
                     "frequentie": "eenmalig",
@@ -1324,7 +1328,6 @@ class TestProduct(BaseApiTestCase):
             with self.subTest(
                 f"Test {test['field']} is checked when producttype is changed."
             ):
-
                 data = {
                     "status": "initieel",
                     "prijs": "10",

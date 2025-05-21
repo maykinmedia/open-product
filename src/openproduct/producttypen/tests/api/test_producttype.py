@@ -163,7 +163,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ):
             with self.subTest(f"{header} should set default language only"):
                 unique_code = f"T-123-{i}"
-                print("test-code", unique_code)
                 data = self.data | {"code": unique_code}
 
                 response = self.client.post(self.path, data, headers=header)
@@ -448,7 +447,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         )
 
     def test_create_complete_producttype(self):
-
         locatie = LocatieFactory.create()
         organisatie = OrganisatieFactory.create()
         contact = ContactFactory.create()
@@ -626,7 +624,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(ProductType.objects.count(), 1)
 
     def test_update_producttype_with_language_header(self):
-
         for i, header in enumerate(
             [{"Accept-Language": "en"}, {"Content-Language": "en"}]
         ):
@@ -1753,7 +1750,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
 @freeze_time("2024-01-01")
 class TestProductTypeActions(BaseApiTestCase):
-
     def setUp(self):
         super().setUp()
         self.producttype = ProductTypeFactory.create()

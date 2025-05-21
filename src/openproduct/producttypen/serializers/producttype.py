@@ -546,7 +546,6 @@ class ProductTypeActuelePrijsSerializer(serializers.ModelSerializer):
 
 
 class ProductTypeTranslationSerializer(serializers.ModelSerializer):
-
     naam = serializers.CharField(
         required=True, max_length=255, help_text=_("naam van het producttype.")
     )

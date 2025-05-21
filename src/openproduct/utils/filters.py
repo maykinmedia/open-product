@@ -85,7 +85,6 @@ class TranslationFilter(django_filters.CharFilter):
             self.model_field_name = None
 
     def filter(self, qs, value):
-
         if value in django_filters.constants.EMPTY_VALUES:
             return qs
 

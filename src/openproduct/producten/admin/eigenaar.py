@@ -7,7 +7,6 @@ from openproduct.producten.models import Eigenaar
 
 
 class EigenaarInlineFormSet(AuditLogInlineformset):
-
     def clean(self):
         """Check that at least one eigenaar has been added."""
         super().clean()

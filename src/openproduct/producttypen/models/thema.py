@@ -12,7 +12,6 @@ from openproduct.utils.models import BasePublishableModel
 
 @reversion.register(follow=("hoofd_thema",))
 class Thema(BasePublishableModel):
-
     naam = models.CharField(
         verbose_name=_("naam"), max_length=255, help_text=_("Naam van het thema.")
     )

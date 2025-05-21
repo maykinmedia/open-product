@@ -38,7 +38,6 @@ from openproduct.locaties.models import Organisatie
     ],
 )
 class OrganisatieSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Organisatie
         fields = [

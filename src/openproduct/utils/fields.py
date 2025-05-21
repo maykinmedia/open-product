@@ -10,7 +10,6 @@ from rest_framework import serializers
 
 
 class ChoiceArrayField(ArrayField):
-
     def formfield(self, **kwargs):
         defaults = {
             "form_class": forms.MultipleChoiceField,

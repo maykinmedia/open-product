@@ -14,7 +14,6 @@ TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestLoadUPLCommand(TestCase):
-
     def setUp(self):
         self.path = os.path.join(TESTS_DIR, "data/upl.csv")
         self.requests_mock = requests_mock.Mocker()
@@ -86,7 +85,6 @@ class TestLoadUPLCommand(TestCase):
 
     def test_parse_csv_url(self):
         with open(self.path) as f:
-
             self.requests_mock.get(
                 status_code=200,
                 text=f.read(),

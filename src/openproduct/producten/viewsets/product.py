@@ -129,6 +129,7 @@ class ProductFilterSet(FilterSet):
             "prijs": ["exact", "gte", "lte"],
             "producttype__code": ["exact", "in"],
             "producttype__uuid": ["exact", "in"],
+            "naam": ["exact"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],

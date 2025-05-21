@@ -9,7 +9,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestLinkFilters(BaseApiTestCase):
-
     path = reverse_lazy("link-list")
 
     def test_naam_filter(self):

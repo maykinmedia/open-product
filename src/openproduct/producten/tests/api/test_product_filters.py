@@ -24,7 +24,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductFilters(BaseApiTestCase):
-
     path = reverse_lazy("product-list")
 
     def test_gepubliceerd_filter(self):
@@ -649,7 +648,6 @@ class TestProductFilters(BaseApiTestCase):
         )
 
     def test_verbruiksobject_attr_filter_with_unknown_operator(self):
-
         response = self.client.get(
             self.path,
             {"verbruiksobject_attr": "naam__contains__test"},
@@ -850,4 +848,19 @@ class TestProductFilters(BaseApiTestCase):
             self.assertEqual(
                 response.data["results"][0]["eigenaren"][0]["vestigingsnummer"],
                 "12345678",
+            )
+
+    def test_naam_filter(self):
+        product_1 = ProductFactory.create(naam="Verhuurvergunning Mijnstraat 42")
+        ProductFactory.create(naam="Verhuurvergunning Laan 15")
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"naam": "Verhuurvergunning Mijnstraat 42"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["uuid"], str(product_1.uuid))
+            self.assertEqual(
+                response.data["results"][0]["naam"], "Verhuurvergunning Mijnstraat 42"
             )

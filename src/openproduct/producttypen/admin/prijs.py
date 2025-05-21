@@ -28,13 +28,11 @@ class PrijsRegelInline(admin.TabularInline):
 
 
 class PrijsAdminForm(forms.ModelForm):
-
     class Meta:
         model = Prijs
         fields = "__all__"
 
     def get_entry_count(self, inline: str, unique_field: str) -> int:
-
         count = 0
         for i in range(int(self.data.get(f"{inline}-TOTAL_FORMS"))):
             if (

@@ -47,9 +47,7 @@ class DmnConfigsConfigurationStep(BaseConfigurationStep):
     enable_setting = "dmn_config_enable"
 
     def execute(self, model: DmnConfigsConfigurationModel) -> None:
-
         for config in model.configs:
-
             DmnConfig.objects.update_or_create(
                 tabel_endpoint=config.tabel_endpoint,
                 defaults={

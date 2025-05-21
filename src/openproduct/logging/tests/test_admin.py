@@ -25,7 +25,6 @@ from ..models import TimelineLogProxy
 )
 @disable_admin_mfa()
 class AuditLogAdminTests(WebTest):
-
     list_url = reverse_lazy("admin:logging_timelinelogproxy_changelist")
 
     @classmethod

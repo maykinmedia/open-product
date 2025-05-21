@@ -7,7 +7,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestOrganisatieFilters(BaseApiTestCase):
-
     path = reverse_lazy("organisatie-list")
 
     def test_naam_filter(self):

@@ -5,7 +5,6 @@ from solo.models import SingletonModel
 
 
 class ExterneVerwijzingConfig(SingletonModel):
-
     zaaktypen_url = models.URLField(
         verbose_name=_("Zaaktypen API url"),
         help_text=_("Basis url van Zaaktypen API."),

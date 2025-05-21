@@ -8,7 +8,6 @@ from openproduct.producttypen.models import ProductType, VerzoekType
 
 
 class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
-
     url = serializers.SerializerMethodField(help_text=_("De url naar het verzoektype."))
     uuid = serializers.UUIDField(
         write_only=True, help_text=_("Uuid naar het verzoektype.")

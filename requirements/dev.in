@@ -4,11 +4,7 @@
 # Helpers
 bump-my-version
 gitpython
-
-# Code formatting
-black
-isort[colors]
-flake8
+pre-commit
 
 # Debug tooling
 django-debug-toolbar

@@ -9,10 +9,16 @@ from rest_framework.viewsets import ModelViewSet
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ProductType, Thema
 from openproduct.producttypen.serializers import ThemaSerializer
-from openproduct.utils.filters import FilterSet
+from openproduct.utils.filters import FilterSet, UUIDFInFilter
 
 
 class ThemaFilterSet(FilterSet):
+    producttypen__uuid__in = UUIDFInFilter(
+        field_name="producttypen__uuid",
+        lookup_expr="in",
+        distinct=True,
+        help_text="Filter thema's op basis van een lijst met producttype uuid's.",
+    )
 
     class Meta:
         model = Thema
@@ -23,6 +29,7 @@ class ThemaFilterSet(FilterSet):
             "hoofd_thema__uuid": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
+            "producttypen__uuid": ["exact"],
         }
 
 

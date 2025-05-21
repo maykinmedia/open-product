@@ -15,7 +15,6 @@ from openproduct.producttypen.tests.factories import PrijsFactory, ProductTypeFa
 
 @freeze_time("2024-01-02")
 class TestPrijsAdmin(TestCase):
-
     def setUp(self):
         producttype = ProductTypeFactory.create()
         self.data = {

@@ -4,7 +4,6 @@ from .factories import LocatieFactory
 
 
 class TestLocatie(TestCase):
-
     def test_address(self):
         locatie = LocatieFactory.create(
             straat="Keizersgracht",

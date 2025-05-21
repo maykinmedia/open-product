@@ -19,7 +19,6 @@ from .factories import ProductFactory
 
 
 class TestProduct(TestCase):
-
     def setUp(self):
         self.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
 
@@ -94,7 +93,6 @@ class TestProductStateTask(TestCase):
     def test_product_status_is_not_set_to_active_on_later_states(
         self, mock_audit_automation_update
     ):
-
         for state in [
             ProductStateChoices.ACTIEF,
             ProductStateChoices.VERLOPEN,
@@ -139,7 +137,6 @@ class TestProductStateTask(TestCase):
     def test_product_status_is_not_set_to_verlopen_on_later_states(
         self, mock_audit_automation_update
     ):
-
         for state in [
             ProductStateChoices.VERLOPEN,
             ProductStateChoices.GEWEIGERD,

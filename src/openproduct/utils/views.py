@@ -32,7 +32,6 @@ def server_error(request, template_name=ERROR_500_TEMPLATE_NAME):
 
 
 class TranslatableViewSetMixin:
-
     _supported_languages = {
         language["code"] for language in settings.PARLER_LANGUAGES[None]
     }

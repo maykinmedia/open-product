@@ -8,7 +8,6 @@ from openproduct.utils.filters import FilterSet
 
 
 class JsonSchemaFilterSet(FilterSet):
-
     class Meta:
         model = JsonSchema
         fields = {"naam": ["exact", "contains"]}

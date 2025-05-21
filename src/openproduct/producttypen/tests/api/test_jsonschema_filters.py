@@ -7,7 +7,6 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestJsonSchemaFilters(BaseApiTestCase):
-
     path = reverse_lazy("schema-list")
 
     def test_naam_filter(self):

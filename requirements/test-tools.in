@@ -7,14 +7,12 @@ coverage
 django-webtest
 factory-boy
 freezegun
-flake8
 pylint
 pyquery  # integrates with webtest
 requests-mock
 tblib
 vcrpy
-black
-isort
+ruff
 
 # Documentation
 pytest

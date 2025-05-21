@@ -94,7 +94,7 @@ warnings.filterwarnings(
 )
 
 # Override settings with local settings.
-try:
+try:  # noqa: SIM105
     from .local import *  # noqa
 except ImportError:
     pass

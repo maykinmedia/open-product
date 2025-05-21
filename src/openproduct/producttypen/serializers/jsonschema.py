@@ -35,7 +35,6 @@ from openproduct.producttypen.models import JsonSchema
     ],
 )
 class JsonSchemaSerializer(serializers.ModelSerializer):
-
     schema = serializers.DictField()
 
     def validate_schema(self, schema):

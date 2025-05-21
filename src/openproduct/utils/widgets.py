@@ -2,7 +2,6 @@ from django.forms import Textarea
 
 
 class WysimarkWidget(Textarea):
-
     def __init__(self, attrs=None):
         default_attrs = {"class": "wysimark-textarea"}
         if attrs:

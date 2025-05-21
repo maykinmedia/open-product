@@ -9,7 +9,6 @@ from ..models import TimelineLogProxy
 
 
 class ProxyModelTests(TestCase):
-
     def test_extra_metadata_required(self):
         with (
             self.subTest("extra_data=null not allowed"),

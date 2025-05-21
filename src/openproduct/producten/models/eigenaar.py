@@ -16,7 +16,6 @@ from .product import Product
 
 @reversion.register()
 class Eigenaar(BaseModel):
-
     product = models.ForeignKey(
         Product,
         verbose_name=_("product"),

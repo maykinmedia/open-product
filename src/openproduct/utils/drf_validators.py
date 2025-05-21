@@ -54,7 +54,6 @@ class NestedObjectsValidator:
                 continue
 
             if obj_uuid in current_uuids:
-
                 if obj_uuid in seen_uuids:
                     errors.append(
                         _("Dubbel uuid: {} op index {}.").format(obj_uuid, idx)

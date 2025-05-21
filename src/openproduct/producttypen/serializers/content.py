@@ -70,7 +70,6 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
 
 class NestedContentElementSerializer(ContentElementSerializer):
-
     class Meta:
         model = ContentElement
         fields = (
@@ -93,7 +92,6 @@ class ContentElementTranslationSerializer(serializers.ModelSerializer):
 
 
 class ContentLabelSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ContentLabel
         fields = ("naam",)

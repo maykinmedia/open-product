@@ -7,7 +7,6 @@ from ..logevent import _audit_event
 
 
 class LogEventTests(TestCase):
-
     def test_raises_if_no_user_information_provided(self):
         content_object = UserFactory.create()
 

@@ -96,10 +96,8 @@ class AdminAuditLogMixin:
         )
 
     def get_formset_kwargs(self, request, obj, inline, prefix):
-        kwargs = (
-            super().get_formset_kwargs(  # pyright: ignore[reportAttributeAccessIssue]
-                request, obj, inline, prefix
-            )
+        kwargs = super().get_formset_kwargs(  # pyright: ignore[reportAttributeAccessIssue]
+            request, obj, inline, prefix
         )
         kwargs["_django_user"] = request.user
         return kwargs

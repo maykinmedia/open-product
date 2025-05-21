@@ -10,7 +10,6 @@ from .factories import PrijsFactory, PrijsOptieFactory, ProductTypeFactory
 
 
 class TestPrijs(TestCase):
-
     def test_unique_validation(self):
         producttype = ProductTypeFactory.create()
         PrijsFactory.create(
