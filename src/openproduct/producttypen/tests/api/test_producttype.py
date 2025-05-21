@@ -58,7 +58,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.data = {
             "naam": "test-producttype",
-            "code": "PT=12345",
+            "code": "PT-12345",
             "samenvatting": "test",
             "uniforme_product_naam": upn.naam,
             "thema_uuids": [self.thema.uuid],

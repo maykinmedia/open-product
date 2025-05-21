@@ -1,3 +1,5 @@
+import re
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -31,6 +33,13 @@ def validate_thema_gepubliceerd_state(hoofd_thema, gepubliceerd, sub_themas=None
             _(
                 "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben."
             )
+        )
+
+
+def validate_producttype_code(value):
+    if not re.match(r"^[A-Z0-9-]+$", value):
+        raise ValidationError(
+            _("Code mag alleen hoofdletters, cijfers en koppeltekens bevatten."),
         )
 
 
