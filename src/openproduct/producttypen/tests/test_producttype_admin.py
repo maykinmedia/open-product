@@ -20,11 +20,9 @@ class TestProductTypeAdminForm(TestCase):
     def test_at_least_one_thema_is_required(self):
         form = ProductTypeAdminForm(data=self.data)
 
-        self.assertEquals(
-            form.errors, {"themas": ["Er is minimaal één thema vereist."]}
-        )
+        self.assertEqual(form.errors, {"themas": ["Er is minimaal één thema vereist."]})
 
         ThemaFactory.create()
         form = ProductTypeAdminForm(data=self.data | {"themas": Thema.objects.all()})
 
-        self.assertEquals(form.errors, {})
+        self.assertEqual(form.errors, {})

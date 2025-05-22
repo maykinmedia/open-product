@@ -137,7 +137,7 @@ click-repl==0.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-commonground-api-common==2.5.1
+commonground-api-common==2.6.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -539,12 +539,7 @@ iniconfig==2.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest
-iso-639==0.4.5
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   commonground-api-common
-isodate==0.7.2
+iso639-lang==2.6.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

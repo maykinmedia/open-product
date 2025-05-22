@@ -18,9 +18,9 @@ Prerequisites
 
 You need the following libraries and/or programs:
 
-* `Python`_ 3.11
+* `Python`_ 3.12
 * Python `Virtualenv`_ and `Pip`_
-* `PostgreSQL`_ 15.0 or above
+* `PostgreSQL`_ 14.0 or above
 * `Docker`_ 19.03 or above (and `docker-compose`_)
 
 .. _Python: https://www.python.org/
