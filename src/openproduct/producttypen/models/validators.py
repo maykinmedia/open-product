@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+import jsonschema
+
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
@@ -46,3 +48,56 @@ def check_externe_verwijzing_config_url(field_url):
                 "De {field_url} is niet geconfigureerd in de externe verwijzing config"
             ).format(field_url=field_url.replace("_", " "))
         )
+
+
+def validate_dmn_mapping(mapping):
+    schema = {
+        "type": "object",
+        "properties": {
+            "type": "object",
+            "required": ["variabelen"],
+            "properties": {
+                "variabelen": {
+                    "type": "object",
+                    "properties": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["naam", "classType"],
+                            "anyOf": [
+                                {"required": ["regex"]},
+                                {"required": ["static"]},
+                            ],
+                            "properties": {
+                                "naam": {
+                                    "type": "string",
+                                },
+                                "regex": {
+                                    "type": "string",
+                                },
+                                "static": {
+                                    "type": "string",
+                                },
+                                "classType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Json",
+                                        "String",
+                                        "Integer",
+                                        "Double",
+                                        "Boolean",
+                                        "Date",
+                                        "Long",
+                                    ],
+                                },
+                            },
+                            "additionalProperties": False,
+                        },
+                    },
+                }
+            },
+        },
+        "additionalProperties": False,
+    }
+
+    jsonschema.validate(mapping, schema)
