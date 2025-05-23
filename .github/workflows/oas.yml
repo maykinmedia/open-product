@@ -1,0 +1,34 @@
+name: OAS
+
+on:
+  push:
+    branches:
+      - master
+      - stable/*
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  oas:
+    name: Checks
+
+    strategy:
+      matrix:
+        component:
+          - producten
+          - producttypen
+
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v5
+    with:
+      python-version: '3.11'
+      django-settings-module: openproduct.conf.ci
+      oas-generate-command: bin/generate_api_schema.sh
+      schema-path: src/${{ matrix.component }}-openapi.yaml
+      oas-artifact-name: ${{ matrix.component }}-api-oas
+      node-version-file: '.nvmrc'
+      spectral-version: '^6.15.0'
+      openapi-to-postman-version: '^5.0.0'
+      postman-artifact-name: ${{ matrix.component }}-api-postman-collection
+      openapi-generator-version: '^2.20.0'

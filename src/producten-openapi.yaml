@@ -1042,10 +1042,14 @@ components:
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
         verbruiksobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
             `verbruiksobject_schema` uit het producttype.
         dataobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
@@ -1137,10 +1141,14 @@ components:
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
         verbruiksobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
             `verbruiksobject_schema` uit het producttype.
         dataobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
@@ -1219,10 +1227,14 @@ components:
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
         verbruiksobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Verbruiksobject van dit product. Wordt gevalideerd met het
             `verbruiksobject_schema` uit het producttype.
         dataobject:
+          type: object
+          additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
