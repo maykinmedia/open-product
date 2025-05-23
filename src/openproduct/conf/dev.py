@@ -8,7 +8,9 @@ os.environ.setdefault(
     "{{ secret_key }}",
 )
 os.environ.setdefault("IS_HTTPS", "no")
-os.environ.setdefault("VERSION_TAG", "dev")
+os.environ.setdefault("RELEASE", "dev")
+os.environ.setdefault("ENVIRONMENT", "development")
+os.environ.setdefault("DISABLE_2FA", "True")
 
 os.environ.setdefault("DB_NAME", "openproduct")
 os.environ.setdefault("DB_USER", "openproduct")
@@ -81,9 +83,6 @@ if "test" not in sys.argv:
     MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
     INTERNAL_IPS = ("127.0.0.1",)
 
-# None of the authentication backends require two-factor authentication.
-if config("DISABLE_2FA", default=False):
-    MAYKIN_2FA_ALLOW_MFA_BYPASS_BACKENDS = AUTHENTICATION_BACKENDS
 
 # THOU SHALT NOT USE NAIVE DATETIMES
 warnings.filterwarnings(
