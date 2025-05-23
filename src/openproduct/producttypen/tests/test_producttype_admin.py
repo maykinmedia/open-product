@@ -10,7 +10,7 @@ class TestProductTypeAdminForm(TestCase):
         upn = UniformeProductNaamFactory.create()
         self.data = {
             "naam": "test",
-            "code": "test",
+            "code": "TEST-123",
             "uniforme_product_naam": upn,
             "beschrijving": "beschrijving",
             "samenvatting": "samenvatting",
