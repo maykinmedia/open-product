@@ -1,5 +1,3 @@
-from django.utils.translation import gettext as _
-
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -12,9 +10,9 @@ class Pagination(PageNumberPagination):
     def get_paginated_response(self, data):
         return Response(
             {
-                _("aantal"): self.page.paginator.count,
-                _("volgende"): self.get_next_link(),
-                _("vorige"): self.get_previous_link(),
-                _("resultaten"): data,
+                "aantal": self.page.paginator.count,
+                "volgende": self.get_next_link(),
+                "vorige": self.get_previous_link(),
+                "resultaten": data,
             }
         )

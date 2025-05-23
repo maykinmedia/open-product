@@ -33,8 +33,8 @@ class TestProductFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"gepubliceerd": "true"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["gepubliceerd"], True)
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["gepubliceerd"], True)
 
     def test_status_filter(self):
         ProductFactory.create(status=ProductStateChoices.INITIEEL)
@@ -43,8 +43,8 @@ class TestProductFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"status": "initieel"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["status"], "initieel")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["status"], "initieel")
 
     def test_frequentie_filter(self):
         ProductFactory.create(frequentie=PrijsFrequentieChoices.EENMALIG)
@@ -53,8 +53,8 @@ class TestProductFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"frequentie": "eenmalig"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["frequentie"], "eenmalig")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["frequentie"], "eenmalig")
 
     def test_prijs_filter(self):
         ProductFactory.create(prijs=Decimal("10"))
@@ -64,22 +64,22 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"prijs": "20.99"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(response.data[_("resultaten")][0]["prijs"], "20.99")
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["prijs"], "20.99")
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"prijs__lte": "20"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(response.data[_("resultaten")][0]["prijs"], "10.00")
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["prijs"], "10.00")
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"prijs__gte": "20"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(response.data[_("resultaten")][0]["prijs"], "20.99")
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["prijs"], "20.99")
 
     def test_producttype_code_filter(self):
         ProductFactory.create(producttype__code="123")
@@ -91,9 +91,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["producttype"]["code"],
+                response.data["resultaten"][0]["producttype"]["code"],
                 "8234098q2730492873",
             )
 
@@ -103,7 +103,7 @@ class TestProductFilters(BaseApiTestCase):
                 {"producttype__code__in": "8234098q2730492873,123"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
     def test_producttype_upn_filter(self):
         ProductFactory.create(
@@ -116,9 +116,9 @@ class TestProductFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype"]["uniforme_product_naam"],
+            response.data["resultaten"][0]["producttype"]["uniforme_product_naam"],
             "parkeervergunning",
         )
 
@@ -134,9 +134,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["producttype"]["uuid"],
+                response.data["resultaten"][0]["producttype"]["uuid"],
                 str(producttype_uuid),
             )
 
@@ -146,7 +146,7 @@ class TestProductFilters(BaseApiTestCase):
                 {"producttype__uuid__in": f"{producttype_uuid},{producttype_uuid_2}"},
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
     def test_producttype_naam_filter(self):
         producttype_uuid = uuid4()
@@ -161,9 +161,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["producttype"]["uuid"],
+                response.data["resultaten"][0]["producttype"]["uuid"],
                 str(producttype_uuid),
             )
 
@@ -172,7 +172,7 @@ class TestProductFilters(BaseApiTestCase):
                 self.path, {"producttype__naam__in": "parkeervergunning,aanbouw"}
             )
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
     def test_start_datum_filter(self):
         ProductFactory.create(start_datum=date(2024, 6, 7))
@@ -182,27 +182,27 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"start_datum": "2024-06-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["start_datum"], "2024-06-07"
+                response.data["resultaten"][0]["start_datum"], "2024-06-07"
             )
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"start_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["start_datum"], "2024-06-07"
+                response.data["resultaten"][0]["start_datum"], "2024-06-07"
             )
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"start_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["start_datum"], "2025-06-07"
+                response.data["resultaten"][0]["start_datum"], "2025-06-07"
             )
 
     def test_eind_datum_filter(self):
@@ -213,28 +213,22 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"eind_datum": "2024-06-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["eind_datum"], "2024-06-07"
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["eind_datum"], "2024-06-07")
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"eind_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["eind_datum"], "2024-06-07"
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["eind_datum"], "2024-06-07")
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"eind_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["eind_datum"], "2025-06-07"
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["eind_datum"], "2025-06-07")
 
     def test_aanmaak_datum_filter(self):
         with freeze_time("2024-06-07"):
@@ -248,9 +242,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["aanmaak_datum"],
+                response.data["resultaten"][0]["aanmaak_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -258,9 +252,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"aanmaak_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["aanmaak_datum"],
+                response.data["resultaten"][0]["aanmaak_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -268,9 +262,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"aanmaak_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["aanmaak_datum"],
+                response.data["resultaten"][0]["aanmaak_datum"],
                 "2025-06-07T02:00:00+02:00",
             )
 
@@ -286,9 +280,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["update_datum"],
+                response.data["resultaten"][0]["update_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -296,9 +290,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"update_datum__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["update_datum"],
+                response.data["resultaten"][0]["update_datum"],
                 "2024-06-07T02:00:00+02:00",
             )
 
@@ -306,9 +300,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"update_datum__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["update_datum"],
+                response.data["resultaten"][0]["update_datum"],
                 "2025-06-07T02:00:00+02:00",
             )
 
@@ -339,9 +333,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["dataobject"]["naam"], "test"
+                response.data["resultaten"][0]["dataobject"]["naam"], "test"
             )
 
         with self.subTest("icontains"):
@@ -350,9 +344,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["dataobject"]["naam"], "test"
+                response.data["resultaten"][0]["dataobject"]["naam"], "test"
             )
 
         with self.subTest("in"):
@@ -361,7 +355,7 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
         for op in ["gt", "gte", "lt", "lte"]:
             with self.subTest(op):
@@ -398,9 +392,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["naam"], "test"
+                response.data["resultaten"][0]["verbruiksobject"]["naam"], "test"
             )
 
         with self.subTest("icontains"):
@@ -409,9 +403,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["naam"], "test"
+                response.data["resultaten"][0]["verbruiksobject"]["naam"], "test"
             )
 
         with self.subTest("in"):
@@ -420,7 +414,7 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
         for op in ["gt", "gte", "lt", "lte"]:
             with self.subTest(op):
@@ -457,9 +451,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 30.0
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 30.0
             )
 
         with self.subTest("icontains"):
@@ -468,9 +462,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 30
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 30
             )
 
         with self.subTest("in"):
@@ -479,7 +473,7 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
         with self.subTest("gt"):
             response = self.client.get(
@@ -487,9 +481,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 50
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 50
             )
 
         with self.subTest("gte"):
@@ -498,9 +492,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 50
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 50
             )
 
         with self.subTest("lt"):
@@ -509,9 +503,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 30
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 30
             )
 
         with self.subTest("lte"):
@@ -520,9 +514,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["leeftijd"], 30
+                response.data["resultaten"][0]["verbruiksobject"]["leeftijd"], 30
             )
 
     def test_verbruiksobject_attr_date_filters(self):
@@ -556,9 +550,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2024-10-10",
             )
 
@@ -568,9 +562,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2024-10-10",
             )
 
@@ -580,7 +574,7 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 2)
+            self.assertEqual(response.data["aantal"], 2)
 
         with self.subTest("gt"):
             response = self.client.get(
@@ -588,9 +582,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2025-10-10",
             )
 
@@ -600,9 +594,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2025-10-10",
             )
 
@@ -612,9 +606,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2024-10-10",
             )
 
@@ -624,9 +618,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["verbruiksobject"]["datum"],
+                response.data["resultaten"][0]["verbruiksobject"]["datum"],
                 "2024-10-10",
             )
 
@@ -719,9 +713,9 @@ class TestProductFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["verbruiksobject"]["naam"], "test"
+            response.data["resultaten"][0]["verbruiksobject"]["naam"], "test"
         )
 
     def test_document_uuid_filter(self):
@@ -733,10 +727,8 @@ class TestProductFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"documenten__uuid": uuid})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertIn(
-            str(uuid), response.data[_("resultaten")][0]["documenten"][0]["url"]
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertIn(str(uuid), response.data["resultaten"][0]["documenten"][0]["url"])
 
     def test_eigenaar_uuid_filter(self):
         uuid = uuid4()
@@ -752,9 +744,9 @@ class TestProductFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"eigenaren__uuid": str(uuid)})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["eigenaren"][0]["uuid"], str(uuid)
+            response.data["resultaten"][0]["eigenaren"][0]["uuid"], str(uuid)
         )
 
     def test_eigenaar_bsn_filter(self):
@@ -770,9 +762,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"eigenaren__bsn": "111222333"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["bsn"], "111222333"
+                response.data["resultaten"][0]["eigenaren"][0]["bsn"], "111222333"
             )
 
         with self.subTest("distinct"):
@@ -782,9 +774,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"eigenaren__bsn": "111222333"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["bsn"], "111222333"
+                response.data["resultaten"][0]["eigenaren"][0]["bsn"], "111222333"
             )
 
     def test_eigenaar_kvk_nummer_filter(self):
@@ -800,9 +792,9 @@ class TestProductFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"eigenaren__kvk_nummer": "12345678"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["kvk_nummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["kvk_nummer"],
                 "12345678",
             )
 
@@ -811,9 +803,9 @@ class TestProductFilters(BaseApiTestCase):
             product.save()
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["kvk_nummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["kvk_nummer"],
                 "12345678",
             )
 
@@ -832,9 +824,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["klantnummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["klantnummer"],
                 "12345678",
             )
 
@@ -847,9 +839,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["klantnummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["klantnummer"],
                 "12345678",
             )
 
@@ -868,9 +860,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["vestigingsnummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["vestigingsnummer"],
                 "12345678",
             )
 
@@ -880,9 +872,9 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["eigenaren"][0]["vestigingsnummer"],
+                response.data["resultaten"][0]["eigenaren"][0]["vestigingsnummer"],
                 "12345678",
             )
 
@@ -895,11 +887,11 @@ class TestProductFilters(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["uuid"], str(product_1.uuid)
+                response.data["resultaten"][0]["uuid"], str(product_1.uuid)
             )
             self.assertEqual(
-                response.data[_("resultaten")][0]["naam"],
+                response.data["resultaten"][0]["naam"],
                 "Verhuurvergunning Mijnstraat 42",
             )

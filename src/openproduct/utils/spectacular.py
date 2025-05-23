@@ -61,7 +61,6 @@ def get_lib_doc_excludes():
 
 
 class AllowAllOriginsMixin:
-
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
         response["Access-Control-Allow-Origin"] = "*"

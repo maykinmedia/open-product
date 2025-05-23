@@ -1,5 +1,4 @@
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -17,8 +16,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam__iexact": "Maykin Media"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["naam"], "Maykin Media")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["naam"], "Maykin Media")
 
     def test_email_filter(self):
         OrganisatieFactory.create(email="bob@maykinmedia.nl")
@@ -27,10 +26,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"email__iexact": "Bob@MaykinMedia.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(
-            response.data[_("resultaten")][0]["email"], "bob@maykinmedia.nl"
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["email"], "bob@maykinmedia.nl")
 
     def test_telefoonnummer_filter(self):
         OrganisatieFactory.create(telefoonnummer="0611223344")
@@ -39,10 +36,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"telefoonnummer__contains": "344"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(
-            response.data[_("resultaten")][0]["telefoonnummer"], "0611223344"
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["telefoonnummer"], "0611223344")
 
     def test_straat_filter(self):
         OrganisatieFactory.create(straat="Kingsfortweg")
@@ -51,8 +46,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"straat__iexact": "kingsfortweg"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["straat"], "Kingsfortweg")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["straat"], "Kingsfortweg")
 
     def test_huisnummer_filter(self):
         OrganisatieFactory.create(huisnummer="132AA")
@@ -61,8 +56,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"huisnummer__iexact": "132aa"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["huisnummer"], "132AA")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["huisnummer"], "132AA")
 
     def test_postcode_filter(self):
         OrganisatieFactory.create(postcode="1111 AA")
@@ -71,8 +66,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"postcode": "1111 AA"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["postcode"], "1111 AA")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["postcode"], "1111 AA")
 
     def test_stad_filter(self):
         OrganisatieFactory.create(stad="Amsterdam")
@@ -81,8 +76,8 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"stad": "Amsterdam"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["stad"], "Amsterdam")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["stad"], "Amsterdam")
 
     def test_code_filter(self):
         OrganisatieFactory.create(code="123")
@@ -91,7 +86,5 @@ class TestOrganisatieFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"code": "8q30298472019387409"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(
-            response.data[_("resultaten")][0]["code"], "8q30298472019387409"
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["code"], "8q30298472019387409")

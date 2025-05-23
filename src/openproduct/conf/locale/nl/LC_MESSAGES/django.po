@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 14:54+0200\n"
+"POT-Creation-Date: 2025-05-23 12:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -620,17 +620,17 @@ msgstr ""
 msgid "Status 'Gereed' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:622
+#: producten/tests/api/test_product_filters.py:648
 msgid ""
 "Filter '{}' moet de format 'key__operator__value' hebben, komma's kunnen "
 "alleen in de `waarde` worden toegevoegd"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:644
+#: producten/tests/api/test_product_filters.py:670
 msgid "Filter '{}' heeft niet de format 'key__operator__waarde'"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:663
+#: producten/tests/api/test_product_filters.py:689
 msgid "operator `{}` is niet bekend/ondersteund"
 msgstr ""
 
@@ -1579,22 +1579,6 @@ msgstr ""
 
 #: utils/models.py:30
 msgid "De datum waarop het object voor het laatst is gewijzigd."
-msgstr ""
-
-#: utils/pagination.py:13
-msgid "aantal"
-msgstr ""
-
-#: utils/pagination.py:14
-msgid "volgende"
-msgstr ""
-
-#: utils/pagination.py:15
-msgid "vorige"
-msgstr ""
-
-#: utils/pagination.py:16
-msgid "resultaten"
 msgstr ""
 
 #: utils/tests/test_validators.py:24 utils/validators.py:27
