@@ -58,7 +58,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.5.1
+commonground-api-common==2.6.4
     # via
     #   -r requirements/base.in
     #   open-api-framework
@@ -244,9 +244,7 @@ idna==3.10
     # via requests
 inflection==0.5.1
     # via drf-spectacular
-iso-639==0.4.5
-    # via commonground-api-common
-isodate==0.7.2
+iso639-lang==2.6.0
     # via commonground-api-common
 itypes==1.2.0
     # via coreapi
@@ -276,7 +274,7 @@ mozilla-django-oidc-db==0.23.0
     # via open-api-framework
 notifications-api-common==0.6.0
     # via commonground-api-common
-open-api-framework==0.9.6
+open-api-framework==0.10.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl

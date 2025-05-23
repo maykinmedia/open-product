@@ -113,7 +113,7 @@ click-repl==0.3.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-commonground-api-common==2.5.1
+commonground-api-common==2.6.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -465,12 +465,7 @@ inflection==0.5.1
     #   drf-spectacular
 iniconfig==2.0.0
     # via pytest
-iso-639==0.4.5
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   commonground-api-common
-isodate==0.7.2
+iso639-lang==2.6.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -551,7 +546,7 @@ notifications-api-common==0.6.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.9.6
+open-api-framework==0.10.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

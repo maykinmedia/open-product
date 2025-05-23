@@ -33,7 +33,7 @@ class TestTranslationsAdmin(WebTest):
 
         response = self.app.get(translation_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn("Verwijderen", response.text)
 
     def test_contentelement_translation_cannot_be_deleted_from_admin(self):
@@ -45,7 +45,7 @@ class TestTranslationsAdmin(WebTest):
 
         response = self.app.get(translation_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotIn("Verwijderen", response.text)
 
     def test_producttype_add_view_only_has_nl_tab(self):
@@ -53,7 +53,7 @@ class TestTranslationsAdmin(WebTest):
 
         response = self.app.get(url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("Nederlands", response.text)
         self.assertNotIn("Engels", response.text)
 
@@ -64,7 +64,7 @@ class TestTranslationsAdmin(WebTest):
 
         response = self.app.get(url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("Nederlands", response.text)
         self.assertIn("Engels", response.text)
 
@@ -78,7 +78,7 @@ class TestTranslationsAdmin(WebTest):
 
         response = self.app.get(url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("Verwijderen", response.text)
 
         delete_url = reverse(
@@ -86,7 +86,7 @@ class TestTranslationsAdmin(WebTest):
         )
         response = self.app.get(delete_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("Ja, ik weet het zeker", response.text)
 
         form = response.forms[1]

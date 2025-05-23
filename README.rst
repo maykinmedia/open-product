@@ -140,6 +140,6 @@ Licensed under the EUPL_
     :target: https://github.com/astral-sh/ruff
     :alt: Ruff
 
-.. |python-versions| image:: https://img.shields.io/badge/python-3.11%2B-blue.svg
+.. |python-versions| image:: https://img.shields.io/badge/python-3.12%2B-blue.svg
     :alt: Supported Python version
 

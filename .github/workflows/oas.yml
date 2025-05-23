@@ -22,7 +22,7 @@ jobs:
 
     uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v5
     with:
-      python-version: '3.11'
+      python-version: '3.12'
       django-settings-module: openproduct.conf.ci
       oas-generate-command: bin/generate_api_schema.sh
       schema-path: src/${{ matrix.component }}-openapi.yaml
