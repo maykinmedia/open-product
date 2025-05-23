@@ -3,7 +3,6 @@ from decimal import Decimal
 from uuid import uuid4
 
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -29,28 +28,22 @@ class TestPrijsFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"prijsopties__bedrag": "50"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["uuid"], str(prijs2.uuid)
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs2.uuid))
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"prijsopties__bedrag__lte": "40"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["uuid"], str(prijs1.uuid)
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs1.uuid))
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"prijsopties__bedrag__gte": "40"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
-            self.assertEqual(
-                response.data[_("resultaten")][0]["uuid"], str(prijs2.uuid)
-            )
+            self.assertEqual(response.data["aantal"], 1)
+            self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs2.uuid))
 
     def test_prijs_opties_beschrijving_filter(self):
         prijs = PrijsFactory.create()
@@ -61,8 +54,8 @@ class TestPrijsFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"prijsopties__beschrijving": "spoed"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["uuid"], str(prijs.uuid))
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs.uuid))
 
     def test_prijs_regels_dmn_tabel_id_filter(self):
         prijs = PrijsFactory.create()
@@ -78,8 +71,8 @@ class TestPrijsFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["uuid"], str(prijs.uuid))
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs.uuid))
 
     def test_prijs_regels_beschrijving_filter(self):
         prijs = PrijsFactory.create()
@@ -90,8 +83,8 @@ class TestPrijsFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"prijsregels__beschrijving": "base"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["uuid"], str(prijs.uuid))
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["uuid"], str(prijs.uuid))
 
     def test_actief_vanaf_filter(self):
         PrijsFactory.create(actief_vanaf=date(2024, 6, 7))
@@ -101,27 +94,27 @@ class TestPrijsFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"actief_vanaf": "2024-06-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["actief_vanaf"], "2024-06-07"
+                response.data["resultaten"][0]["actief_vanaf"], "2024-06-07"
             )
 
         with self.subTest("lte"):
             response = self.client.get(self.path, {"actief_vanaf__lte": "2024-07-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["actief_vanaf"], "2024-06-07"
+                response.data["resultaten"][0]["actief_vanaf"], "2024-06-07"
             )
 
         with self.subTest("gte"):
             response = self.client.get(self.path, {"actief_vanaf__gte": "2025-04-07"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data[_("aantal")], 1)
+            self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(
-                response.data[_("resultaten")][0]["actief_vanaf"], "2025-06-07"
+                response.data["resultaten"][0]["actief_vanaf"], "2025-06-07"
             )
 
     def test_producttype_code_filter(self):
@@ -136,9 +129,9 @@ class TestPrijsFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_uuid_filter(self):
@@ -149,9 +142,9 @@ class TestPrijsFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?producttype__uuid={producttype_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_upn_filter(self):
@@ -167,9 +160,9 @@ class TestPrijsFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_naam_filter(self):
@@ -184,7 +177,7 @@ class TestPrijsFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )

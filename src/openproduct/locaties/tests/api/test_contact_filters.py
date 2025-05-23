@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -19,8 +18,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"rol": "manager"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["rol"], "manager")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["rol"], "manager")
 
     def test_telefoonnummer_filter(self):
         ContactFactory.create(telefoonnummer="0611223344")
@@ -29,10 +28,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"telefoonnummer__contains": "344"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(
-            response.data[_("resultaten")][0]["telefoonnummer"], "0611223344"
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["telefoonnummer"], "0611223344")
 
     def test_email_filter(self):
         ContactFactory.create(email="bob@maykinmedia.nl")
@@ -41,10 +38,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"email__iexact": "Bob@MaykinMedia.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(
-            response.data[_("resultaten")][0]["email"], "bob@maykinmedia.nl"
-        )
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["email"], "bob@maykinmedia.nl")
 
     def test_achternaam_filter(self):
         ContactFactory.create(achternaam="de Vries")
@@ -53,8 +48,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"achternaam": "Jansen"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["achternaam"], "Jansen")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["achternaam"], "Jansen")
 
     def test_voornaam_filter(self):
         ContactFactory.create(voornaam="Bob")
@@ -63,8 +58,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"voornaam": "Bob"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
-        self.assertEqual(response.data[_("resultaten")][0]["voornaam"], "Bob")
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["voornaam"], "Bob")
 
     def test_organisatie_uuid_filter(self):
         org_uuid = uuid4()
@@ -74,9 +69,9 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?organisatie__uuid={org_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["organisatie"]["uuid"], str(org_uuid)
+            response.data["resultaten"][0]["organisatie"]["uuid"], str(org_uuid)
         )
 
     def test_organisatie_naam_filter(self):
@@ -86,7 +81,7 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"organisatie__naam": "Maykin Media"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["organisatie"]["naam"], "Maykin Media"
+            response.data["resultaten"][0]["organisatie"]["naam"], "Maykin Media"
         )

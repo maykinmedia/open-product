@@ -2,7 +2,6 @@ from uuid import uuid4
 
 from django.core.files.base import ContentFile
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
 
 from rest_framework import status
 
@@ -20,9 +19,9 @@ class TestBestandFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam__contains": "abc"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["bestand"],
+            response.data["resultaten"][0]["bestand"],
             "http://testserver" + bestand.bestand.url,
         )
 
@@ -39,9 +38,9 @@ class TestBestandFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_uuid_filter(self):
@@ -52,9 +51,9 @@ class TestBestandFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?producttype__uuid={producttype_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_upn_filter(self):
@@ -70,9 +69,9 @@ class TestBestandFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )
 
     def test_producttype_naam_filter(self):
@@ -87,7 +86,7 @@ class TestBestandFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 1)
+        self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(
-            response.data[_("resultaten")][0]["producttype_uuid"], producttype_uuid
+            response.data["resultaten"][0]["producttype_uuid"], producttype_uuid
         )

@@ -122,7 +122,7 @@ class TestProductTypeBestand(BaseApiTestCase):
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 2)
+        self.assertEqual(response.data["aantal"], 2)
         expected_data = [
             {
                 "uuid": str(self.bestand.uuid),
@@ -135,7 +135,7 @@ class TestProductTypeBestand(BaseApiTestCase):
                 "producttype_uuid": self.producttype.uuid,
             },
         ]
-        self.assertCountEqual(response.data[_("resultaten")], expected_data)
+        self.assertCountEqual(response.data["resultaten"], expected_data)
 
     def test_read_bestand(self):
         response = self.client.get(self.detail_path)

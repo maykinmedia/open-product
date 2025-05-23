@@ -95,7 +95,7 @@ class TestContact(BaseApiTestCase):
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[_("aantal")], 2)
+        self.assertEqual(response.data["aantal"], 2)
         expected_data = [
             {
                 "uuid": str(self.contact.uuid),
@@ -136,7 +136,7 @@ class TestContact(BaseApiTestCase):
                 },
             },
         ]
-        self.assertCountEqual(response.data[_("resultaten")], expected_data)
+        self.assertCountEqual(response.data["resultaten"], expected_data)
 
     def test_read_contact(self):
         response = self.client.get(self.detail_path)
