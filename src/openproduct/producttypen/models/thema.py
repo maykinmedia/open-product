@@ -19,7 +19,7 @@ class Thema(BasePublishableModel):
     hoofd_thema = models.ForeignKey(
         "self",
         verbose_name=_("hoofd thema"),
-        help_text=_("Het hoofd thema van het thema."),
+        help_text=_("Het hoofd thema waaronder dit thema valt."),
         related_name="sub_themas",
         null=True,
         blank=True,
