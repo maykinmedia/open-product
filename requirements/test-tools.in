@@ -15,7 +15,6 @@ vcrpy
 ruff
 
 # Documentation
-pytest
 recommonmark
 sphinx
 sphinx-markdown-tables==0.0.15
