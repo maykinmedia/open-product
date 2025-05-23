@@ -3,7 +3,7 @@ name: OAS
 on:
   push:
     branches:
-      - main
+      - master
       - stable/*
     tags:
       - '*'
@@ -20,7 +20,7 @@ jobs:
           - producten
           - producttypen
 
-    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@refactor/reusable-actions
+    uses: maykinmedia/open-api-workflows/.github/workflows/oas.yml@v5
     with:
       python-version: '3.11'
       django-settings-module: openproduct.conf.ci
