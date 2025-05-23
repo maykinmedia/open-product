@@ -192,7 +192,7 @@ dill==0.3.9
     #   pylint
 distlib==0.3.9
     # via virtualenv
-django==5.2.1
+django==4.2.20
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -478,8 +478,11 @@ faker==33.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-filelock==3.18.0
-    # via virtualenv
+flake8==7.1.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -503,9 +506,9 @@ glom==24.11.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   mozilla-django-oidc-db
-h11==0.16.0
+h11==0.14.0
     # via httpcore
-httpcore==1.0.9
+httpcore==1.0.7
     # via httpx
 httpx==0.28.1
     # via bump-my-version
@@ -514,8 +517,6 @@ humanize==4.11.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
-identify==2.6.10
-    # via pre-commit
 idna==3.10
     # via
     #   -c requirements/ci.txt
@@ -539,7 +540,12 @@ iniconfig==2.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest
-iso639-lang==2.6.0
+iso-639==0.4.5
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   commonground-api-common
+isodate==0.7.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -548,6 +554,7 @@ isort==5.13.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   -r requirements/dev.in
     #   pylint
 itypes==1.2.0
     # via
@@ -609,6 +616,7 @@ mccabe==0.7.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   flake8
     #   pylint
 mdurl==0.1.2
     # via
@@ -630,14 +638,17 @@ multidict==6.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-nodeenv==1.9.1
-    # via pre-commit
+mypy-extensions==1.0.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
 notifications-api-common==0.6.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.10.0
+open-api-framework==0.9.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -655,8 +666,14 @@ packaging==24.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   black
     #   pytest
     #   sphinx
+pathspec==0.12.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   black
 phonenumberslite==8.13.50
     # via
     #   -c requirements/ci.txt
@@ -670,15 +687,13 @@ platformdirs==4.3.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   black
     #   pylint
-    #   virtualenv
 pluggy==1.5.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pytest
-pre-commit==4.2.0
-    # via -r requirements/dev.in
 prometheus-client==0.21.0
     # via
     #   -c requirements/ci.txt
@@ -700,6 +715,11 @@ psycopg2==2.9.10
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
+pycodestyle==2.12.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   flake8
 pycparser==2.22
     # via
     #   -c requirements/ci.txt
@@ -723,6 +743,11 @@ pydantic-settings==2.9.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
+pyflakes==3.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   flake8
 pygments==2.18.0
     # via
     #   -c requirements/ci.txt
@@ -795,7 +820,6 @@ pyyaml==6.0.2
     #   -r requirements/ci.txt
     #   drf-spectacular
     #   oyaml
-    #   pre-commit
     #   pydantic-settings
     #   vcrpy
 qrcode==7.4.2
@@ -863,10 +887,6 @@ ruamel-yaml-clib==0.2.12
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   ruamel-yaml
-ruff==0.11.10
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 sentry-sdk==2.19.0
     # via
     #   -c requirements/ci.txt
@@ -1025,8 +1045,6 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.31.2
-    # via pre-commit
 waitress==3.0.2
     # via
     #   -c requirements/ci.txt

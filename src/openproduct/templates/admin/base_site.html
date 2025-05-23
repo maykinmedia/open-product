@@ -32,10 +32,7 @@
     {% if user.has_usable_password %}
         <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
     {% endif %}
-    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
-        {% csrf_token %}
-        <button type="submit">{% trans 'Log out' %}</button>
-    </form>
+    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
