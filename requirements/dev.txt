@@ -534,11 +534,6 @@ inflection==0.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-iniconfig==2.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pytest
 iso639-lang==2.6.0
     # via
     #   -c requirements/ci.txt
@@ -637,7 +632,7 @@ notifications-api-common==0.6.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.10.0
+open-api-framework==0.10.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -655,7 +650,6 @@ packaging==24.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   pytest
     #   sphinx
 phonenumberslite==8.13.50
     # via
@@ -672,11 +666,6 @@ platformdirs==4.3.6
     #   -r requirements/ci.txt
     #   pylint
     #   virtualenv
-pluggy==1.5.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pytest
 pre-commit==4.2.0
     # via -r requirements/dev.in
 prometheus-client==0.21.0
@@ -752,10 +741,6 @@ pypng==0.20220715.0
     #   -r requirements/ci.txt
     #   qrcode
 pyquery==2.0.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-pytest==8.3.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

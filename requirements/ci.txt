@@ -463,8 +463,6 @@ inflection==0.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-iniconfig==2.0.0
-    # via pytest
 iso639-lang==2.6.0
     # via
     #   -c requirements/base.txt
@@ -546,7 +544,7 @@ notifications-api-common==0.6.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.10.0
+open-api-framework==0.10.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -561,9 +559,7 @@ oyaml==1.0
     #   -r requirements/base.txt
     #   commonground-api-common
 packaging==24.2
-    # via
-    #   pytest
-    #   sphinx
+    # via sphinx
 phonenumberslite==8.13.50
     # via
     #   -c requirements/base.txt
@@ -575,8 +571,6 @@ pillow==11.0.0
     #   -r requirements/base.txt
 platformdirs==4.3.6
     # via pylint
-pluggy==1.5.0
-    # via pytest
 prometheus-client==0.21.0
     # via
     #   -c requirements/base.txt
@@ -642,8 +636,6 @@ pypng==0.20220715.0
     #   -r requirements/base.txt
     #   qrcode
 pyquery==2.0.1
-    # via -r requirements/test-tools.in
-pytest==8.3.4
     # via -r requirements/test-tools.in
 python-crontab==3.2.0
     # via
