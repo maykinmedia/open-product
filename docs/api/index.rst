@@ -113,4 +113,4 @@ Technical rules
 .. _`Notificaties API`: https://vng-realisatie.github.io/gemma-zaken/standaard/notificaties/
 .. _`Open Notificaties`: https://github.com/open-zaak/open-notificaties
 .. _`NLGov REST API Design Rules`: https://gitdocumentatie.logius.nl/publicatie/api/adr/
-.. _`API spec`: https://github.com/maykinmedia/open-product?tab=readme-ov-file#api-specificatie
+.. _`API spec`: https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#api-specification

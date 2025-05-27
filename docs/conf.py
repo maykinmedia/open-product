@@ -88,6 +88,7 @@ linkcheck_ignore = [
     r"http://127\.0\.0\.1:\d+/",
     r"https?://.*\.gemeente.nl",
     r"http://localhost:\d+,https?://.*\.gemeente.nl",
+    r"https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#.*",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]
