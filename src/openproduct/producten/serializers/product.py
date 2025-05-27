@@ -43,7 +43,7 @@ from openproduct.utils.serializers import (
                 "update_datum": "2019-08-24T14:15:22Z",
                 "producttype": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                    "code": "129380-c21231",
+                    "code": "129380-A21231",
                     "keywords": ["auto"],
                     "uniforme_product_naam": "parkeervergunning",
                     "toegestane_statussen": ["gereed"],

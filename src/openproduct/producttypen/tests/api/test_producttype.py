@@ -58,7 +58,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.data = {
             "naam": "test-producttype",
-            "code": "PT=12345",
+            "code": "PT-12345",
             "samenvatting": "test",
             "uniforme_product_naam": upn.naam,
             "thema_uuids": [self.thema.uuid],
@@ -158,11 +158,15 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.data, expected_data)
 
     def test_create_producttype_with_language_header(self):
-        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+        for i, header in enumerate(
+            [{"Accept-Language": "en"}, {"Content-Language": "en"}]
+        ):
             with self.subTest(f"{header} should set default language only"):
-                response = self.client.post(
-                    self.path, self.data | {"code": str(header)}, headers=header
-                )
+                unique_code = f"T-123-{i}"
+                print("test-code", unique_code)
+                data = self.data | {"code": unique_code}
+
+                response = self.client.post(self.path, data, headers=header)
 
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
                 self.assertEqual(response.data["taal"], "nl")
@@ -621,12 +625,17 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(ProductType.objects.count(), 1)
 
     def test_update_producttype_with_language_header(self):
-        for header in [{"Accept-Language": "en"}, {"Content-Language": "en"}]:
+        for i, header in enumerate(
+            [{"Accept-Language": "en"}, {"Content-Language": "en"}]
+        ):
             with self.subTest(f"{header} should set default language only"):
                 producttype = ProductTypeFactory.create()
+                unique_code = f"T-123-{i}"
+                data = self.data | {"code": unique_code}
+
                 response = self.client.put(
                     self.detail_path(producttype),
-                    self.data | {"code": str(header)},
+                    data,
                     headers=header,
                 )
 

@@ -87,7 +87,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Maykin Media",
-                        "code": "org-1234",
+                        "code": "ORG-1234",
                         "email": "info@maykinmedia.nl",
                         "telefoonnummer": "+310207530523",
                         "straat": "Kingsfortweg",
@@ -102,7 +102,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "organisatie": {
                             "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                             "naam": "Maykin Media",
-                            "code": "org-1234",
+                            "code": "ORG-1234",
                             "email": "info@maykinmedia.nl",
                             "telefoonnummer": "+310207530523",
                             "straat": "Kingsfortweg",

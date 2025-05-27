@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from openproduct.utils.validators import CustomRegexValidator
+
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
@@ -32,6 +34,12 @@ def validate_thema_gepubliceerd_state(hoofd_thema, gepubliceerd, sub_themas=None
                 "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben."
             )
         )
+
+
+validate_producttype_code = CustomRegexValidator(
+    regex="^[A-Z0-9-]+$",
+    message=_("Code mag alleen hoofdletters, cijfers en koppeltekens bevatten."),
+)
 
 
 def disallow_hoofd_thema_self_reference(thema, hoofd_thema):

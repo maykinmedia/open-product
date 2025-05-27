@@ -15,6 +15,7 @@ from openproduct.utils.models import BasePublishableModel
 from .jsonschema import JsonSchema
 from .thema import Thema
 from .upn import UniformeProductNaam
+from .validators import validate_producttype_code
 
 
 class ProductStateChoices(models.TextChoices):
@@ -48,6 +49,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
         max_length=255,
         help_text=_("code van het producttype."),
         unique=True,
+        validators=[validate_producttype_code],
     )
 
     verbruiksobject_schema = models.ForeignKey(

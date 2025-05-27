@@ -45,7 +45,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "producttypen": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "code": "129380-c21231",
+                        "code": "129380-C21231",
                         "keywords": ["auto"],
                         "uniforme_product_naam": "parkeervergunning",
                         "toegestane_statussen": ["gereed"],
