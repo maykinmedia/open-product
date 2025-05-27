@@ -1,11 +1,7 @@
 from django.conf import settings
 from django.urls import include, path
 
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView,
-)
+from drf_spectacular.views import SpectacularRedocView
 from rest_framework.routers import DefaultRouter
 
 from openproduct.locaties.urls import LocatieRouter
@@ -20,6 +16,7 @@ from openproduct.producttypen.viewsets import (
     ProductTypeViewSet,
     ThemaViewSet,
 )
+from openproduct.utils.spectacular import SpectacularJSONAPIView, SpectacularYAMLAPIView
 
 ProductTypenRouter = DefaultRouter(trailing_slash=False)
 ProductTypenRouter.register("producttypen", ProductTypeViewSet)
@@ -215,23 +212,27 @@ identifier van de tabel in de dmn omgeving.
 urlpatterns = [
     # API documentation
     path(
-        "schema/openapi.yaml",
-        SpectacularAPIView.as_view(
+        "openapi.yaml",
+        SpectacularYAMLAPIView.as_view(
             urlconf="openproduct.producttypen.urls",
             custom_settings=custom_settings,
         ),
-        name="schema-producttypen",
+        name="schema-producttypen-yaml",
+    ),
+    path(
+        "openapi.json",
+        SpectacularJSONAPIView.as_view(
+            urlconf="openproduct.producttypen.urls",
+            custom_settings=custom_settings,
+        ),
+        name="schema-producttypen-json",
     ),
     path(
         "schema/",
         SpectacularRedocView.as_view(
-            url_name="schema-producttypen", title=custom_settings["TITLE"]
+            url_name="schema-producttypen-yaml", title=custom_settings["TITLE"]
         ),
         name="schema-redoc-producttypen",
-    ),
-    path(
-        "schema-swagger",
-        SpectacularSwaggerView.as_view(url_name="schema-producttypen", title="schema"),
     ),
     path("", include(ProductTypenRouter.urls)),
     path("", include(LocatieRouter.urls)),

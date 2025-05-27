@@ -47,7 +47,10 @@ MIDDLEWARE.insert(
     "openproduct.utils.middleware.APILocaleMiddleware",
 )
 
-MIDDLEWARE.append("reversion.middleware.RevisionMiddleware")
+MIDDLEWARE += [
+    "reversion.middleware.RevisionMiddleware",
+    "openproduct.utils.middleware.APIVersionHeaderMiddleware",
+]
 
 #
 # MOZILLA DJANGO OIDC
