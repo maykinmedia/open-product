@@ -6,7 +6,23 @@ info:
 
     Een API voor Producten.
 
+    De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+
+    ## Uitleg per resource
+
+    ### Product
     Een product is een instantie van een producttype (zie producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
+    Specifieke product data kan worden opgeslagen in de JSON velden `dataobject` en `verbruiksobject`. Deze velden worden gevalideerd door de `verbruiksobject_schema` & `dataobject_schema` velden van het producttype ([zie jsonschema](https://json-schema.org)).
+    De status van een product kan alleen worden veranderd naar de een van de `toegestane statussen` gedefineerd op het producttype.
+
+    ### Eigenaar
+    Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Klant/Partij (Klantinteracties API), natuurlijk of niet natuurlijke persoon zijn.
+
+    ### Document
+    Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
+
+    ---
+    *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
 
     ### Notificaties
 
@@ -98,17 +114,18 @@ paths:
         name: eigenaren__bsn
         schema:
           type: string
-        description: Het BSN van een product eigenaar.
+        description: Het BSN van de product eigenaar, BSN van 8 karakters moet met
+          een extra 0 beginnen.
       - in: query
         name: eigenaren__klantnummer
         schema:
           type: string
-        description: generiek veld voor de identificatie van een klant.
+        description: generiek veld voor de identificatie van een klant of partij.
       - in: query
         name: eigenaren__kvk_nummer
         schema:
           type: string
-        description: Het kvk nummer van een product eigenaar.
+        description: Het kvk nummer van de product eigenaar
       - in: query
         name: eigenaren__uuid
         schema:
@@ -216,14 +233,14 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__naam__in
         schema:
           type: array
           items:
             type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
         explode: false
         style: form
       - in: query
@@ -289,7 +306,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: update_datum
         schema:
@@ -809,7 +826,7 @@ components:
           maxLength: 24
         klantnummer:
           type: string
-          description: generiek veld voor de identificatie van een klant.
+          description: generiek veld voor de identificatie van een klant of partij.
           maxLength: 50
     EigenaarRequest:
       type: object
@@ -834,7 +851,7 @@ components:
           maxLength: 24
         klantnummer:
           type: string
-          description: generiek veld voor de identificatie van een klant.
+          description: generiek veld voor de identificatie van een klant of partij.
           maxLength: 50
     Error:
       type: object
@@ -877,7 +894,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het document.
+          description: Uuid van het document.
       required:
       - uuid
     NestedProductType:
@@ -1299,15 +1316,15 @@ tags:
     - Via `start_datum` & `eind_datum` kan de status van een product automatisch op ACTIEF en VERLOPEN worden gezet.
         - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
         - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
-    - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `vebruiksobject_schema` & `dataobject_schema` van het producttype.
-    - Het veld `documenten` wordt samen met het producttype genest aangemaakt of gewijzigd.
+    - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `verbruiksobject_schema` & `dataobject_schema` van het producttype.
+    - Het veld `documenten` wordt samen met het product genest aangemaakt of gewijzigd.
         - dit veld is een lijst van objecten.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
         - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
         Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
-    - Het veld `eigenaren` wordt samen met het producttype genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
+    - Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
         - In een PUT of PATCH kan in een eigenaar object een bestaand `uuid` worden meegegeven zodat een bestaande eigenaar blijft bestaan.

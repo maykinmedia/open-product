@@ -4,6 +4,7 @@ import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.parsers import MultiPartParser
 from rest_framework.viewsets import ModelViewSet
+from vng_api_common.utils import get_help_text
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import Bestand
@@ -15,7 +16,7 @@ class BestandFilterSet(FilterSet):
     uniforme_product_naam = django_filters.CharFilter(
         field_name="producttype__uniforme_product_naam__naam",
         lookup_expr="exact",
-        help_text=_("Uniforme product naam vanuit de UPL."),
+        help_text=get_help_text("producttypen.UniformeProductNaam", "naam"),
     )
     naam__contains = django_filters.CharFilter(
         field_name="bestand",
@@ -26,7 +27,7 @@ class BestandFilterSet(FilterSet):
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=_("Naam van het producttype."),
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
     )
 
     class Meta:
