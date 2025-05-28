@@ -8,6 +8,7 @@ from openproduct.utils.models import BaseModel
 
 from .dmn_config import DmnConfig
 from .producttype import ProductType
+from .validators import validate_dmn_mapping
 
 
 @reversion.register(follow=("producttype",))
@@ -46,6 +47,7 @@ class Actie(BaseModel):
         blank=True,
         help_text=_("De mapping tussen de velden in Open Product & DMN variabele"),
         encoder=DjangoJSONEncoder,
+        validators=[validate_dmn_mapping],
     )
 
     @property
