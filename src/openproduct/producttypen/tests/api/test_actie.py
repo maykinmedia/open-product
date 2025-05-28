@@ -74,6 +74,55 @@ class TestProductTypeActie(BaseApiTestCase):
             },
         )
 
+    def test_create_actie_with_invalid_mapping(self):
+        data = self.data | {
+            "mapping": {"code": "abc", "test": "123"},
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "mapping": [
+                    ErrorDetail(
+                        string=_("De mapping komt niet overeen met het schema."),
+                        code="invalid",
+                    )
+                ]
+            },
+        )
+
+    def test_create_actie_with_valid_mapping(self):
+        data = self.data | {
+            "mapping": {
+                "variabelen": {
+                    "product": [
+                        {
+                            "name": "status",
+                            "classType": "String",
+                            "regex": "$.status",
+                        }
+                    ]
+                }
+            },
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.data["mapping"],
+            {
+                "variabelen": {
+                    "product": [
+                        {"name": "status", "classType": "String", "regex": "$.status"}
+                    ]
+                }
+            },
+        )
+
     def test_update_actie(self):
         data = self.data | {"naam": "update"}
         response = self.client.put(self.detail_path, data)
