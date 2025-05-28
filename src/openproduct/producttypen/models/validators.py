@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 from openproduct.utils.validators import CustomRegexValidator
 
+import jsonschema
+from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
+
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
@@ -53,4 +56,52 @@ def check_externe_verwijzing_config_url(field_url):
             _(
                 "De {field_url} is niet geconfigureerd in de externe verwijzing config"
             ).format(field_url=field_url.replace("_", " "))
+        )
+
+
+def validate_dmn_mapping(mapping):
+    schema = {
+        "type": "object",
+        "properties": {
+            "variabelen": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "classType"],
+                        "anyOf": [{"required": ["regex"]}, {"required": ["static"]}],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "regex": {"type": "string"},
+                            "static": {"type": "string"},
+                            "value": {"type": "string"},
+                            "classType": {
+                                "type": "string",
+                                "enum": [
+                                    "Json",
+                                    "String",
+                                    "Integer",
+                                    "Double",
+                                    "Boolean",
+                                    "Date",
+                                    "Long",
+                                ],
+                            },
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            }
+        },
+        "additionalProperties": False,
+    }
+    try:
+        jsonschema.validate(mapping, schema)
+    except JsonSchemaValidationError as e:
+        print(e)
+        raise ValidationError(
+            _(
+                "De mapping komt niet overeen met het schema."  # TODO show schema somewhere, api docs?
+            )
         )
