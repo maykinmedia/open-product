@@ -6,7 +6,12 @@ from django.test import TestCase
 
 from freezegun import freeze_time
 
-from .factories import PrijsFactory, PrijsOptieFactory, ProductTypeFactory
+from .factories import (
+    PrijsFactory,
+    PrijsOptieFactory,
+    PrijsRegelFactory,
+    ProductTypeFactory,
+)
 
 
 class TestPrijs(TestCase):
@@ -45,3 +50,30 @@ class TestPrijsOptie(TestCase):
         with self.assertRaises(ValidationError):
             optie = PrijsOptieFactory.build(prijs=self.prijs, bedrag=Decimal("0.001"))
             optie.full_clean()
+
+
+class TestPrijsRegel(TestCase):
+    def setUp(self):
+        self.prijs = PrijsFactory.create()
+
+    def test_invalid_mapping(self):
+        with self.assertRaisesMessage(
+            ValidationError, "De mapping komt niet overeen met het schema."
+        ):
+            regel = PrijsRegelFactory.create(
+                prijs=self.prijs, mapping={"code": "abc", "test": "123"}
+            )
+            regel.full_clean()
+
+    def test_valid_mapping(self):
+        regel = PrijsRegelFactory.create(
+            prijs=self.prijs,
+            mapping={
+                "variabelen": {
+                    "product": [
+                        {"name": "status", "classType": "String", "regex": "$.status"}
+                    ]
+                }
+            },
+        )
+        regel.full_clean()
