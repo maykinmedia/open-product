@@ -6013,7 +6013,7 @@ components:
           type: object
           additionalProperties: true
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele
+          description: De mapping tussen de velden in Open Product & DMN variabele.
       required:
       - naam
       - producttype_uuid
@@ -6046,7 +6046,7 @@ components:
           type: object
           additionalProperties: true
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele
+          description: De mapping tussen de velden in Open Product & DMN variabele.
       required:
       - dmn_tabel_id
       - naam
@@ -6408,7 +6408,7 @@ components:
           type: object
           additionalProperties: true
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele
+          description: De mapping tussen de velden in Open Product & DMN variabele.
       required:
       - naam
       - url
@@ -6425,7 +6425,7 @@ components:
           type: object
           additionalProperties: true
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele
+          description: De mapping tussen de velden in Open Product & DMN variabele.
       required:
       - naam
     NestedBestand:
@@ -7167,7 +7167,7 @@ components:
           type: object
           additionalProperties: true
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele
+          description: De mapping tussen de velden in Open Product & DMN variabele.
     PatchedBestandRequest:
       type: object
       properties:
@@ -8036,7 +8036,7 @@ tags:
     - Een thema kan niet ongepubliceerd worden als het gepubliceerde sub thema's heeft.
     - Een thema niet worden verwijderd als het sub thema's heeft of als er producttypen zijn die aleen gekoppeld zijn aan dit thema.
 - name: producttypen
-  description: |2+
+  description: |2
 
     ## Opvragen en bewerken van PRODUCTTYPEN.
 
@@ -8065,6 +8065,53 @@ tags:
     #### actuele prijs
     - Via `producttypen/actuele-prijzen` en `producttypen/<uuid>/actuele-prijs` kunnen de huidige prijzen worden opgehaald.
 
+    ### prijs regel mapping
+    - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
+        ```json
+        {
+            "type": "object",
+            "definitions": {
+                "classType": {
+                    "type": "string",
+                    "enum": [
+                        "String",
+                        "Integer",
+                        "Double",
+                        "Boolean",
+                        "Date",
+                        "Long",
+                    ],
+                }
+            },
+            "properties": {
+                "static": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "classType", "value"],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "value": {"type": "string"},
+                            "classType": {"$ref": "#/definitions/classType"},
+                        },
+                        "additionalProperties": False,
+                    },
+                }
+            },
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "classType", "regex"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "regex": {"type": "string"},
+                        "classType": {"$ref": "#/definitions/classType"},
+                    },
+                    "additionalProperties": False,
+                },
+        }
+        ```
 - name: content
   description: |2
 
@@ -8126,7 +8173,7 @@ tags:
     ### Opmerkingen
     - Om een bestand aan te maken of te wijzigen moet de body van het request `multipart/form-data` zijn.
 - name: acties
-  description: |+
+  description: |
     "
     ## Opvragen en bewerken van ACTIES.
 
@@ -8137,8 +8184,8 @@ tags:
     identifier van de tabel in de dmn omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
     - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
-    ```json
-    {
+        ```json
+        {
             "type": "object",
             "definitions": {
                 "classType": {
@@ -8180,38 +8227,8 @@ tags:
                     },
                     "additionalProperties": False,
                 },
-            }
-    ```
-    voorbeeld:
-    ```json
-    {
-                        "product": [
-                            {
-                                "name": "pid",
-                                "regex": "$.uuid",
-                                "classType": "String",
-                            },
-                            {
-                                "name": "geldigheideinddatum",
-                                "regex": "$.eindDatum",
-                                "classType": "String",
-                            },
-                            {
-                                "name": "aantaluren",
-                                "regex": "$.verbruiksobject.uren",
-                                "classType": "String",
-                            },
-                        ],
-                        "static": [
-                            {
-                                "name": "formulieren",
-                                "classType": "String",
-                                "value": "https://openformulieren-gemeente-a.nl",
-                            }
-                        ],
-                    }
-    ```
-
+        }
+        ```
 - name: locaties
   description: '## Opvragen en bewerken van LOCATIES.'
 - name: organisaties

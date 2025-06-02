@@ -58,7 +58,8 @@ class TestPrijsRegel(TestCase):
 
     def test_invalid_mapping(self):
         with self.assertRaisesMessage(
-            ValidationError, "De mapping komt niet overeen met het schema."
+            ValidationError,
+            "De mapping komt niet overeen met het schema. (zie API spec)",
         ):
             regel = PrijsRegelFactory.create(
                 prijs=self.prijs, mapping={"code": "abc", "test": "123"}

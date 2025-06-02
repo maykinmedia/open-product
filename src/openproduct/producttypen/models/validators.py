@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.utils.validators import CustomRegexValidator
-
 import jsonschema
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
+
+from openproduct.utils.validators import CustomRegexValidator
 
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 

@@ -264,7 +264,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                         "mapping": [
                             ErrorDetail(
                                 string=_(
-                                    "De mapping komt niet overeen met het schema."
+                                    "De mapping komt niet overeen met het schema. (zie API spec)"
                                 ),
                                 code="invalid",
                             )

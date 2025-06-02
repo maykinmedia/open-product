@@ -87,7 +87,9 @@ class TestProductTypeActie(BaseApiTestCase):
             {
                 "mapping": [
                     ErrorDetail(
-                        string=_("De mapping komt niet overeen met het schema."),
+                        string=_(
+                            "De mapping komt niet overeen met het schema. (zie API spec)"
+                        ),
                         code="invalid",
                     )
                 ]
