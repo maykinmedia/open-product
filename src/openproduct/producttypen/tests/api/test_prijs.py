@@ -283,15 +283,13 @@ class TestProductTypePrijs(BaseApiTestCase):
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                     "mapping": {
-                        "variabelen": {
-                            "product": [
-                                {
-                                    "name": "status",
-                                    "classType": "String",
-                                    "regex": "$.status",
-                                }
-                            ]
-                        }
+                        "product": [
+                            {
+                                "name": "status",
+                                "classType": "String",
+                                "regex": "$.status",
+                            }
+                        ]
                     },
                 }
             ],
@@ -304,11 +302,9 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(
             response.data["prijsregels"][0]["mapping"],
             {
-                "variabelen": {
-                    "product": [
-                        {"name": "status", "classType": "String", "regex": "$.status"}
-                    ]
-                }
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
             },
         )
 

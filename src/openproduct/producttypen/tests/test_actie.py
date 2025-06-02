@@ -15,11 +15,9 @@ class TestActie(TestCase):
     def test_valid_mapping(self):
         actie = ActieFactory.create(
             mapping={
-                "variabelen": {
-                    "product": [
-                        {"name": "status", "classType": "String", "regex": "$.status"}
-                    ]
-                }
-            },
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
+            }
         )
         actie.full_clean()

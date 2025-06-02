@@ -116,6 +116,53 @@ Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze
 #### actuele prijs
 - Via `producttypen/actuele-prijzen` en `producttypen/<uuid>/actuele-prijs` kunnen de huidige prijzen worden opgehaald.
 
+### prijs regel mapping
+- Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
+    ```json
+    {
+        "type": "object",
+        "definitions": {
+            "classType": {
+                "type": "string",
+                "enum": [
+                    "String",
+                    "Integer",
+                    "Double",
+                    "Boolean",
+                    "Date",
+                    "Long",
+                ],
+            }
+        },
+        "properties": {
+            "static": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "classType", "value"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "value": {"type": "string"},
+                        "classType": {"$ref": "#/definitions/classType"},
+                    },
+                    "additionalProperties": False,
+                },
+            }
+        },
+        "additionalProperties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["name", "classType", "regex"],
+                "properties": {
+                    "name": {"type": "string"},
+                    "regex": {"type": "string"},
+                    "classType": {"$ref": "#/definitions/classType"},
+                },
+                "additionalProperties": False,
+            },
+    }
+    ```
 """,
         },
         {
@@ -198,6 +245,52 @@ identifier van de tabel in de dmn omgeving.
 - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
 identifier van de tabel in de dmn omgeving.
 - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
+- Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
+    ```json
+    {
+        "type": "object",
+        "definitions": {
+            "classType": {
+                "type": "string",
+                "enum": [
+                    "String",
+                    "Integer",
+                    "Double",
+                    "Boolean",
+                    "Date",
+                    "Long",
+                ],
+            }
+        },
+        "properties": {
+            "static": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "classType", "value"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "value": {"type": "string"},
+                        "classType": {"$ref": "#/definitions/classType"},
+                    },
+                    "additionalProperties": False,
+                },
+            }
+        },
+        "additionalProperties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["name", "classType", "regex"],
+                "properties": {
+                    "name": {"type": "string"},
+                    "regex": {"type": "string"},
+                    "classType": {"$ref": "#/definitions/classType"},
+                },
+                "additionalProperties": False,
+            },
+    }
+    ```
 """,
         },
         {"name": "locaties", "description": "## Opvragen en bewerken van LOCATIES."},

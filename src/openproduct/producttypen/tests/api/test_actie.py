@@ -97,16 +97,14 @@ class TestProductTypeActie(BaseApiTestCase):
     def test_create_actie_with_valid_mapping(self):
         data = self.data | {
             "mapping": {
-                "variabelen": {
-                    "product": [
-                        {
-                            "name": "status",
-                            "classType": "String",
-                            "regex": "$.status",
-                        }
-                    ]
-                }
-            },
+                "product": [
+                    {
+                        "name": "status",
+                        "classType": "String",
+                        "regex": "$.status",
+                    }
+                ]
+            }
         }
 
         response = self.client.post(self.path, data)
@@ -115,11 +113,9 @@ class TestProductTypeActie(BaseApiTestCase):
         self.assertEqual(
             response.data["mapping"],
             {
-                "variabelen": {
-                    "product": [
-                        {"name": "status", "classType": "String", "regex": "$.status"}
-                    ]
-                }
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
             },
         )
 

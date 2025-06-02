@@ -62,46 +62,51 @@ def check_externe_verwijzing_config_url(field_url):
 def validate_dmn_mapping(mapping):
     schema = {
         "type": "object",
+        "definitions": {
+            "classType": {
+                "type": "string",
+                "enum": [
+                    "String",
+                    "Integer",
+                    "Double",
+                    "Boolean",
+                    "Date",
+                    "Long",
+                ],
+            }
+        },
         "properties": {
-            "variabelen": {
-                "type": "object",
-                "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": ["name", "classType"],
-                        "anyOf": [{"required": ["regex"]}, {"required": ["static"]}],
-                        "properties": {
-                            "name": {"type": "string"},
-                            "regex": {"type": "string"},
-                            "static": {"type": "string"},
-                            "value": {"type": "string"},
-                            "classType": {
-                                "type": "string",
-                                "enum": [
-                                    "Json",
-                                    "String",
-                                    "Integer",
-                                    "Double",
-                                    "Boolean",
-                                    "Date",
-                                    "Long",
-                                ],
-                            },
-                        },
-                        "additionalProperties": False,
+            "static": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "classType", "value"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "value": {"type": "string"},
+                        "classType": {"$ref": "#/definitions/classType"},
                     },
+                    "additionalProperties": False,
                 },
             }
         },
-        "additionalProperties": False,
+        "additionalProperties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["name", "classType", "regex"],
+                "properties": {
+                    "name": {"type": "string"},
+                    "regex": {"type": "string"},
+                    "classType": {"$ref": "#/definitions/classType"},
+                },
+                "additionalProperties": False,
+            },
+        },
     }
     try:
         jsonschema.validate(mapping, schema)
-    except JsonSchemaValidationError as e:
-        print(e)
+    except JsonSchemaValidationError:
         raise ValidationError(
-            _(
-                "De mapping komt niet overeen met het schema."  # TODO show schema somewhere, api docs?
-            )
+            _("De mapping komt niet overeen met het schema. (zie API spec)")
         )

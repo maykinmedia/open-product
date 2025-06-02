@@ -45,7 +45,7 @@ class Actie(BaseModel):
         _("mapping"),
         null=True,
         blank=True,
-        help_text=_("De mapping tussen de velden in Open Product & DMN variabele"),
+        help_text=_("De mapping tussen de velden in Open Product & DMN variabele."),
         encoder=DjangoJSONEncoder,
         validators=[validate_dmn_mapping],
     )

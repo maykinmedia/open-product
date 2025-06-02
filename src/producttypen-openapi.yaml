@@ -120,7 +120,21 @@ paths:
                       producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Parkeervergunning opzegging
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                      mapping: {}
+                      mapping:
+                        product:
+                        - name: pid
+                          regex: $.uuid
+                          classType: String
+                        - name: geldigheideinddatum
+                          regex: $.eindDatum
+                          classType: String
+                        - name: aantaluren
+                          regex: $.verbruiksobject.uren
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                   summary: actie response
           description: ''
         '400':
@@ -162,7 +176,21 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                  mapping: {}
+                  mapping:
+                    product:
+                    - name: pid
+                      regex: $.uuid
+                      classType: String
+                    - name: geldigheideinddatum
+                      regex: $.eindDatum
+                      classType: String
+                    - name: aantaluren
+                      regex: $.verbruiksobject.uren
+                      classType: String
+                    static:
+                    - name: formulieren
+                      classType: String
+                      value: https://openformulieren-gemeente-a.nl
                 summary: actie request
         required: true
       security:
@@ -181,7 +209,21 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   summary: actie response
           description: ''
         '400':
@@ -235,7 +277,21 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   summary: actie response
           description: ''
         '400':
@@ -284,7 +340,21 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                  mapping: {}
+                  mapping:
+                    product:
+                    - name: pid
+                      regex: $.uuid
+                      classType: String
+                    - name: geldigheideinddatum
+                      regex: $.eindDatum
+                      classType: String
+                    - name: aantaluren
+                      regex: $.verbruiksobject.uren
+                      classType: String
+                    static:
+                    - name: formulieren
+                      classType: String
+                      value: https://openformulieren-gemeente-a.nl
                 summary: actie request
         required: true
       security:
@@ -303,7 +373,21 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   summary: actie response
           description: ''
         '400':
@@ -352,7 +436,21 @@ paths:
                   naam: Parkeervergunning opzegging
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                  mapping: {}
+                  mapping:
+                    product:
+                    - name: pid
+                      regex: $.uuid
+                      classType: String
+                    - name: geldigheideinddatum
+                      regex: $.eindDatum
+                      classType: String
+                    - name: aantaluren
+                      regex: $.verbruiksobject.uren
+                      classType: String
+                    static:
+                    - name: formulieren
+                      classType: String
+                      value: https://openformulieren-gemeente-a.nl
                 summary: actie request
       security:
       - jwtAuth: []
@@ -370,7 +468,21 @@ paths:
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   summary: actie response
           description: ''
         '400':
@@ -3020,7 +3132,21 @@ paths:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                         beschrijving: base
-                        mapping: {}
+                        mapping:
+                          product:
+                          - name: pid
+                            regex: $.uuid
+                            classType: String
+                          - name: geldigheideinddatum
+                            regex: $.eindDatum
+                            classType: String
+                          - name: aantaluren
+                            regex: $.verbruiksobject.uren
+                            classType: String
+                          static:
+                          - name: formulieren
+                            classType: String
+                            value: https://openformulieren-gemeente-a.nl
                       actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3075,7 +3201,21 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3110,7 +3250,21 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
-                      mapping: {}
+                      mapping:
+                        product:
+                        - name: pid
+                          regex: $.uuid
+                          classType: String
+                        - name: geldigheideinddatum
+                          regex: $.eindDatum
+                          classType: String
+                        - name: aantaluren
+                          regex: $.verbruiksobject.uren
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3177,7 +3331,21 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
-                      mapping: {}
+                      mapping:
+                        product:
+                        - name: pid
+                          regex: $.uuid
+                          classType: String
+                        - name: geldigheideinddatum
+                          regex: $.eindDatum
+                          classType: String
+                        - name: aantaluren
+                          regex: $.verbruiksobject.uren
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3239,7 +3407,21 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3274,7 +3456,21 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
-                      mapping: {}
+                      mapping:
+                        product:
+                        - name: pid
+                          regex: $.uuid
+                          classType: String
+                        - name: geldigheideinddatum
+                          regex: $.eindDatum
+                          classType: String
+                        - name: aantaluren
+                          regex: $.verbruiksobject.uren
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -3336,7 +3532,21 @@ paths:
                   - tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                     dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     beschrijving: base
-                    mapping: {}
+                    mapping:
+                      product:
+                      - name: pid
+                        regex: $.uuid
+                        classType: String
+                      - name: geldigheideinddatum
+                        regex: $.eindDatum
+                        classType: String
+                      - name: aantaluren
+                        regex: $.verbruiksobject.uren
+                        classType: String
+                      static:
+                      - name: formulieren
+                        classType: String
+                        value: https://openformulieren-gemeente-a.nl
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   actief_vanaf: '2024-12-01'
                 summary: prijs met regels request
@@ -3370,7 +3580,21 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       beschrijving: base
-                      mapping: {}
+                      mapping:
+                        product:
+                        - name: pid
+                          regex: $.uuid
+                          classType: String
+                        - name: geldigheideinddatum
+                          regex: $.eindDatum
+                          classType: String
+                        - name: aantaluren
+                          regex: $.verbruiksobject.uren
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     actief_vanaf: '2019-08-24'
                   summary: prijs met regels response
           description: ''
@@ -7902,7 +8126,7 @@ tags:
     ### Opmerkingen
     - Om een bestand aan te maken of te wijzigen moet de body van het request `multipart/form-data` zijn.
 - name: acties
-  description: |
+  description: |+
     "
     ## Opvragen en bewerken van ACTIES.
 
@@ -7912,6 +8136,82 @@ tags:
     - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
     identifier van de tabel in de dmn omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
+    - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
+    ```json
+    {
+            "type": "object",
+            "definitions": {
+                "classType": {
+                    "type": "string",
+                    "enum": [
+                        "String",
+                        "Integer",
+                        "Double",
+                        "Boolean",
+                        "Date",
+                        "Long",
+                    ],
+                }
+            },
+            "properties": {
+                "static": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "classType", "value"],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "value": {"type": "string"},
+                            "classType": {"$ref": "#/definitions/classType"},
+                        },
+                        "additionalProperties": False,
+                    },
+                }
+            },
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "classType", "regex"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "regex": {"type": "string"},
+                        "classType": {"$ref": "#/definitions/classType"},
+                    },
+                    "additionalProperties": False,
+                },
+            }
+    ```
+    voorbeeld:
+    ```json
+    {
+                        "product": [
+                            {
+                                "name": "pid",
+                                "regex": "$.uuid",
+                                "classType": "String",
+                            },
+                            {
+                                "name": "geldigheideinddatum",
+                                "regex": "$.eindDatum",
+                                "classType": "String",
+                            },
+                            {
+                                "name": "aantaluren",
+                                "regex": "$.verbruiksobject.uren",
+                                "classType": "String",
+                            },
+                        ],
+                        "static": [
+                            {
+                                "name": "formulieren",
+                                "classType": "String",
+                                "value": "https://openformulieren-gemeente-a.nl",
+                            }
+                        ],
+                    }
+    ```
+
 - name: locaties
   description: '## Opvragen en bewerken van LOCATIES.'
 - name: organisaties

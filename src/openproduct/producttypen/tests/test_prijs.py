@@ -69,11 +69,9 @@ class TestPrijsRegel(TestCase):
         regel = PrijsRegelFactory.create(
             prijs=self.prijs,
             mapping={
-                "variabelen": {
-                    "product": [
-                        {"name": "status", "classType": "String", "regex": "$.status"}
-                    ]
-                }
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
             },
         )
         regel.full_clean()
