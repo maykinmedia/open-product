@@ -949,7 +949,7 @@ tomlkit==0.13.2
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

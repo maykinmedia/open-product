@@ -797,7 +797,7 @@ tblib==3.0.0
     # via -r requirements/test-tools.in
 tomlkit==0.13.2
     # via pylint
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
