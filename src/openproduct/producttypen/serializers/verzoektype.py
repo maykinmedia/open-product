@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import ProductType, VerzoekType
 
@@ -10,7 +11,7 @@ from openproduct.producttypen.models import ProductType, VerzoekType
 class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(help_text=_("De url naar het verzoektype."))
     uuid = serializers.UUIDField(
-        write_only=True, help_text=_("Uuid naar het verzoektype.")
+        write_only=True, help_text=get_help_text("producttypen.VerzoekType", "uuid")
     )
 
     @extend_schema_field(OpenApiTypes.URI)

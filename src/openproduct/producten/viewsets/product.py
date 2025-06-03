@@ -6,6 +6,7 @@ import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework.viewsets import ModelViewSet
+from vng_api_common.utils import get_help_text
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
@@ -52,13 +53,13 @@ class ProductFilterSet(FilterSet):
     uniforme_product_naam = django_filters.CharFilter(
         field_name="producttype__uniforme_product_naam__naam",
         lookup_expr="exact",
-        help_text=_("Uniforme product naam vanuit de UPL."),
+        help_text=get_help_text("producttypen.UniformeProductNaam", "naam"),
     )
 
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=_("Naam van het producttype."),
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
     )
 
     dataobject_attr = ManyCharFilter(
@@ -75,35 +76,35 @@ class ProductFilterSet(FilterSet):
 
     producttype__naam__in = TranslationInFilter(
         field_name="producttype__naam",
-        help_text=_("Naam van het producttype."),
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
     )
 
     eigenaren__bsn = django_filters.CharFilter(
         field_name="eigenaren__bsn",
         lookup_expr="exact",
         distinct=True,
-        help_text=_("Het BSN van een product eigenaar."),
+        help_text=get_help_text("producten.eigenaar", "bsn"),
     )
 
     eigenaren__kvk_nummer = django_filters.CharFilter(
         field_name="eigenaren__kvk_nummer",
         lookup_expr="exact",
         distinct=True,
-        help_text=_("Het kvk nummer van een product eigenaar."),
+        help_text=get_help_text("producten.eigenaar", "kvk_nummer"),
     )
 
     eigenaren__vestigingsnummer = django_filters.CharFilter(
         field_name="eigenaren__vestigingsnummer",
         lookup_expr="exact",
         distinct=True,
-        help_text=_("Een korte unieke aanduiding van een vestiging."),
+        help_text=get_help_text("producten.eigenaar", "vestigingsnummer"),
     )
 
     eigenaren__klantnummer = django_filters.CharFilter(
         field_name="eigenaren__klantnummer",
         lookup_expr="exact",
         distinct=True,
-        help_text=_("generiek veld voor de identificatie van een klant."),
+        help_text=get_help_text("producten.eigenaar", "klantnummer"),
     )
 
     def filter_dataobject_attr(self, queryset, name, value: list):

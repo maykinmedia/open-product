@@ -9,6 +9,7 @@ from drf_spectacular.utils import (
 )
 from parler_rest.serializers import TranslatableModelSerializer
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.locaties.models import Contact, Locatie, Organisatie
 from openproduct.locaties.serializers import (
@@ -37,7 +38,7 @@ from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 class NestedThemaSerializer(serializers.ModelSerializer):
     hoofd_thema = UUIDRelatedField(
         queryset=Thema.objects.all(),
-        help_text=_("Het hoofd thema waaronder dit thema valt."),
+        help_text=get_help_text("producttypen.Thema", "hoofd_thema"),
     )
 
     class Meta:
@@ -283,9 +284,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         slug_field="naam",
         queryset=JsonSchema.objects.all(),
         write_only=True,
-        help_text=_(
-            "JSON schema om het verbruiksobject van een gerelateerd product te valideren."
-        ),
+        help_text=get_help_text("producttypen.ProductType", "verbruiksobject_schema"),
         required=False,
         source="verbruiksobject_schema",
     )
@@ -295,19 +294,19 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         slug_field="naam",
         queryset=JsonSchema.objects.all(),
         write_only=True,
-        help_text=_(
-            "JSON schema om het dataobject van een gerelateerd product te valideren."
-        ),
+        help_text=get_help_text("producttypen.ProductType", "dataobject_schema"),
         required=False,
         source="dataobject_schema",
     )
 
     naam = serializers.CharField(
-        required=True, max_length=255, help_text=_("naam van het producttype.")
+        required=True,
+        max_length=255,
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
     )
     samenvatting = serializers.CharField(
         required=True,
-        help_text=_("Korte beschrijving van het producttype."),
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "samenvatting"),
     )
 
     taal = serializers.SerializerMethodField(
@@ -547,11 +546,13 @@ class ProductTypeActuelePrijsSerializer(serializers.ModelSerializer):
 
 class ProductTypeTranslationSerializer(serializers.ModelSerializer):
     naam = serializers.CharField(
-        required=True, max_length=255, help_text=_("naam van het producttype.")
+        required=True,
+        max_length=255,
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
     )
     samenvatting = serializers.CharField(
         required=True,
-        help_text=_("Korte beschrijving van het producttype."),
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "samenvatting"),
     )
 
     class Meta:

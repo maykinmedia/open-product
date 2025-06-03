@@ -8,6 +8,7 @@ from drf_spectacular.utils import (
 )
 from parler_rest.serializers import TranslatableModelSerializer
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import ContentElement, ContentLabel, ProductType
 from openproduct.utils.fields import UUIDRelatedField
@@ -48,7 +49,7 @@ class ContentElementSerializer(TranslatableModelSerializer):
     content = serializers.CharField(
         required=True,
         max_length=255,
-        help_text=_("De content van dit content element."),
+        help_text=get_help_text("producttypen.ContentElementTranslation", "content"),
     )
 
     producttype_uuid = UUIDRelatedField(
@@ -83,7 +84,7 @@ class NestedContentElementSerializer(ContentElementSerializer):
 class ContentElementTranslationSerializer(serializers.ModelSerializer):
     content = serializers.CharField(
         required=True,
-        help_text=_("De content van dit content element."),
+        help_text=get_help_text("producttypen.ContentElementTranslation", "content"),
     )
 
     class Meta:

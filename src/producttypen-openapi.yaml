@@ -2,15 +2,20 @@ openapi: 3.0.3
 info:
   title: Producttypen API
   version: 1.1.0
-  description: |2+
+  description: |2
 
     Een API voor Producttypen.
 
+    ## Uitleg per resource
+
+    ### Thema
+    Een thema is een verzameling van producttypen. Producttypen vallen onder één of meerdere thema's.
+    Thema's hebben een boomstructuur en kunnen onderdeel zijn van een ander thema.
+
+    ### Producttype
     Een Producttype is de definitie van een Product. Hierin wordt alle relevante data opgeslagen zoals informatie over de aanvraag.
 
     Een product is een instantie van een producttype (zie Producttypen API), in een product worden onder andere de gegevens van de eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
-
-    Een producttype valt onder één of meerdere thema's. Een thema kan onderdeel zijn van een ander thema via het attribuut 'hoofd_thema'.
 
     Een producttype kan worden gelinkt één of meerdere locaties, organisaties en/of contacten.
 
@@ -28,6 +33,46 @@ info:
     - bestanden
     - acties
 
+    Via `toegestane statussen` kan worden aangegeven welke statussen een product van het producttype mag hebben.
+
+    #### Zaaktype, verzoektype & proces
+    Een zaaktype is een verwijzing naar een zaaktype uit de [catalogi API](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/)
+    Verzoektype & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
+
+    #### Externe code
+    Externe codes zijn bedoeld voor de producttype code van hetzelfde soort product uit externe systemen.
+
+    #### Parameter
+    Parameters zijn bedoeld voor attributen voor een specifiek producttype (en alle bijbehorende producten).
+
+    ### Content & ContentLabel
+    Per producttype kunnen contentelementen worden aangemaakt. Dit zijn (markdown) content blokken waarin verschillende informatie kan worden ingevuld om te tonen op bijvoorbeeld de gemeente website.
+    Aan een content element kunnen labels worden gelinkt om aan te geven wat het element bevat.
+
+    ### Prijs
+    Voor producttypen kunnen prijzen worden toegevoegd die op een bepaalde datum ingaan. Een prijs kan één of meerdere opties of één of meerdere regels hebben.
+    Opties zijn bedoeld voor producten met bijvoorbeeld alleen een normale & spoed prijs. Prijs regels is bedoeld voor complexere logica en is een link naar een DMN tabel in een externe applicatie.
+
+    ### Schema
+    Jsonschema's zijn JSON objecten die worden gebruikt om andere JSON te valideren ([zie jsonschema](https://json-schema.org)).
+    Schema's kunnen worden gelinkt aan een producttype als `dataobject_schema` of `verbruiksobject_schema` om de velden `dataobject` & `verbruiksobject` van producten te valideren.
+
+
+    ### Link & Bestand
+    Aan een producttype kunnen handige links en bestanden worden gekoppeld waar meer informatie over het producttype te vinden is.
+
+    ### Actie
+    Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
+
+    ### Locatie
+    Een locatie kan aan een producttype worden gelinkt om bijvoorbeeld aan te geven waar het product is aan te vragen.
+
+    ### Organisatie & Contact
+    Een organisatie kan aan een producttype worden gelinkt om aan te geven welke organisaties & instanties betrokken zijn bij het producttype.
+    Daarnaast kan ook een contact (persoon) van een organisaties aan een producttype worden gelinkt.
+
+    ---
+    *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
   contact:
     email: support@maykinmedia.nl
     url: https://www.maykinmedia.nl
@@ -87,7 +132,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -97,7 +142,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - acties
       security:
@@ -459,7 +504,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -469,7 +514,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - bestanden
       security:
@@ -1720,7 +1765,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -1730,7 +1775,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: url
         schema:
@@ -2963,7 +3008,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: Naam van het producttype.
+        description: naam van het producttype.
       - in: query
         name: producttype__uuid
         schema:
@@ -2973,7 +3018,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       tags:
       - prijzen
       security:
@@ -3568,7 +3613,7 @@ paths:
         name: uniforme_product_naam
         schema:
           type: string
-        description: Uniforme product naam vanuit de UPL.
+        description: Uniforme product naam
       - in: query
         name: update_datum
         schema:
@@ -5793,7 +5838,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
           format: uuid
@@ -5913,7 +5958,7 @@ components:
           readOnly: true
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -5938,7 +5983,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -5960,7 +6005,7 @@ components:
           readOnly: true
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
       required:
       - content
       - uuid
@@ -5970,7 +6015,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
       required:
       - content
     ContentLabel:
@@ -6203,7 +6248,7 @@ components:
           description: De huidige taal van het content element.
         content:
           type: string
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -6376,7 +6421,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het proces.
+          description: Uuid van het proces.
       required:
       - uuid
     NestedProductType:
@@ -6529,7 +6574,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het verzoektype.
+          description: Uuid van het verzoektype.
       required:
       - uuid
     NestedZaakType:
@@ -6549,7 +6594,7 @@ components:
           type: string
           format: uuid
           writeOnly: true
-          description: Uuid naar het zaaktype.
+          description: Uuid van het zaaktype.
       required:
       - uuid
     Organisatie:
@@ -6899,7 +6944,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
           format: uuid
@@ -6950,7 +6995,7 @@ components:
         content:
           type: string
           minLength: 1
-          description: De content van dit content element.
+          description: De content van dit content element
           maxLength: 255
         labels:
           type: array
@@ -7112,7 +7157,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         externe_codes:
           type: array
           items:
@@ -7179,7 +7224,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
     PatchedThemaRequest:
       type: object
       properties:
@@ -7303,7 +7348,7 @@ components:
           type: string
           writeOnly: true
           minLength: 1
-          description: uuid van de dmn tabel binnen de dmn instantie.
+          description: id van de dmn tabel binnen de dmn instantie.
         tabel_endpoint:
           type: string
           format: uri
@@ -7394,7 +7439,7 @@ components:
           maxLength: 255
         samenvatting:
           type: string
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         taal:
           type: string
           readOnly: true
@@ -7553,7 +7598,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
         externe_codes:
           type: array
           items:
@@ -7628,7 +7673,7 @@ components:
           maxLength: 255
         samenvatting:
           type: string
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
       required:
       - naam
       - samenvatting
@@ -7644,7 +7689,7 @@ components:
         samenvatting:
           type: string
           minLength: 1
-          description: Korte beschrijving van het producttype.
+          description: Korte samenvatting van het producttype.
       required:
       - naam
       - samenvatting
@@ -7820,10 +7865,10 @@ tags:
     - Een prijs kan één of meerdere opties of één of meerdere regels hebben.
     - Via `actief_vanaf` kunnen prijswijzigingen van te voren worden aangemaakt.
     - Een prijs optie bestaat uit een bedrag en een beschrijving en is bedoeld voor simple opties zoals een normale en een spoed prijs.
-    - Een prijs regel is voor complexere logica en is een link naar een dmn tabel in een externe applicatie.
-    - Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+    - Een prijs regel is voor complexere logica en is een link naar een DMN tabel in een externe applicatie.
+    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
     - Bij het aanmaken of wijzigen van een regel refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-    identifier van de tabel in de dmn omgeving.
+    identifier van de tabel in de DMN omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 
     - De velden `prijsopties` en `prijsregels` worden samen met het producttype genest aangemaakt of gewijzigd.
@@ -7856,10 +7901,10 @@ tags:
     ## Opvragen en bewerken van ACTIES.
 
     ### Opmerkingen
-    - Een producttype actie is een link naar een dmn tabel uit een externe applicatie.
-    - Via de Open Product beheeromgeving kunnen de urls van verschillende dmn applicaties worden toegevoegd als een DMNCONFIG object.
+    - Een producttype actie is een link naar een DMN tabel uit een externe applicatie.
+    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
     - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
-    identifier van de tabel in de dmn omgeving.
+    identifier van de tabel in de DMN omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 - name: locaties
   description: '## Opvragen en bewerken van LOCATIES.'
