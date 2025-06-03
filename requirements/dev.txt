@@ -192,7 +192,7 @@ dill==0.3.9
     #   pylint
 distlib==0.3.9
     # via virtualenv
-django==5.2.1
+django==5.2.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -811,7 +811,7 @@ referencing==0.35.1
     #   -r requirements/ci.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -960,7 +960,7 @@ tomlkit==0.13.2
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                 help_text="Naam van het contact (persoon, afdeling, enz..)",
                 max_length=255,
                 verbose_name="naam",
+                blank=True,
             ),
         ),
         migrations.RunPython(move_names),
@@ -32,5 +33,14 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name="contact",
             name="voornaam",
+        ),
+        migrations.AlterField(
+            model_name="contact",
+            name="naam",
+            field=models.CharField(
+                help_text="Naam van het contact (persoon, afdeling, enz..)",
+                max_length=255,
+                verbose_name="naam",
+            ),
         ),
     ]
