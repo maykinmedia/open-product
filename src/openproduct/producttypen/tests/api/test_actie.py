@@ -70,6 +70,54 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": self.data["naam"],
                 "producttype_uuid": self.data["producttype_uuid"],
                 "url": f"{self.data['tabel_endpoint']}/{self.data['dmn_tabel_id']}",
+                "mapping": None,
+            },
+        )
+
+    def test_create_actie_with_invalid_mapping(self):
+        data = self.data | {
+            "mapping": {"code": "abc", "test": "123"},
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "mapping": [
+                    ErrorDetail(
+                        string=_(
+                            "De mapping komt niet overeen met het schema. (zie API spec)"
+                        ),
+                        code="invalid",
+                    )
+                ]
+            },
+        )
+
+    def test_create_actie_with_valid_mapping(self):
+        data = self.data | {
+            "mapping": {
+                "product": [
+                    {
+                        "name": "status",
+                        "classType": "String",
+                        "regex": "$.status",
+                    }
+                ]
+            }
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.data["mapping"],
+            {
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
             },
         )
 
@@ -101,12 +149,14 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": self.actie.naam,
                 "url": self.actie.url,
                 "producttype_uuid": self.producttype.uuid,
+                "mapping": self.actie.mapping,
             },
             {
                 "uuid": str(actie.uuid),
                 "naam": actie.naam,
                 "url": actie.url,
                 "producttype_uuid": self.producttype.uuid,
+                "mapping": self.actie.mapping,
             },
         ]
         self.assertCountEqual(response.data["resultaten"], expected_data)
@@ -121,6 +171,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "naam": self.actie.naam,
             "url": self.actie.url,
             "producttype_uuid": self.producttype.uuid,
+            "mapping": self.actie.mapping,
         }
         self.assertEqual(response.data, expected_data)
 

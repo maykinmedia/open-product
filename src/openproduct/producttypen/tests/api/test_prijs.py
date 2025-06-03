@@ -239,6 +239,75 @@ class TestProductTypePrijs(BaseApiTestCase):
             },
         )
 
+    def test_create_prijs_with_regel_with_invalid_mapping(self):
+        data = {
+            "actief_vanaf": datetime.date(2024, 1, 3),
+            "prijsregels": [
+                {
+                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "dmn_tabel_id": "iqjowijdoanwda",
+                    "beschrijving": "spoed",
+                    "mapping": {"code": "abc", "test": "123"},
+                }
+            ],
+            "producttype_uuid": self.producttype.uuid,
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "prijsregels": [
+                    {
+                        "mapping": [
+                            ErrorDetail(
+                                string=_(
+                                    "De mapping komt niet overeen met het schema. (zie API spec)"
+                                ),
+                                code="invalid",
+                            )
+                        ]
+                    }
+                ]
+            },
+        )
+
+    def test_create_prijs_with_regel_with_valid_mapping(self):
+        data = {
+            "actief_vanaf": datetime.date(2024, 1, 3),
+            "prijsregels": [
+                {
+                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "dmn_tabel_id": "iqjowijdoanwda",
+                    "beschrijving": "spoed",
+                    "mapping": {
+                        "product": [
+                            {
+                                "name": "status",
+                                "classType": "String",
+                                "regex": "$.status",
+                            }
+                        ]
+                    },
+                }
+            ],
+            "producttype_uuid": self.producttype.uuid,
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.data["prijsregels"][0]["mapping"],
+            {
+                "product": [
+                    {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
+            },
+        )
+
     def test_update_prijs_removing_all_opties(self):
         PrijsOptieFactory.create(prijs=self.prijs)
         PrijsOptieFactory.create(prijs=self.prijs)

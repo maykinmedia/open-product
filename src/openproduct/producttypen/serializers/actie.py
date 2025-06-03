@@ -23,6 +23,32 @@ from openproduct.utils.fields import UUIDRelatedField
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                "mapping": {
+                    "product": [
+                        {
+                            "name": "pid",
+                            "regex": "$.uuid",
+                            "classType": "String",
+                        },
+                        {
+                            "name": "geldigheideinddatum",
+                            "regex": "$.eindDatum",
+                            "classType": "String",
+                        },
+                        {
+                            "name": "aantaluren",
+                            "regex": "$.verbruiksobject.uren",
+                            "classType": "String",
+                        },
+                    ],
+                    "static": [
+                        {
+                            "name": "formulieren",
+                            "classType": "String",
+                            "value": "https://openformulieren-gemeente-a.nl",
+                        }
+                    ],
+                },
             },
             response_only=True,
         ),
@@ -33,6 +59,32 @@ from openproduct.utils.fields import UUIDRelatedField
                 "naam": "Parkeervergunning opzegging",
                 "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
                 "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                "mapping": {
+                    "product": [
+                        {
+                            "name": "pid",
+                            "regex": "$.uuid",
+                            "classType": "String",
+                        },
+                        {
+                            "name": "geldigheideinddatum",
+                            "regex": "$.eindDatum",
+                            "classType": "String",
+                        },
+                        {
+                            "name": "aantaluren",
+                            "regex": "$.verbruiksobject.uren",
+                            "classType": "String",
+                        },
+                    ],
+                    "static": [
+                        {
+                            "name": "formulieren",
+                            "classType": "String",
+                            "value": "https://openformulieren-gemeente-a.nl",
+                        }
+                    ],
+                },
             },
             request_only=True,
         ),
@@ -71,10 +123,16 @@ class ActieSerializer(serializers.ModelSerializer):
             "dmn_tabel_id",
             "url",
             "producttype_uuid",
+            "mapping",
         )
 
 
 class NestedActieSerializer(ActieSerializer):
     class Meta:
         model = Actie
-        fields = ("uuid", "naam", "url")
+        fields = (
+            "uuid",
+            "naam",
+            "url",
+            "mapping",
+        )

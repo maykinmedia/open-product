@@ -1856,6 +1856,7 @@ class TestProductTypeActions(BaseApiTestCase):
                                 "url": regel.url,
                                 "beschrijving": regel.beschrijving,
                                 "uuid": str(regel.uuid),
+                                "mapping": regel.mapping,
                             }
                         ],
                         "prijsopties": [],
@@ -1917,6 +1918,7 @@ class TestProductTypeActions(BaseApiTestCase):
                             "url": regel.url,
                             "beschrijving": regel.beschrijving,
                             "uuid": str(regel.uuid),
+                            "mapping": regel.mapping,
                         }
                     ],
                     "prijsopties": [],

@@ -50,7 +50,14 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PrijsRegel
-        fields = ("uuid", "url", "beschrijving", "dmn_tabel_id", "tabel_endpoint")
+        fields = (
+            "uuid",
+            "url",
+            "beschrijving",
+            "dmn_tabel_id",
+            "tabel_endpoint",
+            "mapping",
+        )
 
 
 @extend_schema_serializer(
@@ -81,6 +88,32 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
                         "beschrijving": "base",
+                        "mapping": {
+                            "product": [
+                                {
+                                    "name": "pid",
+                                    "regex": "$.uuid",
+                                    "classType": "String",
+                                },
+                                {
+                                    "name": "geldigheideinddatum",
+                                    "regex": "$.eindDatum",
+                                    "classType": "String",
+                                },
+                                {
+                                    "name": "aantaluren",
+                                    "regex": "$.verbruiksobject.uren",
+                                    "classType": "String",
+                                },
+                            ],
+                            "static": [
+                                {
+                                    "name": "formulieren",
+                                    "classType": "String",
+                                    "value": "https://openformulieren-gemeente-a.nl",
+                                }
+                            ],
+                        },
                     }
                 ],
                 "actief_vanaf": "2019-08-24",
@@ -109,6 +142,32 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                         "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
                         "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
                         "beschrijving": "base",
+                        "mapping": {
+                            "product": [
+                                {
+                                    "name": "pid",
+                                    "regex": "$.uuid",
+                                    "classType": "String",
+                                },
+                                {
+                                    "name": "geldigheideinddatum",
+                                    "regex": "$.eindDatum",
+                                    "classType": "String",
+                                },
+                                {
+                                    "name": "aantaluren",
+                                    "regex": "$.verbruiksobject.uren",
+                                    "classType": "String",
+                                },
+                            ],
+                            "static": [
+                                {
+                                    "name": "formulieren",
+                                    "classType": "String",
+                                    "value": "https://openformulieren-gemeente-a.nl",
+                                }
+                            ],
+                        },
                     },
                 ],
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
