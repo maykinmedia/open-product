@@ -18,6 +18,8 @@ from openproduct.producttypen.models.producttype import ProductStateChoices, Pro
 
 from .document import DocumentInline
 from .eigenaar import EigenaarInline
+from .taak import TaakInline
+from .zaak import ZaakInline
 
 
 def get_status_choices(producttype_id, instance):
@@ -115,7 +117,7 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     autocomplete_fields = ("producttype",)
     search_fields = ("producttype__translations__naam",)
     form = ProductAdminForm
-    inlines = (EigenaarInline, DocumentInline)
+    inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
 
     @admin.display(description="Producttype")
     def producttype_name(self, obj):

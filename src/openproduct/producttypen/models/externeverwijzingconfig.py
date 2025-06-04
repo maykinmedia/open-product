@@ -27,5 +27,17 @@ class ExterneVerwijzingConfig(SingletonModel):
         blank=True,
     )
 
+    zaken_url = models.URLField(
+        verbose_name=_("Zaken API url"),
+        help_text=_("Basis url van Zaken API."),
+        blank=True,
+    )
+
+    taken_url = models.URLField(
+        verbose_name=_("Taken API url"),
+        help_text=_("Basis url van Taken API."),
+        blank=True,
+    )
+
     class Meta:
         verbose_name = _("Externe verwijzingen configuratie")

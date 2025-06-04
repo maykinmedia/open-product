@@ -204,7 +204,7 @@ class ProductTypeViewSet(
             externe_verwijzing_config.processen_url,
         ):
             logger.warning(
-                "One or more urls are not configured in the externe verwijzing config."
+                "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
             )
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
