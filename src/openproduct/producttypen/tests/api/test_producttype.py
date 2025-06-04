@@ -344,7 +344,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_zaaktype_uuuuids_returns_error(
+    def test_create_producttype_with_duplicate_zaaktype_uuids_returns_error(
         self,
     ):
         data = self.data | {
@@ -368,7 +368,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_verzoektype_uuuuids_returns_error(
+    def test_create_producttype_with_duplicate_verzoektype_uuids_returns_error(
         self,
     ):
         data = self.data | {
@@ -392,7 +392,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_with_duplicate_proces_uuuuids_returns_error(
+    def test_create_producttype_with_duplicate_proces_uuids_returns_error(
         self,
     ):
         data = self.data | {

@@ -1,7 +1,7 @@
 import factory
 
 from ...producttypen.tests.factories import ProductTypeFactory
-from ..models import Document, Eigenaar, Product
+from ..models import Document, Eigenaar, Product, Taak, Zaak
 from ..models.product import PrijsFrequentieChoices
 
 
@@ -29,3 +29,19 @@ class DocumentFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Document
+
+
+class ZaakFactory(factory.django.DjangoModelFactory):
+    product = factory.SubFactory(ProductFactory)
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = Zaak
+
+
+class TaakFactory(factory.django.DjangoModelFactory):
+    product = factory.SubFactory(ProductFactory)
+    uuid = factory.Faker("uuid4")
+
+    class Meta:
+        model = Taak
