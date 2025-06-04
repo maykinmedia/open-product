@@ -12,6 +12,8 @@ class ExterneVerwijzingConfigConfigurationModel(ConfigurationModel):
                 "processen_url",
                 "verzoektypen_url",
                 "documenten_url",
+                "zaken_url",
+                "taken_url",
             )
         }
         extra_kwargs = {
@@ -34,6 +36,14 @@ class ExterneVerwijzingConfigConfigurationModel(ConfigurationModel):
                     "https://documenten-api.gemeente.cloud/api/v1/enkelvoudiginformatieobjecten"
                 ],
                 "description": "Base url of the Documenten API.",
+            },
+            "zaken_url": {
+                "examples": ["https://zaken-api.gemeente.cloud/api/v1/zaken"],
+                "description": "Base url of the Zaken API.",
+            },
+            "taken_url": {
+                "examples": ["https://taken-api.gemeente.cloud/api/v1/taken"],
+                "description": "Base url of the taken.",
             },
         }
 

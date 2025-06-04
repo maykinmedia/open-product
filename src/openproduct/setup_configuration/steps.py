@@ -33,6 +33,12 @@ class ExterneVerwijzingConfigConfigurationStep(BaseConfigurationStep):
         if model.documenten_url:
             config.documenten_url = model.documenten_url
 
+        if model.zaken_url:
+            config.zaken_url = model.zaken_url
+
+        if model.taken_url:
+            config.taken_url = model.taken_url
+
         config.save()
 
 
