@@ -6,7 +6,7 @@ info:
 
     Een API voor Producten.
 
-    De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+    De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten/zaken/taken worden aangemaakt.
 
     ## Uitleg per resource
 
@@ -18,8 +18,10 @@ info:
     ### Eigenaar
     Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Klant/Partij (Klantinteracties API), natuurlijk of niet natuurlijke persoon zijn.
 
-    ### Document
+    ### Document, Zaak, Taak
     Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
+    Een zaak is een verwijziing naar een `Zaak` uit de [zaken API](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/).
+    Taken is een verwijzingen naar taken uit externe API's.
 
     ---
     *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
@@ -303,6 +305,12 @@ paths:
           * `geweigerd` - Geweigerd
           * `verlopen` - Verlopen
       - in: query
+        name: taken__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van de taak.
+      - in: query
         name: uniforme_product_naam
         schema:
           type: string
@@ -354,6 +362,12 @@ paths:
 
           Meerdere filters kunnen worden toegevoegd door `dataobject_attr` meerdere keren aan het request toe te voegen.
           Bijvoorbeeld: `dataobject_attr=kenteken__exact__AA-111-B&objectdata_attr=zone__exact__B`
+      - in: query
+        name: zaken__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Uuid van de zaak.
       tags:
       - producten
       security:
@@ -396,6 +410,10 @@ paths:
                         bsn: '111222333'
                       documenten:
                       - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                      zaken:
+                      - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      taken:
+                      - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                       status: gereed
                       prijs: '20.20'
                       frequentie: eenmalig
@@ -474,6 +492,10 @@ paths:
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    zaken:
+                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    taken:
+                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -554,6 +576,10 @@ paths:
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    zaken:
+                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    taken:
+                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -639,6 +665,10 @@ paths:
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    zaken:
+                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    taken:
+                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -723,6 +753,10 @@ paths:
                       bsn: '111222333'
                     documenten:
                     - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    zaken:
+                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    taken:
+                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -972,6 +1006,46 @@ components:
       required:
       - code
       - uniforme_product_naam
+    NestedTaak:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar de taak.
+      required:
+      - url
+    NestedTaakRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid van de taak.
+      required:
+      - uuid
+    NestedZaak:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+          description: De url naar de zaak.
+      required:
+      - url
+    NestedZaakRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Uuid van de zaak.
+      required:
+      - uuid
     PaginatedProductList:
       type: object
       required:
@@ -1033,6 +1107,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedDocumentRequest'
+        zaken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakRequest'
+        taken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTaakRequest'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -1132,6 +1214,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedDocument'
+        zaken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaak'
+        taken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTaak'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -1218,6 +1308,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedDocumentRequest'
+        zaken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedZaakRequest'
+        taken:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTaakRequest'
         status:
           allOf:
           - $ref: '#/components/schemas/StatusEnum'
@@ -1317,14 +1415,14 @@ tags:
         - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
         - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
     - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `verbruiksobject_schema` & `dataobject_schema` van het producttype.
-    - Het veld `documenten` wordt samen met het product genest aangemaakt of gewijzigd.
+    - De velden `documenten`, `zaken` en `taken` wordt samen met het product genest aangemaakt of gewijzigd. # TODO
         - dit veld is een lijst van objecten.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
         - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
         Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
-    - Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
+    - Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met de hiervoor beschreven velden.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
         - In een PUT of PATCH kan in een eigenaar object een bestaand `uuid` worden meegegeven zodat een bestaande eigenaar blijft bestaan.

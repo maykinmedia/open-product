@@ -15,7 +15,7 @@ ProductRouter.register("producten", ProductViewSet, basename="product")
 description = f"""
 Een API voor Producten.
 
-De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten worden aangemaakt.
+De Producten API heeft 1 endpoint `producten`. Hiermee kunnen producten zelf, de bijbehorende eigenaren en documenten/zaken/taken worden aangemaakt.
 
 ## Uitleg per resource
 
@@ -27,8 +27,10 @@ De status van een product kan alleen worden veranderd naar de een van de `toeges
 ### Eigenaar
 Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar kan een Klant/Partij (Klantinteracties API), natuurlijk of niet natuurlijke persoon zijn.
 
-### Document
+### Document, Zaak, Taak
 Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
+Een zaak is een verwijziing naar een `Zaak` uit de [zaken API](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/).
+Taken is een verwijzingen naar taken uit externe API's.
 
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
@@ -57,14 +59,14 @@ custom_settings = {
     - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
     - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
 - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `verbruiksobject_schema` & `dataobject_schema` van het producttype.
-- Het veld `documenten` wordt samen met het product genest aangemaakt of gewijzigd.
+- De velden `documenten`, `zaken` en `taken` wordt samen met het product genest aangemaakt of gewijzigd. # TODO
     - dit veld is een lijst van objecten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
     - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
     Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
-- Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met `documenten`.
+- Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met de hiervoor beschreven velden.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
     - In een PUT of PATCH kan in een eigenaar object een bestaand `uuid` worden meegegeven zodat een bestaande eigenaar blijft bestaan.
