@@ -174,10 +174,12 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         context = super().get_serializer_context()
         externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
 
-        if "" in (
-            externe_verwijzing_config.documenten_url,
-            externe_verwijzing_config.zaken_url,
-            externe_verwijzing_config.taken_url,
+        if not all(
+            (
+                externe_verwijzing_config.documenten_url,
+                externe_verwijzing_config.zaken_url,
+                externe_verwijzing_config.taken_url,
+            )
         ):
             logger.warning(
                 "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
