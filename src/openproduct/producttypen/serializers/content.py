@@ -48,7 +48,6 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     content = serializers.CharField(
         required=True,
-        max_length=255,
         help_text=get_help_text("producttypen.ContentElementTranslation", "content"),
     )
 
