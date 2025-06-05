@@ -128,7 +128,8 @@ class TestLoadUPLCommand(TestCase):
 
     def test_upn_is_updated(self):
         UniformeProductNaamFactory.create(
-            uri="http://standaarden.overheid.nl/owms/terms/AangifteVertrekBuitenland"
+            uri="http://standaarden.overheid.nl/owms/terms/AangifteVertrekBuitenland",
+            naam="aangifte vertrek buitenland"
         )
 
         result = self.call_command("--file", self.path)
