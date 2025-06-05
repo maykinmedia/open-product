@@ -1,3 +1,52 @@
+1.2.0 (04-06-2025)
+------------------
+
+.. warning::
+
+    This release upgrades Django to version 5.2.1, which requires PostgreSQL version 14 or higher.
+    Attempting to deploy with PostgreSQL <14 will cause errors during deployment.
+
+**New features**
+
+* [:open-product:`131`] added product naam
+* [:open-product:`119`] added thema filters
+
+    * producttypen__uuid
+    * producttypen__uuid__in
+
+* [:open-product:`130`] added producttype code validation
+* [:open-product:`123`] added dmn mapping and validation
+
+**Bugfixes**
+
+* [:open-product:`122`] fixed trailing slash api paths
+
+**Project maintenance**
+
+* Upgrade dependencies
+
+  * django to 5.2.1
+  * open-api-framework to 0.10.1
+  * commonground-api-common to 2.6.4
+  * django-celery-beat to 2.8.0
+  * tornado to 6.5.1
+
+* [:open-api-framework:`140`] upgraded python to 3.12
+* Replace OAS workflows with single workflow
+* [:open-api-framework:`133`] Replace black, isort and flake8 with ``ruff`` and update ``code-quality`` workflow
+* [:open-api-framework:`132`] Removed pytest & sphinx check
+
+* [:open-product:`137`] follow api design rules
+
+    * changed pagination keys to NL
+    * moved openapi schemas
+    * added API-Version header
+
+**Documentation**
+
+* [:open-product:`114`] added context to api specs
+* [:open-product:`137`] added documentation about api design rules see :ref:`api_index`
+
 1.1.0 (09-05-2025)
 ------------------
 
