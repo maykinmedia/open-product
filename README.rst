@@ -86,8 +86,8 @@ het project zelf bouwen van de broncode. Zie hiervoor
 Open Product bestaat uit drie apps:
 
 * producttypen
-* products
-* locations (& organisations)
+* producten
+* locaties (& organisaties)
 
 Quickstart
 ----------

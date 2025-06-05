@@ -37,6 +37,7 @@ services:
 
   web-init:
     build: *web_build
+    image: maykinmedia/open-product:latest
     environment:
       <<: *web_env
       # Django-setup-configuration

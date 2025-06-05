@@ -123,7 +123,8 @@ class Command(BaseCommand):
 
             upn, created = UniformProductNaamModel.objects.update_or_create(
                 uri=uri,
-                defaults={"naam": name, "is_verwijderd": False},
+                naam=name,
+                defaults={"is_verwijderd": False},
             )
             upn_updated_list.append(upn.id)
 
