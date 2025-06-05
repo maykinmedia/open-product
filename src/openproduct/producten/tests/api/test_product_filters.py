@@ -14,6 +14,8 @@ from openproduct.producten.tests.factories import (
     DocumentFactory,
     EigenaarFactory,
     ProductFactory,
+    TaakFactory,
+    ZaakFactory,
 )
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
@@ -729,6 +731,30 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["aantal"], 1)
         self.assertIn(str(uuid), response.data["resultaten"][0]["documenten"][0]["url"])
+
+    def test_zaak_uuid_filter(self):
+        uuid = uuid4()
+
+        ZaakFactory.create(uuid=uuid)
+        ZaakFactory.create()
+
+        response = self.client.get(self.path, {"zaken__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertIn(str(uuid), response.data["resultaten"][0]["zaken"][0]["url"])
+
+    def test_taak_uuid_filter(self):
+        uuid = uuid4()
+
+        TaakFactory.create(uuid=uuid)
+        TaakFactory.create()
+
+        response = self.client.get(self.path, {"taken__uuid": uuid})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertIn(str(uuid), response.data["resultaten"][0]["taken"][0]["url"])
 
     def test_eigenaar_uuid_filter(self):
         uuid = uuid4()

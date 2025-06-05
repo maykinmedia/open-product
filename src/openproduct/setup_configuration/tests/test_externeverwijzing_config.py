@@ -34,6 +34,14 @@ class TestExterneverwijzingConfigStep(TestCase):
             config.documenten_url,
             "https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten",
         )
+        self.assertEqual(
+            config.zaken_url,
+            "https://zaken-api.vng.cloud/api/v1/zaken",
+        )
+        self.assertEqual(
+            config.taken_url,
+            "https://taken-api.vng.cloud/api/v1/taken",
+        )
 
     def test_execute_configuration_step_success(self):
         execute_single_step(
@@ -48,6 +56,8 @@ class TestExterneverwijzingConfigStep(TestCase):
         config.processen_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
         config.verzoektypen_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
         config.documenten_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
+        config.zaken_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
+        config.taken_url = "https://catalogi-api.gemeente.cloud/api/v1/abc"
         config.save()
 
         execute_single_step(

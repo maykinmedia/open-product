@@ -72,7 +72,7 @@ Via `toegestane statussen` kan worden aangegeven welke statussen een product van
 
 #### Zaaktype, verzoektype & proces
 Een zaaktype is een verwijzing naar een zaaktype uit de [catalogi API](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/)
-Verzoektype & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
+Verzoektypen & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
 
 #### Externe code
 Externe codes zijn bedoeld voor de producttype code van hetzelfde soort product uit externe systemen.

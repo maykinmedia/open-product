@@ -10,12 +10,14 @@ from openproduct.producten.serializers.document import (
     NestedDocumentSerializer,
 )
 from openproduct.producten.serializers.eigenaar import EigenaarSerializer
+from openproduct.producten.serializers.taak import NestedTaakSerializer, TaakSerializer
 from openproduct.producten.serializers.validators import (
     DataObjectValidator,
     DateValidator,
     StatusValidator,
     VerbruiksObjectValidator,
 )
+from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
 from openproduct.producttypen.models import ProductType
 from openproduct.producttypen.models.validators import (
     check_externe_verwijzing_config_url,
@@ -63,6 +65,16 @@ from openproduct.utils.serializers import (
                         "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
                     }
                 ],
+                "zaken": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf"
+                    }
+                ],
+                "taken": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                    }
+                ],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
@@ -83,6 +95,8 @@ from openproduct.utils.serializers import (
                     {"bsn": "111222333"},
                 ],
                 "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "zaken": [{"uuid": "eb188bea-51f2-44f0-8acc-eec1c710b4bf"}],
+                "taken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
@@ -104,6 +118,8 @@ class ProductSerializer(serializers.ModelSerializer):
     )
     eigenaren = EigenaarSerializer(many=True)
     documenten = NestedDocumentSerializer(many=True, required=False)
+    zaken = NestedZaakSerializer(many=True, required=False)
+    taken = NestedTaakSerializer(many=True, required=False)
 
     class Meta:
         model = Product
@@ -120,6 +136,8 @@ class ProductSerializer(serializers.ModelSerializer):
             "gepubliceerd",
             "eigenaren",
             "documenten",
+            "zaken",
+            "taken",
             "status",
             "prijs",
             "frequentie",
@@ -148,10 +166,30 @@ class ProductSerializer(serializers.ModelSerializer):
             _("Er bestaat al een document met de uuid {} voor dit Product."),
         )
 
+    def validate_zaken(self, zaken: list[dict]):
+        check_externe_verwijzing_config_url("zaken_url")
+
+        return validate_key_value_model_keys(
+            zaken,
+            "uuid",
+            _("Er bestaat al een zaak met de uuid {} voor dit Product."),
+        )
+
+    def validate_taken(self, taken: list[dict]):
+        check_externe_verwijzing_config_url("taken_url")
+
+        return validate_key_value_model_keys(
+            taken,
+            "uuid",
+            _("Er bestaat al een taak met de uuid {} voor dit Product."),
+        )
+
     @transaction.atomic()
     def create(self, validated_data):
         eigenaren = validated_data.pop("eigenaren", [])
         documenten = validated_data.pop("documenten", [])
+        zaken = validated_data.pop("zaken", [])
+        taken = validated_data.pop("taken", [])
 
         product = super().create(validated_data)
 
@@ -164,12 +202,24 @@ class ProductSerializer(serializers.ModelSerializer):
             DocumentSerializer,
         )
 
+        set_nested_serializer(
+            [zaak | {"product": product.pk} for zaak in zaken],
+            ZaakSerializer,
+        )
+
+        set_nested_serializer(
+            [taak | {"product": product.pk} for taak in taken],
+            TaakSerializer,
+        )
+
         return product
 
     @transaction.atomic()
     def update(self, instance, validated_data):
         eigenaren = validated_data.pop("eigenaren", None)
         documenten = validated_data.pop("documenten", None)
+        zaken = validated_data.pop("zaken", None)
+        taken = validated_data.pop("taken", None)
 
         product = super().update(instance, validated_data)
 
@@ -198,6 +248,20 @@ class ProductSerializer(serializers.ModelSerializer):
             set_nested_serializer(
                 [document | {"product": instance.pk} for document in documenten],
                 DocumentSerializer,
+            )
+
+        if zaken is not None:
+            instance.zaken.all().delete()
+            set_nested_serializer(
+                [zaak | {"product": instance.pk} for zaak in zaken],
+                ZaakSerializer,
+            )
+
+        if taken is not None:
+            instance.taken.all().delete()
+            set_nested_serializer(
+                [taak | {"product": instance.pk} for taak in taken],
+                TaakSerializer,
             )
 
         return product
