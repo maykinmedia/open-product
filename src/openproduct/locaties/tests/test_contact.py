@@ -9,7 +9,7 @@ class ContactTestCase(TestCase):
             email="org@gmail.com", telefoonnummer="123456789", naam="Test Org"
         )
         self.contact = ContactFactory.create(
-            organisatie=organisatie, voornaam="Bob", achternaam="de Vries"
+            organisatie=organisatie, naam="Bob de Vries"
         )
 
     def test_contact_str(self):

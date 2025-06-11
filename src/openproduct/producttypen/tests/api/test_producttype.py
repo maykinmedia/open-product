@@ -229,8 +229,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ProductType.objects.count(), 1)
         self.assertEqual(
-            list(ProductType.objects.values_list("contacten__voornaam", flat=True)),
-            [contact.voornaam],
+            list(ProductType.objects.values_list("contacten__naam", flat=True)),
+            [contact.naam],
         )
 
         # contact org is added in ProductType clean
@@ -548,8 +548,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contacten": [
                 {
                     "uuid": str(contact.uuid),
-                    "voornaam": contact.voornaam,
-                    "achternaam": contact.achternaam,
+                    "naam": contact.naam,
                     "email": contact.email,
                     "telefoonnummer": contact.telefoonnummer,
                     "rol": contact.rol,
@@ -717,8 +716,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ProductType.objects.count(), 1)
         self.assertEqual(
-            list(ProductType.objects.values_list("contacten__voornaam", flat=True)),
-            [contact.voornaam],
+            list(ProductType.objects.values_list("contacten__naam", flat=True)),
+            [contact.naam],
         )
 
         # contact org is added in ProductType clean

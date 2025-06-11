@@ -41,25 +41,15 @@ class TestContactFilters(BaseApiTestCase):
         self.assertEqual(response.data["aantal"], 1)
         self.assertEqual(response.data["resultaten"][0]["email"], "bob@maykinmedia.nl")
 
-    def test_achternaam_filter(self):
-        ContactFactory.create(achternaam="de Vries")
-        ContactFactory.create(achternaam="Jansen")
+    def test_naam_filter(self):
+        ContactFactory.create(naam="Bob")
+        ContactFactory.create(naam="Alice")
 
-        response = self.client.get(self.path, {"achternaam": "Jansen"})
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["achternaam"], "Jansen")
-
-    def test_voornaam_filter(self):
-        ContactFactory.create(voornaam="Bob")
-        ContactFactory.create(voornaam="Alice")
-
-        response = self.client.get(self.path, {"voornaam": "Bob"})
+        response = self.client.get(self.path, {"naam": "Bob"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["voornaam"], "Bob")
+        self.assertEqual(response.data["resultaten"][0]["naam"], "Bob")
 
     def test_organisatie_uuid_filter(self):
         org_uuid = uuid4()

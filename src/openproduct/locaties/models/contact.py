@@ -20,15 +20,10 @@ class Contact(BaseModel):
         on_delete=models.SET_NULL,
         help_text=_("De organisatie van het contact"),
     )
-    voornaam = models.CharField(
-        verbose_name=_("voornaam"),
+    naam = models.CharField(
+        verbose_name=_("naam"),
         max_length=255,
-        help_text=_("voornaam van het contact"),
-    )
-    achternaam = models.CharField(
-        verbose_name=_("achternaam"),
-        max_length=255,
-        help_text=_("achternaam van het contact"),
+        help_text=_("Naam van het contact (persoon, afdeling, enz..)"),
     )
     email = models.EmailField(
         verbose_name=_("email adres"),
@@ -56,8 +51,8 @@ class Contact(BaseModel):
 
     def __str__(self):
         if self.organisatie:
-            return f"{self.voornaam} {self.achternaam} ({self.organisatie.naam})"
-        return f"{self.voornaam} {self.achternaam}"
+            return f"{self.naam} ({self.organisatie.naam})"
+        return f"{self.naam}"
 
     def get_email(self):
         if self.email:

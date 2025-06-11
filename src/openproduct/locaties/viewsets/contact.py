@@ -13,8 +13,7 @@ class ContactFilterSet(FilterSet):
         fields = {
             "organisatie__naam": ["exact"],
             "organisatie__uuid": ["exact"],
-            "voornaam": ["exact"],
-            "achternaam": ["exact"],
+            "naam": ["exact"],
             "email": ["iexact"],
             "telefoonnummer": ["contains"],
             "rol": ["exact"],
