@@ -34,8 +34,7 @@
     "fields": {
         "uuid": "cf2b1d24-2985-4f88-a2f8-c6c0f8d5481f",
         "organisatie": 1,
-        "voornaam": "Bob",
-        "achternaam": "de Vries",
+        "naam": "Bob de Vries",
         "email": "bob@maykinmedia.nl",
         "telefoonnummer": "020 753 0",
         "rol": "medewerker"
@@ -50,6 +49,7 @@
         "aanmaak_datum": "2025-05-06T14:19:44.854Z",
         "update_datum": "2025-05-06T15:06:25.005Z",
         "producttype": 24,
+        "naam": "ABC1234",
         "start_datum": "2025-05-06",
         "eind_datum": null,
         "status": "actief",
@@ -72,6 +72,7 @@
         "aanmaak_datum": "2025-05-06T15:07:56.630Z",
         "update_datum": "2025-05-06T15:07:56.630Z",
         "producttype": 23,
+        "naam": "straatweg A",
         "start_datum": "2025-05-06",
         "eind_datum": "2026-05-06",
         "status": "actief",
@@ -253,11 +254,19 @@
 },
 {
     "model": "producttypen.uniformeproductnaam",
-    "pk": 1,
     "fields": {
         "uuid": "278240fb-ac2f-4f4e-b491-8119c3c8bacf",
-        "naam": "UPL-naam nog niet beschikbaar",
-        "uri": "http://standaarden.overheid.nl/owms/terms/UPL-naam_nog_niet_beschikbaar",
+        "naam": "parkeervergunning",
+        "uri": "http://standaarden.overheid.nl/owms/terms/parkeervergunning",
+        "is_verwijderd": false
+    }
+},
+{
+    "model": "producttypen.uniformeproductnaam",
+    "fields": {
+        "uuid": "278240fb-ac2f-4f4e-b491-8119c3c8bacf",
+        "naam": "identiteitskaart",
+        "uri": "http://standaarden.overheid.nl/owms/terms/identiteitskaart",
         "is_verwijderd": false
     }
 },
@@ -274,7 +283,9 @@
         "dataobject_schema": 2,
         "toegestane_statussen": "[\"actief\", \"verlopen\"]",
         "keywords": "[\"auto\"]",
-        "uniforme_product_naam": 1,
+        "uniforme_product_naam": [
+            "parkeervergunning"
+        ],
         "interne_opmerkingen": "Lorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
         "themas": [
             2
@@ -303,7 +314,9 @@
         "dataobject_schema": 3,
         "toegestane_statussen": "[\"gereed\", \"actief\", \"ingetrokken\", \"geweigerd\", \"verlopen\"]",
         "keywords": "[\"documenten\"]",
-        "uniforme_product_naam": 1,
+        "uniforme_product_naam": [
+            "identiteitskaart"
+        ],
         "interne_opmerkingen": "Lorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
         "themas": [
             4
@@ -341,7 +354,8 @@
         "naam": "verlengen",
         "producttype": 23,
         "dmn_config": 1,
-        "dmn_tabel_id": "340961bc-212b-49ac-aeb2-9bc38d442ff3"
+        "dmn_tabel_id": "340961bc-212b-49ac-aeb2-9bc38d442ff3",
+        "mapping": null
     }
 },
 {
@@ -529,7 +543,8 @@
         "beschrijving": "parkeervergunning prijs dmn tabel",
         "prijs": 2,
         "dmn_config": 1,
-        "dmn_tabel_id": "6ebc1a69-17c6-42b9-9b11-df0c8291ef10"
+        "dmn_tabel_id": "6ebc1a69-17c6-42b9-9b11-df0c8291ef10",
+        "mapping": null
     }
 },
 {
