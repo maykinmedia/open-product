@@ -18,8 +18,7 @@ class TestContact(BaseApiTestCase):
         super().setUp()
         organisatie = OrganisatieFactory.create()
         self.data = {
-            "voornaam": "bob",
-            "achternaam": "de vries",
+            "naam": "bob de vries",
             "organisatie_uuid": organisatie.uuid,
         }
         self.contact = ContactFactory.create()
@@ -37,10 +36,7 @@ class TestContact(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "voornaam": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "achternaam": [
+                "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
             },
@@ -55,8 +51,7 @@ class TestContact(BaseApiTestCase):
         contact = Contact.objects.get(uuid=response.data["uuid"])
         expected_data = {
             "uuid": str(contact.uuid),
-            "voornaam": contact.voornaam,
-            "achternaam": contact.achternaam,
+            "naam": contact.naam,
             "email": contact.email,
             "telefoonnummer": contact.telefoonnummer,
             "rol": "",
@@ -75,20 +70,20 @@ class TestContact(BaseApiTestCase):
         self.assertEqual(response.data, expected_data)
 
     def test_update_contact(self):
-        data = self.data | {"voornaam": "update"}
+        data = self.data | {"naam": "update"}
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Contact.objects.count(), 1)
-        self.assertEqual(Contact.objects.get().voornaam, "update")
+        self.assertEqual(Contact.objects.get().naam, "update")
 
     def test_partial_update_contact(self):
-        data = {"voornaam": "update"}
+        data = {"naam": "update"}
         response = self.client.patch(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Contact.objects.count(), 1)
-        self.assertEqual(Contact.objects.get().voornaam, "update")
+        self.assertEqual(Contact.objects.get().naam, "update")
 
     def test_read_contacten(self):
         contact = ContactFactory.create()
@@ -99,8 +94,7 @@ class TestContact(BaseApiTestCase):
         expected_data = [
             {
                 "uuid": str(self.contact.uuid),
-                "voornaam": self.contact.voornaam,
-                "achternaam": self.contact.achternaam,
+                "naam": self.contact.naam,
                 "email": self.contact.email,
                 "telefoonnummer": self.contact.telefoonnummer,
                 "rol": self.contact.rol,
@@ -118,8 +112,7 @@ class TestContact(BaseApiTestCase):
             },
             {
                 "uuid": str(contact.uuid),
-                "voornaam": contact.voornaam,
-                "achternaam": contact.achternaam,
+                "naam": contact.naam,
                 "email": contact.email,
                 "telefoonnummer": contact.telefoonnummer,
                 "rol": contact.rol,
@@ -144,8 +137,7 @@ class TestContact(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_data = {
             "uuid": str(self.contact.uuid),
-            "voornaam": self.contact.voornaam,
-            "achternaam": self.contact.achternaam,
+            "naam": self.contact.naam,
             "email": self.contact.email,
             "telefoonnummer": self.contact.telefoonnummer,
             "rol": self.contact.rol,

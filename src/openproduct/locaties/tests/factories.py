@@ -27,8 +27,7 @@ class LocatieFactory(factory.django.DjangoModelFactory):
 
 class ContactFactory(factory.django.DjangoModelFactory):
     organisatie = factory.SubFactory(OrganisatieFactory)
-    voornaam = factory.Faker("name")
-    achternaam = factory.Faker("name")
+    naam = factory.Faker("name")
     rol = factory.Faker("word")
 
     class Meta:

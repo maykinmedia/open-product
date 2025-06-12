@@ -960,15 +960,15 @@ paths:
       summary: Alle CONTACTEN opvragen.
       parameters:
       - in: query
-        name: achternaam
-        schema:
-          type: string
-        description: achternaam van het contact
-      - in: query
         name: email__iexact
         schema:
           type: string
         description: email van het contact
+      - in: query
+        name: naam
+        schema:
+          type: string
+        description: Naam van het contact (persoon, afdeling, enz..)
       - in: query
         name: organisatie__naam
         schema:
@@ -1000,11 +1000,6 @@ paths:
         schema:
           type: string
         description: telefoonnummer van het contact
-      - in: query
-        name: voornaam
-        schema:
-          type: string
-        description: voornaam van het contact
       tags:
       - contacten
       security:
@@ -1034,8 +1029,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
-                      voornaam: Bob
-                      achternaam: de Vries
+                      naam: Bob de Vries
                       email: bob@example.com
                       telefoonnummer: '0611223344'
                       rol: medewerker
@@ -1077,8 +1071,7 @@ paths:
               ContactRequest:
                 value:
                   organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
-                  voornaam: Bob
-                  achternaam: de Vries
+                  naam: Bob de Vries
                   email: bob@example.com
                   telefoonnummer: '0611223344'
                   rol: medewerker
@@ -1107,8 +1100,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
-                    voornaam: Bob
-                    achternaam: de Vries
+                    naam: Bob de Vries
                     email: bob@example.com
                     telefoonnummer: '0611223344'
                     rol: medewerker
@@ -1172,8 +1164,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
-                    voornaam: Bob
-                    achternaam: de Vries
+                    naam: Bob de Vries
                     email: bob@example.com
                     telefoonnummer: '0611223344'
                     rol: medewerker
@@ -1222,8 +1213,7 @@ paths:
               ContactRequest:
                 value:
                   organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
-                  voornaam: Bob
-                  achternaam: de Vries
+                  naam: Bob de Vries
                   email: bob@example.com
                   telefoonnummer: '0611223344'
                   rol: medewerker
@@ -1252,8 +1242,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
-                    voornaam: Bob
-                    achternaam: de Vries
+                    naam: Bob de Vries
                     email: bob@example.com
                     telefoonnummer: '0611223344'
                     rol: medewerker
@@ -1303,8 +1292,7 @@ paths:
               ContactRequest:
                 value:
                   organisatie_uuid: 73a745d4-7df0-4510-991e-abfb19f0d861
-                  voornaam: Bob
-                  achternaam: de Vries
+                  naam: Bob de Vries
                   email: bob@example.com
                   telefoonnummer: '0611223344'
                   rol: medewerker
@@ -1332,8 +1320,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
-                    voornaam: Bob
-                    achternaam: de Vries
+                    naam: Bob de Vries
                     email: bob@example.com
                     telefoonnummer: '0611223344'
                     rol: medewerker
@@ -3948,8 +3935,7 @@ paths:
                           huisnummer: '151'
                           postcode: 1043 GR
                           stad: Amsterdam
-                        voornaam: Bob
-                        achternaam: de Vries
+                        naam: Bob de Vries
                         email: bob@example.com
                         telefoonnummer: '0611223344'
                         rol: medewerker
@@ -4142,8 +4128,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
-                      voornaam: Bob
-                      achternaam: de Vries
+                      naam: Bob de Vries
                       email: bob@example.com
                       telefoonnummer: '0611223344'
                       rol: medewerker
@@ -4299,8 +4284,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
-                      voornaam: Bob
-                      achternaam: de Vries
+                      naam: Bob de Vries
                       email: bob@example.com
                       telefoonnummer: '0611223344'
                       rol: medewerker
@@ -4500,8 +4484,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
-                      voornaam: Bob
-                      achternaam: de Vries
+                      naam: Bob de Vries
                       email: bob@example.com
                       telefoonnummer: '0611223344'
                       rol: medewerker
@@ -4702,8 +4685,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
-                      voornaam: Bob
-                      achternaam: de Vries
+                      naam: Bob de Vries
                       email: bob@example.com
                       telefoonnummer: '0611223344'
                       rol: medewerker
@@ -6137,13 +6119,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/Organisatie'
           readOnly: true
-        voornaam:
+        naam:
           type: string
-          description: voornaam van het contact
-          maxLength: 255
-        achternaam:
-          type: string
-          description: achternaam van het contact
+          description: Naam van het contact (persoon, afdeling, enz..)
           maxLength: 255
         email:
           type: string
@@ -6160,10 +6138,9 @@ components:
           description: De rol/functie van het contact
           maxLength: 100
       required:
-      - achternaam
+      - naam
       - organisatie
       - uuid
-      - voornaam
     ContactRequest:
       type: object
       properties:
@@ -6171,15 +6148,10 @@ components:
           type: string
           format: uuid
           writeOnly: true
-        voornaam:
+        naam:
           type: string
           minLength: 1
-          description: voornaam van het contact
-          maxLength: 255
-        achternaam:
-          type: string
-          minLength: 1
-          description: achternaam van het contact
+          description: Naam van het contact (persoon, afdeling, enz..)
           maxLength: 255
         email:
           type: string
@@ -6196,8 +6168,7 @@ components:
           description: De rol/functie van het contact
           maxLength: 100
       required:
-      - achternaam
-      - voornaam
+      - naam
     ContentElement:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
@@ -7226,15 +7197,10 @@ components:
           type: string
           format: uuid
           writeOnly: true
-        voornaam:
+        naam:
           type: string
           minLength: 1
-          description: voornaam van het contact
-          maxLength: 255
-        achternaam:
-          type: string
-          minLength: 1
-          description: achternaam van het contact
+          description: Naam van het contact (persoon, afdeling, enz..)
           maxLength: 255
         email:
           type: string
