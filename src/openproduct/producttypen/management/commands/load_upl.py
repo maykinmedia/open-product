@@ -90,6 +90,7 @@ class Command(BaseCommand):
         except requests.exceptions.RequestException as e:
             raise CommandError(e)
 
+        response.encoding = "uft-8"
         content = StringIO(response.text)
         data = csv.DictReader(content)
         return self._load_upl(data)
@@ -120,18 +121,19 @@ class Command(BaseCommand):
                     f"Skipping index {i} because of missing column(s) {' or '.join(columns.values())}."
                 )
                 continue
+            try:
+                upn, created = UniformProductNaamModel.objects.update_or_create(
+                    naam=name,
+                    defaults={"uri": uri, "is_verwijderd": False},
+                )
+                upn_updated_list.append(upn.id)
 
-            upn, created = UniformProductNaamModel.objects.update_or_create(
-                uri=uri,
-                naam=name,
-                defaults={"is_verwijderd": False},
-            )
-            upn_updated_list.append(upn.id)
-
-            if created:
-                created_count += 1
-            else:
-                updated_count += 1
+                if created:
+                    created_count += 1
+                else:
+                    updated_count += 1
+            except Exception as e:
+                raise CommandError(f"Could not merge {name}", e)
 
         removed_count = UniformProductNaamModel.objects.exclude(
             id__in=upn_updated_list

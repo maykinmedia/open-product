@@ -6,6 +6,11 @@ import reversion
 from openproduct.utils.models import BaseModel
 
 
+class UniformeProductNaamManager(models.Manager):
+    def get_by_natural_key(self, naam):
+        return self.get(naam=naam)
+
+
 @reversion.register()
 class UniformeProductNaam(BaseModel):
     naam = models.CharField(
@@ -26,6 +31,8 @@ class UniformeProductNaam(BaseModel):
         default=False,
     )
 
+    objects = UniformeProductNaamManager()
+
     class Meta:
         verbose_name = _("Uniforme product naam")
         verbose_name_plural = _("Uniforme product namen")
@@ -33,3 +40,6 @@ class UniformeProductNaam(BaseModel):
 
     def __str__(self):
         return self.naam
+
+    def natural_key(self):
+        return (self.naam,)
