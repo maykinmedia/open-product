@@ -15,11 +15,13 @@ from reversion.models import Version
 
 from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
-from openproduct.producten.models import Document, Eigenaar, Product
+from openproduct.producten.models import Document, Eigenaar, Product, Taak, Zaak
 from openproduct.producten.tests.factories import (
     DocumentFactory,
     EigenaarFactory,
     ProductFactory,
+    TaakFactory,
+    ZaakFactory,
 )
 from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.producttypen.models.producttype import ProductStateChoices
@@ -49,7 +51,9 @@ class TestProduct(BaseApiTestCase):
         config_patch = patch(
             "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
             return_value=ExterneVerwijzingConfig(
-                documenten_url="https://gemeente-a.zgw.nl/documenten"
+                documenten_url="https://gemeente-a.zgw.nl/documenten",
+                zaken_url="https://gemeente-a.zgw.nl/zaken",
+                taken_url="https://gemeente-a.zgw.nl/taken",
             ),
         )
 
@@ -116,6 +120,8 @@ class TestProduct(BaseApiTestCase):
                 }
             ],
             "documenten": [],
+            "zaken": [],
+            "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
@@ -172,6 +178,8 @@ class TestProduct(BaseApiTestCase):
                 }
             ],
             "documenten": [],
+            "zaken": [],
+            "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
@@ -261,7 +269,12 @@ class TestProduct(BaseApiTestCase):
         self.producttype.dataobject_schema = json_schema
         self.producttype.save()
 
-        data = self.data | {"dataobject": {"naam": "Test"}}
+        data = self.data | {
+            "dataobject": {"naam": "Test"},
+            "documenten": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
+            "zaken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
+            "taken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
+        }
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -291,7 +304,21 @@ class TestProduct(BaseApiTestCase):
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
-            "documenten": [],
+            "documenten": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/documenten/cec996f4-2efa-4307-a035-32c2c9032e89"
+                }
+            ],
+            "zaken": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                }
+            ],
+            "taken": [
+                {
+                    "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                }
+            ],
             "producttype": {
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
@@ -470,7 +497,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
     def test_create_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         response = self.client.post(self.path, self.data)
 
@@ -480,10 +509,14 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         data = self.data | {
             "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
         }
         response = self.client.post(self.path, data)
 
@@ -494,6 +527,18 @@ class TestProduct(BaseApiTestCase):
                 "documenten": [
                     ErrorDetail(
                         string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "zaken": [
+                    ErrorDetail(
+                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "taken": [
+                    ErrorDetail(
+                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
                         code="invalid",
                     )
                 ],
@@ -518,6 +563,54 @@ class TestProduct(BaseApiTestCase):
                 "documenten": [
                     ErrorDetail(
                         string="Er bestaat al een document met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
+    def test_create_product_with_duplicate_zaak_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "zaken": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "zaken": [
+                    ErrorDetail(
+                        string="Er bestaat al een zaak met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
+                        code="unique",
+                    )
+                ]
+            },
+        )
+
+    def test_create_product_with_duplicate_taak_uuids_returns_error(
+        self,
+    ):
+        data = self.data | {
+            "taken": [
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+            ],
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "taken": [
+                    ErrorDetail(
+                        string="Er bestaat al een taak met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
                         code="unique",
                     )
                 ]
@@ -805,7 +898,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
     def test_update_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         product = ProductFactory.create()
 
@@ -817,12 +912,16 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         product = ProductFactory.create()
 
         data = self.data | {
             "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
         }
         response = self.client.put(self.detail_path(product), data)
 
@@ -833,6 +932,18 @@ class TestProduct(BaseApiTestCase):
                 "documenten": [
                     ErrorDetail(
                         string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "zaken": [
+                    ErrorDetail(
+                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "taken": [
+                    ErrorDetail(
+                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
                         code="invalid",
                     )
                 ],
@@ -899,6 +1010,126 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Document.objects.count(), 1)
 
+    def test_update_product_with_zaak(self):
+        product = ProductFactory.create()
+
+        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaken": zaken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_with_zaak_replacing_existing(self):
+        product = ProductFactory.create()
+
+        ZaakFactory.create(product=product)
+
+        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"zaken": zaken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_removing_zaken(self):
+        product = ProductFactory.create()
+        ZaakFactory.create(product=product)
+        ZaakFactory.create(product=product)
+
+        zaken = []
+        data = self.data | {"zaken": zaken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 0)
+        self.assertEqual(response.data["zaken"], zaken)
+
+    def test_update_product_existing_zaken_are_kept(self):
+        product = ProductFactory.create()
+        ZaakFactory.create(product=product)
+
+        response = self.client.put(self.detail_path(product), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+
+    def test_update_product_with_taak(self):
+        product = ProductFactory.create()
+
+        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"taken": taken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+        self.assertEqual(
+            response.data["taken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_with_taak_replacing_existing(self):
+        product = ProductFactory.create()
+
+        TaakFactory.create(product=product)
+
+        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = self.data | {"taken": taken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+        self.assertEqual(
+            response.data["taken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_update_product_removing_taken(self):
+        product = ProductFactory.create()
+        TaakFactory.create(product=product)
+        TaakFactory.create(product=product)
+
+        taken = []
+        data = self.data | {"taken": taken}
+        response = self.client.put(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 0)
+        self.assertEqual(response.data["taken"], taken)
+
+    def test_update_product_existing_taken_are_kept(self):
+        product = ProductFactory.create()
+        TaakFactory.create(product=product)
+
+        response = self.client.put(self.detail_path(product), self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+
     def test_partial_update_product(self):
         product = ProductFactory.create(
             producttype=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
@@ -912,7 +1143,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
 
     def test_partial_update_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         product = ProductFactory.create()
 
@@ -924,12 +1157,16 @@ class TestProduct(BaseApiTestCase):
     def test_partial_update_product_with_externe_verwijzingen_without_config_returns_error(
         self,
     ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         product = ProductFactory.create()
 
         data = {
             "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
         }
         response = self.client.patch(self.detail_path(product), data)
 
@@ -940,6 +1177,18 @@ class TestProduct(BaseApiTestCase):
                 "documenten": [
                     ErrorDetail(
                         string="De documenten url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "zaken": [
+                    ErrorDetail(
+                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
+                        code="invalid",
+                    )
+                ],
+                "taken": [
+                    ErrorDetail(
+                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
                         code="invalid",
                     )
                 ],
@@ -1006,16 +1255,142 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Document.objects.count(), 1)
 
+    def test_partial_update_product_with_zaak(self):
+        product = ProductFactory.create()
+
+        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaken": zaken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_with_zaak_replacing_existing(self):
+        product = ProductFactory.create()
+
+        ZaakFactory.create(product=product)
+
+        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"zaken": zaken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+        self.assertEqual(
+            response.data["zaken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_removing_zaken(self):
+        product = ProductFactory.create()
+        ZaakFactory.create(product=product)
+        ZaakFactory.create(product=product)
+
+        zaken = []
+        data = {"zaken": zaken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 0)
+        self.assertEqual(response.data["zaken"], zaken)
+
+    def test_partial_update_product_existing_zaken_are_kept(self):
+        product = ProductFactory.create()
+        ZaakFactory.create(product=product)
+
+        response = self.client.patch(self.detail_path(product), {"prijs": "10"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Zaak.objects.count(), 1)
+
+    def test_partial_update_product_with_taak(self):
+        product = ProductFactory.create()
+
+        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"taken": taken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+        self.assertEqual(
+            response.data["taken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_with_taak_replacing_existing(self):
+        product = ProductFactory.create()
+
+        TaakFactory.create(product=product)
+
+        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        data = {"taken": taken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+        self.assertEqual(
+            response.data["taken"],
+            [
+                {
+                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                }
+            ],
+        )
+
+    def test_partial_update_product_removing_taken(self):
+        product = ProductFactory.create()
+        TaakFactory.create(product=product)
+        TaakFactory.create(product=product)
+
+        taken = []
+        data = {"taken": taken}
+        response = self.client.patch(self.detail_path(product), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 0)
+        self.assertEqual(response.data["taken"], taken)
+
+    def test_partial_update_product_existing_taken_are_kept(self):
+        product = ProductFactory.create()
+        TaakFactory.create(product=product)
+
+        response = self.client.patch(self.detail_path(product), {"prijs": "10"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Taak.objects.count(), 1)
+
     def test_read_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(documenten_url="")
+        self.config_mock.return_value = ExterneVerwijzingConfig(
+            documenten_url="", zaken_url="", taken_url=""
+        )
 
         product = ProductFactory.create()
         document = DocumentFactory(product=product)
+        zaak = ZaakFactory(product=product)
+        taak = TaakFactory(product=product)
 
         response = self.client.get(self.detail_path(product))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["documenten"], [{"url": f"/{document.uuid}"}])
+        self.assertEqual(response.data["zaken"], [{"url": f"/{zaak.uuid}"}])
+        self.assertEqual(response.data["taken"], [{"url": f"/{taak.uuid}"}])
 
     def test_read_producten(self):
         product1 = ProductFactory.create(producttype=self.producttype)
@@ -1052,6 +1427,8 @@ class TestProduct(BaseApiTestCase):
                     }
                 ],
                 "documenten": [],
+                "zaken": [],
+                "taken": [],
                 "producttype": {
                     "uuid": str(self.producttype.uuid),
                     "code": self.producttype.code,
@@ -1087,6 +1464,8 @@ class TestProduct(BaseApiTestCase):
                     }
                 ],
                 "documenten": [],
+                "zaken": [],
+                "taken": [],
                 "producttype": {
                     "uuid": str(self.producttype.uuid),
                     "code": self.producttype.code,
@@ -1134,6 +1513,8 @@ class TestProduct(BaseApiTestCase):
                 }
             ],
             "documenten": [],
+            "zaken": [],
+            "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,

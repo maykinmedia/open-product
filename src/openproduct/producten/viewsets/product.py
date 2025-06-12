@@ -136,6 +136,8 @@ class ProductFilterSet(FilterSet):
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
             "documenten__uuid": ["exact"],
+            "zaken__uuid": ["exact"],
+            "taken__uuid": ["exact"],
             "eigenaren__uuid": ["exact"],
         }
 
@@ -172,9 +174,15 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         context = super().get_serializer_context()
         externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
 
-        if externe_verwijzing_config.documenten_url == "":
+        if not all(
+            (
+                externe_verwijzing_config.documenten_url,
+                externe_verwijzing_config.zaken_url,
+                externe_verwijzing_config.taken_url,
+            )
+        ):
             logger.warning(
-                "De documenten url is niet geconfigureerd in de externe verwijzing config."
+                "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
             )
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
