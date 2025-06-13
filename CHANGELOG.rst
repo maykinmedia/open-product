@@ -1,3 +1,61 @@
+1.2.0 (13-06-2025)
+------------------
+
+.. warning::
+
+    This release upgrades Django to version 5.2.3, which requires PostgreSQL version 14 or higher.
+    Attempting to deploy with PostgreSQL <14 will cause errors during deployment.
+
+**New features**
+
+* [:open-product:`134`] added product taken & zaken
+* [:open-product:`156`] changed contact to have a generic naam field
+* [:open-api-framework:`149`] added dark/light theme toggle to the admin
+* [:open-product:`131`] added product naam
+* [:open-product:`119`] added thema filters
+
+    * producttypen__uuid
+    * producttypen__uuid__in
+
+* [:open-product:`130`] added producttype code validation
+* [:open-product:`123`] added dmn mapping and validation
+
+**Bugfixes**
+
+* fixed issue with UPL import
+* [:open-product:`122`] fixed trailing slash api paths
+
+**Project maintenance**
+
+* Upgrade dependencies
+
+  * django to 5.2.3
+  * open-api-framework to 0.10.2
+  * notifications-api-common to 0.7.3
+  * commonground-api-common to 2.6.4
+  * django-celery-beat to 2.8.0
+  * tornado to 6.5.1
+  * requests to 2.23.4
+
+* added the quickstart workflow
+* added image to web-init container in compose example
+* [:open-api-framework:`139`] added django-upgrade-check
+* [:open-api-framework:`140`] upgraded python to 3.12
+* Replace OAS workflows with single workflow
+* [:open-api-framework:`133`] Replace black, isort and flake8 with ``ruff`` and update ``code-quality`` workflow
+* [:open-api-framework:`132`] Removed pytest & sphinx check
+
+* [:open-product:`137`] follow api design rules
+
+    * changed pagination keys to NL
+    * moved openapi schemas
+    * added API-Version header
+
+**Documentation**
+
+* [:open-product:`114`] added context to api specs
+* [:open-product:`137`] added documentation about api design rules see :ref:`api_index`
+
 1.1.0 (09-05-2025)
 ------------------
 
