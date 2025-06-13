@@ -30,6 +30,8 @@ class ProductTypeInline(admin.TabularInline):
     def has_add_permission(self, request, obj=None):
         return False
 
+    # TODO prefetch translations?
+
 
 class ThemaAdminForm(forms.ModelForm):
     class Meta:
@@ -50,8 +52,12 @@ class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return obj.producttypen_count
 
     def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.annotate(producttypen_count=Count("producttypen"))
+        queryset = (
+            super()
+            .get_queryset(request)
+            .annotate(producttypen_count=Count("producttypen"))
+            .select_related("hoofd_thema")
+        )
         return queryset
 
     list_filter = ["gepubliceerd", "producttypen", "hoofd_thema"]

@@ -52,6 +52,9 @@ class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 
         return False
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("master")  # TODO
+
 
 class ProductTypeAdminForm(TranslatableModelForm):
     class Meta:
@@ -137,7 +140,8 @@ class ProductTypeAdmin(
         return (
             super()
             .get_queryset(request)
-            .prefetch_related("themas", "contacten", "locaties", "organisaties")
+            .select_related("uniforme_product_naam")
+            .prefetch_related("themas", "translations")
         )
 
     @admin.display(description="thema's")

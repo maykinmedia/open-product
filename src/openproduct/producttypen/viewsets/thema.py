@@ -56,7 +56,9 @@ class ThemaFilterSet(FilterSet):
     ),
 )
 class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Thema.objects.all()
+    queryset = Thema.objects.select_related("hoofd_thema").prefetch_related(
+        "producttypen"
+    )
     serializer_class = ThemaSerializer
     lookup_field = "uuid"
     filterset_class = ThemaFilterSet

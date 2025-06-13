@@ -26,6 +26,9 @@ class PrijsRegelInline(admin.TabularInline):
     fields = ("dmn_config", "dmn_tabel_id", "beschrijving")
     formset = AuditLogInlineformset
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("dmn_config")
+
 
 class PrijsAdminForm(forms.ModelForm):
     class Meta:

@@ -47,6 +47,9 @@ class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 
         return False
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("master")  # TODO
+
 
 class ContentElementInlineForm(TranslatableModelForm):
     class Meta:
@@ -68,3 +71,8 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
     extra = 1
     form = ContentElementInlineForm
     formset = AuditLogInlineformset
+
+    def get_queryset(self, request):
+        return (
+            super().get_queryset(request).prefetch_related("translations")
+        )  # TODO is this needed?

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Prefetch
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
@@ -124,7 +125,12 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return obj.producttype.naam
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("producttype")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("producttype")
+            .prefetch_related(Prefetch("producttype__translations"))
+        )
 
     @admin.display(description=_("acties"))
     def show_actions(self, obj: Product) -> str:
