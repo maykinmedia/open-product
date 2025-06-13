@@ -15,10 +15,12 @@ from openproduct.producten.serializers.product import ProductSerializer
 from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
+    CharArrayFilter,
     FilterSet,
     ManyCharFilter,
     TranslationFilter,
     TranslationInFilter,
+    UUIDFInFilter,
     filter_data_attr_value_part,
 )
 from openproduct.utils.helpers import display_choice_values_for_help_text
@@ -107,6 +109,18 @@ class ProductFilterSet(FilterSet):
         help_text=get_help_text("producten.eigenaar", "klantnummer"),
     )
 
+    producttype__themas__naam__in = CharArrayFilter(
+        field_name="producttype__themas__naam",
+        distinct=True,
+        help_text=_("Lijst van thema namen waarop kan worden gezocht."),
+    )
+
+    producttype__themas__uuid__in = UUIDFInFilter(
+        field_name="producttype__themas__uuid",
+        distinct=True,
+        help_text=_("Lijst van thema uuids waarop kan worden gezocht."),
+    )
+
     def filter_dataobject_attr(self, queryset, name, value: list):
         for value_part in value:
             queryset = filter_data_attr_value_part(value_part, "dataobject", queryset)
@@ -130,6 +144,8 @@ class ProductFilterSet(FilterSet):
             "prijs": ["exact", "gte", "lte"],
             "producttype__code": ["exact", "in"],
             "producttype__uuid": ["exact", "in"],
+            "producttype__themas__naam": ["exact"],
+            "producttype__themas__uuid": ["exact"],
             "naam": ["exact"],
             "start_datum": ["exact", "gte", "lte"],
             "eind_datum": ["exact", "gte", "lte"],
