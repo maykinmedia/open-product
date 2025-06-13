@@ -18,17 +18,39 @@ from openproduct.producten.serializers.validators import (
     VerbruiksObjectValidator,
 )
 from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
-from openproduct.producttypen.models import ProductType
+from openproduct.producttypen.models import ProductType, UniformeProductNaam
 from openproduct.producttypen.models.validators import (
     check_externe_verwijzing_config_url,
 )
-from openproduct.producttypen.serializers.thema import NestedProductTypeSerializer
+from openproduct.producttypen.serializers.producttype import NestedThemaSerializer
 from openproduct.utils.drf_validators import NestedObjectsValidator
 from openproduct.utils.fields import UUIDRelatedField
 from openproduct.utils.serializers import (
     set_nested_serializer,
     validate_key_value_model_keys,
 )
+
+
+class NestedProductTypeSerializer(serializers.ModelSerializer):
+    uniforme_product_naam = serializers.SlugRelatedField(
+        slug_field="naam", queryset=UniformeProductNaam.objects.all()
+    )
+
+    themas = NestedThemaSerializer(many=True)
+
+    class Meta:
+        model = ProductType
+        fields = (
+            "uuid",
+            "code",
+            "keywords",
+            "uniforme_product_naam",
+            "toegestane_statussen",
+            "gepubliceerd",
+            "aanmaak_datum",
+            "update_datum",
+            "themas",
+        )
 
 
 @extend_schema_serializer(
@@ -52,6 +74,17 @@ from openproduct.utils.serializers import (
                     "gepubliceerd": True,
                     "aanmaak_datum": "2019-08-24T14:15:22Z",
                     "update_datum": "2019-08-24T14:15:22Z",
+                    "themas": [
+                        {
+                            "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                            "naam": "Parkeren",
+                            "beschrijving": ".....",
+                            "gepubliceerd": True,
+                            "aanmaak_datum": "2019-08-24T14:15:22Z",
+                            "update_datum": "2019-08-24T14:15:22Z",
+                            "hoofd_thema": "41ec14a8-ca7d-43a9-a4a8-46f9587c8d91",
+                        }
+                    ],
                 },
                 "gepubliceerd": False,
                 "eigenaren": [
@@ -103,7 +136,6 @@ from openproduct.utils.serializers import (
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
             },
-            media_type="multipart/form-data",
             request_only=True,
         ),
     ],
