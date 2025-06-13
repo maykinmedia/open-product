@@ -461,7 +461,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
     def test_delete_thema_when_linked_producttype_has_one_thema(self):
         thema = ThemaFactory.create()
-        producttype = ProductTypeFactory.create(naam="test")
+        producttype = ProductTypeFactory.create(naam="test", code="T")
         producttype.themas.add(thema)
         producttype.save()
 
@@ -472,7 +472,7 @@ class TestThemaViewSet(BaseApiTestCase):
             response.data,
             {
                 "producttypen": [
-                    "Producttype test moet aan een minimaal één thema zijn gelinkt."
+                    "Producttype T moet aan een minimaal één thema zijn gelinkt."
                 ]
             },
         )
