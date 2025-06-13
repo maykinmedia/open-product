@@ -42,7 +42,9 @@ class ContentElementViewSet(
     TranslatableViewSetMixin,
     GenericViewSet,
 ):
-    queryset = ContentElement.objects.all()
+    queryset = ContentElement.objects.select_related("producttype").prefetch_related(
+        "translations", "labels"
+    )
     serializer_class = ContentElementSerializer
     lookup_field = "uuid"
 

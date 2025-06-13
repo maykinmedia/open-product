@@ -37,7 +37,7 @@ class Prijs(BaseModel):
         ordering = ("-id",)
 
     def __str__(self):
-        return f"{self.producttype.naam} {self.actief_vanaf}"
+        return f"{self.producttype.code} {self.actief_vanaf}"
 
 
 @reversion.register()

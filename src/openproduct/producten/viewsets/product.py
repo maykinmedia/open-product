@@ -180,7 +180,16 @@ class ProductFilterSet(FilterSet):
     ),
 )
 class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.select_related("producttype").prefetch_related(
+        "eigenaren",
+        "documenten",
+        "taken",
+        "zaken",
+        "producttype__translations",
+        "producttype__uniforme_product_naam",
+        "producttype__themas",
+        "producttype__themas__hoofd_thema",  # TODO ???
+    )
     lookup_field = "uuid"
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet

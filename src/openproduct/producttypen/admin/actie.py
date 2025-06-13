@@ -10,10 +10,17 @@ class ActieInline(admin.TabularInline):
     extra = 1
     formset = AuditLogInlineformset
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("dmn_config")
+
 
 @admin.register(Actie)
 class ActieAdmin(admin.ModelAdmin):
-    list_display = ("producttype", "naam", "url")
+    list_display = ("naam", "producttype", "__str__", "url")
     list_filter = ("producttype__code", "dmn_config__naam")
+    search_fields = ("naam",)
 
     readonly_fields = ("uuid",)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("producttype", "dmn_config")

@@ -28,7 +28,7 @@ from .zaaktype import ZaakTypeInline
 @admin.register(ProductTypeTranslation)
 class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("producttype", "language_code")
-    list_filter = ("master__themas", "language_code")
+    list_filter = ("master__themas", "master__code", "language_code")
     search_fields = ("naam",)
     readonly_fields = ("master", "language_code")
 
@@ -51,6 +51,14 @@ class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             return True
 
         return False
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("master")
+            .prefetch_related("master__themas")
+        )
 
 
 class ProductTypeAdminForm(TranslatableModelForm):
@@ -85,6 +93,7 @@ class ProductTypeAdmin(
 ):
     list_display = (
         "naam",
+        "code",
         "uniforme_product_naam",
         "aanmaak_datum",
         "display_themas",
@@ -141,7 +150,8 @@ class ProductTypeAdmin(
         return (
             super()
             .get_queryset(request)
-            .prefetch_related("themas", "contacten", "locaties", "organisaties")
+            .select_related("uniforme_product_naam")
+            .prefetch_related("themas")
         )
 
     @admin.display(description="thema's")

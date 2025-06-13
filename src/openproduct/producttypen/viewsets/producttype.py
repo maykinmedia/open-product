@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
@@ -10,11 +11,16 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from vng_api_common.utils import get_help_text
 
+from openproduct.locaties.models import Contact
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
+    Actie,
     ContentElement,
     ExterneVerwijzingConfig,
+    Prijs,
+    PrijsRegel,
     ProductType,
+    Thema,
 )
 from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.serializers import (
@@ -184,7 +190,38 @@ class Meta:
 class ProductTypeViewSet(
     AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
 ):
-    queryset = ProductType.objects.all()
+    queryset = ProductType.objects.select_related(
+        "verbruiksobject_schema", "dataobject_schema", "uniforme_product_naam"
+    ).prefetch_related(
+        Prefetch("themas", queryset=Thema.objects.prefetch_related("hoofd_thema")),
+        Prefetch("contacten", queryset=Contact.objects.select_related("organisatie")),
+        "locaties",
+        "organisaties",
+        "translations",
+        Prefetch("acties", queryset=Actie.objects.select_related("dmn_config")),
+        "bestanden",
+        Prefetch(
+            "content_elementen",
+            queryset=ContentElement.objects.prefetch_related("translations"),
+        ),
+        "externe_codes",
+        Prefetch(
+            "prijzen",
+            queryset=Prijs.objects.prefetch_related(
+                Prefetch(
+                    "prijsregels",
+                    queryset=PrijsRegel.objects.select_related("dmn_config"),
+                ),
+                "prijsopties",
+            ),
+        ),
+        "links",
+        "parameters",
+        "processen",
+        "verzoektypen",
+        "zaaktypen",
+        "translations",
+    )
     serializer_class = ProductTypeSerializer
     lookup_field = "uuid"
     filterset_class = ProductTypeFilterSet

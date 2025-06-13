@@ -32,7 +32,7 @@ def model_to_dict(instance):
             continue
 
         data[obj.related_name] = [
-            model_to_dict(instance) for instance in manager.iterator()
+            model_to_dict(instance) for instance in manager.iterator(chunk_size=1000)
         ]
 
     return data
