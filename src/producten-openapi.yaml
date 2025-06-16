@@ -246,6 +246,35 @@ paths:
         explode: false
         style: form
       - in: query
+        name: producttype__themas__naam
+        schema:
+          type: string
+        description: Naam van het thema.
+      - in: query
+        name: producttype__themas__naam__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Lijst van thema namen waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
+        name: producttype__themas__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: producttype__themas__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van thema uuids waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
         name: producttype__uuid
         schema:
           type: string
@@ -404,6 +433,14 @@ paths:
                         gepubliceerd: true
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
+                        themas:
+                        - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Parkeren
+                          beschrijving: '.....'
+                          gepubliceerd: true
+                          aanmaak_datum: '2019-08-24T14:15:22Z'
+                          update_datum: '2019-08-24T14:15:22Z'
+                          hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       gepubliceerd: false
                       eigenaren:
                       - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -455,6 +492,30 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductRequest'
+            examples:
+              ProductRequest:
+                value:
+                  naam: 'verhuurvergunning: straatweg 14'
+                  start_datum: '2024-12-01'
+                  eind_datum: '2026-12-01'
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  gepubliceerd: false
+                  eigenaren:
+                  - bsn: '111222333'
+                  documenten:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
+                  status: gereed
+                  prijs: '20.20'
+                  frequentie: eenmalig
+                  verbruiksobject:
+                    uren: 130
+                  dataobject:
+                    max_uren: 150
+                summary: product request
         required: true
       security:
       - jwtAuth: []
@@ -486,6 +547,14 @@ paths:
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      themas:
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeren
+                        beschrijving: '.....'
+                        gepubliceerd: true
+                        aanmaak_datum: '2019-08-24T14:15:22Z'
+                        update_datum: '2019-08-24T14:15:22Z'
+                        hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     gepubliceerd: false
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -570,6 +639,14 @@ paths:
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      themas:
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeren
+                        beschrijving: '.....'
+                        gepubliceerd: true
+                        aanmaak_datum: '2019-08-24T14:15:22Z'
+                        update_datum: '2019-08-24T14:15:22Z'
+                        hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     gepubliceerd: false
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -628,6 +705,30 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductRequest'
+            examples:
+              ProductRequest:
+                value:
+                  naam: 'verhuurvergunning: straatweg 14'
+                  start_datum: '2024-12-01'
+                  eind_datum: '2026-12-01'
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  gepubliceerd: false
+                  eigenaren:
+                  - bsn: '111222333'
+                  documenten:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
+                  status: gereed
+                  prijs: '20.20'
+                  frequentie: eenmalig
+                  verbruiksobject:
+                    uren: 130
+                  dataobject:
+                    max_uren: 150
+                summary: product request
         required: true
       security:
       - jwtAuth: []
@@ -659,6 +760,14 @@ paths:
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      themas:
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeren
+                        beschrijving: '.....'
+                        gepubliceerd: true
+                        aanmaak_datum: '2019-08-24T14:15:22Z'
+                        update_datum: '2019-08-24T14:15:22Z'
+                        hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     gepubliceerd: false
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -717,6 +826,30 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedProductRequest'
+            examples:
+              ProductRequest:
+                value:
+                  naam: 'verhuurvergunning: straatweg 14'
+                  start_datum: '2024-12-01'
+                  eind_datum: '2026-12-01'
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  gepubliceerd: false
+                  eigenaren:
+                  - bsn: '111222333'
+                  documenten:
+                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
+                  status: gereed
+                  prijs: '20.20'
+                  frequentie: eenmalig
+                  verbruiksobject:
+                    uren: 130
+                  dataobject:
+                    max_uren: 150
+                summary: product request
       security:
       - jwtAuth: []
       - tokenAuth: []
@@ -747,6 +880,14 @@ paths:
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      themas:
+                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeren
+                        beschrijving: '.....'
+                        gepubliceerd: true
+                        aanmaak_datum: '2019-08-24T14:15:22Z'
+                        update_datum: '2019-08-24T14:15:22Z'
+                        hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     gepubliceerd: false
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -970,9 +1111,14 @@ components:
           format: date-time
           readOnly: true
           description: De datum waarop het object voor het laatst is gewijzigd.
+        themas:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedThema'
       required:
       - aanmaak_datum
       - code
+      - themas
       - uniforme_product_naam
       - update_datum
       - uuid
@@ -1003,8 +1149,13 @@ components:
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
+        themas:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedThemaRequest'
       required:
       - code
+      - themas
       - uniforme_product_naam
     NestedTaak:
       type: object
@@ -1026,6 +1177,64 @@ components:
           description: Uuid van de taak.
       required:
       - uuid
+    NestedThema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        naam:
+          type: string
+          description: Naam van het thema.
+          maxLength: 255
+        beschrijving:
+          type: string
+          description: Beschrijving van het thema, ondersteund markdown format.
+        gepubliceerd:
+          type: boolean
+          description: Geeft aan of het object getoond kan worden.
+        aanmaak_datum:
+          type: string
+          format: date-time
+          readOnly: true
+          description: De datum waarop het object is aangemaakt.
+        update_datum:
+          type: string
+          format: date-time
+          readOnly: true
+          description: De datum waarop het object voor het laatst is gewijzigd.
+        hoofd_thema:
+          type: string
+          format: uuid
+          description: Het hoofd thema waaronder dit thema valt.
+      required:
+      - aanmaak_datum
+      - hoofd_thema
+      - naam
+      - update_datum
+      - uuid
+    NestedThemaRequest:
+      type: object
+      properties:
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het thema.
+          maxLength: 255
+        beschrijving:
+          type: string
+          description: Beschrijving van het thema, ondersteund markdown format.
+        gepubliceerd:
+          type: boolean
+          description: Geeft aan of het object getoond kan worden.
+        hoofd_thema:
+          type: string
+          format: uuid
+          description: Het hoofd thema waaronder dit thema valt.
+      required:
+      - hoofd_thema
+      - naam
     NestedZaak:
       type: object
       properties:
