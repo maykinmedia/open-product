@@ -28,6 +28,7 @@ from openproduct.producttypen.models.producttype import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
+    ThemaFactory,
 )
 from openproduct.utils.tests.cases import BaseApiTestCase
 
@@ -39,7 +40,9 @@ class TestProduct(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
+        self.thema = ThemaFactory.create()
         self.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        self.producttype.themas.add(self.thema)
         self.data = {
             "producttype_uuid": self.producttype.uuid,
             "status": "initieel",
@@ -96,6 +99,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
         producttype = product.producttype
+        thema = producttype.themas.first()
         expected_data = {
             "url": f"http://testserver{self.detail_path(product)}",
             "uuid": str(product.uuid),
@@ -131,6 +135,17 @@ class TestProduct(BaseApiTestCase):
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "themas": [
+                    {
+                        "uuid": str(thema.uuid),
+                        "hoofd_thema": None,
+                        "gepubliceerd": True,
+                        "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
+                        "update_datum": thema.update_datum.astimezone().isoformat(),
+                        "naam": thema.naam,
+                        "beschrijving": thema.beschrijving,
+                    }
+                ],
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -154,6 +169,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
         producttype = product.producttype
+        thema = producttype.themas.first()
         expected_data = {
             "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
@@ -189,6 +205,17 @@ class TestProduct(BaseApiTestCase):
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "themas": [
+                    {
+                        "uuid": str(thema.uuid),
+                        "hoofd_thema": None,
+                        "gepubliceerd": True,
+                        "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
+                        "update_datum": thema.update_datum.astimezone().isoformat(),
+                        "naam": thema.naam,
+                        "beschrijving": thema.beschrijving,
+                    }
+                ],
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -281,6 +308,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.count(), 1)
         product = Product.objects.first()
         producttype = product.producttype
+        thema = producttype.themas.first()
         expected_data = {
             "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
@@ -328,6 +356,17 @@ class TestProduct(BaseApiTestCase):
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "themas": [
+                    {
+                        "uuid": str(thema.uuid),
+                        "hoofd_thema": None,
+                        "gepubliceerd": True,
+                        "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
+                        "update_datum": thema.update_datum.astimezone().isoformat(),
+                        "naam": thema.naam,
+                        "beschrijving": thema.beschrijving,
+                    }
+                ],
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -1438,6 +1477,17 @@ class TestProduct(BaseApiTestCase):
                     "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
                     "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
+                    "themas": [
+                        {
+                            "uuid": str(self.thema.uuid),
+                            "hoofd_thema": None,
+                            "gepubliceerd": True,
+                            "aanmaak_datum": self.thema.aanmaak_datum.astimezone().isoformat(),
+                            "update_datum": self.thema.update_datum.astimezone().isoformat(),
+                            "naam": self.thema.naam,
+                            "beschrijving": self.thema.beschrijving,
+                        }
+                    ],
                 },
             },
             {
@@ -1475,6 +1525,17 @@ class TestProduct(BaseApiTestCase):
                     "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
                     "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
+                    "themas": [
+                        {
+                            "uuid": str(self.thema.uuid),
+                            "hoofd_thema": None,
+                            "gepubliceerd": True,
+                            "aanmaak_datum": self.thema.aanmaak_datum.astimezone().isoformat(),
+                            "update_datum": self.thema.update_datum.astimezone().isoformat(),
+                            "naam": self.thema.naam,
+                            "beschrijving": self.thema.beschrijving,
+                        }
+                    ],
                 },
             },
         ]
@@ -1482,7 +1543,9 @@ class TestProduct(BaseApiTestCase):
 
     @freeze_time("2025-12-31")
     def test_read_product(self):
+        thema = ThemaFactory.create()
         producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        producttype.themas.add(thema)
         product = ProductFactory.create(producttype=producttype)
         EigenaarFactory(kvk_nummer="12345678", product=product)
 
@@ -1524,6 +1587,17 @@ class TestProduct(BaseApiTestCase):
                 "aanmaak_datum": "2025-12-31T01:00:00+01:00",
                 "update_datum": "2025-12-31T01:00:00+01:00",
                 "keywords": [],
+                "themas": [
+                    {
+                        "uuid": str(thema.uuid),
+                        "hoofd_thema": None,
+                        "gepubliceerd": True,
+                        "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
+                        "update_datum": thema.update_datum.astimezone().isoformat(),
+                        "naam": thema.naam,
+                        "beschrijving": thema.beschrijving,
+                    }
+                ],
             },
         }
         self.assertEqual(response.data, expected_data)
