@@ -66,7 +66,7 @@ class Product(BasePublishableModel):
         verbose_name=_("prijs"),
         decimal_places=2,
         max_digits=8,
-        validators=[MinValueValidator(Decimal("0.01"))],
+        validators=[MinValueValidator(Decimal("0"))],
         help_text=_("De prijs van het product."),
     )
 
