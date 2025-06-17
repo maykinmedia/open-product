@@ -70,6 +70,12 @@ class ProductTypeFilterSet(FilterSet):
         ),
     )
 
+    naam = TranslationFilter(
+        field_name="naam",
+        lookup_expr="exact",
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+    )
+
     keywords = CharArrayFilter(
         field_name="keywords",
         lookup_expr="overlap",
