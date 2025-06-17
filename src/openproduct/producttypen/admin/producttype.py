@@ -116,7 +116,11 @@ class ProductTypeAdmin(
         ZaakTypeInline,
         VerzoekTypeInline,
     )
+
+    readonly_fields = ("uuid",)
+
     fields = (
+        "uuid",
         "naam",
         "gepubliceerd",
         "code",

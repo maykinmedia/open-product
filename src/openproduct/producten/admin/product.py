@@ -116,6 +116,7 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     )
     autocomplete_fields = ("producttype",)
     search_fields = ("producttype__translations__naam",)
+    readonly_fields = ("uuid",)
     form = ProductAdminForm
     inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
 

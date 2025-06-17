@@ -45,6 +45,8 @@ class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("naam", "hoofd_thema", "gepubliceerd", "producttypen_count")
     form = ThemaAdminForm
 
+    readonly_fields = ("uuid",)
+
     @admin.display(description=_("Aantal producttypen"))
     def producttypen_count(self, obj):
         return obj.producttypen_count

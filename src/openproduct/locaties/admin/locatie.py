@@ -11,3 +11,5 @@ class LocatieAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("naam", "stad", "postcode", "straat", "huisnummer")
     list_filter = ("stad",)
     search_fields = ("naam", "stad", "postcode", "straat")
+
+    readonly_fields = ("uuid",)
