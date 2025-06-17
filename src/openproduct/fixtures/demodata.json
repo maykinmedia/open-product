@@ -266,7 +266,7 @@
 {
     "model": "producttypen.uniformeproductnaam",
     "fields": {
-        "uuid": "278240fb-ac2f-4f4e-b491-8119c3c8bacf",
+        "uuid": "4b351603-6062-4543-8709-e100476609b4",
         "naam": "identiteitskaart",
         "uri": "http://standaarden.overheid.nl/owms/terms/identiteitskaart",
         "is_verwijderd": false

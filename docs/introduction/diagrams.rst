@@ -1,7 +1,7 @@
 Diagrams
 ========
 
-Generated based on OP 1.0.0
+Generated based on OP 1.2.0
 
 
 Locaties app
