@@ -95,7 +95,7 @@ class TranslationFilter(django_filters.CharFilter):
             lookup = f"{self.model_field_name}__{lookup}"
             language_lookup = f"{self.model_field_name}__{language_lookup}"
 
-        language_code = self.parent.request.LANGUAGE_CODE  # TODO
+        language_code = self.parent.request.LANGUAGE_CODE
 
         qs = self.get_method(qs)(**{lookup: value, language_lookup: language_code})
         return qs

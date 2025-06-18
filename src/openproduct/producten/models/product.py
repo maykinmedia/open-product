@@ -57,7 +57,7 @@ class Product(BasePublishableModel):
         _("status"),
         choices=ProductStateChoices.choices,
         help_text=_(
-            "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype."
+            "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype)."
         ),
         default=ProductStateChoices.INITIEEL,
     )
