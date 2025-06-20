@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
@@ -202,3 +203,30 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
         return context
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        product = serializer.save()
+        logger.info(
+            "product_created",
+            id=str(product.id),
+            naam=product.naam,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        product = serializer.save()
+        logger.info(
+            "product_updated",
+            id=str(product.id),
+            naam=product.naam,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        instance.delete()
+        logger.info(
+            "product_deleted",
+            id=str(instance.id),
+            naam=instance.naam,
+        )
