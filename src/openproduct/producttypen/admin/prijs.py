@@ -61,6 +61,8 @@ class PrijsAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("__str__", "actief_vanaf")
     list_filter = ("producttype__code", "actief_vanaf")
 
+    readonly_fields = ("uuid",)
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("producttype")
 

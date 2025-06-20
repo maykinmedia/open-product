@@ -59,7 +59,7 @@ custom_settings = {
     - Op het moment dat deze velden worden gezet moeten deze statussen zijn toegestaan op het producttype.
     - De status zal via de start_datum alleen naar ACTIEF veranderen mits de status INITIEEL of GEREED is. Voor de eind_datum zijn dit INTIEEL, GEREED of ACTIEF.
 - `verbruiksobject` & `dataobject` zijn JSON velden en worden gevalideerd vanuit `verbruiksobject_schema` & `dataobject_schema` van het producttype.
-- De velden `documenten`, `zaken` en `taken` wordt samen met het product genest aangemaakt of gewijzigd. # TODO
+- De velden `documenten`, `zaken` en `taken` wordt samen met het product genest aangemaakt of gewijzigd.
     - dit veld is een lijst van objecten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.

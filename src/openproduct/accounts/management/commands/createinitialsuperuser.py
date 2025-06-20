@@ -1,5 +1,7 @@
 # Taken from github.com/open-zaak/open-zaak project
 # Copyright (C) 2020 Dimpact
+import os
+
 from django.conf import settings
 from django.contrib.auth.management.commands.createsuperuser import (
     Command as BaseCommand,
@@ -49,7 +51,9 @@ class Command(BaseCommand):
             )
             return
 
-        password = options.get("password")
+        password = options.get("password") or os.environ.get(
+            "OPENPRODUCT_SUPERUSER_PASSWORD"
+        )
 
         if password or options["generate_password"]:
             options["interactive"] = False
@@ -60,11 +64,11 @@ class Command(BaseCommand):
         user = qs.get()
 
         if not password and options["generate_password"]:
-            options["password"] = get_random_string(20)
+            password = get_random_string(20)
 
-        if options["password"]:
+        if password:
             self.stdout.write("Setting user password...")
-            user.set_password(options["password"])
+            user.set_password(password)
             user.save()
 
         if options["email_password_reset"]:

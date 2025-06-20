@@ -208,6 +208,17 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.data["aantal"], 1)
             self.assertEqual(response.data["resultaten"][0]["naam"], "qqqq")
 
+    def test_producttype_naam_filter(self):
+        uuid = uuid4()
+        ProductTypeFactory.create(naam="parkeervergunning", uuid=uuid)
+        ProductTypeFactory.create(naam="aanbouw")
+
+        response = self.client.get(self.path, {"naam": "parkeervergunning"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["resultaten"][0]["uuid"], str(uuid))
+
     def test_producttype_content_label_filter(self):
         producttype = ProductTypeFactory.create()
         element_1 = ContentElementFactory.create(producttype=producttype)

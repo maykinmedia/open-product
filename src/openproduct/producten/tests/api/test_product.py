@@ -656,6 +656,14 @@ class TestProduct(BaseApiTestCase):
             },
         )
 
+    def test_create_free_product(self):
+        data = self.data | {"prijs": 0}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Eigenaar.objects.count(), 1)
+        self.assertEqual(response.data["prijs"], "0.00")
+
     def test_update_product(self):
         producttype = ProductTypeFactory.create(toegestane_statussen=["verlopen"])
         product = ProductFactory.create(producttype=producttype)

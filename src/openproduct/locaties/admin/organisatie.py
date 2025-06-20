@@ -13,10 +13,17 @@ class OrganisatieAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_filter = ("stad",)
     search_fields = ("naam", "stad", "postcode", "straat")
 
+    readonly_fields = ("uuid",)
+
     fieldsets = (
         (
             None,
-            {"fields": ("naam",)},
+            {
+                "fields": (
+                    "uuid",
+                    "naam",
+                )
+            },
         ),
         (_("Contact"), {"fields": ("email", "telefoonnummer")}),
         (

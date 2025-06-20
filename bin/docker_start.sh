@@ -7,24 +7,32 @@ set -ex
 export PGHOST=${DB_HOST:-db}
 export PGPORT=${DB_PORT:-5432}
 
-fixtures_dir=${FIXTURES_DIR:-/app/fixtures}
-
 uwsgi_port=${UWSGI_PORT:-8000}
 uwsgi_processes=${UWSGI_PROCESSES:-4}
 uwsgi_threads=${UWSGI_THREADS:-1}
 
 mountpoint=${SUBPATH:-/}
 
-until pg_isready; do
-  >&2 echo "Waiting for database connection..."
-  sleep 1
-done
+# wait for required services
+${SCRIPTPATH}/wait_for_db.sh
 
 >&2 echo "Database is up."
 
 # Apply database migrations
 >&2 echo "Apply database migrations"
 python src/manage.py migrate
+
+# Create superuser
+# specify password by setting OPENPRODUCT_SUPERUSER_PASSWORD in the env
+# specify username by setting OPENPRODUCT_SUPERUSER_USERNAME in the env
+# specify email by setting OPENPRODUCT_SUPERUSER_EMAIL in the env
+if [ -n "${OPENPRODUCT_SUPERUSER_USERNAME}" ]; then
+    python src/manage.py createinitialsuperuser \
+        --no-input \
+        --username "${OPENPRODUCT_SUPERUSER_USERNAME}" \
+        --email "${OPENPRODUCT_SUPERUSER_EMAIL:-admin@admin.org}"
+    unset OPENPRODUCT_SUPERUSER_USERNAME OPENPRODUCT_SUPERUSER_EMAIL OPENPRODUCT_SUPERUSER_PASSWORD
+fi
 
 # Start server
 >&2 echo "Starting server"

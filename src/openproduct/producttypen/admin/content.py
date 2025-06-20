@@ -25,7 +25,10 @@ class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = ("contentelement", "language_code")
     list_filter = ("master__producttype", "master__labels", "language_code")
     search_fields = ("master__producttype", "master__labels")
-    readonly_fields = ("master", "language_code")
+    readonly_fields = (
+        "master",
+        "language_code",
+    )
 
     @admin.display(description="contentelement")
     def contentelement(self, obj):

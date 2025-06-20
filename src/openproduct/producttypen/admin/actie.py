@@ -15,3 +15,5 @@ class ActieInline(admin.TabularInline):
 class ActieAdmin(admin.ModelAdmin):
     list_display = ("producttype", "naam", "url")
     list_filter = ("producttype__code", "dmn_config__naam")
+
+    readonly_fields = ("uuid",)
