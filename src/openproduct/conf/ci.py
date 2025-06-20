@@ -6,17 +6,11 @@ os.environ.setdefault("SECRET_KEY", "for-testing-purposes-only")
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("ALLOWED_HOSTS", "")
 
+from open_api_framework.conf.utils import mute_logging
+
 from .base import *  # noqa isort:skip
 
-LOGGING["loggers"].update(
-    {
-        "django": {
-            "handlers": ["django"],
-            "level": "WARNING",
-            "propagate": True,
-        },
-    }
-)
+mute_logging(LOGGING)
 
 CACHES.update(
     {

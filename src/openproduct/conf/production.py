@@ -35,13 +35,15 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesSto
 # Production logging facility.
 
 # Production logging facility.
-handlers = ["console"] if LOG_STDOUT else ["django"]
-
 LOGGING["loggers"].update(
     {
-        "django": {"handlers": handlers, "level": "INFO", "propagate": True},
+        "django": {
+            "handlers": logging_root_handlers,
+            "level": "INFO",
+            "propagate": False,
+        },
         "django.security.DisallowedHost": {
-            "handlers": handlers,
+            "handlers": logging_root_handlers,
             "level": "CRITICAL",
             "propagate": False,
         },
