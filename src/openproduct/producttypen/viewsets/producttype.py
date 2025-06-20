@@ -1,8 +1,7 @@
-import logging
-
 from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
+import structlog
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework.decorators import action
@@ -37,7 +36,7 @@ from openproduct.utils.filters import (
 from openproduct.utils.validators import ManyRegexValidator
 from openproduct.utils.views import TranslatableViewSetMixin
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class ProductTypeFilterSet(FilterSet):
@@ -212,7 +211,7 @@ class ProductTypeViewSet(
             )
         ):
             logger.warning(
-                "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
+                "een_of_meerdere_urls_niet_geconfigureerd_in_externe_verwijzing_config"
             )
 
         context["externe_verwijzing_config"] = externe_verwijzing_config

@@ -1,9 +1,8 @@
-import logging
-
+import structlog
 from decouple import Csv, config as _config, undefined
 from sentry_sdk.integrations import DidNotEnable, django, redis
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 
 def config(option: str, default: object = undefined, **kwargs):

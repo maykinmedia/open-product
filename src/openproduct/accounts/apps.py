@@ -1,4 +1,3 @@
-import logging
 from io import StringIO
 
 from django.apps import AppConfig, apps
@@ -7,14 +6,14 @@ from django.contrib.contenttypes.management import create_contenttypes
 from django.core.management import call_command
 from django.db.models.signals import post_migrate
 
-logger = logging.getLogger(__name__)
+import structlog
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 def update_admin_index(sender, **kwargs):
     if "django_admin_index" not in settings.INSTALLED_APPS:
-        logger.warning(
-            "django_admin_index is not installed: skipping update_admin_index()"
-        )
+        logger.warning("django_admin_index_not_installed_skipping_update_admin_index")
         return
 
     from django_admin_index.models import AppGroup
@@ -32,10 +31,12 @@ def update_admin_index(sender, **kwargs):
         call_command("loaddata", "default_admin_index", verbosity=0, stdout=out)
     except Exception as exc:
         logger.warning(
-            f"Unable to load default_admin_index fixture ({exc}). You might have to regenerate the fixtures through 'bin/generate_admin_index_fixtures.sh'"
+            "unable_to_load_default_admin_index_fixture_might_need_to_regenerate",
+            error=str(exc),
+            suggestion="run_bin_generate_admin_index_fixtures_sh",
         )
         return
-    logger.info("Loaded django-admin-index fixture:\n%s", out.getvalue())
+    logger.info("loaded_django_admin_index_fixture", output=out.getvalue())
 
 
 class AccountsConfig(AppConfig):

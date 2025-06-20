@@ -11,7 +11,6 @@ in these templates, and they will be resolved through django's staticfiles machi
 by the custom :class:`UrlFetcher`.
 """
 
-import logging
 import mimetypes
 from io import BytesIO
 from pathlib import PurePosixPath
@@ -24,10 +23,10 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.template.loader import render_to_string
 
+import structlog
 import weasyprint
 
-logger = logging.getLogger(__name__)
-
+logger = structlog.stdlib.get_logger(__name__)
 __all__ = ["render_to_pdf"]
 
 
@@ -95,7 +94,7 @@ class UrlFetcher:
                 absolute_path = finders.find(str(path))
 
             if absolute_path is None:
-                logger.error("Could not resolve path '%s'", path)
+                logger.error("could_not_resolve_path", path=path)
                 return weasyprint.default_url_fetcher(orig_url)
 
             content_type, encoding = mimetypes.guess_type(absolute_path)

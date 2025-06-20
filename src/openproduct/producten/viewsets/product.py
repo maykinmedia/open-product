@@ -1,8 +1,7 @@
-import logging
-
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework.viewsets import ModelViewSet
@@ -26,7 +25,7 @@ from openproduct.utils.filters import (
 from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 DATA_ATTR_HELP_TEXT = _(
     """
@@ -198,7 +197,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             )
         ):
             logger.warning(
-                "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
+                "een_of_meerdere_urls_niet_geconfigureerd_in_externe_verwijzing_config"
             )
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
