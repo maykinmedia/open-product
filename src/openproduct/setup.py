@@ -26,6 +26,8 @@ def setup_env():
     dotenv_path = Path(__file__).resolve().parent.parent.parent / ".env"
     load_dotenv(dotenv_path)
 
+    structlog.contextvars.bind_contextvars(source="app")
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "openproduct.conf.dev")
 
     monkeypatch_requests()
