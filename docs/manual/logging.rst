@@ -35,9 +35,9 @@ context variables, these events will also have the **request bound metadata** de
 API
 ~~~
 
-* ``product_created``: created an ``Product`` via the API. Additional context: ``id``, ``nummer``.
-* ``product_updated``: updated an ``Product`` via the API. Additional context: ``id``, ``nummer``.
-* ``product_deleted``: deleted an ``Product`` via the API. Additional context: ``id``, ``nummer``.
+* ``product_created``: created a ``Product`` via the API. Additional context: ``id``, ``naam``.
+* ``product_updated``: updated a ``Product`` via the API. Additional context: ``id``, ``naam``.
+* ``product_deleted``: deleted a ``Product`` via the API. Additional context: ``id``, ``naam``.
 
 Third party library events
 --------------------------

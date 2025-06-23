@@ -197,9 +197,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
                 externe_verwijzing_config.taken_url,
             )
         ):
-            logger.warning(
-                "een_of_meerdere_urls_niet_geconfigureerd_in_externe_verwijzing_config"
-            )
+            logger.warning("externe_verwijzing_config_missing_urls")
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
         return context

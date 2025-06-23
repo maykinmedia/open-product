@@ -31,7 +31,7 @@ def update_admin_index(sender, **kwargs):
         call_command("loaddata", "default_admin_index", verbosity=0, stdout=out)
     except Exception as exc:
         logger.warning(
-            "unable_to_load_default_admin_index_fixture_might_need_to_regenerate",
+            "unable_to_load_default_admin_index_fixture",
             error=str(exc),
             suggestion="run_bin_generate_admin_index_fixtures_sh",
         )
