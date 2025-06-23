@@ -25,7 +25,7 @@ class DjangoAdminConfigTests(TestCase):
             accounts_apps.update_admin_index(None)
 
         self.assertIn(
-            "event': 'unable_to_load_default_admin_index_fixture_might_need_to_regenerate",
+            "event': 'unable_to_load_default_admin_index_fixture",
             cm.output[0],
         )
 
