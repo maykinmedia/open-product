@@ -15,9 +15,14 @@ os.environ["LOG_REQUESTS"] = "false"
 os.environ["DJANGO_SETTINGS_MODULE"] = "openproduct.conf.ci"
 
 import openproduct  # noqa isort:skip
+
+# Import as private variable to avoid errors on build
+from importlib.metadata import version as _version
+
 import django
 
 from openproduct.setup import setup_env  # noqa isort:skip
+
 
 setup_env()
 django.setup()
@@ -40,6 +45,7 @@ release = openproduct.__version__
 extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.extlinks",
+    "sphinx.ext.intersphinx",
     "recommonmark",
     "sphinx_markdown_tables",
     "sphinx_tabs.tabs",
@@ -98,5 +104,13 @@ extlinks = {
     "open-api-framework": (
         "https://github.com/maykinmedia/open-api-framework/issues/%s",
         "#%s",
+    ),
+}
+
+django_structlog_version = _version("django-structlog")
+intersphinx_mapping = {
+    "django-structlog": (
+        f"https://django-structlog.readthedocs.io/en/{django_structlog_version}",
+        None,
     ),
 }
