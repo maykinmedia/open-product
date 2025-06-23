@@ -206,7 +206,8 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
     @transaction.atomic
     def perform_create(self, serializer):
-        product = serializer.save()
+        super().perform_create(serializer)
+        product = serializer.instance
         logger.info(
             "product_created",
             id=str(product.id),
@@ -215,7 +216,8 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
     @transaction.atomic
     def perform_update(self, serializer):
-        product = serializer.save()
+        super().perform_update(serializer)
+        product = serializer.instance
         logger.info(
             "product_updated",
             id=str(product.id),
@@ -224,7 +226,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        instance.delete()
+        super().perform_destroy(instance)
         logger.info(
             "product_deleted",
             id=str(instance.id),
