@@ -11,11 +11,9 @@ class DjangoAdminConfigTests(TestCase):
         with self.assertLogs(accounts_apps.__name__, level="WARNING") as cm:
             accounts_apps.update_admin_index(None)
 
-        self.assertEqual(
-            cm.output,
-            [
-                f"WARNING:{accounts_apps.__name__}:django_admin_index is not installed: skipping update_admin_index()"
-            ],
+        self.assertIn(
+            "event': 'django_admin_index_not_installed_skipping_update_admin_index",
+            cm.output[0],
         )
 
     @mock.patch("openproduct.accounts.apps.call_command")
@@ -26,11 +24,9 @@ class DjangoAdminConfigTests(TestCase):
         with self.assertLogs(accounts_apps.__name__, level="WARNING") as cm:
             accounts_apps.update_admin_index(None)
 
-        self.assertEqual(
-            cm.output,
-            [
-                f"WARNING:{accounts_apps.__name__}:Unable to load default_admin_index fixture (). You might have to regenerate the fixtures through 'bin/generate_admin_index_fixtures.sh'"
-            ],
+        self.assertIn(
+            "event': 'unable_to_load_default_admin_index_fixture",
+            cm.output[0],
         )
 
     @mock.patch("openproduct.accounts.apps.call_command")
@@ -41,7 +37,7 @@ class DjangoAdminConfigTests(TestCase):
 
         self.assertEqual(mock_call_command.call_count, 1)
 
-        self.assertEqual(
-            cm.output,
-            [f"INFO:{accounts_apps.__name__}:Loaded django-admin-index fixture:\n"],
+        self.assertIn(
+            "event': 'loaded_django_admin_index_fixture",
+            cm.output[0],
         )

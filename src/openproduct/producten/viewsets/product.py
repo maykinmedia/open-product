@@ -1,8 +1,8 @@
-import logging
-
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
+import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework.viewsets import ModelViewSet
@@ -26,7 +26,7 @@ from openproduct.utils.filters import (
 from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
-logger = logging.getLogger(__name__)
+logger = structlog.stdlib.get_logger(__name__)
 
 DATA_ATTR_HELP_TEXT = _(
     """
@@ -197,9 +197,36 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
                 externe_verwijzing_config.taken_url,
             )
         ):
-            logger.warning(
-                "Een of meerdere urls zijn niet geconfigureerd in de externe verwijzing config."
-            )
+            logger.warning("externe_verwijzing_config_missing_urls")
 
         context["externe_verwijzing_config"] = externe_verwijzing_config
         return context
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        product = serializer.instance
+        logger.info(
+            "product_created",
+            id=str(product.id),
+            naam=product.naam,
+        )
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        product = serializer.instance
+        logger.info(
+            "product_updated",
+            id=str(product.id),
+            naam=product.naam,
+        )
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+        logger.info(
+            "product_deleted",
+            id=str(instance.id),
+            naam=instance.naam,
+        )
