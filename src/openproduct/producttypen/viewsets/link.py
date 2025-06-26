@@ -1,3 +1,5 @@
+from django.utils.translation import gettext_lazy as _
+
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.viewsets import ModelViewSet
@@ -19,7 +21,7 @@ class LinkFilterSet(FilterSet):
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+        help_text=_("De Nederlandse naam van het producttype"),
     )
 
     class Meta:

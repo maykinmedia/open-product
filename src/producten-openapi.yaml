@@ -235,14 +235,14 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - in: query
         name: producttype__naam__in
         schema:
           type: array
           items:
             type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
         explode: false
         style: form
       - in: query
