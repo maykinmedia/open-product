@@ -65,7 +65,7 @@ class Command(BaseCommand):
 
         self.is_json = options.pop("format") == "json"
 
-        if response and archive_name:
+        if bool(response) == bool(archive_name):
             raise CommandError(
                 _("Please use either the --archive_name or --response argument")
             )
@@ -91,11 +91,7 @@ class Command(BaseCommand):
         else:
             self._create_zip(archive_name, data)
 
-    def _handle_foreign_key(
-        self, instance, exclude, field, value, instance_data, all_data
-    ):
-        instance_data[f"{field.name}_id"] = value
-
+    def _handle_foreign_key(self, instance, exclude, field, all_data):
         if field.name not in exclude:
             self._model_to_dict(
                 getattr(instance, field.name),
@@ -119,7 +115,6 @@ class Command(BaseCommand):
                     {
                         "instance": related_object,
                         "exclude": obj.field.name,
-                        "type": "REL",
                     }
                 )
 
@@ -154,7 +149,6 @@ class Command(BaseCommand):
                     {
                         "instance": m2m_object,
                         "exclude": obj._related_name,
-                        "type": "M2M",
                     }
                 )
 
@@ -167,10 +161,7 @@ class Command(BaseCommand):
 
         return m2m_instances
 
-    def _model_to_dict(self, instance, all_data, exclude=None, is_fk=False):
-        if exclude is None:
-            exclude = []
-
+    def _model_to_dict(self, instance, all_data, exclude, is_fk=False):
         meta = instance._meta
         instance_data = {}
 
@@ -184,13 +175,15 @@ class Command(BaseCommand):
 
         for field in chain(meta.concrete_fields, meta.private_fields):
             value = field.value_from_object(instance)
+
+            field_name = field.name
+            if isinstance(field, models.ForeignKey):
+                field_name = f"{field.name}_id"
+
             if value is not None:
                 match field:
                     case models.ForeignKey():
-                        self._handle_foreign_key(
-                            instance, exclude, field, value, instance_data, all_data
-                        )
-                        continue
+                        self._handle_foreign_key(instance, exclude, field, all_data)
                     case models.FileField():
                         value = value.name
                     case models.UUIDField():
@@ -203,7 +196,7 @@ class Command(BaseCommand):
                         value = str(value)
                     case _:
                         pass
-            instance_data[field.name] = value
+            instance_data[field_name] = value
 
         objects_to_parse = self._handle_many_to_many(
             instance, meta, exclude, instance_data, all_data

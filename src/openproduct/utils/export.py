@@ -42,12 +42,12 @@ def _export(modeladmin, request, queryset, export_format):
 
 @admin.action(description="Export (CSV)")
 def export_csv(modeladmin, request, queryset):
-    _export(modeladmin, request, queryset, "csv")
+    return _export(modeladmin, request, queryset, "csv")
 
 
 @admin.action(description="Export (JSON)")
 def export_json(modeladmin, request, queryset):
-    _export(modeladmin, request, queryset, "json")
+    return _export(modeladmin, request, queryset, "json")
 
 
 class ExportMixin:
