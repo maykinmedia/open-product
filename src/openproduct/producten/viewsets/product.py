@@ -61,7 +61,7 @@ class ProductFilterSet(FilterSet):
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+        help_text=_("De Nederlandse naam van het producttype"),
     )
 
     dataobject_attr = ManyCharFilter(
@@ -78,7 +78,7 @@ class ProductFilterSet(FilterSet):
 
     producttype__naam__in = TranslationInFilter(
         field_name="producttype__naam",
-        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+        help_text=_("De Nederlandse naam van het producttype"),
     )
 
     eigenaren__bsn = django_filters.CharFilter(

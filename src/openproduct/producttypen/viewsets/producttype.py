@@ -63,16 +63,14 @@ class ProductTypeFilterSet(FilterSet):
         field_name="naam",
         lookup_expr="istartswith",
         help_text=_(
-            _(
-                "Filter op de eerste letter van de naam van het producttype (in de meegegeven `Accept-Language` taal)."
-            ),
+            _("Filter op de eerste letter van de Nederlandse naam van het producttype"),
         ),
     )
 
     naam = TranslationFilter(
         field_name="naam",
         lookup_expr="exact",
-        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+        help_text=_("De Nederlandse naam van het producttype"),
     )
 
     keywords = CharArrayFilter(

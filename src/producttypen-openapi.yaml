@@ -132,7 +132,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - in: query
         name: producttype__uuid
         schema:
@@ -624,7 +624,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - in: query
         name: producttype__uuid
         schema:
@@ -1872,7 +1872,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - in: query
         name: producttype__uuid
         schema:
@@ -3115,7 +3115,7 @@ paths:
         name: producttype__naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - in: query
         name: producttype__uuid
         schema:
@@ -3744,13 +3744,12 @@ paths:
         name: letter
         schema:
           type: string
-        description: Filter op de eerste letter van de naam van het producttype (in
-          de meegegeven `Accept-Language` taal).
+        description: Filter op de eerste letter van de Nederlandse naam van het producttype
       - in: query
         name: naam
         schema:
           type: string
-        description: naam van het producttype.
+        description: De Nederlandse naam van het producttype
       - name: page
         required: false
         in: query
