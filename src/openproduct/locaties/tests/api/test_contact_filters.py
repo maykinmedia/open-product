@@ -18,8 +18,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"rol": "manager"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["rol"], "manager")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["rol"], "manager")
 
     def test_telefoonnummer_filter(self):
         ContactFactory.create(telefoonnummer="0611223344")
@@ -28,8 +28,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"telefoonnummer__contains": "344"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["telefoonnummer"], "0611223344")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["telefoonnummer"], "0611223344")
 
     def test_email_filter(self):
         ContactFactory.create(email="bob@maykinmedia.nl")
@@ -38,8 +38,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"email__iexact": "Bob@MaykinMedia.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["email"], "bob@maykinmedia.nl")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["email"], "bob@maykinmedia.nl")
 
     def test_naam_filter(self):
         ContactFactory.create(naam="Bob")
@@ -48,8 +48,8 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"naam": "Bob"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
-        self.assertEqual(response.data["resultaten"][0]["naam"], "Bob")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["naam"], "Bob")
 
     def test_organisatie_uuid_filter(self):
         org_uuid = uuid4()
@@ -59,9 +59,9 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path + f"?organisatie__uuid={org_uuid}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["resultaten"][0]["organisatie"]["uuid"], str(org_uuid)
+            response.data["results"][0]["organisatie"]["uuid"], str(org_uuid)
         )
 
     def test_organisatie_naam_filter(self):
@@ -71,7 +71,7 @@ class TestContactFilters(BaseApiTestCase):
         response = self.client.get(self.path, {"organisatie__naam": "Maykin Media"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["resultaten"][0]["organisatie"]["naam"], "Maykin Media"
+            response.data["results"][0]["organisatie"]["naam"], "Maykin Media"
         )

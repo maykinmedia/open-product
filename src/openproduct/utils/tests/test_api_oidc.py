@@ -81,7 +81,7 @@ class TestApiOidcAuthentication(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["count"], 1)
 
     @vcr.use_cassette(str(TEST_FILES / "invalid_token"))
     @mock_admin_oidc_config()
@@ -171,4 +171,4 @@ class TestApiOidcAuthentication(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertEqual(response.data["aantal"], 1)
+        self.assertEqual(response.data["count"], 1)
