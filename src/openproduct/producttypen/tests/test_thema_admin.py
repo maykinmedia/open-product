@@ -11,7 +11,7 @@ class TestThemaAdmin(TestCase):
         self.admin = ThemaAdmin(Thema, AdminSite())
 
     def test_get_deleted_objects_when_linked_producttype_has_one_thema(self):
-        producttype = ProductTypeFactory(naam="producttype")
+        producttype = ProductTypeFactory(naam="producttype", code="PT")
         producttype.themas.add(ThemaFactory(naam="thema"))
         producttype.save()
 
@@ -22,7 +22,7 @@ class TestThemaAdmin(TestCase):
             protected,
             [
                 f"Producttype <a href='/admin/producttypen/producttype/{producttype.id}/change/'>"
-                f"producttype</a> moet aan een minimaal één thema zijn gelinkt. "
+                f"PT</a> moet aan een minimaal één thema zijn gelinkt. "
                 f"Huidige thema's: thema."
             ],
         )
@@ -40,7 +40,7 @@ class TestThemaAdmin(TestCase):
         self.assertEqual(protected, [])
 
     def test_get_deleted_objects_with_multiple_themas(self):
-        producttype = ProductTypeFactory(naam="producttype")
+        producttype = ProductTypeFactory(naam="producttype", code="PT")
         producttype.themas.add(ThemaFactory(naam="thema"))
         producttype.themas.add(ThemaFactory(naam="thema 2"))
         producttype.save()
@@ -52,7 +52,7 @@ class TestThemaAdmin(TestCase):
             protected,
             [
                 f"Producttype <a href='/admin/producttypen/producttype/{producttype.id}/change/'>"
-                f"producttype</a> moet aan een minimaal één thema zijn gelinkt. "
+                f"PT</a> moet aan een minimaal één thema zijn gelinkt. "
                 f"Huidige thema's: thema 2, thema."
             ],
         )

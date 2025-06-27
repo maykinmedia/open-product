@@ -28,4 +28,4 @@ class Link(BaseModel):
         ordering = ("-id",)
 
     def __str__(self):
-        return f"{self.producttype}: {self.naam}"
+        return f"{self.producttype.code}: {self.naam}"

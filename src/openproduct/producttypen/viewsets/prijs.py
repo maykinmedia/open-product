@@ -1,10 +1,12 @@
+from django.db.models import Prefetch
+
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.viewsets import ModelViewSet
 from vng_api_common.utils import get_help_text
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
-from openproduct.producttypen.models import Prijs
+from openproduct.producttypen.models import Prijs, PrijsRegel
 from openproduct.producttypen.serializers import PrijsSerializer
 from openproduct.utils.filters import FilterSet, TranslationFilter
 
@@ -58,7 +60,12 @@ class PrijsFilterSet(FilterSet):
     ),
 )
 class PrijsViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Prijs.objects.all()
+    queryset = Prijs.objects.select_related("producttype").prefetch_related(
+        "prijsopties",
+        Prefetch(
+            "prijsregels", queryset=PrijsRegel.objects.select_related("dmn_config")
+        ),
+    )
     serializer_class = PrijsSerializer
     lookup_field = "uuid"
     filterset_class = PrijsFilterSet

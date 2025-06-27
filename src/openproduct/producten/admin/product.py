@@ -99,8 +99,8 @@ class ProductAdminForm(forms.ModelForm):
 @admin.register(Product)
 class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_display = (
-        "producttype_name",
         "naam",
+        "producttype",
         "aanmaak_datum",
         "start_datum",
         "eind_datum",
@@ -108,14 +108,14 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         "show_actions",
     )
     list_filter = (
-        ("producttype__translations__naam"),
+        "producttype__code",
         "aanmaak_datum",
         "start_datum",
         "eind_datum",
         "status",
     )
+    search_fields = ("naam",)
     autocomplete_fields = ("producttype",)
-    search_fields = ("producttype__translations__naam",)
     readonly_fields = ("uuid",)
     form = ProductAdminForm
     inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
