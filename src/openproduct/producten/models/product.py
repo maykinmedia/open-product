@@ -127,7 +127,11 @@ class Product(BasePublishableModel):
             self.start_datum
             and self.start_datum <= date.today()
             and self.status
-            in (ProductStateChoices.INITIEEL, ProductStateChoices.GEREED)
+            in (
+                ProductStateChoices.INITIEEL,
+                ProductStateChoices.IN_AANVRAAG,
+                ProductStateChoices.GEREED,
+            )
         )
 
     def check_eind_datum(self):
@@ -137,6 +141,7 @@ class Product(BasePublishableModel):
             and self.status
             in (
                 ProductStateChoices.INITIEEL,
+                ProductStateChoices.IN_AANVRAAG,
                 ProductStateChoices.GEREED,
                 ProductStateChoices.ACTIEF,
             )
