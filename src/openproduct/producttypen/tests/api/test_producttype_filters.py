@@ -191,7 +191,7 @@ class TestProductTypeFilters(BaseApiTestCase):
             producttype_2.save()
 
             response = self.client.get(
-                self.path, {"letter": "q"}, headers={"Accept-Language": "en"}
+                self.path, {"letter": "A"}, headers={"Accept-Language": "en"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)

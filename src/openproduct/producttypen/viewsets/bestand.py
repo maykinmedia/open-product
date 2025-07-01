@@ -27,7 +27,7 @@ class BestandFilterSet(FilterSet):
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
         lookup_expr="exact",
-        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+        help_text=_("De Nederlandse naam van het producttype"),
     )
 
     class Meta:
