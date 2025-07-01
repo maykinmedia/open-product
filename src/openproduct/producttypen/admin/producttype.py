@@ -9,6 +9,7 @@ from parler.forms import TranslatableModelForm
 from reversion_compare.admin import CompareVersionAdmin
 
 from openproduct.utils.admin import TranslatableAdmin
+from openproduct.utils.export import ExportMixin, export_csv, export_json
 
 from ...logging.admin_tools import AdminAuditLogMixin
 from ...utils.widgets import WysimarkWidget
@@ -80,6 +81,7 @@ class ProductTypeAdminForm(TranslatableModelForm):
 class ProductTypeAdmin(
     AdminAuditLogMixin,
     OrderedInlineModelAdminMixin,
+    ExportMixin,
     TranslatableAdmin,
     CompareVersionAdmin,
 ):
@@ -105,6 +107,9 @@ class ProductTypeAdmin(
     search_fields = ("naam", "uniforme_product_naam__naam", "keywords")
     save_on_top = True
     form = ProductTypeAdminForm
+    export_exclude = ["producten"]
+    actions = [export_csv, export_json]
+
     inlines = (
         BestandInline,
         LinkInline,
