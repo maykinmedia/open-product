@@ -1,3 +1,31 @@
+1.3.0 (xx-07-2025)
+------------------
+
+**New features**
+
+* [:open-product:`164`] added product thema filters
+* [:open-product:`172`] added read only uuid field to modeladmins
+* [:open-product:`175`] added producttype naam filters
+* [:open-product:`185`] changed producttype naam filters to nl only
+* [:open-product:`170`] added `in aanvraag` status
+
+**Bugfixes**
+
+* [:open-product:`171`] changed product price to allow 0
+
+**Project maintenance**
+
+* [:open-product:`169`] added date automation to product status in api spec
+* [:open-product:`152`] added structlog
+* [:open-product:`176`] changed pagination keys to english
+
+**Project maintenance**
+
+* Upgrade dependencies
+
+  * open-api-framework to 0.11.0
+  * urllib3 to 2.5.0
+
 1.2.0 (13-06-2025)
 ------------------
 
