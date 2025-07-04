@@ -193,7 +193,7 @@ class ProductTypeViewSet(
     queryset = ProductType.objects.select_related(
         "verbruiksobject_schema", "dataobject_schema", "uniforme_product_naam"
     ).prefetch_related(
-        Prefetch("themas", queryset=Thema.objects.prefetch_related("hoofd_thema")),
+        Prefetch("themas", queryset=Thema.objects.select_related("hoofd_thema")),
         Prefetch("contacten", queryset=Contact.objects.select_related("organisatie")),
         "locaties",
         "organisaties",

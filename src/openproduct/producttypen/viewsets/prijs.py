@@ -1,5 +1,5 @@
-from django.utils.translation import gettext_lazy as _
 from django.db.models import Prefetch
+from django.utils.translation import gettext_lazy as _
 
 import django_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
