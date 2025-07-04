@@ -56,7 +56,7 @@ class LinkFilterSet(FilterSet):
     ),
 )
 class LinkViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Link.objects.all()
+    queryset = Link.objects.select_related("producttype")
     serializer_class = LinkSerializer
     lookup_field = "uuid"
     filterset_class = LinkFilterSet

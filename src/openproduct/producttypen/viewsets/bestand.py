@@ -60,7 +60,7 @@ class BestandFilterSet(FilterSet):
     ),
 )
 class BestandViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Bestand.objects.all()
+    queryset = Bestand.objects.select_related("producttype")
     parser_classes = [MultiPartParser]
     serializer_class = BestandSerializer
     lookup_field = "uuid"
