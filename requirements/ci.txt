@@ -561,7 +561,7 @@ notifications-api-common==0.7.3
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.10.3
+open-api-framework==0.11.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -600,11 +600,16 @@ prompt-toolkit==3.0.48
     #   click-repl
 propcache==0.3.1
     # via yarl
-psycopg2==2.9.10
+psycopg==3.2.9
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+psycopg-binary==3.2.9
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   psycopg
 pycparser==2.22
     # via
     #   -c requirements/base.txt
@@ -840,6 +845,7 @@ typing-extensions==4.12.2
     #   -r requirements/base.txt
     #   faker
     #   mozilla-django-oidc-db
+    #   psycopg
     #   pydantic
     #   pydantic-core
     #   qrcode
@@ -864,7 +870,7 @@ uritemplate==4.1.1
     #   -r requirements/base.txt
     #   coreapi
     #   drf-spectacular
-urllib3==2.2.3
+urllib3==2.5.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
