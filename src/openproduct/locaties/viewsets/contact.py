@@ -42,7 +42,7 @@ class ContactFilterSet(FilterSet):
     ),
 )
 class ContactViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Contact.objects.all()
+    queryset = Contact.objects.select_related("organisatie")
     serializer_class = ContactSerializer
     lookup_field = "uuid"
     filterset_class = ContactFilterSet

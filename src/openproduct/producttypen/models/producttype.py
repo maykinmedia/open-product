@@ -154,7 +154,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
         ordering = ("-id",)
 
     def __str__(self):
-        return self.naam
+        return self.code
 
     def add_contact_organisaties(self):
         for contact in self.contacten.all():

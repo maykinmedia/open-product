@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 
@@ -56,7 +57,11 @@ class ThemaFilterSet(FilterSet):
     ),
 )
 class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Thema.objects.all()
+    queryset = Thema.objects.select_related("hoofd_thema").prefetch_related(
+        Prefetch(
+            "producttypen", ProductType.objects.select_related("uniforme_product_naam")
+        )
+    )
     serializer_class = ThemaSerializer
     lookup_field = "uuid"
     filterset_class = ThemaFilterSet

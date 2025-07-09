@@ -25,4 +25,4 @@ class Bestand(BaseModel):
         ordering = ("-id",)
 
     def __str__(self):
-        return f"{self.producttype}: {self.bestand.name}"
+        return f"{self.producttype.code}: {self.bestand.name}"

@@ -14,11 +14,8 @@ class BestandInline(admin.TabularInline):
 
 @admin.register(Bestand)
 class BestandAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    list_display = ("producttype", "bestand")
-    list_filter = ("producttype",)
+    list_display = ("bestand", "producttype")
+    list_filter = ("producttype__code",)
+    list_select_related = ("producttype",)
     search_fields = ("bestand",)
-
     readonly_fields = ("uuid",)
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related("producttype")

@@ -58,7 +58,7 @@ class ActieFilterSet(FilterSet):
     ),
 )
 class ActieViewSet(AuditTrailViewSetMixin, ModelViewSet):
-    queryset = Actie.objects.all()
+    queryset = Actie.objects.select_related("producttype", "dmn_config")
     serializer_class = ActieSerializer
     lookup_field = "uuid"
     filterset_class = ActieFilterSet

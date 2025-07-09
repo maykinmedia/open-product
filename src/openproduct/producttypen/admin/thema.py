@@ -9,26 +9,8 @@ from reversion_compare.admin import CompareVersionAdmin
 
 from openproduct.utils.widgets import WysimarkWidget
 
-from ...logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
+from ...logging.admin_tools import AdminAuditLogMixin
 from ..models import ProductType, Thema
-
-
-class ProductTypeInline(admin.TabularInline):
-    formset = AuditLogInlineformset
-    model = ProductType.themas.through
-    extra = 0
-
-    verbose_name = _("producttype")
-    verbose_name_plural = _("Producttypen")
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_add_permission(self, request, obj=None):
-        return False
 
 
 class ThemaAdminForm(forms.ModelForm):
@@ -40,9 +22,9 @@ class ThemaAdminForm(forms.ModelForm):
 
 @admin.register(Thema)
 class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    inlines = (ProductTypeInline,)
-    search_fields = ("naam", "hoofd_thema__naam")
     list_display = ("naam", "hoofd_thema", "gepubliceerd", "producttypen_count")
+    list_filter = ["gepubliceerd", "producttypen", "hoofd_thema"]
+    search_fields = ("naam", "hoofd_thema")
     form = ThemaAdminForm
 
     readonly_fields = ("uuid",)
@@ -52,11 +34,13 @@ class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return obj.producttypen_count
 
     def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.annotate(producttypen_count=Count("producttypen"))
+        queryset = (
+            super()
+            .get_queryset(request)
+            .annotate(producttypen_count=Count("producttypen"))
+            .select_related("hoofd_thema")
+        )
         return queryset
-
-    list_filter = ["gepubliceerd", "producttypen", "hoofd_thema"]
 
     def get_deleted_objects(self, objs, request):
         """

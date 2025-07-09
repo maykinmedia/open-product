@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Prefetch
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
@@ -12,7 +13,7 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
-from openproduct.producttypen.models import ExterneVerwijzingConfig
+from openproduct.producttypen.models import ExterneVerwijzingConfig, ProductType, Thema
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     CharArrayFilter,
@@ -180,7 +181,23 @@ class ProductFilterSet(FilterSet):
     ),
 )
 class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related(
+        "eigenaren",
+        "documenten",
+        "taken",
+        "zaken",
+        Prefetch(
+            "producttype",
+            queryset=ProductType.objects.select_related(
+                "uniforme_product_naam"
+            ).prefetch_related(
+                "translations",
+                Prefetch(
+                    "themas", queryset=Thema.objects.select_related("hoofd_thema")
+                ),
+            ),
+        ),
+    )
     lookup_field = "uuid"
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet

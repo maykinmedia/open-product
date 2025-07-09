@@ -26,6 +26,9 @@ class PrijsRegelInline(admin.TabularInline):
     fields = ("dmn_config", "dmn_tabel_id", "beschrijving")
     formset = AuditLogInlineformset
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("dmn_config")
+
 
 class PrijsAdminForm(forms.ModelForm):
     class Meta:
@@ -58,13 +61,11 @@ class PrijsAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     model = Prijs
     form = PrijsAdminForm
     inlines = [PrijsOptieInline, PrijsRegelInline]
-    list_display = ("__str__", "actief_vanaf")
+    list_display = ("actief_vanaf", "producttype")
     list_filter = ("producttype__code", "actief_vanaf")
+    list_select_related = ("producttype",)
 
     readonly_fields = ("uuid",)
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related("producttype")
 
     def has_change_permission(self, request, obj=None):
         if obj and obj.actief_vanaf < date.today():

@@ -54,7 +54,7 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
     objects = ContentElementManager()
 
     def __str__(self):
-        return f"{self.producttype} - {','.join(list(self.labels.values_list('naam', flat=True)))}"
+        return f"{self.producttype.code} - {','.join(list(self.labels.values_list('naam', flat=True)))}"
 
     class Meta:
         verbose_name = _("content element")
