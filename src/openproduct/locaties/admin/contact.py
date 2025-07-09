@@ -12,3 +12,4 @@ class ContactAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_filter = ("organisatie", "organisatie__stad")
     search_fields = ("naam", "organisatie__naam")
     readonly_fields = ("uuid",)
+    list_select_related = ("organisatie",)

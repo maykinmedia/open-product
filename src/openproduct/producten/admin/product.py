@@ -119,13 +119,11 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     readonly_fields = ("uuid",)
     form = ProductAdminForm
     inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
+    list_select_related = ("producttype",)
 
     @admin.display(description="Producttype")
     def producttype_name(self, obj):
         return obj.producttype.naam
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related("producttype")
 
     @admin.display(description=_("acties"))
     def show_actions(self, obj: Product) -> str:
