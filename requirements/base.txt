@@ -284,7 +284,7 @@ mozilla-django-oidc-db==0.23.0
     # via open-api-framework
 notifications-api-common==0.7.3
     # via commonground-api-common
-open-api-framework==0.10.3
+open-api-framework==0.11.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
@@ -298,8 +298,10 @@ prometheus-client==0.21.0
     # via flower
 prompt-toolkit==3.0.48
     # via click-repl
-psycopg2==2.9.10
+psycopg==3.2.9
     # via open-api-framework
+psycopg-binary==3.2.9
+    # via psycopg
 pycparser==2.22
     # via cffi
 pydantic==2.11.4
@@ -392,6 +394,7 @@ tornado==6.5.1
 typing-extensions==4.12.2
     # via
     #   mozilla-django-oidc-db
+    #   psycopg
     #   pydantic
     #   pydantic-core
     #   qrcode
