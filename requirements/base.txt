@@ -167,7 +167,7 @@ django-parler-rest==2.2
     # via -r requirements/base.in
 django-phonenumber-field==8.0.0
     # via django-two-factor-auth
-django-privates==2.0.0.post1
+django-privates==3.1.1
     # via django-simple-certmanager
 django-redis==5.4.0
     # via open-api-framework
