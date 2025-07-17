@@ -1,3 +1,4 @@
+from datetime import date
 from uuid import uuid4
 
 from django.urls import reverse, reverse_lazy
@@ -359,6 +360,80 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(
                 response.data["results"][0]["update_datum"],
                 "2025-06-07T02:00:00+02:00",
+            )
+
+    def test_publicatie_start_datum_filter(self):
+        ProductTypeFactory.create(publicatie_start_datum=date(2024, 6, 7))
+        ProductTypeFactory.create(publicatie_start_datum=date(2025, 6, 7))
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"publicatie_start_datum": "2024-06-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_start_datum"], "2024-06-07"
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"publicatie_start_datum__lte": "2024-07-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_start_datum"], "2024-06-07"
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"publicatie_start_datum__gte": "2025-04-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_start_datum"], "2025-06-07"
+            )
+
+    def test_publicatie_eind_datum_filter(self):
+        ProductTypeFactory.create(publicatie_eind_datum=date(2024, 6, 7))
+        ProductTypeFactory.create(publicatie_eind_datum=date(2025, 6, 7))
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"publicatie_eind_datum": "2024-06-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_eind_datum"], "2024-06-07"
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"publicatie_eind_datum__lte": "2024-07-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_eind_datum"], "2024-06-07"
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"publicatie_eind_datum__gte": "2025-04-07"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["publicatie_eind_datum"], "2025-06-07"
             )
 
     def test_keywords_filter(self):

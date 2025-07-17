@@ -3774,6 +3774,42 @@ paths:
           format: uuid
         description: Uuid van het proces.
       - in: query
+        name: publicatie_eind_datum
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_eind_datum__gte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_eind_datum__lte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum__gte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum__lte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
         name: themas__naam
         schema:
           type: string
@@ -7416,6 +7452,18 @@ components:
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         code:
           type: string
           minLength: 1
@@ -7708,6 +7756,18 @@ components:
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         aanmaak_datum:
           type: string
           format: date-time
@@ -7867,6 +7927,18 @@ components:
         gepubliceerd:
           type: boolean
           description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         code:
           type: string
           minLength: 1

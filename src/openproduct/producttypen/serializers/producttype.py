@@ -391,6 +391,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "dataobject_schema",
             "dataobject_schema_naam",
             "gepubliceerd",
+            "publicatie_start_datum",
+            "publicatie_eind_datum",
             "aanmaak_datum",
             "update_datum",
             "code",
