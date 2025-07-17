@@ -135,6 +135,8 @@ class ProductTypeFilterSet(FilterSet):
             "gepubliceerd": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
+            "publicatie_start_datum": ["exact", "gte", "lte"],
+            "publicatie_eind_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],
             "zaaktypen__uuid": ["exact"],
             "verzoektypen__uuid": ["exact"],
