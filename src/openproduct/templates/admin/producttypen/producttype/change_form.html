@@ -1,0 +1,7 @@
+{% extends "admin/producttypen/change_form.html" %}
+{% load i18n %}
+
+{% block extra_submit_buttons %}
+    <input type="submit" value="{% trans 'Export (CSV)' %}" name="_export"/>
+    <input type="submit" value="{% trans 'Export (JSON)' %}" name="_export"/>
+{% endblock %}
