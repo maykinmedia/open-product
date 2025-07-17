@@ -22,7 +22,6 @@ from openproduct.producttypen.tests.factories import (
 )
 
 
-# @patch('openproduct.utils.management.commands.export.Command._create_zip', new=Mock())
 class TestExport(TestCase):
     def call_command(self, *args, **kwargs):
         out = StringIO()

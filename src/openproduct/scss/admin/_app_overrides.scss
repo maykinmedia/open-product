@@ -48,7 +48,7 @@ $djai-border-width: 8px;
 
     // remove the border height from the breadcrumbs padding
     & + .breadcrumbs {
-      padding-top: 10px - $djai-border-width;  // 10px is original django value
+      padding-top: 10px - $djai-border-width; // 10px is original django value
 
       /* uncomment for sticky breadcrumbs. note that you probably want to tweak the 'top' value */
       // position: sticky;
@@ -86,6 +86,7 @@ $djai-border-width: 8px;
   button {
     background: $color_primary !important;
     color: $color_lightest !important;
+
     &:hover {
       background: $color_primary_dark !important;
       /* border: 2px solid $color_dark !important; */
@@ -93,8 +94,7 @@ $djai-border-width: 8px;
 
     /* Substitute theme style above with icon. Solves translation string as well. */
     &.add-array-item {
-      background: url('../img/admin/plus-square-regular.svg') 0 0/14px 14px
-        no-repeat !important;
+      background: url('../img/admin/plus-square-regular.svg') 0 0/14px 14px no-repeat !important;
       width: 14px;
       line-height: 16px;
       text-indent: -9999px;
@@ -110,8 +110,7 @@ $djai-border-width: 8px;
 
   /* Substitute with icon */
   .remove {
-    background: url('../img/admin/trash-alt-regular.svg') 0 0/14px 14px
-      no-repeat;
+    background: url('../img/admin/trash-alt-regular.svg') 0 0/14px 14px no-repeat;
     width: 14px;
     line-height: 16px;
 
@@ -132,4 +131,20 @@ $djai-border-width: 8px;
   text-align: center;
   clear: both;
   padding-top: 1em;
+}
+
+/* Secondary submit row */
+.submit-row {
+  &.submit-row-extended {
+    margin-top: -24px;
+    border-top: 0;
+    padding-top: 0;
+
+    & .button {
+      height: 35px;
+      line-height: 15px;
+      margin: 0 0 0 5px;
+      padding: 10px 15px;
+    }
+  }
 }
