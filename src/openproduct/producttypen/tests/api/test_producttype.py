@@ -142,6 +142,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
+            "publicatie_start_datum": None,
+            "publicatie_eind_datum": None,
             "keywords": [],
             "themas": [
                 {
@@ -585,6 +587,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
+            "publicatie_start_datum": None,
+            "publicatie_eind_datum": None,
             "keywords": [],
             "themas": [
                 {
@@ -1584,6 +1588,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "gepubliceerd": True,
                 "aanmaak_datum": producttype1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype1.update_datum.astimezone().isoformat(),
+                "publicatie_start_datum": None,
+                "publicatie_eind_datum": None,
                 "keywords": [],
                 "themas": [
                     {
@@ -1623,6 +1629,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "gepubliceerd": True,
                 "aanmaak_datum": producttype2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype2.update_datum.astimezone().isoformat(),
+                "publicatie_start_datum": None,
+                "publicatie_eind_datum": None,
                 "keywords": [],
                 "themas": [
                     {
@@ -1665,6 +1673,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "gepubliceerd": True,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
+            "publicatie_start_datum": None,
+            "publicatie_eind_datum": None,
             "keywords": [],
             "locaties": [],
             "organisaties": [],
