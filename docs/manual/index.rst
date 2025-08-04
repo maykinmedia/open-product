@@ -19,3 +19,4 @@ configured to make all API's accessible.
    api-authorizations
    oidc
    logging
+   scripts

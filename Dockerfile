@@ -77,6 +77,7 @@ COPY ./bin/celery_beat.sh /celery_beat.sh
 COPY ./bin/celery_flower.sh /celery_flower.sh
 
 COPY ./bin/setup_configuration.sh /setup_configuration.sh
+COPY ./bin/dump_data.sh /dump_data.sh
 COPY ./bin/load_upl.sh /load_upl.sh
 COPY ./bin/uwsgi.ini /
 RUN mkdir /app/bin /app/log /app/media /app/tmp
