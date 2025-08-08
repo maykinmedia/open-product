@@ -145,7 +145,6 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Interne opmerkingen over het producttype."),
     )
 
-    # TODO remove publicatie boolean/make property?
     publicatie_start_datum = models.DateField(
         verbose_name=_("publicatie startdatum"),
         help_text=_("De datum waarop het producttype gepubliceerd is"),

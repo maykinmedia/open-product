@@ -19,6 +19,7 @@ from . import ActieInline
 from .bestand import BestandInline
 from .content import ContentElementInline
 from .externe_code import ExterneCodeInline
+from .filters import GepubliceerdFilter
 from .link import LinkInline
 from .parameter import ParameterInline
 from .proces import ProcesInline
@@ -102,8 +103,7 @@ class ProductTypeAdmin(
         "gepubliceerd",
         "keywords",
     )
-    list_filter = ("gepubliceerd", "themas")
-    list_editable = ("gepubliceerd",)
+    list_filter = ("themas", GepubliceerdFilter)
     date_hierarchy = "aanmaak_datum"
     autocomplete_fields = (
         "organisaties",
@@ -136,10 +136,11 @@ class ProductTypeAdmin(
     fields = (
         "uuid",
         "naam",
-        "gepubliceerd",
         "code",
         "uniforme_product_naam",
         "toegestane_statussen",
+        "publicatie_start_datum",
+        "publicatie_eind_datum",
         "samenvatting",
         "themas",
         "verbruiksobject_schema",
@@ -162,3 +163,6 @@ class ProductTypeAdmin(
     @admin.display(description="thema's")
     def display_themas(self, obj):
         return ", ".join(p.naam for p in obj.themas.all())
+
+    def gepubliceerd(self, obj):
+        return _("Ja") if obj.gepubliceerd else _("Nee")
