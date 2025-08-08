@@ -277,7 +277,6 @@
     "pk": 23,
     "fields": {
         "uuid": "9903945d-b639-49da-85ed-7305817f47ad",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-05-06T14:00:31.967Z",
         "update_datum": "2025-05-06T14:11:53.460Z",
         "code": "PARKVER",
@@ -308,7 +307,6 @@
     "pk": 24,
     "fields": {
         "uuid": "5d42a943-065a-46e7-8f17-54a5edbc88eb",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-05-06T14:09:07.040Z",
         "update_datum": "2025-05-06T14:12:26.010Z",
         "code": "IDENKAA",

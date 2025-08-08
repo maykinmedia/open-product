@@ -31,6 +31,7 @@ from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
 from .proces import NestedProcesSerializer, ProcesSerializer
+from .validators import PublicatieDateValidator
 from .verzoektype import NestedVerzoekTypeSerializer, VerzoekTypeSerializer
 from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
@@ -192,6 +193,8 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                     },
                 },
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2019-09-24",
+                "publicatie_eind_datum": "2030-09-24",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
                 "update_datum": "2019-08-24T14:15:22Z",
                 "code": "PT-12345",
@@ -209,7 +212,8 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
                 "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
                 "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
-                "gepubliceerd": False,
+                "publicatie_start_datum": "2019-09-24",
+                "publicatie_eind_datum": "2030-09-24",
                 "naam": "Aanleunwoning",
                 "code": "PT-12345",
                 "toegestane_statussen": ["gereed", "actief"],
@@ -312,6 +316,14 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         read_only=True, help_text=_("De huidige taal van het producttype.")
     )
 
+    gepubliceerd = serializers.SerializerMethodField(
+        help_text=_("Geeft aan of het producttype getoond kan worden."),
+    )
+
+    @extend_schema_field(OpenApiTypes.BOOL)
+    def get_gepubliceerd(self, obj):
+        return obj.gepubliceerd
+
     @extend_schema_field(OpenApiTypes.STR)
     def get_taal(self, obj):
         requested_language = self.context["request"].LANGUAGE_CODE
@@ -406,7 +418,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         validators = [
             DuplicateIdValidator(
                 ["thema_uuids", "locatie_uuids", "organisatie_uuids", "contacten_uuids"]
-            )
+            ),
+            PublicatieDateValidator(),
         ]
 
     def validate_thema_uuids(self, themas: list[Thema]) -> list[Thema]:
