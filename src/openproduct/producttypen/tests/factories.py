@@ -35,7 +35,6 @@ class UniformeProductNaamFactory(factory.django.DjangoModelFactory):
 
 class ProductTypeFactory(factory.django.DjangoModelFactory):
     code = factory.Sequence(lambda n: f"producttype code {n}")
-    gepubliceerd = True
     uniforme_product_naam = factory.SubFactory(UniformeProductNaamFactory)
 
     class Meta:

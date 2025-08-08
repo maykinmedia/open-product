@@ -26,15 +26,46 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 class TestProductTypeFilters(BaseApiTestCase):
     path = reverse_lazy("producttype-list")
 
+    @freeze_time("2025-01-01")
     def test_gepubliceerd_filter(self):
-        ProductTypeFactory.create(gepubliceerd=True)
-        ProductTypeFactory.create(gepubliceerd=False)
+        not_set = ProductTypeFactory.create()
+        in_future = ProductTypeFactory.create(publicatie_start_datum=date(2026, 1, 1))
+        in_past = ProductTypeFactory.create(publicatie_start_datum=date(2024, 1, 1))
+        in_between = ProductTypeFactory.create(
+            publicatie_start_datum=date(2024, 1, 1),
+            publicatie_eind_datum=date(2025, 1, 10),
+        )
+        in_future_with_end = ProductTypeFactory.create(
+            publicatie_start_datum=date(2026, 1, 1),
+            publicatie_eind_datum=date(2027, 1, 10),
+        )
+        after = ProductTypeFactory.create(
+            publicatie_start_datum=date(2024, 1, 1),
+            publicatie_eind_datum=date(2024, 1, 10),
+        )
 
         response = self.client.get(self.path, {"gepubliceerd": True})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["gepubliceerd"], True)
+        self.assertEqual(response.data["count"], 2)
+        self.assertCountEqual(
+            [pt["uuid"] for pt in response.data["results"]],
+            [str(in_past.uuid), str(in_between.uuid)],
+        )
+
+        response = self.client.get(self.path, {"gepubliceerd": False})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 4)
+        self.assertCountEqual(
+            [pt["uuid"] for pt in response.data["results"]],
+            [
+                str(not_set.uuid),
+                str(in_future.uuid),
+                str(in_future_with_end.uuid),
+                str(after.uuid),
+            ],
+        )
 
     def test_uniforme_product_naam_filter(self):
         ProductTypeFactory.create(
