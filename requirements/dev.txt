@@ -148,16 +148,6 @@ commonmark==0.9.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   recommonmark
-coreapi==2.3.3
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   commonground-api-common
-coreschema==0.0.4
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   coreapi
 coverage==7.6.8
     # via
     #   -c requirements/ci.txt
@@ -561,16 +551,10 @@ isort==5.13.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
-itypes==1.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   coreapi
 jinja2==3.1.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   coreschema
     #   sphinx
 josepy==1.14.0
     # via
@@ -838,7 +822,6 @@ requests==2.32.4
     #   -r requirements/ci.txt
     #   ape-pie
     #   commonground-api-common
-    #   coreapi
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
@@ -849,7 +832,6 @@ requests-mock==1.12.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   commonground-api-common
 rich==14.0.0
     # via
     #   -c requirements/ci.txt
@@ -1022,7 +1004,6 @@ uritemplate==4.1.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   coreapi
     #   drf-spectacular
 urllib3==2.5.0
     # via
@@ -1093,7 +1074,7 @@ yarl==1.18.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   vcrpy
-zgw-consumers==0.38.0
+zgw-consumers==1.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
