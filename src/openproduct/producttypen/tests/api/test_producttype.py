@@ -1,4 +1,5 @@
 import datetime
+from datetime import date
 from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
@@ -142,6 +143,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
+            "publicatie_start_datum": None,
+            "publicatie_eind_datum": None,
             "keywords": [],
             "themas": [
                 {
@@ -585,6 +588,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
+            "publicatie_start_datum": None,
+            "publicatie_eind_datum": None,
             "keywords": [],
             "themas": [
                 {
@@ -615,6 +620,66 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(log.event, Events.create)
         self.assertEqual(Version.objects.get_for_object(producttype).count(), 1)
+
+    @freeze_time("2024-01-01")
+    def test_create_producttype_with_publicatie_dates(self):
+        with self.subTest("einddatum only"):
+            response = self.client.post(
+                self.path,
+                self.data
+                | {
+                    "publicatie_eind_datum": datetime.date(2024, 1, 1),
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("einddatum before startdatum"):
+            response = self.client.post(
+                self.path,
+                self.data
+                | {
+                    "publicatie_start_datum": datetime.date(2025, 1, 1),
+                    "publicatie_eind_datum": datetime.date(2024, 1, 1),
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("gepubliceerd startdatum only"):
+            response = self.client.post(
+                self.path,
+                self.data
+                | {
+                    "publicatie_start_datum": datetime.date(2024, 1, 1),
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["gepubliceerd"], True)
+
+        with self.subTest("gepubliceerd start & einddatum"):
+            response = self.client.post(
+                self.path,
+                self.data
+                | {
+                    "code": "ABC",
+                    "publicatie_start_datum": datetime.date(2024, 1, 1),
+                    "publicatie_eind_datum": datetime.date(2024, 1, 10),
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["gepubliceerd"], True)
+
+        with self.subTest("old start & einddatum"):
+            response = self.client.post(
+                self.path,
+                self.data
+                | {
+                    "code": "DEF",
+                    "publicatie_start_datum": datetime.date(2022, 1, 1),
+                    "publicatie_eind_datum": datetime.date(2023, 1, 10),
+                },
+            )
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data["gepubliceerd"], False)
 
     def test_update_minimal_producttype(self):
         producttype = ProductTypeFactory.create()
@@ -1545,11 +1610,15 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.data["processen"], [{"url": f"/{proces.uuid}"}])
 
     def test_read_producttypen(self):
-        producttype1 = ProductTypeFactory.create()
+        producttype1 = ProductTypeFactory.create(
+            publicatie_start_datum=date(2024, 1, 1)
+        )
         producttype1.themas.add(self.thema)
         producttype1.save()
 
-        producttype2 = ProductTypeFactory.create()
+        producttype2 = ProductTypeFactory.create(
+            publicatie_start_datum=date(2024, 1, 1)
+        )
         producttype2.themas.add(self.thema)
         producttype2.save()
 
@@ -1582,6 +1651,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "verzoektypen": [],
                 "processen": [],
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "aanmaak_datum": producttype1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype1.update_datum.astimezone().isoformat(),
                 "keywords": [],
@@ -1621,6 +1692,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "verzoektypen": [],
                 "processen": [],
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "aanmaak_datum": producttype2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype2.update_datum.astimezone().isoformat(),
                 "keywords": [],
@@ -1640,7 +1713,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertCountEqual(response.data["results"], expected_data)
 
     def test_read_producttype(self):
-        producttype = ProductTypeFactory.create()
+        producttype = ProductTypeFactory.create(publicatie_start_datum=date(2024, 1, 1))
         producttype.themas.add(self.thema)
         producttype.save()
 
@@ -1663,6 +1736,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "acties": [],
             "bestanden": [],
             "gepubliceerd": True,
+            "publicatie_start_datum": "2024-01-01",
+            "publicatie_eind_datum": None,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
             "keywords": [],

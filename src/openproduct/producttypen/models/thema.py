@@ -33,6 +33,12 @@ class Thema(BasePublishableModel):
         help_text=_("Beschrijving van het thema, ondersteund markdown format."),
     )
 
+    gepubliceerd = models.BooleanField(
+        verbose_name=_("gepubliceerd"),
+        default=False,
+        help_text=_("Geeft aan of het thema getoond kan worden."),
+    )
+
     class Meta:
         verbose_name = _("thema")
         verbose_name_plural = _("thema's")

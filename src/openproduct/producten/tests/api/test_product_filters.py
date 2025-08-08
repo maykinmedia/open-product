@@ -985,3 +985,48 @@ class TestProductFilters(BaseApiTestCase):
                     for i in range(2)
                 ],
             )
+
+    @freeze_time("2025-01-01")
+    def test_producttype_gepubliceerd_filter(self):
+        not_set = ProductFactory.create()
+        in_future = ProductFactory.create(
+            producttype__publicatie_start_datum=date(2026, 1, 1)
+        )
+        in_past = ProductFactory.create(
+            producttype__publicatie_start_datum=date(2024, 1, 1)
+        )
+        in_between = ProductFactory.create(
+            producttype__publicatie_start_datum=date(2024, 1, 1),
+            producttype__publicatie_eind_datum=date(2025, 1, 10),
+        )
+        in_future_with_end = ProductFactory.create(
+            producttype__publicatie_start_datum=date(2026, 1, 1),
+            producttype__publicatie_eind_datum=date(2027, 1, 10),
+        )
+        after = ProductFactory.create(
+            producttype__publicatie_start_datum=date(2024, 1, 1),
+            producttype__publicatie_eind_datum=date(2024, 1, 10),
+        )
+
+        response = self.client.get(self.path, {"producttype__gepubliceerd": True})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 2)
+        self.assertCountEqual(
+            [pt["uuid"] for pt in response.data["results"]],
+            [str(in_past.uuid), str(in_between.uuid)],
+        )
+
+        response = self.client.get(self.path, {"producttype__gepubliceerd": False})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 4)
+        self.assertCountEqual(
+            [pt["uuid"] for pt in response.data["results"]],
+            [
+                str(not_set.uuid),
+                str(in_future.uuid),
+                str(in_future_with_end.uuid),
+                str(after.uuid),
+            ],
+        )

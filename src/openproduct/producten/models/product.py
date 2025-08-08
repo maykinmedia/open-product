@@ -23,6 +23,12 @@ class PrijsFrequentieChoices(models.TextChoices):
 
 @reversion.register(follow=("eigenaren", "producttype"))
 class Product(BasePublishableModel):
+    gepubliceerd = models.BooleanField(
+        verbose_name=_("gepubliceerd"),
+        default=False,
+        help_text=_("Geeft aan of het product getoond kan worden."),
+    )
+
     producttype = models.ForeignKey(
         ProductType,
         verbose_name=_("Producttype"),

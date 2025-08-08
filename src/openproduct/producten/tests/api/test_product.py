@@ -41,7 +41,10 @@ class TestProduct(BaseApiTestCase):
     def setUp(self):
         super().setUp()
         self.thema = ThemaFactory.create()
-        self.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        self.producttype = ProductTypeFactory.create(
+            toegestane_statussen=["gereed"],
+            publicatie_start_datum=datetime.date(2024, 1, 1),
+        )
         self.producttype.themas.add(self.thema)
         self.data = {
             "producttype_uuid": self.producttype.uuid,
@@ -134,6 +137,8 @@ class TestProduct(BaseApiTestCase):
                 "toegestane_statussen": ["gereed"],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "keywords": [],
                 "themas": [
                     {
@@ -201,6 +206,8 @@ class TestProduct(BaseApiTestCase):
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "toegestane_statussen": ["gereed"],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
@@ -352,6 +359,8 @@ class TestProduct(BaseApiTestCase):
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "toegestane_statussen": ["gereed"],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
@@ -1482,6 +1491,8 @@ class TestProduct(BaseApiTestCase):
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
+                    "publicatie_start_datum": "2024-01-01",
+                    "publicatie_eind_datum": None,
                     "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
                     "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
@@ -1530,6 +1541,8 @@ class TestProduct(BaseApiTestCase):
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
+                    "publicatie_start_datum": "2024-01-01",
+                    "publicatie_eind_datum": None,
                     "aanmaak_datum": self.producttype.aanmaak_datum.astimezone().isoformat(),
                     "update_datum": self.producttype.update_datum.astimezone().isoformat(),
                     "keywords": [],
@@ -1552,7 +1565,10 @@ class TestProduct(BaseApiTestCase):
     @freeze_time("2025-12-31")
     def test_read_product(self):
         thema = ThemaFactory.create()
-        producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
+        producttype = ProductTypeFactory.create(
+            toegestane_statussen=["gereed"],
+            publicatie_start_datum=datetime.date(2024, 1, 1),
+        )
         producttype.themas.add(thema)
         product = ProductFactory.create(producttype=producttype)
         EigenaarFactory(kvk_nummer="12345678", product=product)
@@ -1592,6 +1608,8 @@ class TestProduct(BaseApiTestCase):
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "toegestane_statussen": ["gereed"],
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "aanmaak_datum": "2025-12-31T01:00:00+01:00",
                 "update_datum": "2025-12-31T01:00:00+01:00",
                 "keywords": [],

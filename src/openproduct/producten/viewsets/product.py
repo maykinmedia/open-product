@@ -1,5 +1,7 @@
+from datetime import date
+
 from django.db import transaction
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.utils.translation import gettext_lazy as _
 
 import django_filters
@@ -121,6 +123,22 @@ class ProductFilterSet(FilterSet):
         distinct=True,
         help_text=_("Lijst van thema uuids waarop kan worden gezocht."),
     )
+
+    producttype__gepubliceerd = django_filters.BooleanFilter(
+        method="filter_by_producttype_gepubliceerd",
+    )
+
+    def filter_by_producttype_gepubliceerd(self, queryset, name, value):
+        today = date.today()
+        filter_expr = Q(
+            producttype__publicatie_start_datum__isnull=False,
+            producttype__publicatie_start_datum__lte=today,
+        ) & (
+            Q(producttype__publicatie_eind_datum__isnull=True)
+            | Q(producttype__publicatie_eind_datum__gt=today)
+        )
+
+        return queryset.filter(filter_expr) if value else queryset.exclude(filter_expr)
 
     def filter_dataobject_attr(self, queryset, name, value: list):
         for value_part in value:
