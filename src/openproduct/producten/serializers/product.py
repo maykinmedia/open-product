@@ -1,7 +1,12 @@
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import (
+    OpenApiExample,
+    extend_schema_field,
+    extend_schema_serializer,
+)
 from rest_framework import serializers
 
 from openproduct.producten.models import Eigenaar, Product
@@ -38,6 +43,14 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
 
     themas = NestedThemaSerializer(many=True)
 
+    gepubliceerd = serializers.SerializerMethodField(
+        help_text=_("Geeft aan of het producttype getoond kan worden."),
+    )
+
+    @extend_schema_field(OpenApiTypes.BOOL)
+    def get_gepubliceerd(self, obj):
+        return obj.gepubliceerd
+
     class Meta:
         model = ProductType
         fields = (
@@ -47,6 +60,8 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "uniforme_product_naam",
             "toegestane_statussen",
             "gepubliceerd",
+            "publicatie_start_datum",
+            "publicatie_eind_datum",
             "aanmaak_datum",
             "update_datum",
             "themas",
@@ -83,10 +98,12 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                             "aanmaak_datum": "2019-08-24T14:15:22Z",
                             "update_datum": "2019-08-24T14:15:22Z",
                             "hoofd_thema": "41ec14a8-ca7d-43a9-a4a8-46f9587c8d91",
+                            "publicatie_start_datum": "2019-09-24",
+                            "publicatie_eind_datum": "2030-09-24",
                         }
                     ],
                 },
-                "gepubliceerd": False,
+                "gepubliceerd": True,
                 "eigenaren": [
                     {
                         "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",

@@ -7,6 +7,7 @@ from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     disallow_hoofd_thema_self_reference,
     validate_prijs_optie_xor_regel,
+    validate_publicatie_dates,
     validate_thema_gepubliceerd_state,
 )
 
@@ -63,3 +64,20 @@ def get_count(obj: list | models.Manager | None):
         return obj.count()
     else:
         return len(obj)
+
+
+class PublicatieDateValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        pub_start_datum = get_from_serializer_data_or_instance(
+            "publicatie_start_datum", value, serializer
+        )
+
+        pub_eind_datum = get_from_serializer_data_or_instance(
+            "publicatie_eind_datum", value, serializer
+        )
+        try:
+            validate_publicatie_dates(pub_start_datum, pub_eind_datum)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message)

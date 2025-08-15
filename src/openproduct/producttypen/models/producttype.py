@@ -15,7 +15,7 @@ from openproduct.utils.models import BasePublishableModel
 from .jsonschema import JsonSchema
 from .thema import Thema
 from .upn import UniformeProductNaam
-from .validators import validate_producttype_code
+from .validators import validate_producttype_code, validate_publicatie_dates
 
 
 class ProductStateChoices(models.TextChoices):
@@ -145,6 +145,20 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Interne opmerkingen over het producttype."),
     )
 
+    publicatie_start_datum = models.DateField(
+        verbose_name=_("publicatie startdatum"),
+        help_text=_("De datum waarop het producttype gepubliceerd is"),
+        blank=True,
+        null=True,
+    )
+
+    publicatie_eind_datum = models.DateField(
+        verbose_name=_("publicatie startdatum"),
+        help_text=_("De datum waarop het producttype gepubliceerd is"),
+        blank=True,
+        null=True,
+    )
+
     naam = TranslatedField()
     samenvatting = TranslatedField()
 
@@ -155,6 +169,11 @@ class ProductType(BasePublishableModel, TranslatableModel):
 
     def __str__(self):
         return self.code
+
+    def clean(self):
+        validate_publicatie_dates(
+            self.publicatie_start_datum, self.publicatie_eind_datum
+        )
 
     def add_contact_organisaties(self):
         for contact in self.contacten.all():
@@ -169,6 +188,16 @@ class ProductType(BasePublishableModel, TranslatableModel):
         now = date.today()
         return (
             self.prijzen.filter(actief_vanaf__lte=now).order_by("actief_vanaf").last()
+        )
+
+    @property
+    def gepubliceerd(self):
+        now = date.today()
+
+        return (
+            self.publicatie_start_datum is not None
+            and self.publicatie_start_datum <= now
+            and (not self.publicatie_eind_datum or self.publicatie_eind_datum > now)
         )
 
 

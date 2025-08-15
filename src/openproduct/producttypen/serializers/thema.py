@@ -1,6 +1,12 @@
 from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import (
+    OpenApiExample,
+    extend_schema_field,
+    extend_schema_serializer,
+)
 from rest_framework import serializers
 from vng_api_common.utils import get_help_text
 
@@ -16,6 +22,14 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
         slug_field="naam", queryset=UniformeProductNaam.objects.all()
     )
 
+    gepubliceerd = serializers.SerializerMethodField(
+        help_text=_("Geeft aan of het producttype getoond kan worden."),
+    )
+
+    @extend_schema_field(OpenApiTypes.BOOL)
+    def get_gepubliceerd(self, obj):
+        return obj.gepubliceerd
+
     class Meta:
         model = ProductType
         fields = (
@@ -25,6 +39,8 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "uniforme_product_naam",
             "toegestane_statussen",
             "gepubliceerd",
+            "publicatie_start_datum",
+            "publicatie_eind_datum",
             "aanmaak_datum",
             "update_datum",
         )
@@ -50,6 +66,8 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                         "uniforme_product_naam": "parkeervergunning",
                         "toegestane_statussen": ["gereed"],
                         "gepubliceerd": True,
+                        "publicatie_start_datum": "2019-09-24",
+                        "publicatie_eind_datum": "2030-09-24",
                         "aanmaak_datum": "2019-08-24T14:15:22Z",
                         "update_datum": "2019-08-24T14:15:22Z",
                     }

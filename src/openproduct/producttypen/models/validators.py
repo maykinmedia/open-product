@@ -110,3 +110,22 @@ def validate_dmn_mapping(mapping):
         raise ValidationError(
             _("De mapping komt niet overeen met het schema. (zie API spec)")
         )
+
+
+def validate_publicatie_dates(publicatie_start_datum, publicatie_eind_datum):
+    if publicatie_eind_datum is None:
+        return
+
+    if publicatie_start_datum is None:
+        raise ValidationError(
+            _(
+                "De publicatie eind datum kan niet zonder een publicatie start datum worden gezet."
+            )
+        )
+
+    if publicatie_start_datum >= publicatie_eind_datum:
+        raise ValidationError(
+            _(
+                "De publicatie eind datum van een producttype mag niet op een eerdere of dezelfde dag vallen als de publicate start datum."
+            )
+        )

@@ -184,7 +184,7 @@ paths:
         name: gepubliceerd
         schema:
           type: boolean
-        description: Geeft aan of het object getoond kan worden.
+        description: Geeft aan of het product getoond kan worden.
       - in: query
         name: naam
         schema:
@@ -231,6 +231,10 @@ paths:
         description: Meerdere waarden kunnen gescheiden worden door komma's.
         explode: false
         style: form
+      - in: query
+        name: producttype__gepubliceerd
+        schema:
+          type: boolean
       - in: query
         name: producttype__naam
         schema:
@@ -443,7 +447,9 @@ paths:
                           aanmaak_datum: '2019-08-24T14:15:22Z'
                           update_datum: '2019-08-24T14:15:22Z'
                           hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                      gepubliceerd: false
+                          publicatie_start_datum: '2019-09-24'
+                          publicatie_eind_datum: '2030-09-24'
+                      gepubliceerd: true
                       eigenaren:
                       - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                         bsn: '111222333'
@@ -557,7 +563,9 @@ paths:
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                    gepubliceerd: false
+                        publicatie_start_datum: '2019-09-24'
+                        publicatie_eind_datum: '2030-09-24'
+                    gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
@@ -649,7 +657,9 @@ paths:
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                    gepubliceerd: false
+                        publicatie_start_datum: '2019-09-24'
+                        publicatie_eind_datum: '2030-09-24'
+                    gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
@@ -770,7 +780,9 @@ paths:
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                    gepubliceerd: false
+                        publicatie_start_datum: '2019-09-24'
+                        publicatie_eind_datum: '2030-09-24'
+                    gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
@@ -890,7 +902,9 @@ paths:
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                    gepubliceerd: false
+                        publicatie_start_datum: '2019-09-24'
+                        publicatie_eind_datum: '2030-09-24'
+                    gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
@@ -1102,7 +1116,20 @@ components:
           description: toegestane statussen voor producten van dit type.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          readOnly: true
+          description: Geeft aan of het producttype getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         aanmaak_datum:
           type: string
           format: date-time
@@ -1120,6 +1147,7 @@ components:
       required:
       - aanmaak_datum
       - code
+      - gepubliceerd
       - themas
       - uniforme_product_naam
       - update_datum
@@ -1148,9 +1176,18 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         themas:
           type: array
           items:
@@ -1195,7 +1232,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         aanmaak_datum:
           type: string
           format: date-time
@@ -1229,7 +1266,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         hoofd_thema:
           type: string
           format: uuid
@@ -1309,7 +1346,7 @@ components:
           writeOnly: true
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het product getoond kan worden.
         eigenaren:
           type: array
           items:
@@ -1417,7 +1454,7 @@ components:
           readOnly: true
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het product getoond kan worden.
         eigenaren:
           type: array
           items:
@@ -1512,7 +1549,7 @@ components:
           writeOnly: true
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het product getoond kan worden.
         eigenaren:
           type: array
           items:

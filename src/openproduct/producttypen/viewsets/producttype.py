@@ -1,4 +1,6 @@
-from django.db.models import Prefetch
+from datetime import date
+
+from django.db.models import Prefetch, Q
 from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
@@ -104,6 +106,19 @@ class ProductTypeFilterSet(FilterSet):
         help_text=_("Lijst van thema uuids waarop kan worden gezocht."),
     )
 
+    gepubliceerd = django_filters.BooleanFilter(
+        method="filter_by_gepubliceerd",
+    )
+
+    def filter_by_gepubliceerd(self, queryset, name, value):
+        today = date.today()
+        filter_expr = Q(
+            publicatie_start_datum__isnull=False,
+            publicatie_start_datum__lte=today,
+        ) & (Q(publicatie_eind_datum__isnull=True) | Q(publicatie_eind_datum__gt=today))
+
+        return queryset.filter(filter_expr) if value else queryset.exclude(filter_expr)
+
     def filter_by_externe_code(self, queryset, name, value):
         for val in value:
             value_list = val.strip("[]").split(":")
@@ -132,9 +147,10 @@ class ProductTypeFilterSet(FilterSet):
         model = ProductType
         fields = {
             "code": ["exact"],
-            "gepubliceerd": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
+            "publicatie_start_datum": ["exact", "gte", "lte"],
+            "publicatie_eind_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],
             "zaaktypen__uuid": ["exact"],
             "verzoektypen__uuid": ["exact"],

@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
@@ -379,7 +381,7 @@ class TestThemaViewSet(BaseApiTestCase):
 
     def test_read_producttype(self):
         thema = ThemaFactory.create()
-        producttype = ProductTypeFactory.create()
+        producttype = ProductTypeFactory.create(publicatie_start_datum=date(2024, 1, 1))
         thema.producttypen.add(producttype)
         thema.save()
 
@@ -392,6 +394,8 @@ class TestThemaViewSet(BaseApiTestCase):
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
+                "publicatie_start_datum": "2024-01-01",
+                "publicatie_eind_datum": None,
                 "toegestane_statussen": [],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
