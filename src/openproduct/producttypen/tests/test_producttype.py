@@ -48,6 +48,41 @@ class TestProductType(TestCase):
         self.assertEqual(producttype.organisaties.count(), 1)
         self.assertEqual(producttype.organisaties.get().id, contact.organisatie.id)
 
+    @freeze_time("2025-01-1")
+    def test_publicatie_dates(self):
+        with self.subTest("not set"):
+            pt = ProductTypeFactory()
+            self.assertFalse(pt.gepubliceerd)
+
+        with self.subTest("start_datum in past"):
+            pt = ProductTypeFactory(publicatie_start_datum=date.today())
+            self.assertTrue(pt.gepubliceerd)
+
+        with self.subTest("start_datum in future"):
+            pt = ProductTypeFactory(publicatie_start_datum=date(2025, 1, 10))
+            self.assertFalse(pt.gepubliceerd)
+
+        with self.subTest("start & eind in between"):
+            pt = ProductTypeFactory(
+                publicatie_start_datum=date.today(),
+                publicatie_eind_datum=date(2025, 1, 10),
+            )
+            self.assertTrue(pt.gepubliceerd)
+
+        with self.subTest("eind in past"):
+            pt = ProductTypeFactory(
+                publicatie_start_datum=date(2024, 1, 1),
+                publicatie_eind_datum=date(2024, 1, 10),
+            )
+            self.assertFalse(pt.gepubliceerd)
+
+        with self.subTest("start & eind in future"):
+            pt = ProductTypeFactory(
+                publicatie_start_datum=date(2025, 1, 10),
+                publicatie_eind_datum=date(2025, 1, 20),
+            )
+            self.assertFalse(pt.gepubliceerd)
+
 
 class ValidateProductTypeCodeTest(SimpleTestCase):
     def test_valid_codes(self):

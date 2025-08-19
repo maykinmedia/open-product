@@ -3730,7 +3730,6 @@ paths:
         name: gepubliceerd
         schema:
           type: boolean
-        description: Geeft aan of het object getoond kan worden.
       - in: query
         name: keywords
         schema:
@@ -3773,6 +3772,42 @@ paths:
           type: string
           format: uuid
         description: Uuid van het proces.
+      - in: query
+        name: publicatie_eind_datum
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_eind_datum__gte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_eind_datum__lte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum__gte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
+      - in: query
+        name: publicatie_start_datum__lte
+        schema:
+          type: string
+          format: date
+        description: De datum waarop het producttype gepubliceerd is
       - in: query
         name: themas__naam
         schema:
@@ -4001,6 +4036,8 @@ paths:
                           required:
                           - max_uren
                       gepubliceerd: true
+                      publicatie_start_datum: '2019-09-24'
+                      publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                       code: PT-12345
@@ -4055,7 +4092,8 @@ paths:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
-                  gepubliceerd: false
+                  publicatie_start_datum: '2019-09-24'
+                  publicatie_eind_datum: '2030-09-24'
                   naam: Aanleunwoning
                   code: PT-12345
                   toegestane_statussen:
@@ -4194,6 +4232,8 @@ paths:
                         required:
                         - max_uren
                     gepubliceerd: true
+                    publicatie_start_datum: '2019-09-24'
+                    publicatie_eind_datum: '2030-09-24'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     code: PT-12345
@@ -4350,6 +4390,8 @@ paths:
                         required:
                         - max_uren
                     gepubliceerd: true
+                    publicatie_start_datum: '2019-09-24'
+                    publicatie_eind_datum: '2030-09-24'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     code: PT-12345
@@ -4411,7 +4453,8 @@ paths:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
-                  gepubliceerd: false
+                  publicatie_start_datum: '2019-09-24'
+                  publicatie_eind_datum: '2030-09-24'
                   naam: Aanleunwoning
                   code: PT-12345
                   toegestane_statussen:
@@ -4550,6 +4593,8 @@ paths:
                         required:
                         - max_uren
                     gepubliceerd: true
+                    publicatie_start_datum: '2019-09-24'
+                    publicatie_eind_datum: '2030-09-24'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     code: PT-12345
@@ -4613,7 +4658,8 @@ paths:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
-                  gepubliceerd: false
+                  publicatie_start_datum: '2019-09-24'
+                  publicatie_eind_datum: '2030-09-24'
                   naam: Aanleunwoning
                   code: PT-12345
                   toegestane_statussen:
@@ -4751,6 +4797,8 @@ paths:
                         required:
                         - max_uren
                     gepubliceerd: true
+                    publicatie_start_datum: '2019-09-24'
+                    publicatie_eind_datum: '2030-09-24'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
                     code: PT-12345
@@ -5555,7 +5603,7 @@ paths:
         name: gepubliceerd
         schema:
           type: boolean
-        description: Geeft aan of het object getoond kan worden.
+        description: Geeft aan of het thema getoond kan worden.
       - in: query
         name: hoofd_thema__naam
         schema:
@@ -5650,6 +5698,8 @@ paths:
                         toegestane_statussen:
                         - gereed
                         gepubliceerd: true
+                        publicatie_start_datum: '2019-09-24'
+                        publicatie_eind_datum: '2030-09-24'
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
                   summary: thema response
@@ -5725,6 +5775,8 @@ paths:
                       toegestane_statussen:
                       - gereed
                       gepubliceerd: true
+                      publicatie_start_datum: '2019-09-24'
+                      publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                   summary: thema response
@@ -5792,6 +5844,8 @@ paths:
                       toegestane_statussen:
                       - gereed
                       gepubliceerd: true
+                      publicatie_start_datum: '2019-09-24'
+                      publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                   summary: thema response
@@ -5874,6 +5928,8 @@ paths:
                       toegestane_statussen:
                       - gereed
                       gepubliceerd: true
+                      publicatie_start_datum: '2019-09-24'
+                      publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                   summary: thema response
@@ -5957,6 +6013,8 @@ paths:
                       toegestane_statussen:
                       - gereed
                       gepubliceerd: true
+                      publicatie_start_datum: '2019-09-24'
+                      publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
                   summary: thema response
@@ -6688,7 +6746,20 @@ components:
           description: toegestane statussen voor producten van dit type.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          readOnly: true
+          description: Geeft aan of het producttype getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         aanmaak_datum:
           type: string
           format: date-time
@@ -6702,6 +6773,7 @@ components:
       required:
       - aanmaak_datum
       - code
+      - gepubliceerd
       - uniforme_product_naam
       - update_datum
       - uuid
@@ -6729,9 +6801,18 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
       required:
       - code
       - uniforme_product_naam
@@ -6751,7 +6832,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         aanmaak_datum:
           type: string
           format: date-time
@@ -6785,7 +6866,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         hoofd_thema:
           type: string
           format: uuid
@@ -7413,9 +7494,18 @@ components:
           description: JSON schema om het dataobject van een gerelateerd product te
             valideren.
           writeOnly: true
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         code:
           type: string
           minLength: 1
@@ -7473,7 +7563,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         hoofd_thema:
           type: string
           format: uuid
@@ -7707,7 +7797,20 @@ components:
           readOnly: true
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          readOnly: true
+          description: Geeft aan of het producttype getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         aanmaak_datum:
           type: string
           format: date-time
@@ -7756,6 +7859,7 @@ components:
       - code
       - contacten
       - dataobject_schema
+      - gepubliceerd
       - links
       - locaties
       - naam
@@ -7864,9 +7968,18 @@ components:
           description: JSON schema om het dataobject van een gerelateerd product te
             valideren.
           writeOnly: true
-        gepubliceerd:
-          type: boolean
-          description: Geeft aan of het object getoond kan worden.
+        publicatie_start_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
+        publicatie_eind_datum:
+          type: string
+          format: date
+          nullable: true
+          title: Publicatie startdatum
+          description: De datum waarop het producttype gepubliceerd is
         code:
           type: string
           minLength: 1
@@ -7954,7 +8067,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         aanmaak_datum:
           type: string
           format: date-time
@@ -7995,7 +8108,7 @@ components:
           description: Beschrijving van het thema, ondersteund markdown format.
         gepubliceerd:
           type: boolean
-          description: Geeft aan of het object getoond kan worden.
+          description: Geeft aan of het thema getoond kan worden.
         hoofd_thema:
           type: string
           format: uuid

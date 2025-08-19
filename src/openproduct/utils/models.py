@@ -13,12 +13,6 @@ class BaseModel(models.Model):
 
 
 class BasePublishableModel(BaseModel):
-    gepubliceerd = models.BooleanField(
-        verbose_name=_("gepubliceerd"),
-        default=False,
-        help_text=_("Geeft aan of het object getoond kan worden."),
-        # TODO unpublished objects are currently not filtered out of api.
-    )
     aanmaak_datum = models.DateTimeField(
         verbose_name=_("aanmaak datum"),
         auto_now_add=True,
