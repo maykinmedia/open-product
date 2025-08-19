@@ -355,11 +355,13 @@ class ProductTypeViewSet(
                 explode=False,
             ),
         ],
+        responses=NestedContentElementSerializer(many=True),
     )
     @action(
         detail=True,
         serializer_class=NestedContentElementSerializer,
         url_path="content",
+        filterset_class=None,
     )
     def content(self, request, uuid=None):
         producttype = self.get_object()
