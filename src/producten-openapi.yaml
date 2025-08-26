@@ -1418,6 +1418,17 @@ components:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
+        aanvraag_zaak_urn:
+          type: string
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        aanvraag_zaak_url:
+          type: string
+          format: uri
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          maxLength: 200
     Product:
       type: object
       properties:
@@ -1526,6 +1537,17 @@ components:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
+        aanvraag_zaak_urn:
+          type: string
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        aanvraag_zaak_url:
+          type: string
+          format: uri
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          maxLength: 200
       required:
       - aanmaak_datum
       - eigenaren
@@ -1621,6 +1643,17 @@ components:
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
             uit het producttype.
+        aanvraag_zaak_urn:
+          type: string
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        aanvraag_zaak_url:
+          type: string
+          format: uri
+          nullable: true
+          description: De zaak waaruit dit product is ontstaan.
+          maxLength: 200
       required:
       - eigenaren
       - frequentie
