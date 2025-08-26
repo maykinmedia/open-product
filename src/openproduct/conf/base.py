@@ -33,6 +33,7 @@ INSTALLED_APPS += [
     "openproduct.producttypen",
     "openproduct.producten",
     "openproduct.locaties",
+    "openproduct.urn",
 ]
 
 DATABASES = {
@@ -301,7 +302,6 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-
 #
 # Custom settings
 #
@@ -339,7 +339,6 @@ SETUP_CONFIGURATION_STEPS = (
     "openproduct.setup_configuration.steps.DmnConfigsConfigurationStep",
 )
 
-
 #
 # Django-Admin-Index
 #
@@ -349,14 +348,12 @@ ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
 
 ADMIN_INDEX_SHOW_REMAINING_APPS = False
 
-
 #
 # reversion_compare
 #
 ADD_REVERSION_ADMIN = True
 REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID = False
 REVERSION_COMPARE_IGNORE_NOT_REGISTERED = False
-
 
 #
 # Django rest framework
@@ -424,7 +421,6 @@ SUBPATH = config("SUBPATH", None)
 if SUBPATH:
     SUBPATH = f"/{SUBPATH.strip('/')}"
 
-
 LANGUAGES = [
     ("nl", _("Dutch")),
     ("en", _("English")),
@@ -451,3 +447,6 @@ FORCE_TRANSLATION_STRINGS = [
     _("A page number within the paginated result set."),
     _("Number of results to return per page."),
 ]
+
+REQUIRE_URN_URL_MAPPING = True
+REQUIRE_URL_URN_MAPPING = True

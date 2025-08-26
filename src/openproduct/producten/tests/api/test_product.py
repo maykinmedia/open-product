@@ -30,6 +30,7 @@ from openproduct.producttypen.tests.factories import (
     ProductTypeFactory,
     ThemaFactory,
 )
+from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -1829,3 +1830,404 @@ class TestProduct(BaseApiTestCase):
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
             self.assertEqual(response.data, test["error"])
+
+
+class TestProductUrns(BaseApiTestCase):
+    path = reverse_lazy("product-list")
+
+    def setUp(self):
+        super().setUp()
+        self.thema = ThemaFactory.create()
+        self.producttype = ProductTypeFactory.create(
+            toegestane_statussen=["gereed"],
+            publicatie_start_datum=datetime.date(2024, 1, 1),
+        )
+        self.producttype.themas.add(self.thema)
+        self.data = {
+            "producttype_uuid": self.producttype.uuid,
+            "status": "initieel",
+            "prijs": "20.20",
+            "frequentie": "eenmalig",
+            "eigenaren": [{"kvk_nummer": "12345678"}],
+        }
+
+    def detail_path(self, product):
+        return reverse("product-detail", args=[product.uuid])
+
+    def test_invalid_urns(self):
+        with self.subTest("None"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": None}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("empty"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": ""}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("string"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": "a"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+        with self.subTest("::::"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": "::::::"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+        with self.subTest("::::"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": ":a:b:c:d:e"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+    def test_invalid_urls(self):
+        with self.subTest("None"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": None}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("empty"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": ""}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("string"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": "a"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+        with self.subTest("slash"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": "/awdaw"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+        with self.subTest("url"):
+            response = self.client.post(
+                self.path,
+                self.data | {"aanvraag_zaak_url": "https://google/128937-012837-adawd"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+    def test_create_product_without_aanvraag_zaak(self):
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            {"aanvraag_zaak": ["een url of urn is verplicht"]},
+        )
+
+    def test_create_product_with_different_urn_urls(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            {"aanvraag_zaak": ["de uuid van de url en urn komen niet overeen"]},
+        )
+
+    def test_create_product_with_urn_only(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        with self.subTest("mapping required"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn heeft geen mapping"]},
+            )
+
+        with self.subTest("allowed"):
+            with override_settings(REQUIRE_URN_URL_MAPPING=False):
+                response = self.client.post(self.path, data)
+
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_urn"],
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(response.data["aanvraag_zaak_url"], None)
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_urn,
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(product.aanvraag_zaak_url, None)
+
+        with self.subTest("in mapping"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+    def test_create_product_with_url_only(self):
+        data = self.data | {
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        with self.subTest("mapping required"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url heeft geen mapping"]},
+            )
+
+        with self.subTest("allowed"):
+            with override_settings(REQUIRE_URL_URN_MAPPING=False):
+                response = self.client.post(self.path, data)
+
+                self.assertEqual(
+                    response.status_code, status.HTTP_201_CREATED, response.data
+                )
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_url"],
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(response.data["aanvraag_zaak_urn"], None)
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_url,
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(product.aanvraag_zaak_urn, None)
+
+        with self.subTest("in mapping"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+    def test_create_product_with_urn_and_url(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        }
+
+        with self.subTest("mapping missing"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url en/of urn hebben geen mapping"]},
+            )
+
+        with self.subTest("mapping missing allowed"):
+            with override_settings(
+                REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False
+            ):
+                response = self.client.post(self.path, data)
+                self.assertEqual(
+                    response.status_code, status.HTTP_201_CREATED, response.data
+                )
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_urn"],
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(
+                    response.data["aanvraag_zaak_url"],
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_urn,
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(
+                    product.aanvraag_zaak_url,
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+
+        with self.subTest("different mappings"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaakabc", url="https://maykin.ztc.com/zaken2"
+            )
+
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakabc:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn en url mappings komen niet overeen"]},
+            )
+
+        with self.subTest("mapping correct"):
+            response = self.client.post(self.path, data)
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+        with self.subTest("different urn in mapping"):
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakdef:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn in de url mapping is niet hetzelfde"]},
+            )
+
+        with self.subTest("different url in mapping"):
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_url": f"https://maykin.ztc.com/zakendef/{data['aanvraag_zaak_url'].rsplit('/', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url in de urn mapping is niet hetzelfde"]},
+            )
