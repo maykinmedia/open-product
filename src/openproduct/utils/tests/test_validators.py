@@ -55,7 +55,6 @@ class ValidatorsTestCase(TestCase):
             '1111"a',
             '1111"aa',
             "1015 cj",
-            "1015CJ",
             "1015cj",
             "1015Cj",
             "1015cJ",
@@ -64,7 +63,7 @@ class ValidatorsTestCase(TestCase):
             self.assertRaisesMessage(
                 ValidationError,
                 _(
-                    "Invalid postal code. A postal code must consist of 4 numbers followed by a space and two capital letters (e.g. 1234 AB)."
+                    "Invalid postal code. A postal code must consist of 4 numbers followed by two capital letters (e.g. 1234 AB)."
                 ),
                 validate_postal_code,
                 invalid_postal_code,

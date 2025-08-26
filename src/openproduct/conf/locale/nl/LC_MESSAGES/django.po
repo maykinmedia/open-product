@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-04 10:14+0200\n"
+"POT-Creation-Date: 2025-08-26 18:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgid "De organisatie van het contact"
 msgstr ""
 
 #: locaties/models/contact.py:24 locaties/models/locatie.py:12
-#: producten/models/product.py:34 producttypen/models/actie.py:17
+#: producten/models/product.py:40 producttypen/models/actie.py:17
 #: producttypen/models/dmn_config.py:12 producttypen/models/externe_code.py:13
 #: producttypen/models/jsonschema.py:17 producttypen/models/link.py:21
 #: producttypen/models/parameter.py:13 producttypen/models/thema.py:16
@@ -171,11 +171,11 @@ msgstr ""
 msgid "stad"
 msgstr ""
 
-#: locaties/models/locatie.py:57
+#: locaties/models/locatie.py:61
 msgid "Locatie"
 msgstr ""
 
-#: locaties/models/locatie.py:58
+#: locaties/models/locatie.py:62
 msgid "Locaties"
 msgstr ""
 
@@ -199,10 +199,10 @@ msgstr ""
 #: locaties/tests/api/test_contact.py:40 locaties/tests/api/test_locatie.py:36
 #: locaties/tests/api/test_organisatie.py:42
 #: locaties/tests/api/test_organisatie.py:45
-#: producten/tests/api/test_product.py:81
 #: producten/tests/api/test_product.py:84
 #: producten/tests/api/test_product.py:87
 #: producten/tests/api/test_product.py:90
+#: producten/tests/api/test_product.py:93
 #: producttypen/tests/api/test_actie.py:45
 #: producttypen/tests/api/test_actie.py:48
 #: producttypen/tests/api/test_actie.py:51
@@ -217,14 +217,14 @@ msgstr ""
 #: producttypen/tests/api/test_link.py:47
 #: producttypen/tests/api/test_prijs.py:56
 #: producttypen/tests/api/test_prijs.py:59
-#: producttypen/tests/api/test_producttype.py:94
-#: producttypen/tests/api/test_producttype.py:97
-#: producttypen/tests/api/test_producttype.py:100
-#: producttypen/tests/api/test_producttype.py:103
-#: producttypen/tests/api/test_producttype.py:106
-#: producttypen/tests/api/test_thema.py:39
-#: producttypen/tests/api/test_thema.py:42
-#: producttypen/tests/api/test_thema.py:45
+#: producttypen/tests/api/test_producttype.py:95
+#: producttypen/tests/api/test_producttype.py:98
+#: producttypen/tests/api/test_producttype.py:101
+#: producttypen/tests/api/test_producttype.py:104
+#: producttypen/tests/api/test_producttype.py:107
+#: producttypen/tests/api/test_thema.py:41
+#: producttypen/tests/api/test_thema.py:44
+#: producttypen/tests/api/test_thema.py:47
 msgid "This field is required."
 msgstr "Dit veld is verplicht."
 
@@ -316,17 +316,17 @@ msgstr "(object niet bekend)"
 msgid "%(timestamp)s | %(user)s | <code>%(event)s</code>: %(object)s."
 msgstr "%(timestamp)s | %(user)s | <code>%(event)s</code>: %(object)s."
 
-#: producten/admin/eigenaar.py:19 producten/serializers/product.py:189
-#: producten/tests/api/test_product.py:506
-#: producten/tests/api/test_product.py:746
+#: producten/admin/eigenaar.py:19 producten/serializers/product.py:206
+#: producten/tests/api/test_product.py:515
+#: producten/tests/api/test_product.py:755
 msgid "Er is minimaal één eigenaar vereist."
 msgstr ""
 
-#: producten/admin/product.py:56 producten/models/product.py:57
+#: producten/admin/product.py:56 producten/models/product.py:63
 msgid "status"
 msgstr ""
 
-#: producten/admin/product.py:130 producttypen/models/actie.py:62
+#: producten/admin/product.py:128 producttypen/models/actie.py:62
 msgid "acties"
 msgstr ""
 
@@ -411,42 +411,50 @@ msgstr ""
 msgid "Jaarlijks"
 msgstr ""
 
-#: producten/models/product.py:28 producttypen/models/actie.py:24
-#: producttypen/models/link.py:15 producttypen/models/producttype.py:152
+#: producten/models/product.py:27 producttypen/models/thema.py:37
+msgid "gepubliceerd"
+msgstr ""
+
+#: producten/models/product.py:29
+msgid "Geeft aan of het product getoond kan worden."
+msgstr ""
+
+#: producten/models/product.py:34 producttypen/models/actie.py:24
+#: producttypen/models/link.py:15 producttypen/models/producttype.py:166
 msgid "Producttype"
 msgstr ""
 
-#: producten/models/product.py:30
+#: producten/models/product.py:36
 msgid "Het type van dit product"
 msgstr ""
 
-#: producten/models/product.py:37
+#: producten/models/product.py:43
 msgid "De naam van dit product."
 msgstr ""
 
-#: producten/models/product.py:40 producttypen/models/prijs.py:28
+#: producten/models/product.py:46 producttypen/models/prijs.py:28
 msgid "start datum"
 msgstr ""
 
-#: producten/models/product.py:42
+#: producten/models/product.py:48
 msgid ""
 "De start datum van dit product. Op deze datum zal de status van het product "
 "automatisch naar ACTIEF worden gezet. Op het moment dat de start_datum wordt "
 "ingevuld moet de status ACTIEF op het producttype zijn toegestaan."
 msgstr ""
 
-#: producten/models/product.py:48
+#: producten/models/product.py:54
 msgid "eind datum"
 msgstr ""
 
-#: producten/models/product.py:50
+#: producten/models/product.py:56
 msgid ""
 "De einddatum van dit product. Op deze datum zal de status van het product "
 "automatisch naar VERLOPEN worden gezet. Op het moment dat de eind_datum "
 "wordt ingevuld moet de status VERLOPEN op het producttype zijn toegestaan."
 msgstr ""
 
-#: producten/models/product.py:60
+#: producten/models/product.py:66
 msgid ""
 "De status opties worden bepaald door het veld 'toegestane statussen' van het "
 "gerelateerde producttype. Via start & eind_datum kan de status automatisch "
@@ -454,56 +462,56 @@ msgid ""
 "het producttype)."
 msgstr ""
 
-#: producten/models/product.py:66 producttypen/models/prijs.py:47
+#: producten/models/product.py:72 producttypen/models/prijs.py:47
 #: producttypen/models/prijs.py:84
 msgid "prijs"
 msgstr ""
 
-#: producten/models/product.py:70
+#: producten/models/product.py:76
 msgid "De prijs van het product."
 msgstr ""
 
-#: producten/models/product.py:74
+#: producten/models/product.py:80
 msgid "Prijs frequentie"
 msgstr ""
 
-#: producten/models/product.py:77
+#: producten/models/product.py:83
 msgid "De frequentie van betalingen."
 msgstr ""
 
-#: producten/models/product.py:81
+#: producten/models/product.py:87
 msgid "verbruiksobject"
 msgstr ""
 
-#: producten/models/product.py:85
+#: producten/models/product.py:91
 msgid ""
 "Verbruiksobject van dit product. Wordt gevalideerd met het "
 "`verbruiksobject_schema` uit het producttype."
 msgstr ""
 
-#: producten/models/product.py:91
+#: producten/models/product.py:97
 msgid "dataobject"
 msgstr ""
 
-#: producten/models/product.py:95
+#: producten/models/product.py:101
 msgid ""
 "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` "
 "uit het producttype."
 msgstr ""
 
-#: producten/models/product.py:101
+#: producten/models/product.py:107
 msgid "Product"
 msgstr ""
 
-#: producten/models/product.py:102
+#: producten/models/product.py:108
 msgid "Producten"
 msgstr ""
 
-#: producten/models/product.py:112
+#: producten/models/product.py:118
 msgid "Status is naar ACTIEF gezet vanwege de start datum."
 msgstr ""
 
-#: producten/models/product.py:119
+#: producten/models/product.py:125
 msgid "Status is naar VERLOPEN gezet vanwege de eind datum."
 msgstr ""
 
@@ -531,7 +539,7 @@ msgstr ""
 msgid "Ongeldig bsn number."
 msgstr ""
 
-#: producten/models/validators.py:30 producten/tests/api/test_product.py:466
+#: producten/models/validators.py:30 producten/tests/api/test_product.py:475
 #: producten/tests/test_eigenaar.py:46 producten/tests/test_eigenaar.py:72
 msgid ""
 "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of "
@@ -555,21 +563,21 @@ msgid ""
 "als de start datum."
 msgstr ""
 
-#: producten/models/validators.py:80 producten/tests/api/test_product.py:1697
-#: producten/tests/api/test_product.py:1768 producten/tests/test_product.py:164
+#: producten/models/validators.py:80 producten/tests/api/test_product.py:1715
+#: producten/tests/api/test_product.py:1786 producten/tests/test_product.py:164
 msgid ""
 "De start datum van het product kan niet worden gezet omdat de status ACTIEF "
 "niet is toegestaan op het producttype."
 msgstr ""
 
-#: producten/models/validators.py:94 producten/tests/api/test_product.py:1710
-#: producten/tests/api/test_product.py:1781 producten/tests/test_product.py:177
+#: producten/models/validators.py:94 producten/tests/api/test_product.py:1728
+#: producten/tests/api/test_product.py:1799 producten/tests/test_product.py:177
 msgid ""
 "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN "
 "niet is toegestaan op het producttype."
 msgstr ""
 
-#: producten/models/validators.py:111 producten/tests/api/test_product.py:279
+#: producten/models/validators.py:111 producten/tests/api/test_product.py:286
 #: producten/tests/test_product_admin.py:162
 msgid ""
 "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het "
@@ -602,15 +610,21 @@ msgstr ""
 msgid "De url naar het document."
 msgstr ""
 
-#: producten/serializers/product.py:198
+#: producten/serializers/product.py:47
+#: producttypen/serializers/producttype.py:320
+#: producttypen/serializers/thema.py:26
+msgid "Geeft aan of het producttype getoond kan worden."
+msgstr ""
+
+#: producten/serializers/product.py:215
 msgid "Er bestaat al een document met de uuid {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:207
+#: producten/serializers/product.py:224
 msgid "Er bestaat al een zaak met de uuid {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:216
+#: producten/serializers/product.py:233
 msgid "Er bestaat al een taak met de uuid {} voor dit Product."
 msgstr ""
 
@@ -622,37 +636,37 @@ msgstr ""
 msgid "De url naar de zaak."
 msgstr ""
 
-#: producten/tests/api/test_product.py:412
-#: producten/tests/api/test_product.py:730
+#: producten/tests/api/test_product.py:421
+#: producten/tests/api/test_product.py:739
 msgid "Status 'Actief' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product.py:845
+#: producten/tests/api/test_product.py:854
 msgid "Eigenaar uuid {} op index 0 is niet onderdeel van het Product object."
 msgstr ""
 
-#: producten/tests/api/test_product.py:874
+#: producten/tests/api/test_product.py:883
 msgid "Eigenaar uuid {} op index 0 bestaat niet."
 msgstr ""
 
-#: producten/tests/api/test_product.py:903
+#: producten/tests/api/test_product.py:912
 #: producttypen/tests/api/test_prijs.py:650
 #: producttypen/tests/api/test_prijs.py:687
 #: producttypen/tests/api/test_prijs.py:866
 #: producttypen/tests/api/test_prijs.py:927
-#: producttypen/tests/api/test_producttype.py:437
-#: producttypen/tests/api/test_producttype.py:443
-#: producttypen/tests/api/test_producttype.py:744
-#: producttypen/tests/api/test_producttype.py:750
-#: producttypen/tests/api/test_producttype.py:1126
-#: producttypen/tests/api/test_thema.py:116
-#: producttypen/tests/api/test_thema.py:202
-#: producttypen/tests/api/test_thema.py:319
+#: producttypen/tests/api/test_producttype.py:440
+#: producttypen/tests/api/test_producttype.py:446
+#: producttypen/tests/api/test_producttype.py:809
+#: producttypen/tests/api/test_producttype.py:815
+#: producttypen/tests/api/test_producttype.py:1191
+#: producttypen/tests/api/test_thema.py:118
+#: producttypen/tests/api/test_thema.py:204
+#: producttypen/tests/api/test_thema.py:321
 msgid "Dubbel uuid: {} op index 1."
 msgstr ""
 
-#: producten/tests/api/test_product.py:1684
-#: producten/tests/api/test_product.py:1755 producten/tests/test_product.py:189
+#: producten/tests/api/test_product.py:1702
+#: producten/tests/api/test_product.py:1773 producten/tests/test_product.py:189
 msgid "Status 'Gereed' is niet toegestaan voor het producttype {}."
 msgstr ""
 
@@ -670,7 +684,7 @@ msgstr ""
 msgid "operator `{}` is niet bekend/ondersteund"
 msgstr ""
 
-#: producten/viewsets/product.py:32
+#: producten/viewsets/product.py:35
 msgid ""
 "\n"
 "Een json filter parameter heeft de format `key__operator__waarde`.\n"
@@ -697,50 +711,47 @@ msgid ""
 "B&objectdata_attr=zone__exact__B`\n"
 msgstr ""
 
-#: producten/viewsets/product.py:64 producten/viewsets/product.py:81
+#: producten/viewsets/product.py:67 producten/viewsets/product.py:84
 #: producttypen/viewsets/actie.py:24 producttypen/viewsets/bestand.py:30
-#: producttypen/viewsets/link.py:24 producttypen/viewsets/prijs.py:24
-#: producttypen/viewsets/producttype.py:73
+#: producttypen/viewsets/link.py:24 producttypen/viewsets/prijs.py:25
+#: producttypen/viewsets/producttype.py:81
 msgid "De Nederlandse naam van het producttype"
 msgstr ""
 
-#: producten/viewsets/product.py:115 producttypen/viewsets/producttype.py:92
+#: producten/viewsets/product.py:118 producttypen/viewsets/producttype.py:100
 msgid "Lijst van thema namen waarop kan worden gezocht."
 msgstr ""
 
-#: producten/viewsets/product.py:121 producttypen/viewsets/producttype.py:98
+#: producten/viewsets/product.py:124 producttypen/viewsets/producttype.py:106
 msgid "Lijst van thema uuids waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/admin/producttype.py:66 producttypen/models/producttype.py:112
-#: producttypen/models/thema.py:38
+#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:168
+msgid "Ja"
+msgstr ""
+
+#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:168
+msgid "Nee"
+msgstr ""
+
+#: producttypen/admin/producttype.py:76 producttypen/models/producttype.py:112
+#: producttypen/models/thema.py:44
 msgid "thema's"
 msgstr ""
 
-#: producttypen/admin/producttype.py:69
+#: producttypen/admin/producttype.py:79
 msgid "Thema"
 msgstr ""
 
-#: producttypen/admin/producttype.py:75
-#: producttypen/serializers/producttype.py:412
-#: producttypen/tests/api/test_producttype.py:191
-#: producttypen/tests/api/test_producttype.py:675
-#: producttypen/tests/api/test_producttype.py:1144
+#: producttypen/admin/producttype.py:85
+#: producttypen/serializers/producttype.py:427
+#: producttypen/tests/api/test_producttype.py:194
+#: producttypen/tests/api/test_producttype.py:740
+#: producttypen/tests/api/test_producttype.py:1209
 msgid "Er is minimaal één thema vereist."
 msgstr ""
 
-#: producttypen/admin/thema.py:21 producttypen/models/bestand.py:15
-#: producttypen/models/externe_code.py:28 producttypen/models/parameter.py:28
-#: producttypen/models/prijs.py:22 producttypen/models/proces.py:18
-#: producttypen/models/verzoektype.py:18 producttypen/models/zaaktype.py:18
-msgid "producttype"
-msgstr ""
-
-#: producttypen/admin/thema.py:22 producttypen/models/producttype.py:153
-msgid "Producttypen"
-msgstr ""
-
-#: producttypen/admin/thema.py:50
+#: producttypen/admin/thema.py:32
 msgid "Aantal producttypen"
 msgstr ""
 
@@ -778,6 +789,13 @@ msgstr ""
 
 #: producttypen/models/actie.py:61
 msgid "actie"
+msgstr ""
+
+#: producttypen/models/bestand.py:15 producttypen/models/externe_code.py:28
+#: producttypen/models/parameter.py:28 producttypen/models/prijs.py:22
+#: producttypen/models/proces.py:18 producttypen/models/verzoektype.py:18
+#: producttypen/models/zaaktype.py:18
+msgid "producttype"
 msgstr ""
 
 #: producttypen/models/bestand.py:18
@@ -1194,27 +1212,41 @@ msgstr ""
 msgid "Interne opmerkingen over het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:184
+#: producttypen/models/producttype.py:149
+#: producttypen/models/producttype.py:156
+msgid "publicatie startdatum"
+msgstr ""
+
+#: producttypen/models/producttype.py:150
+#: producttypen/models/producttype.py:157
+msgid "De datum waarop het producttype gepubliceerd is"
+msgstr ""
+
+#: producttypen/models/producttype.py:167
+msgid "Producttypen"
+msgstr ""
+
+#: producttypen/models/producttype.py:213
 msgid "producttype naam"
 msgstr ""
 
-#: producttypen/models/producttype.py:186
+#: producttypen/models/producttype.py:215
 msgid "naam van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:190
+#: producttypen/models/producttype.py:219
 msgid "samenvatting"
 msgstr ""
 
-#: producttypen/models/producttype.py:192
+#: producttypen/models/producttype.py:221
 msgid "Korte samenvatting van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:197
+#: producttypen/models/producttype.py:226
 msgid "Producttype vertaling"
 msgstr ""
 
-#: producttypen/models/producttype.py:198
+#: producttypen/models/producttype.py:227
 msgid "Producttype vertalingen"
 msgstr ""
 
@@ -1234,7 +1266,11 @@ msgstr ""
 msgid "Beschrijving van het thema, ondersteund markdown format."
 msgstr ""
 
-#: producttypen/models/thema.py:37
+#: producttypen/models/thema.py:39
+msgid "Geeft aan of het thema getoond kan worden."
+msgstr ""
+
+#: producttypen/models/thema.py:43
 msgid "thema"
 msgstr ""
 
@@ -1283,17 +1319,17 @@ msgid "Een prijs moet één of meerdere opties of regels hebben."
 msgstr ""
 
 #: producttypen/models/validators.py:26
-#: producttypen/tests/api/test_thema.py:141
-#: producttypen/tests/api/test_thema.py:228
-#: producttypen/tests/api/test_thema.py:345 producttypen/tests/test_thema.py:16
+#: producttypen/tests/api/test_thema.py:143
+#: producttypen/tests/api/test_thema.py:230
+#: producttypen/tests/api/test_thema.py:347 producttypen/tests/test_thema.py:16
 msgid ""
 "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden "
 "gepubliceerd."
 msgstr ""
 
 #: producttypen/models/validators.py:37
-#: producttypen/tests/api/test_thema.py:255
-#: producttypen/tests/api/test_thema.py:372 producttypen/tests/test_thema.py:35
+#: producttypen/tests/api/test_thema.py:257
+#: producttypen/tests/api/test_thema.py:374 producttypen/tests/test_thema.py:35
 msgid ""
 "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's "
 "hebben."
@@ -1312,6 +1348,18 @@ msgstr ""
 #: producttypen/tests/api/test_actie.py:91
 #: producttypen/tests/api/test_prijs.py:267
 msgid "De mapping komt niet overeen met het schema. (zie API spec)"
+msgstr ""
+
+#: producttypen/models/validators.py:122
+msgid ""
+"De publicatie eind datum kan niet zonder een publicatie start datum worden "
+"gezet."
+msgstr ""
+
+#: producttypen/models/validators.py:129
+msgid ""
+"De publicatie eind datum van een producttype mag niet op een eerdere of "
+"dezelfde dag vallen als de publicate start datum."
 msgstr ""
 
 #: producttypen/models/verzoektype.py:13
@@ -1362,27 +1410,27 @@ msgstr ""
 msgid "De url naar het proces."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:312
+#: producttypen/serializers/producttype.py:316
 msgid "De huidige taal van het producttype."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:330
+#: producttypen/serializers/producttype.py:342
 msgid "Er bestaat al een externe code met de naam {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:337
+#: producttypen/serializers/producttype.py:349
 msgid "Er bestaat al een parameter met de naam {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:346
+#: producttypen/serializers/producttype.py:358
 msgid "Er bestaat al een zaaktype met de uuid {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:355
+#: producttypen/serializers/producttype.py:367
 msgid "Er bestaat al een verzoektype met de uuid {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:364
+#: producttypen/serializers/producttype.py:376
 msgid "Er bestaat al een proces met de uuid {} voor dit ProductType."
 msgstr ""
 
@@ -1430,7 +1478,7 @@ msgstr ""
 msgid "Prijs regel uuid {} op index 3 bestaat niet."
 msgstr ""
 
-#: producttypen/tests/api/test_producttype.py:266
+#: producttypen/tests/api/test_producttype.py:269
 msgid "Er bestaat al een externe code met de naam ISO voor dit ProductType."
 msgstr ""
 
@@ -1442,31 +1490,31 @@ msgstr ""
 msgid "Naam van het bestand."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:48
+#: producttypen/viewsets/producttype.py:56
 msgid "Producttype codes uit externe omgevingen. [naam:code]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:54
+#: producttypen/viewsets/producttype.py:62
 msgid "Producttype parameters. [naam:waarde]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:66
+#: producttypen/viewsets/producttype.py:74
 msgid "Filter op de eerste letter van de Nederlandse naam van het producttype"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:106
+#: producttypen/viewsets/producttype.py:127
 msgid "Ongeldig format voor externe_code query parameter."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:119
+#: producttypen/viewsets/producttype.py:140
 msgid "Ongeldig format voor parameter query parameter."
 msgstr ""
 
-#: producttypen/viewsets/thema.py:71
+#: producttypen/viewsets/thema.py:76
 msgid "Producttype {} moet aan een minimaal één thema zijn gelinkt."
 msgstr ""
 
-#: producttypen/viewsets/thema.py:86
+#: producttypen/viewsets/thema.py:91
 msgid ""
 "Dit thema kan niet worden verwijderd omdat er gerelateerde sub_themas zijn."
 msgstr ""
@@ -1490,6 +1538,14 @@ msgstr "Verander wachtwoord"
 #: templates/admin/base_site.html:41
 msgid "Log out"
 msgstr "log uit"
+
+#: templates/admin/producttypen/producttype/change_form.html:5
+msgid "Export (CSV)"
+msgstr ""
+
+#: templates/admin/producttypen/producttype/change_form.html:6
+msgid "Export (JSON)"
+msgstr ""
 
 #: templates/maykin_2fa/login.html:7
 msgid "or"
@@ -1569,6 +1625,14 @@ msgstr ""
 msgid "in een lijst van waarden gescheiden door `|`"
 msgstr ""
 
+#: utils/export.py:37
+msgid "{} {} were successfully exported"
+msgstr ""
+
+#: utils/export.py:70
+msgid "{} {} was successfully exported"
+msgstr ""
+
 #: utils/fields.py:31
 #, python-brace-format
 msgid "Object with uuid={value} does not exist."
@@ -1582,27 +1646,47 @@ msgstr "Ongeldige waarde"
 msgid "Clear given cache only"
 msgstr "Leeg alleen de opgegeven cache"
 
+#: utils/management/commands/export.py:30
+msgid "Name of the archive to write data to"
+msgstr ""
+
+#: utils/management/commands/export.py:34
+msgid "HttpResponse object to which the output data should be written"
+msgstr ""
+
+#: utils/management/commands/export.py:39
+msgid "IDs of producttypes to be exported"
+msgstr ""
+
+#: utils/management/commands/export.py:46
+msgid "names of fields to be excluded from the exported data"
+msgstr ""
+
+#: utils/management/commands/export.py:55
+msgid "Specify the export format: json or csv (default: json)"
+msgstr ""
+
+#: utils/management/commands/export.py:70
+msgid "Please use either the --archive_name or --response argument"
+msgstr ""
+
+#: utils/management/commands/export.py:76
+msgid "Could not find model {} {}"
+msgstr ""
+
 #: utils/models.py:17
-msgid "gepubliceerd"
-msgstr ""
-
-#: utils/models.py:19
-msgid "Geeft aan of het object getoond kan worden."
-msgstr ""
-
-#: utils/models.py:23
 msgid "aanmaak datum"
 msgstr ""
 
-#: utils/models.py:25
+#: utils/models.py:19
 msgid "De datum waarop het object is aangemaakt."
 msgstr ""
 
-#: utils/models.py:28
+#: utils/models.py:22
 msgid "update datum"
 msgstr ""
 
-#: utils/models.py:30
+#: utils/models.py:24
 msgid "De datum waarop het object voor het laatst is gewijzigd."
 msgstr ""
 
@@ -1612,12 +1696,15 @@ msgid "The provided value contains an invalid character: %s"
 msgstr "Uw invoer bevat een ongeldig teken: %s"
 
 #: utils/tests/test_validators.py:67 utils/validators.py:58
+#, fuzzy
+#| msgid ""
+#| "Invalid postal code. A postal code must consist of 4 numbers followed by "
+#| "a space and two capital letters (e.g. 1234 AB)."
 msgid ""
-"Invalid postal code. A postal code must consist of 4 numbers followed by a "
-"space and two capital letters (e.g. 1234 AB)."
+"Invalid postal code. A postal code must consist of 4 numbers followed by two "
+"capital letters (e.g. 1234 AB)."
 msgstr ""
-"Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door een "
-"spatie en twee hoofdletters (bv: 1234 AB)."
+"Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door twee hoofdletters (bv: 1234 AB)."
 
 #: utils/tests/test_validators.py:86 utils/validators.py:36
 msgid "Ongeldig telefoonnummer."
@@ -1661,3 +1748,14 @@ msgstr ""
 #: utils/views.py:69
 msgid "{} vertaling bestaat niet."
 msgstr ""
+
+#, fuzzy
+#~| msgid ""
+#~| "Invalid postal code. A postal code must consist of 4 numbers followed by "
+#~| "a space and two capital letters (e.g. 1234 AB)."
+#~ msgid ""
+#~ "Invalid postal code. A postal code must consist of 4 numbers and two "
+#~ "capital letters (e.g. 1234 AB)."
+#~ msgstr ""
+#~ "Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door "
+#~ "een spatie en twee hoofdletters (bv: 1234 AB)."
