@@ -12,6 +12,7 @@ from openproduct.logging.logevent import audit_automation_update
 from openproduct.producten.models.validators import validate_product_dates
 from openproduct.producttypen.models import ProductType
 from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.urn.fields import UrlField, UrnField
 from openproduct.utils.models import BasePublishableModel
 
 
@@ -101,6 +102,20 @@ class Product(BasePublishableModel):
             "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het producttype."
         ),
         encoder=DjangoJSONEncoder,
+    )
+
+    aanvraag_zaak_urn = UrnField(
+        _("aanvraag zaak urn"),
+        help_text=_("De zaak waaruit dit product is ontstaan."),
+        null=True,
+        blank=True,
+    )
+
+    aanvraag_zaak_url = UrlField(
+        _("aanvraag zaak url"),
+        help_text=_("De zaak waaruit dit product is ontstaan."),
+        null=True,
+        blank=True,
     )
 
     class Meta:

@@ -28,6 +28,7 @@ from openproduct.producttypen.models.validators import (
     check_externe_verwijzing_config_url,
 )
 from openproduct.producttypen.serializers.producttype import NestedThemaSerializer
+from openproduct.urn.serializers import UrnMappingMixin
 from openproduct.utils.drf_validators import NestedObjectsValidator
 from openproduct.utils.fields import UUIDRelatedField
 from openproduct.utils.serializers import (
@@ -157,7 +158,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
         ),
     ],
 )
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="product-detail", lookup_field="uuid"
     )
@@ -169,6 +170,8 @@ class ProductSerializer(serializers.ModelSerializer):
     documenten = NestedDocumentSerializer(many=True, required=False)
     zaken = NestedZaakSerializer(many=True, required=False)
     taken = NestedTaakSerializer(many=True, required=False)
+
+    urn_fields = ["aanvraag_zaak"]
 
     class Meta:
         model = Product
@@ -192,6 +195,8 @@ class ProductSerializer(serializers.ModelSerializer):
             "frequentie",
             "verbruiksobject",
             "dataobject",
+            "aanvraag_zaak_urn",
+            "aanvraag_zaak_url",
         ]
         validators = [
             DateValidator(),

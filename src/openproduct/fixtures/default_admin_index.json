@@ -151,6 +151,10 @@
             [
                 "producttypen",
                 "externeverwijzingconfig"
+            ],
+            [
+                "urn",
+                "urnmappingconfig"
             ]
         ]
     }

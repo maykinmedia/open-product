@@ -8,4 +8,4 @@
 #
 # Run this script from the root of the repository
 
-src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary locaties producten producttypen -o src/openproduct/fixtures/demodata.json
+src/manage.py dumpdata --indent=4 --natural-foreign --natural-primary locaties producten producttypen urn -o src/openproduct/fixtures/demodata.json

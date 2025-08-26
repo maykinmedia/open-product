@@ -15,6 +15,8 @@ class UrnMappingMixin:
         for field in self.urn_fields:
             self.validate_field(field, attrs)
 
+        return attrs
+
     def validate_field(self, field, attrs):
         urn_field = f"{field}_urn"
         url_field = f"{field}_url"
@@ -23,9 +25,7 @@ class UrnMappingMixin:
         url, url_uuid = self.get_base_and_uuid(attrs, url_field, is_urn=False)
 
         if not urn and not url:
-            raise serializers.ValidationError(
-                {field: _("een url of urn is verplicht")}
-            )
+            raise serializers.ValidationError({field: _("een url of urn is verplicht")})
 
         if urn_uuid and url_uuid and urn_uuid != url_uuid:
             raise serializers.ValidationError(
@@ -34,14 +34,10 @@ class UrnMappingMixin:
 
         uuid = urn_uuid or url_uuid
 
-        urn_mapping = (
-            UrnMappingConfig.objects.filter(urn=urn).first() if urn else None
-        )
-        url_mapping = (
-            UrnMappingConfig.objects.filter(url=url).first() if url else None
-        )
+        urn_mapping = UrnMappingConfig.objects.filter(urn=urn).first() if urn else None
+        url_mapping = UrnMappingConfig.objects.filter(url=url).first() if url else None
 
-        # Case: only URL
+        # URL only
         if not urn:
             if url_mapping:
                 attrs[urn_field] = f"{url_mapping.urn}:{uuid}"
@@ -50,7 +46,7 @@ class UrnMappingMixin:
                     {field: _("de url heeft geen mapping")}
                 )
 
-        # Case: only URN
+        # URN only
         elif not url:
             if urn_mapping:
                 attrs[url_field] = f"{urn_mapping.url}/{uuid}"
@@ -59,13 +55,10 @@ class UrnMappingMixin:
                     {field: _("de urn heeft geen mapping")}
                 )
 
-        # Case: both provided
+        # both
         else:
             if not urn_mapping and not url_mapping:
-                if (
-                    settings.REQUIRE_URN_URL_MAPPING
-                    or settings.REQUIRE_URL_URN_MAPPING
-                ):
+                if settings.REQUIRE_URN_URL_MAPPING or settings.REQUIRE_URL_URN_MAPPING:
                     raise serializers.ValidationError(
                         {field: _("de url en/of urn hebben geen mapping")}
                     )
@@ -95,36 +88,3 @@ class UrnMappingMixin:
         if value is None:
             return None, None
         return value.rsplit(sep, 1)
-
-
-class RelatieListSerializer(serializers.ListSerializer):
-    def to_representation(self, data):
-        urns = getattr(data, f"{self.field_name}_urn", [])
-        urls = getattr(data, f"{self.field_name}_url", [])
-        max_len = max(len(urns), len(urls))
-
-        relaties = []
-        for i in range(max_len):
-            relaties.append(
-                {
-                    "urn": urns[i] if i < len(urns) else None,
-                    "url": urls[i] if i < len(urls) else None,
-                }
-            )
-        return super().to_representation(relaties)
-
-    def to_internal_value(self, data):
-        ret = {f"{self.field_name}_urn": [], f"{self.field_name}_url": []}
-        for relatie in data:
-            ret[f"{self.field_name}_urn"].append(relatie.get("urn"))
-            ret[f"{self.field_name}_url"].append(relatie.get("url"))
-
-        return ret
-
-
-class RelatieSerializer(serializers.Serializer):
-    urn = serializers.CharField(required=False)
-    url = serializers.CharField(required=False)
-
-    class Meta:
-        list_serializer_class = RelatieListSerializer

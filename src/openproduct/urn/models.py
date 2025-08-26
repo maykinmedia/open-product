@@ -17,3 +17,6 @@ class UrnMappingConfig(models.Model):
         verbose_name = _("Urn Mapping")
         verbose_name_plural = _("Urn Mappings")
         unique_together = ("urn", "url")
+
+    def __str__(self):
+        return f"{self.urn}: {self.url}"

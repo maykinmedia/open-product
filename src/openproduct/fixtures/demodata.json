@@ -45,9 +45,9 @@
     "pk": 4,
     "fields": {
         "uuid": "a8cfd19b-8b0a-4fcd-834d-145261f33755",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-05-06T14:19:44.854Z",
         "update_datum": "2025-05-06T15:06:25.005Z",
+        "gepubliceerd": false,
         "producttype": 24,
         "naam": "ABC1234",
         "start_datum": "2025-05-06",
@@ -60,7 +60,9 @@
             "gemeente": "amsterdam",
             "woonplaats": "Amsterdam",
             "documentnummer": "ABC1234"
-        }
+        },
+        "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
     }
 },
 {
@@ -68,9 +70,9 @@
     "pk": 5,
     "fields": {
         "uuid": "e35a76bd-fd48-4196-9012-b5b316155710",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-05-06T15:07:56.630Z",
         "update_datum": "2025-05-06T15:07:56.630Z",
+        "gepubliceerd": false,
         "producttype": 23,
         "naam": "straatweg A",
         "start_datum": "2025-05-06",
@@ -86,7 +88,9 @@
         ],
         "dataobject": {
             "kenteken": "AB-123-C"
-        }
+        },
+        "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
     }
 },
 {
@@ -220,12 +224,12 @@
     "pk": 1,
     "fields": {
         "uuid": "cfac32d8-9ced-4b90-aa5c-46ea1cbfe04f",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-04-11T14:11:54.842Z",
         "update_datum": "2025-05-06T14:04:31.860Z",
         "naam": "Vervoer",
         "hoofd_thema": null,
-        "beschrijving": "# Vervoer\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\."
+        "beschrijving": "# Vervoer\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
+        "gepubliceerd": false
     }
 },
 {
@@ -233,12 +237,12 @@
     "pk": 2,
     "fields": {
         "uuid": "ce3132cc-1c8f-4476-9ea6-1ff93e0ea9e4",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-04-11T15:53:55.104Z",
         "update_datum": "2025-05-06T14:04:18.684Z",
         "naam": "Parkeren",
         "hoofd_thema": 1,
-        "beschrijving": "# Parkeren\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\."
+        "beschrijving": "# Parkeren\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
+        "gepubliceerd": false
     }
 },
 {
@@ -246,12 +250,12 @@
     "pk": 4,
     "fields": {
         "uuid": "619b8102-c476-4c38-af10-990990e6cf8f",
-        "gepubliceerd": false,
         "aanmaak_datum": "2025-05-06T14:04:54.206Z",
         "update_datum": "2025-05-06T14:04:54.206Z",
         "naam": "Identificatie",
         "hoofd_thema": null,
-        "beschrijving": "# Identificatie\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\."
+        "beschrijving": "# Identificatie\r\n\r\nLorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
+        "gepubliceerd": false
     }
 },
 {
@@ -288,6 +292,8 @@
             "parkeervergunning"
         ],
         "interne_opmerkingen": "Lorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
+        "publicatie_start_datum": null,
+        "publicatie_eind_datum": null,
         "themas": [
             2
         ],
@@ -318,6 +324,8 @@
             "identiteitskaart"
         ],
         "interne_opmerkingen": "Lorem ipsum dolor sit amet\\, consectetur adipiscing elit\\. Vestibulum porttitor pulvinar magna\\, at maximus diam maximus ut\\. Pellentesque facilisis bibendum felis et mollis\\. Mauris at augue ligula\\. Mauris viverra tempor eros\\, eu consequat risus lobortis scelerisque\\. Nam et luctus sapien\\. Vestibulum feugiat vestibulum arcu\\, a eleifend purus pharetra et\\. Sed scelerisque volutpat molestie\\. Mauris dapibus ex vel turpis condimentum\\, non rhoncus nulla hendrerit\\. Mauris ipsum odio\\, dapibus quis rutrum nec\\, sollicitudin ac sapien\\. Praesent gravida est ipsum\\, a commodo risus vulputate eu\\. Quisque sollicitudin ex in leo fermentum aliquet\\.",
+        "publicatie_start_datum": null,
+        "publicatie_eind_datum": null,
         "themas": [
             4
         ],
@@ -577,6 +585,14 @@
     "fields": {
         "uuid": "81d4b529-5d7c-4ac9-b585-2f7dc260389b",
         "producttype": 23
+    }
+},
+{
+    "model": "urn.urnmappingconfig",
+    "pk": 1,
+    "fields": {
+        "urn": "maykin:abc:ztc:zaak",
+        "url": "https://maykin.ztc.com/api/v1/zaken"
     }
 }
 ]
