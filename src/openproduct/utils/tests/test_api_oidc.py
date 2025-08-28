@@ -6,30 +6,19 @@ from django.urls import reverse
 
 import requests
 import vcr
-from mozilla_django_oidc_db.models import OpenIDConnectConfig
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
-from ...accounts.tests.factories import UserFactory
+from ...accounts.tests.factories import UserFactory, OIDCClientFactory
 from ...producttypen.tests.factories import ProductTypeFactory
-from .keycloak import mock_oidc_db_config
+from mozilla_django_oidc_db.tests.mixins import OIDCMixin
 
 TEST_FILES = (Path(__file__).parent / "vcr_cassettes").resolve()
 
-mock_admin_oidc_config = partial(
-    mock_oidc_db_config,
-    app_label="mozilla_django_oidc_db",
-    model="OpenIDConnectConfig",
-    id=1,
-    make_users_staff=True,
-    username_claim=["preferred_username"],
-)
 
-
-@override_settings()
-class TestApiOidcAuthentication(TestCase):
+class TestApiOidcAuthentication(OIDCMixin, TestCase):
     """
-    Test results are stored in utils.vc_cassettes
+    Test results are stored in utils.vcr_cassettes
 
     To generate results, start the keycloak docker container located in open-product/keycloak
     & delete the files in vcr_cassettes
@@ -39,10 +28,10 @@ class TestApiOidcAuthentication(TestCase):
         ProductTypeFactory.create()
         UserFactory.create(superuser=True, username="testtest")
 
-    def generate_token_with_password(self, config):
+    def generate_token_with_password(self, client):
         payload = {
-            "client_id": config.oidc_rp_client_id,
-            "client_secret": config.oidc_rp_client_secret,
+            "client_id": client.oidc_rp_client_id,
+            "client_secret": client.oidc_rp_client_secret,
             "username": "testuser",
             "password": "testuser",
             "grant_type": "password",
@@ -50,7 +39,7 @@ class TestApiOidcAuthentication(TestCase):
         }
 
         response = requests.post(
-            config.oidc_op_token_endpoint,
+            client.oidc_provider.oidc_op_token_endpoint,
             data=payload,
         )
 
@@ -71,10 +60,13 @@ class TestApiOidcAuthentication(TestCase):
 
         return response.json()["access_token"]
 
-    @vcr.use_cassette(str(TEST_FILES / "valid_token"))
-    @mock_admin_oidc_config()
+    @vcr.use_cassette(str(TEST_FILES / "valid_token.yaml"))
     def test_valid_token(self):
-        token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
+        client = OIDCClientFactory.create(
+            with_keycloak_provider=True,
+        )
+
+        token = self.generate_token_with_password(client)
 
         response = self.client.get(
             reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
@@ -83,8 +75,7 @@ class TestApiOidcAuthentication(TestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
 
-    @vcr.use_cassette(str(TEST_FILES / "invalid_token"))
-    @mock_admin_oidc_config()
+    @vcr.use_cassette(str(TEST_FILES / "invalid_token.yaml"))
     def test_invalid_token(self):
         token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
         token += "b"
@@ -102,8 +93,7 @@ class TestApiOidcAuthentication(TestCase):
             },
         )
 
-    @vcr.use_cassette(str(TEST_FILES / "expired_token"))
-    @mock_admin_oidc_config()
+    @vcr.use_cassette(str(TEST_FILES / "expired_token.yaml"))
     def test_expired_token(self):
         expired_token = (
             "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0VU5RQWN2VWN2LURGVU94XzRPMWd0M"
@@ -135,8 +125,7 @@ class TestApiOidcAuthentication(TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @vcr.use_cassette(str(TEST_FILES / "missing_openid_scope"))
-    @mock_admin_oidc_config()
+    @vcr.use_cassette(str(TEST_FILES / "missing_openid_scope.yaml"))
     def test_missing_openid_scope(self):
         config = OpenIDConnectConfig.get_solo()
 
@@ -159,8 +148,7 @@ class TestApiOidcAuthentication(TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @vcr.use_cassette(str(TEST_FILES / "valid_cc_token"))
-    @mock_admin_oidc_config()
+    @vcr.use_cassette(str(TEST_FILES / "valid_cc_token.yaml"))
     def test_valid_client_credentials_token(self):
         UserFactory.create(username="service-account-open-product", superuser=True)
 
