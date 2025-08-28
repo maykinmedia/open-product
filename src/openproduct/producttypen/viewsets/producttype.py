@@ -155,6 +155,13 @@ class ProductTypeFilterSet(FilterSet):
             "zaaktypen__uuid": ["exact"],
             "verzoektypen__uuid": ["exact"],
             "processen__uuid": ["exact"],
+            "contacten__uuid": ["exact"],
+            "locaties__uuid": ["exact"],
+            "organisaties__uuid": ["exact"],
+            "contacten__naam": ["contains"],
+            "locaties__naam": ["contains"],
+            "organisaties__naam": ["contains"],
+            "organisaties__code": ["exact"],
             "themas__naam": ["exact"],
             "themas__uuid": ["exact"],
         }

@@ -7,6 +7,11 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 
+from openproduct.locaties.tests.factories import (
+    ContactFactory,
+    LocatieFactory,
+    OrganisatieFactory,
+)
 from openproduct.producttypen.tests.factories import (
     ContentElementFactory,
     ContentLabelFactory,
@@ -733,3 +738,129 @@ class TestProductTypeFilters(BaseApiTestCase):
                 [str(uuid), str(uuid_2)],
                 [response.data["results"][0]["themas"][i]["uuid"] for i in range(2)],
             )
+
+    def test_contact_uuid_filter(self):
+        uuid = uuid4()
+
+        producttype = ProductTypeFactory.create()
+        producttype.contacten.add(ContactFactory.create(uuid=uuid))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.contacten.add(ContactFactory.create())
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"contacten__uuid": uuid})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["contacten"][0]["uuid"]
+            )
+
+    def test_contact_naam_filter(self):
+        producttype = ProductTypeFactory.create()
+        producttype.contacten.add(ContactFactory.create(naam="test"))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.contacten.add(ContactFactory.create(naam="123"))
+        producttype_2.save()
+
+        with self.subTest("contains"):
+            response = self.client.get(self.path, {"contacten__naam__contains": "test"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn("test", response.data["results"][0]["contacten"][0]["naam"])
+
+    def test_locatie_uuid_filter(self):
+        uuid = uuid4()
+
+        producttype = ProductTypeFactory.create()
+        producttype.locaties.add(LocatieFactory.create(uuid=uuid))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.locaties.add(LocatieFactory.create())
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"locaties__uuid": uuid})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["locaties"][0]["uuid"])
+
+    def test_locatie_naam_filter(self):
+        producttype = ProductTypeFactory.create()
+        producttype.locaties.add(LocatieFactory.create(naam="test"))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.locaties.add(LocatieFactory.create(naam="123"))
+        producttype_2.save()
+
+        with self.subTest("contains"):
+            response = self.client.get(self.path, {"locaties__naam__contains": "test"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn("test", response.data["results"][0]["locaties"][0]["naam"])
+
+    def test_organisatie_uuid_filter(self):
+        uuid = uuid4()
+
+        producttype = ProductTypeFactory.create()
+        producttype.organisaties.add(OrganisatieFactory.create(uuid=uuid))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.organisaties.add(OrganisatieFactory.create())
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"organisaties__uuid": uuid})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["organisaties"][0]["uuid"]
+            )
+
+    def test_organisatie_naam_filter(self):
+        producttype = ProductTypeFactory.create()
+        producttype.organisaties.add(OrganisatieFactory.create(naam="test"))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.organisaties.add(OrganisatieFactory.create(naam="123"))
+        producttype_2.save()
+
+        with self.subTest("contains"):
+            response = self.client.get(
+                self.path, {"organisaties__naam__contains": "test"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                "test", response.data["results"][0]["organisaties"][0]["naam"]
+            )
+
+    def test_organisatie_code_filter(self):
+        producttype = ProductTypeFactory.create()
+        producttype.organisaties.add(OrganisatieFactory.create(code="ABC"))
+        producttype.save()
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.organisaties.add(OrganisatieFactory.create(naam="123"))
+        producttype_2.save()
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"organisaties__code": "ABC"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn("ABC", response.data["results"][0]["organisaties"][0]["code"])
