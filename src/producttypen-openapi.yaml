@@ -3732,6 +3732,16 @@ paths:
           type: string
           format: uuid
       - in: query
+        name: contacten__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van contact uuids waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
         name: externe_code
         schema:
           type: string
@@ -3764,6 +3774,16 @@ paths:
           type: string
           format: uuid
       - in: query
+        name: locaties__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van locatie uuids waarop kan worden gezocht.
+        explode: false
+        style: form
+      - in: query
         name: naam
         schema:
           type: string
@@ -3782,6 +3802,16 @@ paths:
         schema:
           type: string
           format: uuid
+      - in: query
+        name: organisaties__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van organisatie uuids waarop kan worden gezocht.
+        explode: false
+        style: form
       - name: page
         required: false
         in: query
