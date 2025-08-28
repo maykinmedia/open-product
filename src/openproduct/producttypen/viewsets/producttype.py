@@ -143,6 +143,52 @@ class ProductTypeFilterSet(FilterSet):
             queryset = queryset.filter(parameters__naam=naam, parameters__waarde=waarde)
         return queryset
 
+    themas__naam = django_filters.CharFilter(
+        field_name="themas__naam",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=get_help_text("producttypen.thema", "naam"),
+    )
+
+    contacten__naam__contains = django_filters.CharFilter(
+        field_name="contacten__naam",
+        lookup_expr="contains",
+        distinct=True,
+        help_text=get_help_text("locaties.contact", "naam"),
+    )
+
+    locaties__naam__contains = django_filters.CharFilter(
+        field_name="locaties__naam",
+        lookup_expr="contains",
+        distinct=True,
+        help_text=get_help_text("locaties.locatie", "naam"),
+    )
+
+    organisaties__naam__contains = django_filters.CharFilter(
+        field_name="organisaties__naam",
+        lookup_expr="contains",
+        distinct=True,
+        help_text=get_help_text("locaties.organisatie", "naam"),
+    )
+
+    contacten__uuid__in = UUIDFInFilter(
+        field_name="contacten__uuid",
+        distinct=True,
+        help_text=_("Lijst van contact uuids waarop kan worden gezocht."),
+    )
+
+    locaties__uuid__in = UUIDFInFilter(
+        field_name="locaties__uuid",
+        distinct=True,
+        help_text=_("Lijst van locatie uuids waarop kan worden gezocht."),
+    )
+
+    organisaties__uuid__in = UUIDFInFilter(
+        field_name="organisaties__uuid",
+        distinct=True,
+        help_text=_("Lijst van organisatie uuids waarop kan worden gezocht."),
+    )
+
     class Meta:
         model = ProductType
         fields = {
@@ -158,11 +204,7 @@ class ProductTypeFilterSet(FilterSet):
             "contacten__uuid": ["exact"],
             "locaties__uuid": ["exact"],
             "organisaties__uuid": ["exact"],
-            "contacten__naam": ["contains"],
-            "locaties__naam": ["contains"],
-            "organisaties__naam": ["contains"],
             "organisaties__code": ["exact"],
-            "themas__naam": ["exact"],
             "themas__uuid": ["exact"],
         }
 
