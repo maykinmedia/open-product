@@ -7,6 +7,7 @@ import django_filters
 import structlog
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
+from mozilla_django_oidc_db.views import OIDCAuthenticationRequestInitView
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -204,8 +205,11 @@ class Meta:
     ),
 )
 class ProductTypeViewSet(
-    AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
+    AuditTrailViewSetMixin, TranslatableViewSetMixin, OIDCAuthenticationRequestInitView, ModelViewSet
 ):
+    identifier = "blabla"
+    allow_next_from_query = False
+
     queryset = ProductType.objects.select_related(
         "verbruiksobject_schema", "dataobject_schema", "uniforme_product_naam"
     ).prefetch_related(
@@ -256,9 +260,9 @@ class ProductTypeViewSet(
 
         if not all(
             (
-                externe_verwijzing_config.zaaktypen_url,
-                externe_verwijzing_config.verzoektypen_url,
-                externe_verwijzing_config.processen_url,
+                    externe_verwijzing_config.zaaktypen_url,
+                    externe_verwijzing_config.verzoektypen_url,
+                    externe_verwijzing_config.processen_url,
             )
         ):
             logger.warning("externe_verwijzing_config_missing_urls")

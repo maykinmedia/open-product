@@ -64,6 +64,7 @@ class TestApiOidcAuthentication(OIDCMixin, TestCase):
     def test_valid_token(self):
         client = OIDCClientFactory.create(
             with_keycloak_provider=True,
+            identifier="blabla",
         )
 
         token = self.generate_token_with_password(client)
