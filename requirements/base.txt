@@ -114,19 +114,24 @@ django==5.2.3
     #   drf-spectacular
     #   drf-spectacular-sidecar
     #   maykin-2fa
+    #   maykin-common
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
     #   notifications-api-common
     #   open-api-framework
     #   zgw-consumers
 django-admin-index==3.1.1
-    # via open-api-framework
+    # via
+    #   maykin-common
+    #   open-api-framework
 django-appconf==1.0.6
     # via
     #   django-log-outgoing-requests
     #   django-timeline-logger
 django-axes==7.0.0
-    # via open-api-framework
+    # via
+    #   maykin-common
+    #   open-api-framework
 django-celery-beat==2.8.0
     # via -r requirements/base.in
 django-cors-headers==4.9.0
@@ -251,6 +256,10 @@ inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
     # via commonground-api-common
+itypes==1.2.0
+    # via coreapi
+jinja2==3.1.6
+    # via coreschema
 josepy==1.14.0
     # via mozilla-django-oidc
 jsonschema==4.23.0
@@ -263,8 +272,14 @@ kombu==5.4.2
     # via celery
 markdown-it-py==3.0.0
     # via rich
+markupsafe==3.0.2
+    # via jinja2
 maykin-2fa==1.0.1
-    # via open-api-framework
+    # via
+    #   maykin-common
+    #   open-api-framework
+maykin-common==0.10.0
+    # via -r requirements/base.in
 mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==4.0.1
@@ -349,10 +364,14 @@ requests==2.32.4
     # via
     #   ape-pie
     #   commonground-api-common
+    #   coreapi
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
+    #   requests-mock
     #   zgw-consumers
+requests-mock==1.12.1
+    # via commonground-api-common
 rich==14.0.0
     # via django-reversion-compare
 rpds-py==0.21.0
@@ -399,7 +418,9 @@ tzdata==2024.2
     #   django-celery-beat
     #   kombu
 uritemplate==4.1.1
-    # via drf-spectacular
+    # via
+    #   coreapi
+    #   drf-spectacular
 urllib3==2.5.0
     # via
     #   elastic-apm

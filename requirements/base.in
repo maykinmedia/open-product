@@ -17,3 +17,5 @@ flower
 django-timeline-logger
 
 jsonschema
+
+maykin-common[axes,mfa]
