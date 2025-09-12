@@ -19,4 +19,4 @@ django-timeline-logger
 
 jsonschema
 
-commonground-api-common
+maykin-common[axes,mfa]
