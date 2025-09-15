@@ -1,34 +1,9 @@
-from django import http
 from django.conf import settings
-from django.template import TemplateDoesNotExist, loader
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.csrf import requires_csrf_token
-from django.views.defaults import ERROR_500_TEMPLATE_NAME
 
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
-
-
-@requires_csrf_token
-def server_error(request, template_name=ERROR_500_TEMPLATE_NAME):
-    """
-    500 error handler.
-
-    Templates: :template:`500.html`
-    Context: None
-    """
-    try:
-        template = loader.get_template(template_name)
-    except TemplateDoesNotExist:
-        if template_name != ERROR_500_TEMPLATE_NAME:
-            # Reraise if it's a missing custom template.
-            raise
-        return http.HttpResponseServerError(
-            b"<h1>Server Error (500)</h1>", content_type="text/html"
-        )
-    context = {"request": request}
-    return http.HttpResponseServerError(template.render(context))
 
 
 class TranslatableViewSetMixin:
