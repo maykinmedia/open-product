@@ -20,7 +20,7 @@ from openproduct.producttypen.urls import urlpatterns as producttype_urlpatterns
 
 monkeypatch_admin()
 
-handler500 = "openproduct.utils.views.server_error"
+handler500 = "maykin_common.views.server_error"
 
 admin.site.enable_nav_sidebar = False
 admin.site.site_header = "Open Product admin"
