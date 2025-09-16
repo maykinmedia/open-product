@@ -17,7 +17,8 @@ from openproduct.utils.widgets import WysimarkWidget
 
 @admin.register(ContentLabel)
 class ContentLabelAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    search_fields = ("naam",)
+    search_fields = ("naam", "type")
+    list_filter = ("type",)
 
 
 @admin.register(ContentElementTranslation)
@@ -76,7 +77,7 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
     model = ContentElement
     readonly_fields = ("move_up_down_links",)
     ordering = ("order",)
-    fields = ("move_up_down_links", "content", "labels")
+    fields = ("move_up_down_links", "naam", "content", "labels")
     autocomplete_fields = ("labels",)
     extra = 1
     form = ContentElementInlineForm

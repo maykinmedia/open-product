@@ -1403,7 +1403,9 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                  - openingstijden
+                    naam: openingstijden
+                    type: extern
+                  naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
@@ -1422,7 +1424,9 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
-                    - openingstijden
+                      naam: openingstijden
+                      type: extern
+                    naam: Openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1477,7 +1481,9 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
-                    - openingstijden
+                      naam: openingstijden
+                      type: extern
+                    naam: Openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1526,7 +1532,9 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                  - openingstijden
+                    naam: openingstijden
+                    type: extern
+                  naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
@@ -1545,7 +1553,9 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
-                    - openingstijden
+                      naam: openingstijden
+                      type: extern
+                    naam: Openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1594,7 +1604,9 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                  - openingstijden
+                    naam: openingstijden
+                    type: extern
+                  naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                 summary: content element request
@@ -1612,7 +1624,9 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
-                    - openingstijden
+                      naam: openingstijden
+                      type: extern
+                    naam: Openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -4961,7 +4975,9 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
-                    - openingstijden
+                      naam: openingstijden
+                      type: extern
+                    naam: Openingstijden
                     content: ma-vr 8:00-17:00
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -6243,13 +6259,17 @@ components:
           type: string
           format: uuid
           readOnly: true
+        naam:
+          type: string
+          description: De naam van dit content element
         content:
           type: string
           description: De content van dit content element
         labels:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/ContentLabel'
+          readOnly: true
         producttype_uuid:
           type: string
           format: uuid
@@ -6259,6 +6279,8 @@ components:
           description: De huidige taal van het content element.
       required:
       - content
+      - labels
+      - naam
       - producttype_uuid
       - taal
       - uuid
@@ -6266,20 +6288,20 @@ components:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
       properties:
+        naam:
+          type: string
+          minLength: 1
+          description: De naam van dit content element
         content:
           type: string
           minLength: 1
           description: De content van dit content element
-        labels:
-          type: array
-          items:
-            type: string
-            minLength: 1
         producttype_uuid:
           type: string
           format: uuid
       required:
       - content
+      - naam
       - producttype_uuid
     ContentElementTranslation:
       type: object
@@ -6288,27 +6310,63 @@ components:
           type: string
           format: uuid
           readOnly: true
+        naam:
+          type: string
+          description: De naam van dit content element
         content:
           type: string
           description: De content van dit content element
       required:
       - content
+      - naam
       - uuid
     ContentElementTranslationRequest:
       type: object
       properties:
+        naam:
+          type: string
+          minLength: 1
+          description: De naam van dit content element
         content:
           type: string
           minLength: 1
           description: De content van dit content element
       required:
       - content
+      - naam
     ContentLabel:
       type: object
       properties:
         naam:
           type: string
           maxLength: 255
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Gebruik om onderscheid te maken tussen interne, externe of aanvullende labels
+
+            * `intern` - Intern
+            * `extern` - Extern
+            * `aanvullend` - Aanvullende informatie
+      required:
+      - naam
+    ContentLabelRequest:
+      type: object
+      properties:
+        naam:
+          type: string
+          minLength: 1
+          maxLength: 255
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Gebruik om onderscheid te maken tussen interne, externe of aanvullende labels
+
+            * `intern` - Intern
+            * `extern` - Extern
+            * `aanvullend` - Aanvullende informatie
       required:
       - naam
     DetailError:
@@ -6541,15 +6599,21 @@ components:
           type: string
           readOnly: true
           description: De huidige taal van het content element.
+        naam:
+          type: string
+          description: De naam van dit content element
         content:
           type: string
           description: De content van dit content element
         labels:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/ContentLabel'
+          readOnly: true
       required:
       - content
+      - labels
+      - naam
       - taal
       - uuid
     NestedExterneCode:
@@ -7309,15 +7373,14 @@ components:
       type: object
       description: Serializer that saves :class:`TranslatedFieldsField` automatically.
       properties:
+        naam:
+          type: string
+          minLength: 1
+          description: De naam van dit content element
         content:
           type: string
           minLength: 1
           description: De content van dit content element
-        labels:
-          type: array
-          items:
-            type: string
-            minLength: 1
         producttype_uuid:
           type: string
           format: uuid
@@ -8141,6 +8204,16 @@ components:
         * `ingetrokken` - Ingetrokken
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
+    TypeEnum:
+      enum:
+      - intern
+      - extern
+      - aanvullend
+      type: string
+      description: |-
+        * `intern` - Intern
+        * `extern` - Extern
+        * `aanvullend` - Aanvullende informatie
   securitySchemes:
     jwtAuth:
       type: http
