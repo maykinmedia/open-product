@@ -166,7 +166,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ):
             with self.subTest(f"{header} should set default language only"):
                 unique_code = f"T-123-{i}"
-                print("test-code", unique_code)
                 data = self.data | {"code": unique_code}
 
                 response = self.client.post(self.path, data, headers=header)
@@ -2095,14 +2094,16 @@ class TestProductTypeActions(BaseApiTestCase):
                 {
                     "uuid": str(element1.uuid),
                     "taal": "nl",
+                    "naam": element1.naam,
                     "content": element1.content,
-                    "labels": [],
+                    "labels_detail": [],
                 },
                 {
                     "uuid": str(element2.uuid),
                     "taal": "nl",
+                    "naam": element2.naam,
                     "content": element2.content,
-                    "labels": [],
+                    "labels_detail": [],
                 },
             ],
         )
@@ -2110,6 +2111,7 @@ class TestProductTypeActions(BaseApiTestCase):
     def test_en_content_and_fallback(self):
         element1 = ContentElementFactory.create(producttype=self.producttype)
         element1.set_current_language("en")
+        element1.naam = "English name"
         element1.content = "EN content"
         element1.save()
 
@@ -2126,14 +2128,16 @@ class TestProductTypeActions(BaseApiTestCase):
                 {
                     "uuid": str(element1.uuid),
                     "taal": "en",
+                    "naam": "English name",
                     "content": "EN content",
-                    "labels": [],
+                    "labels_detail": [],
                 },
                 {
                     "uuid": str(element2.uuid),
                     "taal": "nl",
+                    "naam": element2.naam,
                     "content": element2.content,
-                    "labels": [],
+                    "labels_detail": [],
                 },
             ],
         )

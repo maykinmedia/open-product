@@ -17,10 +17,11 @@ class TestContentElement(BaseApiTestCase):
     def setUp(self):
         super().setUp()
         self.producttype = ProductTypeFactory.create()
-        self.label = ContentLabel.objects.create(naam="voorwaarden")
+        self.label = ContentLabel.objects.create(naam="voorwaarden", type="extern")
 
         self.data = {
             "labels": [self.label.naam],
+            "naam": "Openingstijden",
             "content": "Voorwaarden",
             "producttype_uuid": self.producttype.uuid,
         }
@@ -44,6 +45,9 @@ class TestContentElement(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
+                "naam": [
+                    ErrorDetail(string=_("This field is required."), code="required")
+                ],
                 "content": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
@@ -61,7 +65,13 @@ class TestContentElement(BaseApiTestCase):
 
         response.data.pop("uuid")
         expected_data = {
-            "labels": [self.label.naam],
+            "labels_detail": [
+                {
+                    "naam": self.label.naam,
+                    "type": self.label.type,
+                }
+            ],
+            "naam": "Openingstijden",
             "content": "Voorwaarden",
             "producttype_uuid": self.producttype.uuid,
             "taal": "nl",
@@ -119,9 +129,13 @@ class TestContentElement(BaseApiTestCase):
 
         expected_data = {
             "uuid": str(self.content_element.uuid),
+            "naam": self.content_element.naam,
             "content": self.content_element.content,
-            "labels": [
-                self.label.naam,
+            "labels_detail": [
+                {
+                    "naam": self.label.naam,
+                    "type": self.label.type,
+                }
             ],
             "producttype_uuid": self.producttype.uuid,
             "taal": "nl",
@@ -167,7 +181,7 @@ class TestContentElementActions(BaseApiTestCase):
     def test_put_vertaling(self):
         path = reverse("content-vertaling", args=(self.content_element.uuid, "en"))
 
-        data = {"content": "content EN"}
+        data = {"naam": "English name", "content": "content EN"}
         response = self.client.put(path, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -175,6 +189,7 @@ class TestContentElementActions(BaseApiTestCase):
             response.data,
             {
                 "uuid": str(self.content_element.uuid),
+                "naam": "English name",
                 "content": "content EN",
             },
         )
@@ -240,11 +255,7 @@ class TestContentLabel(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
         expected_data = [
-            {
-                "naam": label1.naam,
-            },
-            {
-                "naam": label2.naam,
-            },
+            {"naam": label1.naam, "type": label1.type},
+            {"naam": label2.naam, "type": label2.type},
         ]
         self.assertCountEqual(response.data["results"], expected_data)

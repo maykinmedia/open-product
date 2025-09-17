@@ -1403,8 +1403,7 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                    naam: openingstijden
-                    type: extern
+                  - openingstijden
                   naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1423,8 +1422,8 @@ paths:
                 ContentElementResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    labels:
-                      naam: openingstijden
+                    labels_detail:
+                    - naam: openingstijden
                       type: extern
                     naam: Openingstijden
                     content: ma-vr 8:00-17:00
@@ -1480,8 +1479,8 @@ paths:
                 ContentElementResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    labels:
-                      naam: openingstijden
+                    labels_detail:
+                    - naam: openingstijden
                       type: extern
                     naam: Openingstijden
                     content: ma-vr 8:00-17:00
@@ -1532,8 +1531,7 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                    naam: openingstijden
-                    type: extern
+                  - openingstijden
                   naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1552,8 +1550,8 @@ paths:
                 ContentElementResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    labels:
-                      naam: openingstijden
+                    labels_detail:
+                    - naam: openingstijden
                       type: extern
                     naam: Openingstijden
                     content: ma-vr 8:00-17:00
@@ -1604,8 +1602,7 @@ paths:
               ContentElementRequest:
                 value:
                   labels:
-                    naam: openingstijden
-                    type: extern
+                  - openingstijden
                   naam: Openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
@@ -1623,8 +1620,8 @@ paths:
                 ContentElementResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    labels:
-                      naam: openingstijden
+                    labels_detail:
+                    - naam: openingstijden
                       type: extern
                     naam: Openingstijden
                     content: ma-vr 8:00-17:00
@@ -4974,8 +4971,8 @@ paths:
                 ContentElementResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    labels:
-                      naam: openingstijden
+                    labels_detail:
+                    - naam: openingstijden
                       type: extern
                     naam: Openingstijden
                     content: ma-vr 8:00-17:00
@@ -6265,7 +6262,7 @@ components:
         content:
           type: string
           description: De content van dit content element
-        labels:
+        labels_detail:
           type: array
           items:
             $ref: '#/components/schemas/ContentLabel'
@@ -6279,7 +6276,7 @@ components:
           description: De huidige taal van het content element.
       required:
       - content
-      - labels
+      - labels_detail
       - naam
       - producttype_uuid
       - taal
@@ -6296,6 +6293,13 @@ components:
           type: string
           minLength: 1
           description: De content van dit content element
+        labels:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            writeOnly: true
+          writeOnly: true
         producttype_uuid:
           type: string
           format: uuid
@@ -6605,14 +6609,14 @@ components:
         content:
           type: string
           description: De content van dit content element
-        labels:
+        labels_detail:
           type: array
           items:
             $ref: '#/components/schemas/ContentLabel'
           readOnly: true
       required:
       - content
-      - labels
+      - labels_detail
       - naam
       - taal
       - uuid
@@ -7381,6 +7385,13 @@ components:
           type: string
           minLength: 1
           description: De content van dit content element
+        labels:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            writeOnly: true
+          writeOnly: true
         producttype_uuid:
           type: string
           format: uuid

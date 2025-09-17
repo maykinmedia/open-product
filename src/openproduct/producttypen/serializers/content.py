@@ -26,7 +26,7 @@ class ContentLabelSerializer(serializers.ModelSerializer):
             "content element response",
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "labels": {"naam": "openingstijden", "type": "extern"},
+                "labels_detail": [{"naam": "openingstijden", "type": "extern"}],
                 "naam": "Openingstijden",
                 "content": "ma-vr 8:00-17:00",
                 "taal": "nl",
@@ -37,7 +37,7 @@ class ContentLabelSerializer(serializers.ModelSerializer):
         OpenApiExample(
             "content element request",
             value={
-                "labels": {"naam": "openingstijden", "type": "extern"},
+                "labels": ["openingstijden"],
                 "naam": "Openingstijden",
                 "content": "ma-vr 8:00-17:00",
                 "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
@@ -47,7 +47,14 @@ class ContentLabelSerializer(serializers.ModelSerializer):
     ],
 )
 class ContentElementSerializer(TranslatableModelSerializer):
-    labels = ContentLabelSerializer(many=True, read_only=True)
+    labels = serializers.SlugRelatedField(
+        slug_field="naam",
+        queryset=ContentLabel.objects.all(),
+        many=True,
+        required=False,
+        write_only=True,
+    )
+    labels_detail = ContentLabelSerializer(source="labels", many=True, read_only=True)
 
     naam = serializers.CharField(
         required=True,
@@ -74,7 +81,15 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     class Meta:
         model = ContentElement
-        fields = ("uuid", "naam", "content", "labels", "producttype_uuid", "taal")
+        fields = (
+            "uuid",
+            "naam",
+            "content",
+            "labels",
+            "labels_detail",
+            "producttype_uuid",
+            "taal",
+        )
 
 
 class NestedContentElementSerializer(ContentElementSerializer):
@@ -86,6 +101,7 @@ class NestedContentElementSerializer(ContentElementSerializer):
             "naam",
             "content",
             "labels",
+            "labels_detail",
         )
 
 
