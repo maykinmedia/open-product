@@ -121,12 +121,14 @@ class ContentElementFactory(factory.django.DjangoModelFactory):
     @factory.post_generation
     def content(self, create, extracted, **kwargs):
         self.set_current_language("nl")
+        self.naam = kwargs.get("naam") or fake.word()
         self.content = extracted or fake.word()
         self.save()
 
 
 class ContentLabelFactory(factory.django.DjangoModelFactory):
     naam = factory.Sequence(lambda n: f"label {n}")
+    type = ContentLabel._meta.get_field("type").default
 
     class Meta:
         model = ContentLabel

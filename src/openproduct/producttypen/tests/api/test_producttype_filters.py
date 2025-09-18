@@ -257,14 +257,26 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["main", "openingstijden"])
+            self.assertEqual(
+                response.data[0]["labels_detail"],
+                [
+                    {"naam": "main", "type": "extern"},
+                    {"naam": "openingstijden", "type": "extern"},
+                ],
+            )
 
         with self.subTest("multiple labels same content"):
             response = self.client.get(path, {"labels": "openingstijden,main"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["main", "openingstijden"])
+            self.assertEqual(
+                response.data[0]["labels_detail"],
+                [
+                    {"naam": "main", "type": "extern"},
+                    {"naam": "openingstijden", "type": "extern"},
+                ],
+            )
 
         with self.subTest("multiple labels different content"):
             response = self.client.get(path, {"labels": "openingstijden,stappenplan"})
@@ -294,14 +306,20 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["stappenplan"])
+            self.assertEqual(
+                response.data[0]["labels_detail"],
+                [{"naam": "stappenplan", "type": "extern"}],
+            )
 
         with self.subTest("multiple labels same content"):
             response = self.client.get(path, {"exclude_labels": "openingstijden,main"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data), 1)
-            self.assertEqual(response.data[0]["labels"], ["stappenplan"])
+            self.assertEqual(
+                response.data[0]["labels_detail"],
+                [{"naam": "stappenplan", "type": "extern"}],
+            )
 
         with self.subTest("multiple labels different content"):
             response = self.client.get(

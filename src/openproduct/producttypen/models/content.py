@@ -10,9 +10,23 @@ from parler.models import TranslatableModel, TranslatedFieldsModel
 from openproduct.utils.models import BaseModel
 
 
+class LabelType(models.TextChoices):
+    INTERN = "intern", _("Intern")
+    EXTERN = "extern", _("Extern")
+    AANVULLEND = "aanvullend", _("Aanvullende informatie")
+
+
 @reversion.register()
 class ContentLabel(BaseModel):
     naam = models.CharField(max_length=255, unique=True)
+    type = models.CharField(
+        max_length=20,
+        choices=LabelType.choices,
+        default=LabelType.EXTERN,
+        help_text=_(
+            "Gebruik om onderscheid te maken tussen interne, externe of aanvullende labels"
+        ),
+    )
 
     def __str__(self):
         return self.naam
@@ -48,6 +62,7 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
         related_name="content_elementen",
     )
 
+    naam = TranslatedField()
     content = TranslatedField()
 
     order_with_respect_to = "producttype"
@@ -69,6 +84,11 @@ class ContentElementTranslation(TranslatedFieldsModel):
         related_name="translations",
         on_delete=models.CASCADE,
         null=True,
+    )
+    naam = models.CharField(
+        _("naam"),
+        max_length=50,
+        help_text=_("De naam van dit content element"),
     )
     content = models.TextField(
         _("content"),
