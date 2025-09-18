@@ -3,6 +3,7 @@ description: Meldt een probleem om ons te helpen verbeteren  / Create a report t
 title: "Title here"
 type: "Bug"
 labels: ["bug", "triage"]
+projects: ["maykinmedia/15", "maykinmedia/24"]
 assignees: []
 body:
   - type: input

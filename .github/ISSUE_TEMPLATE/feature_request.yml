@@ -3,6 +3,7 @@ description: Stel een idee voor om het product beter te maken / Suggest an idea 
 title: "Title here"
 type: "Feature"
 labels: ["enhancement", "triage"]
+projects: ["maykinmedia/15", "maykinmedia/24"]
 assignees: []
 body:
   - type: dropdown
