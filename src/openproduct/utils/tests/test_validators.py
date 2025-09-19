@@ -54,10 +54,6 @@ class ValidatorsTestCase(TestCase):
             "1111,a",
             '1111"a',
             '1111"aa',
-            "1015 cj",
-            "1015cj",
-            "1015Cj",
-            "1015cJ",
         ]
         for invalid_postal_code in invalid_postal_codes:
             self.assertRaisesMessage(
@@ -71,6 +67,9 @@ class ValidatorsTestCase(TestCase):
 
         self.assertIsNone(validate_postal_code("1015 CJ"))
         self.assertIsNone(validate_postal_code("1015 AA"))
+        self.assertIsNone(validate_postal_code("1015AA"))
+        self.assertIsNone(validate_postal_code("1015 aa"))
+        self.assertIsNone(validate_postal_code("1015 Aa"))
 
     def test_validate_phone_number(self):
         invalid_phone_numbers = [

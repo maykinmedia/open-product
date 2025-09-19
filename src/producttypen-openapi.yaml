@@ -6493,7 +6493,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string
@@ -6524,7 +6524,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string
@@ -7007,7 +7007,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string
@@ -7044,7 +7044,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string
@@ -7435,7 +7435,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string
@@ -7468,7 +7468,7 @@ components:
           maxLength: 10
         postcode:
           type: string
-          pattern: ^[1-9][0-9]{3}\s?[A-Z]{2}$
+          pattern: ^[1-9][0-9]{3}\s?[A-Za-z]{2}$
           maxLength: 7
         stad:
           type: string

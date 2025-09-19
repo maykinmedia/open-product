@@ -50,6 +50,7 @@ class BaseLocatie(BaseModel):
         return f"{self.straat} {self.huisnummer}, {self.postcode} {self.stad}"
 
     def save(self, *args, **kwargs):
+        self.postcode = self.postcode.upper()
         if " " not in self.postcode:
             self.postcode = f"{self.postcode[:4]} {self.postcode[4:]}"
         super().save(*args, **kwargs)

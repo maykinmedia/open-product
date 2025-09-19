@@ -21,3 +21,12 @@ class TestLocatie(TestCase):
             stad="Amsterdam",
         )
         self.assertEqual(locatie.address, "Keizersgracht 117, 1015 CJ Amsterdam")
+
+    def test_address_with_lowercase(self):
+        locatie = LocatieFactory.create(
+            straat="Keizersgracht",
+            huisnummer="117",
+            postcode="1015 cj",
+            stad="Amsterdam",
+        )
+        self.assertEqual(locatie.address, "Keizersgracht 117, 1015 CJ Amsterdam")
