@@ -20,7 +20,7 @@ from .validators import validate_producttype_code, validate_publicatie_dates
 
 class ProductStateChoices(models.TextChoices):
     INITIEEL = "initieel", _("Initieel")
-    IN_AANVRAAG = "in aanvraag", _("In aanvraag")
+    IN_AANVRAAG = "in_aanvraag", _("In aanvraag")
     GEREED = "gereed", _("Gereed")
     ACTIEF = "actief", _("Actief")
     INGETROKKEN = "ingetrokken", _("Ingetrokken")
@@ -30,18 +30,18 @@ class ProductStateChoices(models.TextChoices):
 
 @reversion.register(
     follow=(
-        "verbruiksobject_schema",
-        "dataobject_schema",
-        "uniforme_product_naam",
-        "organisaties",
-        "locaties",
-        "contacten",
-        "content_elementen",
-        "externe_codes",
-        "links",
-        "parameters",
-        "bestanden",
-        "translations",
+            "verbruiksobject_schema",
+            "dataobject_schema",
+            "uniforme_product_naam",
+            "organisaties",
+            "locaties",
+            "contacten",
+            "content_elementen",
+            "externe_codes",
+            "links",
+            "parameters",
+            "bestanden",
+            "translations",
     )
 )
 class ProductType(BasePublishableModel, TranslatableModel):
