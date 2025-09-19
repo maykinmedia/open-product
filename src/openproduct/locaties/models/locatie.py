@@ -47,8 +47,13 @@ class BaseLocatie(BaseModel):
 
     @property
     def address(self) -> str:
-        postcode = self.postcode.replace(" ", "")
-        return f"{self.straat} {self.huisnummer}, {postcode} {self.stad}"
+        return f"{self.straat} {self.huisnummer}, {self.postcode} {self.stad}"
+
+    def save(self, *args, **kwargs):
+        self.postcode = self.postcode.upper()
+        if " " not in self.postcode:
+            self.postcode = f"{self.postcode[:4]} {self.postcode[4:]}"
+        super().save(*args, **kwargs)
 
 
 @reversion.register()
