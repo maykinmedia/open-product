@@ -30,18 +30,18 @@ class ProductStateChoices(models.TextChoices):
 
 @reversion.register(
     follow=(
-            "verbruiksobject_schema",
-            "dataobject_schema",
-            "uniforme_product_naam",
-            "organisaties",
-            "locaties",
-            "contacten",
-            "content_elementen",
-            "externe_codes",
-            "links",
-            "parameters",
-            "bestanden",
-            "translations",
+        "verbruiksobject_schema",
+        "dataobject_schema",
+        "uniforme_product_naam",
+        "organisaties",
+        "locaties",
+        "contacten",
+        "content_elementen",
+        "externe_codes",
+        "links",
+        "parameters",
+        "bestanden",
+        "translations",
     )
 )
 class ProductType(BasePublishableModel, TranslatableModel):
