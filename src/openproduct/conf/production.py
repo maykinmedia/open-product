@@ -55,18 +55,6 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Sets X-Content-Type-Options: nosniff
 SECURE_BROWSER_XSS_FILTER = True  # Sets X-XSS-Protection: 1; mode=block
 
-##############################
-#                            #
-# 3RD PARTY LIBRARY SETTINGS #
-#                            #
-##############################
-
-# APM
-MIDDLEWARE = ["elasticapm.contrib.django.middleware.TracingMiddleware"] + MIDDLEWARE
-INSTALLED_APPS = INSTALLED_APPS + [
-    "elasticapm.contrib.django",
-]
-
 if SUBPATH and SUBPATH != "/":
     STATIC_URL = f"{SUBPATH}{STATIC_URL}"
     MEDIA_URL = f"{SUBPATH}{MEDIA_URL}"
