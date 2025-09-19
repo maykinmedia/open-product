@@ -1,5 +1,6 @@
 from mozilla_django_oidc.contrib.drf import OIDCAuthentication as _OIDCAuthentication
 from mozilla_django_oidc.utils import parse_www_authenticate_header
+from mozilla_django_oidc_db.config import lookup_config
 from requests.exceptions import HTTPError
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -12,6 +13,7 @@ class OIDCAuthentication(_OIDCAuthentication):
 
     def authenticate(self, request):
         try:
+            self.config = lookup_config(request)
             return super().authenticate(request)
         except HTTPError as exc:
             resp = exc.response
