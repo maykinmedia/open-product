@@ -1,7 +1,8 @@
 # Core python libraries
 Pillow  # handle images
 
-open-api-framework
+open-api-framework[celery,cors,markup,csp,commonground,inclusions,sanitization,server,redis]
+
 # Framework libraries
 # django-rosetta
 
