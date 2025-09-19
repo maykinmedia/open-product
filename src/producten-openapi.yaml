@@ -236,6 +236,11 @@ paths:
         schema:
           type: boolean
       - in: query
+        name: producttype__locaties__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: producttype__naam
         schema:
           type: string
@@ -249,6 +254,16 @@ paths:
         description: De Nederlandse naam van het producttype
         explode: false
         style: form
+      - in: query
+        name: producttype__organisaties__code
+        schema:
+          type: string
+        description: code van de organisatie.
+      - in: query
+        name: producttype__organisaties__uuid
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: producttype__themas__naam
         schema:

@@ -9,6 +9,7 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 
+from openproduct.locaties.tests.factories import LocatieFactory, OrganisatieFactory
 from openproduct.producten.models.product import PrijsFrequentieChoices
 from openproduct.producten.tests.factories import (
     DocumentFactory,
@@ -1030,3 +1031,52 @@ class TestProductFilters(BaseApiTestCase):
                 str(after.uuid),
             ],
         )
+
+    def test_producttype_organisatie_code_filter(self):
+        product = ProductFactory.create()
+        product.producttype.organisaties.add(OrganisatieFactory.create(code="ABC"))
+
+        product_2 = ProductFactory.create()
+        product_2.producttype.organisaties.add(OrganisatieFactory.create(code="123"))
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__organisaties__code": "ABC"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+
+    def test_organisatie_uuid_filter(self):
+        uuid = uuid4()
+
+        product = ProductFactory.create()
+        product.producttype.organisaties.add(OrganisatieFactory.create(uuid=uuid))
+
+        uuid_2 = uuid4()
+        product_2 = ProductFactory.create()
+        product_2.producttype.organisaties.add(OrganisatieFactory.create(uuid=uuid_2))
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__organisaties__uuid": uuid}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+
+    def test_locatie_uuid_filter(self):
+        uuid = uuid4()
+
+        product = ProductFactory.create()
+        product.producttype.locaties.add(LocatieFactory.create(uuid=uuid))
+
+        uuid_2 = uuid4()
+        product_2 = ProductFactory.create()
+        product_2.producttype.locaties.add(LocatieFactory.create(uuid=uuid_2))
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"producttype__locaties__uuid": uuid})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
