@@ -180,7 +180,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.2
+django-setup-configuration==0.9.0
     # via open-api-framework
 django-simple-certmanager==2.4.1
     # via zgw-consumers
@@ -233,7 +233,9 @@ elastic-apm==6.23.0
 face==24.0.0
     # via glom
 flower==2.0.1
-    # via open-api-framework
+    # via
+    #   -r requirements/base.in
+    #   open-api-framework
 furl==2.1.3
     # via ape-pie
 glom==24.11.0
