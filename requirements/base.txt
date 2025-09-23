@@ -108,6 +108,7 @@ django==5.2.3
     #   django-two-factor-auth
     #   django-upgrade-check
     #   djangorestframework
+    #   djangorestframework-gis
     #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
@@ -128,9 +129,9 @@ django-axes==7.0.0
     # via open-api-framework
 django-celery-beat==2.8.0
     # via -r requirements/base.in
-django-cors-headers==4.6.0
+django-cors-headers==4.9.0
     # via open-api-framework
-django-csp==3.8
+django-csp==4.0
     # via open-api-framework
 django-filter==24.3
     # via
@@ -147,7 +148,7 @@ django-jsonform==2.23.1
     #   open-api-framework
 django-log-outgoing-requests==0.6.1
     # via open-api-framework
-django-markup==1.8.1
+django-markup==1.10
     # via open-api-framework
 django-ordered-model==3.7.4
     # via django-admin-index
@@ -163,7 +164,7 @@ django-phonenumber-field==8.0.0
     # via django-two-factor-auth
 django-privates==3.1.1
     # via django-simple-certmanager
-django-redis==5.4.0
+django-redis==6.0.0
     # via open-api-framework
 django-relativedelta==2.0.0
     # via zgw-consumers
@@ -191,7 +192,7 @@ django-solo==2.4.0
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
-    # via -r requirements/base.in
+    # via open-api-framework
 django-timeline-logger==5.0.0
     # via -r requirements/base.in
 django-timezone-field==7.0
@@ -214,7 +215,7 @@ djangorestframework-camel-case==1.4.2
     # via
     #   commonground-api-common
     #   notifications-api-common
-djangorestframework-gis==1.1
+djangorestframework-gis==1.2.0
     # via open-api-framework
 djangorestframework-inclusions==1.2.0
     # via open-api-framework
@@ -272,12 +273,14 @@ mozilla-django-oidc-db==0.23.0
     # via open-api-framework
 notifications-api-common==0.7.3
     # via commonground-api-common
-open-api-framework==0.11.0
+open-api-framework==0.13.0
     # via -r requirements/base.in
 orderedmultidict==1.0.1
     # via furl
 oyaml==1.0
     # via commonground-api-common
+packaging==25.0
+    # via django-csp
 phonenumberslite==8.13.50
     # via django-two-factor-auth
 pillow==11.0.0
@@ -336,7 +339,7 @@ pyyaml==6.0.2
     #   pydantic-settings
 qrcode==7.4.2
     # via django-two-factor-auth
-redis==5.2.0
+redis==6.4.0
     # via django-redis
 referencing==0.35.1
     # via
@@ -372,7 +375,9 @@ six==1.16.0
 sqlparse==0.5.2
     # via django
 structlog==25.4.0
-    # via django-structlog
+    # via
+    #   django-structlog
+    #   open-api-framework
 tornado==6.5.1
     # via flower
 typing-extensions==4.12.2
@@ -400,7 +405,7 @@ urllib3==2.5.0
     #   elastic-apm
     #   requests
     #   sentry-sdk
-uwsgi==2.0.28
+uwsgi==2.0.30
     # via open-api-framework
 vine==5.1.0
     # via
