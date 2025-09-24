@@ -138,7 +138,7 @@ click-repl==0.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-commonground-api-common==2.6.4
+commonground-api-common==2.10.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
