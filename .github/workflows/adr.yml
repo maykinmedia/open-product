@@ -1,5 +1,14 @@
-name: adr.yml
+name: ADR validation
+
 on:
+  push:
+    branches:
+      - master
+      - stable/*
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
 
 jobs:
 
@@ -22,17 +31,10 @@ jobs:
           spectral-version: '^6.15.0'
           ruleset: https://static.developer.overheid.nl/adr/2.1/ruleset.yaml
 
-
-
   validate:
     name: Validate adr
     runs-on: ubuntu-latest
-
-    container:
-      image: registry.gitlab.com/commonground/don/adr-validator:0.5.0
-      options: --entrypoint ""
     steps:
-
       - uses: actions/checkout@v4
       - name: Start docker containers
         run: docker compose up -d --build || ( docker compose logs >&2 && exit 1; )
@@ -42,8 +44,12 @@ jobs:
             echo "uWSGI not running yet, waiting..."
             sleep 3
           done
-
-      - run: |
-          adr-validator validate --details --fail-not-passed core "http://localhost:8000/producten/api/v1"
-          adr-validator validate --details --fail-not-passed core "http://localhost:8000/producttypen/api/v1"
+      - name: Run ADR validation
+        uses: addnab/docker-run-action@v3
+        with:
+          image: registry.gitlab.com/commonground/don/adr-validator:0.5.0
+          options: --network host
+          run: |
+            adr-validator validate --details --fail-not-passed core "http://localhost:8000/producten/api/v1"
+            adr-validator validate --details --fail-not-passed core "http://localhost:8000/producttypen/api/v1"
 
