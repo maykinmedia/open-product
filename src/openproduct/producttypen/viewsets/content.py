@@ -19,6 +19,14 @@ from openproduct.utils.views import TranslatableViewSetMixin
 @extend_schema_view(
     retrieve=extend_schema(
         summary="Een specifiek CONTENTELEMENT opvragen.",
+        parameters=[
+            OpenApiParameter(
+                name="Accept-Language",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.HEADER,
+                description="Optionele taal (`nl, `en`).",
+            )
+        ],
     ),
     create=extend_schema(
         summary="Maak een CONTENTELEMENT aan.",
