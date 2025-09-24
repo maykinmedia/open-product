@@ -75,6 +75,7 @@ info:
     *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
   contact:
     email: support@maykinmedia.nl
+    name: Maykin Media
     url: https://www.maykinmedia.nl
   license:
     name: EUPL 1.2
