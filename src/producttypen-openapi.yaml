@@ -3908,7 +3908,7 @@ paths:
             type: array
             items:
               enum:
-              - in aanvraag
+              - in_aanvraag
               - gereed
               - actief
               - ingetrokken
@@ -3916,7 +3916,7 @@ paths:
               - verlopen
               type: string
               description: |-
-                * `in aanvraag` - In aanvraag
+                * `in_aanvraag` - In aanvraag
                 * `gereed` - Gereed
                 * `actief` - Actief
                 * `ingetrokken` - Ingetrokken
@@ -3926,7 +3926,7 @@ paths:
             - actief
             - gereed
             - geweigerd
-            - in aanvraag
+            - in_aanvraag
             - ingetrokken
             - initieel
             - verlopen
@@ -3934,7 +3934,7 @@ paths:
           toegestane statussen voor producten van dit type.
 
           * `initieel` - Initieel
-          * `in aanvraag` - In aanvraag
+          * `in_aanvraag` - In aanvraag
           * `gereed` - Gereed
           * `actief` - Actief
           * `ingetrokken` - Ingetrokken
@@ -8207,7 +8207,7 @@ components:
       - producttype_uuids
     ToegestaneStatussenEnum:
       enum:
-      - in aanvraag
+      - in_aanvraag
       - gereed
       - actief
       - ingetrokken
@@ -8215,7 +8215,7 @@ components:
       - verlopen
       type: string
       description: |-
-        * `in aanvraag` - In aanvraag
+        * `in_aanvraag` - In aanvraag
         * `gereed` - Gereed
         * `actief` - Actief
         * `ingetrokken` - Ingetrokken
