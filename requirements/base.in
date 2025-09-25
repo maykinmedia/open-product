@@ -7,6 +7,7 @@ open-api-framework
 
 # API libraries
 # django-extra-fields
+django-capture-tag
 django-parler
 django-parler-rest
 django-reversion
@@ -19,4 +20,4 @@ django-timeline-logger
 
 jsonschema
 
-commonground-api-common
+maykin-common[axes,mfa]
