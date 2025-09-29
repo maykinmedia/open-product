@@ -30,7 +30,6 @@ asgiref==3.8.1
     #   -r requirements/ci.txt
     #   django
     #   django-axes
-    #   django-cors-headers
     #   django-structlog
 asn1crypto==1.5.1
     # via
@@ -64,11 +63,6 @@ billiard==4.2.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-bleach==6.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
 boltons==24.1.0
     # via
     #   -c requirements/ci.txt
@@ -91,7 +85,6 @@ celery==5.4.0
     #   django-celery-beat
     #   flower
     #   notifications-api-common
-    #   open-api-framework
 certifi==2024.8.30
     # via
     #   -c requirements/ci.txt
@@ -142,12 +135,21 @@ commonground-api-common==2.6.4
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 commonmark==0.9.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   recommonmark
+coreapi==2.3.3
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   commonground-api-common
+coreschema==0.0.4
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreapi
 coverage==7.6.8
     # via
     #   -c requirements/ci.txt
@@ -192,21 +194,17 @@ django==5.2.3
     #   django-appconf
     #   django-axes
     #   django-celery-beat
-    #   django-cors-headers
-    #   django-csp
     #   django-debug-toolbar
     #   django-extensions
     #   django-filter
     #   django-formtools
     #   django-jsonform
     #   django-log-outgoing-requests
-    #   django-markup
     #   django-otp
     #   django-parler
     #   django-parler-rest
     #   django-phonenumber-field
     #   django-privates
-    #   django-redis
     #   django-relativedelta
     #   django-rest-framework-condition
     #   django-reversion
@@ -222,7 +220,6 @@ django==5.2.3
     #   django-two-factor-auth
     #   django-upgrade-check
     #   djangorestframework
-    #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
     #   drf-spectacular-sidecar
@@ -252,16 +249,6 @@ django-celery-beat==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-cors-headers==4.6.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
-django-csp==3.8
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
 django-debug-toolbar==4.4.6
     # via -r requirements/dev.in
 django-extensions==3.2.3
@@ -271,7 +258,6 @@ django-filter==24.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-    #   djangorestframework-gis
     #   open-api-framework
 django-formtools==2.5.1
     # via
@@ -290,11 +276,6 @@ django-jsonform==2.23.1
     #   mozilla-django-oidc-db
     #   open-api-framework
 django-log-outgoing-requests==0.6.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
-django-markup==1.8.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -328,11 +309,6 @@ django-privates==3.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-simple-certmanager
-django-redis==5.4.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
 django-relativedelta==2.0.0
     # via
     #   -c requirements/ci.txt
@@ -414,8 +390,6 @@ djangorestframework==3.15.2
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   django-parler-rest
-    #   djangorestframework-gis
-    #   djangorestframework-inclusions
     #   drf-nested-routers
     #   drf-spectacular
     #   notifications-api-common
@@ -426,16 +400,6 @@ djangorestframework-camel-case==1.4.2
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   notifications-api-common
-djangorestframework-gis==1.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
-djangorestframework-inclusions==1.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
 docutils==0.21.2
     # via
     #   -c requirements/ci.txt
@@ -491,7 +455,6 @@ flower==2.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-    #   open-api-framework
 freezegun==1.5.1
     # via
     #   -c requirements/ci.txt
@@ -551,10 +514,16 @@ isort==5.13.2
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pylint
+itypes==1.2.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   coreapi
 jinja2==3.1.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   coreschema
     #   sphinx
 josepy==1.14.0
     # via
@@ -591,7 +560,7 @@ markdown-it-py==3.0.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   rich
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -633,7 +602,7 @@ notifications-api-common==0.7.3
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.11.0
+open-api-framework==0.13.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -805,11 +774,6 @@ recommonmark==0.7.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-redis==5.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-redis
 referencing==0.35.1
     # via
     #   -c requirements/ci.txt
@@ -822,6 +786,7 @@ requests==2.32.4
     #   -r requirements/ci.txt
     #   ape-pie
     #   commonground-api-common
+    #   coreapi
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
@@ -832,6 +797,7 @@ requests-mock==1.12.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   commonground-api-common
 rich==14.0.0
     # via
     #   -c requirements/ci.txt
@@ -1004,6 +970,7 @@ uritemplate==4.1.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   coreapi
     #   drf-spectacular
 urllib3==2.5.0
     # via
@@ -1013,11 +980,6 @@ urllib3==2.5.0
     #   requests
     #   sentry-sdk
     #   vcrpy
-uwsgi==2.0.28
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   open-api-framework
 vcrpy==7.0.0
     # via
     #   -c requirements/ci.txt
@@ -1048,11 +1010,6 @@ webauthn==2.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-webencodings==0.5.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   bleach
 webob==1.8.9
     # via
     #   -c requirements/ci.txt
