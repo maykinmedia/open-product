@@ -1,7 +1,7 @@
 # Core python libraries
 Pillow  # handle images
 
-open-api-framework
+open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitization,server,redis, structlog-celery]
 # Framework libraries
 # django-rosetta
 
@@ -11,12 +11,9 @@ django-parler
 django-parler-rest
 django-reversion
 django-reversion-compare
-django-structlog[celery]
 
 django-celery-beat
 flower
 django-timeline-logger
 
 jsonschema
-
-commonground-api-common

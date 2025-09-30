@@ -23,6 +23,21 @@ Required
 * ``EMAIL_HOST``: hostname for the outgoing e-mail server (this **MUST** be set when using Docker). Defaults to: ``localhost``.
 
 
+Database
+--------
+
+* ``DB_CONN_MAX_AGE``: The lifetime of a database connection, as an integer of seconds. Use 0 to close database connections at the end of each request — Django’s historical behavior. This setting is ignored if connection pooling is used. Defaults to: ``60``.
+* ``DB_POOL_ENABLED``: Whether to use connection pooling. Defaults to: ``False``.
+* ``DB_POOL_MIN_SIZE``: The minimum number of connection the pool will hold. The pool will actively try to create new connections if some are lost (closed, broken) and will try to never go below min_size. Defaults to: ``4``.
+* ``DB_POOL_MAX_SIZE``: The maximum number of connections the pool will hold. If None, or equal to min_size, the pool will not grow or shrink. If larger than min_size, the pool can grow if more than min_size connections are requested at the same time and will shrink back after the extra connections have been unused for more than max_idle seconds. Defaults to: ``None``.
+* ``DB_POOL_TIMEOUT``: The default maximum time in seconds that a client can wait to receive a connection from the pool (using connection() or getconn()). Note that these methods allow to override the timeout default. Defaults to: ``30``.
+* ``DB_POOL_MAX_WAITING``: Maximum number of requests that can be queued to the pool, after which new requests will fail, raising TooManyRequests. 0 means no queue limit. Defaults to: ``0``.
+* ``DB_POOL_MAX_LIFETIME``: The maximum lifetime of a connection in the pool, in seconds. Connections used for longer get closed and replaced by a new one. The amount is reduced by a random 10% to avoid mass eviction. Defaults to: ``3600``.
+* ``DB_POOL_MAX_IDLE``: Maximum time, in seconds, that a connection can stay unused in the pool before being closed, and the pool shrunk. This only happens to connections more than min_size, if max_size allowed the pool to grow. Defaults to: ``600``.
+* ``DB_POOL_RECONNECT_TIMEOUT``: Maximum time, in seconds, the pool will try to create a connection. If a connection attempt fails, the pool will try to reconnect a few times, using an exponential backoff and some random factor to avoid mass attempts. If repeated attempts fail, after reconnect_timeout second the connection attempt is aborted and the reconnect_failed() callback invoked. Defaults to: ``300``.
+* ``DB_POOL_NUM_WORKERS``: Number of background worker threads used to maintain the pool state. Background workers are used for example to create new connections and to clean up connections when they are returned to the pool. Defaults to: ``3``.
+
+
 Logging
 -------
 
@@ -30,12 +45,12 @@ Logging
 * ``LOG_LEVEL``: control the verbosity of logging output. Available values are ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO`` and ``DEBUG``. Defaults to: ``INFO``.
 * ``LOG_QUERIES``: enable (query) logging at the database backend level. Note that you must also set ``DEBUG=1``, which should be done very sparingly!. Defaults to: ``False``.
 * ``LOG_REQUESTS``: enable logging of the outgoing requests. This must be enabled along with `LOG_OUTGOING_REQUESTS_DB_SAVE` to save outgoing request logs in the database. Defaults to: ``False``.
+* ``LOG_FORMAT_CONSOLE``: The format for the console logging handler, possible options: ``json``, ``plain_console``. Defaults to: ``json``.
+* ``ENABLE_STRUCTLOG_REQUESTS``: enable structured logging of requests. Defaults to: ``True``.
 * ``LOG_OUTGOING_REQUESTS_EMIT_BODY``: Whether or not outgoing request bodies should be logged. Defaults to: ``True``.
 * ``LOG_OUTGOING_REQUESTS_DB_SAVE``: Whether or not outgoing request logs should be saved to the database. Defaults to: ``False``.
 * ``LOG_OUTGOING_REQUESTS_DB_SAVE_BODY``: Whether or not outgoing request bodies should be saved to the database. Defaults to: ``True``.
 * ``LOG_OUTGOING_REQUESTS_MAX_AGE``: The amount of time after which request logs should be deleted from the database. Defaults to: ``7``.
-* ``ENABLE_STRUCTLOG_REQUESTS``: enable structured logging of requests. Defaults to: ``True``.
-* ``LOG_FORMAT_CONSOLE``: The format for the console logging handler, possible options: ``json``, ``plain_console``. Defaults to: ``json``.
 
 
 Celery
@@ -67,12 +82,12 @@ Content Security Policy
 -----------------------
 
 * ``CSP_EXTRA_DEFAULT_SRC``: Extra default source URLs for CSP other than ``self``. Used for ``img-src``, ``style-src`` and ``script-src``. Defaults to: ``[]``.
-* ``CSP_REPORT_URI``: URI of the``report-uri`` directive. Defaults to: ``None``.
-* ``CSP_REPORT_PERCENTAGE``: Percentage of requests that get the ``report-uri`` directive. Defaults to: ``0``.
-* ``CSP_EXTRA_FORM_ACTION``: Add additional ``form-action`` source to the default . Defaults to: ``[]``.
-* ``CSP_FORM_ACTION``: Override the default ``form-action`` source. Defaults to: ``['"\'self\'"']``.
-* ``CSP_EXTRA_IMG_SRC``: Extra ``img-src`` sources for CSP other than ``CSP_DEFAULT_SRC``. Defaults to: ``[]``.
-* ``CSP_OBJECT_SRC``: ``object-src`` urls. Defaults to: ``['"\'none\'"']``.
+* ``CSP_EXTRA_FORM_ACTION``: Additional `form-action` sources. Defaults to: ``[]``.
+* ``CSP_FORM_ACTION``: Override the default `form-action` sources. Defaults to: ``['"\'self\'"']``.
+* ``CSP_EXTRA_IMG_SRC``: Extra `img-src` sources. Defaults to: ``[]``.
+* ``CSP_OBJECT_SRC``: `object-src` sources. Defaults to: ``['"\'none\'"']``.
+* ``CSP_REPORT_URI``: URI for CSP report-uri directive. Defaults to: ``None``.
+* ``CSP_REPORT_PERCENTAGE``: Fraction (between 0 and 1) of requests to include report-uri directive. Defaults to: ``0.0``.
 
 
 Optional
