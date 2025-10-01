@@ -340,7 +340,7 @@ paths:
           - actief
           - gereed
           - geweigerd
-          - in aanvraag
+          - in_aanvraag
           - ingetrokken
           - initieel
           - verlopen
@@ -348,7 +348,7 @@ paths:
           De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype).
 
           * `initieel` - Initieel
-          * `in aanvraag` - In aanvraag
+          * `in_aanvraag` - In aanvraag
           * `gereed` - Gereed
           * `actief` - Actief
           * `ingetrokken` - Ingetrokken
@@ -1385,7 +1385,7 @@ components:
             De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype).
 
             * `initieel` - Initieel
-            * `in aanvraag` - In aanvraag
+            * `in_aanvraag` - In aanvraag
             * `gereed` - Gereed
             * `actief` - Actief
             * `ingetrokken` - Ingetrokken
@@ -1493,7 +1493,7 @@ components:
             De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype).
 
             * `initieel` - Initieel
-            * `in aanvraag` - In aanvraag
+            * `in_aanvraag` - In aanvraag
             * `gereed` - Gereed
             * `actief` - Actief
             * `ingetrokken` - Ingetrokken
@@ -1588,7 +1588,7 @@ components:
             De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype).
 
             * `initieel` - Initieel
-            * `in aanvraag` - In aanvraag
+            * `in_aanvraag` - In aanvraag
             * `gereed` - Gereed
             * `actief` - Actief
             * `ingetrokken` - Ingetrokken
@@ -1629,7 +1629,7 @@ components:
     StatusEnum:
       enum:
       - initieel
-      - in aanvraag
+      - in_aanvraag
       - gereed
       - actief
       - ingetrokken
@@ -1638,7 +1638,7 @@ components:
       type: string
       description: |-
         * `initieel` - Initieel
-        * `in aanvraag` - In aanvraag
+        * `in_aanvraag` - In aanvraag
         * `gereed` - Gereed
         * `actief` - Actief
         * `ingetrokken` - Ingetrokken
@@ -1646,7 +1646,7 @@ components:
         * `verlopen` - Verlopen
     ToegestaneStatussenEnum:
       enum:
-      - in aanvraag
+      - in_aanvraag
       - gereed
       - actief
       - ingetrokken
@@ -1654,7 +1654,7 @@ components:
       - verlopen
       type: string
       description: |-
-        * `in aanvraag` - In aanvraag
+        * `in_aanvraag` - In aanvraag
         * `gereed` - Gereed
         * `actief` - Actief
         * `ingetrokken` - Ingetrokken
