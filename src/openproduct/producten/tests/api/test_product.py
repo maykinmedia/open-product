@@ -1889,6 +1889,7 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.data, test["error"])
 
 
+@override_settings(NOTIFICATIONS_DISABLED=True)
 class TestProductUrns(BaseApiTestCase):
     path = reverse_lazy("product-list")
 
