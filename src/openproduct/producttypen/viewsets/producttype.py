@@ -6,7 +6,11 @@ from django.utils.translation import activate, gettext_lazy as _
 import django_filters
 import structlog
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    extend_schema,
+    extend_schema_view,
+)
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -234,9 +238,25 @@ class Meta:
     list=extend_schema(
         summary="Alle PRODUCTTYPEN opvragen.",
         description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        parameters=[
+            OpenApiParameter(
+                name="Accept-Language",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.HEADER,
+                description="Optionele taal (`nl, `en`).",
+            )
+        ],
     ),
     retrieve=extend_schema(
         summary="Een specifiek PRODUCTTYPE opvragen.",
+        parameters=[
+            OpenApiParameter(
+                name="Accept-Language",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.HEADER,
+                description="Optionele taal (`nl, `en`).",
+            )
+        ],
     ),
     create=extend_schema(
         summary="Maak een PRODUCTTYPE aan.",
@@ -402,6 +422,12 @@ class ProductTypeViewSet(
                 description="Sluit content met bepaalde labels uit.",
                 required=False,
                 explode=False,
+            ),
+            OpenApiParameter(
+                name="Accept-Language",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.HEADER,
+                description="Optionele taal (`nl, `en`).",
             ),
         ],
         responses=NestedContentElementSerializer(many=True),
