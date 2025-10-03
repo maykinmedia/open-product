@@ -11,6 +11,7 @@ from zgw_consumers.models import Service
 
 from openproduct.producten.tests.factories import ProductFactory
 from openproduct.producttypen.tests.factories import ProductTypeFactory
+from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -33,6 +34,11 @@ class SendNotifTestCase(BaseApiTestCase):
         config.notifications_api_service = service
         config.save()
 
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:zaak",
+            url="https://maykin.ztc.com/api/v1/zaken",
+        )
+
         cls.producttype = ProductTypeFactory.create(toegestane_statussen=["gereed"])
         cls.data = {
             "producttype_uuid": cls.producttype.uuid,
@@ -40,9 +46,13 @@ class SendNotifTestCase(BaseApiTestCase):
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"bsn": "111222333"}],
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
-        product = ProductFactory.create(producttype=cls.producttype)
+        product = ProductFactory.create(
+            producttype=cls.producttype,
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
 
         cls.path = reverse("product-list")
         cls.detail_path = reverse("product-detail", args=[product.uuid])

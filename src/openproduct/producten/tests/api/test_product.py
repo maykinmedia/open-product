@@ -30,6 +30,7 @@ from openproduct.producttypen.tests.factories import (
     ProductTypeFactory,
     ThemaFactory,
 )
+from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -45,6 +46,12 @@ class TestProduct(BaseApiTestCase):
             toegestane_statussen=["gereed"],
             publicatie_start_datum=datetime.date(2024, 1, 1),
         )
+
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:zaak",
+            url="https://maykin.ztc.com/api/v1/zaken",
+        )
+
         self.producttype.themas.add(self.thema)
         self.data = {
             "producttype_uuid": self.producttype.uuid,
@@ -52,6 +59,7 @@ class TestProduct(BaseApiTestCase):
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"kvk_nummer": "12345678"}],
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         config_patch = patch(
@@ -117,6 +125,8 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
                     "bsn": "",
@@ -189,6 +199,8 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
                     "bsn": "",
@@ -330,6 +342,8 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
                     "bsn": "",
@@ -1189,6 +1203,7 @@ class TestProduct(BaseApiTestCase):
     def test_partial_update_product(self):
         product = ProductFactory.create(
             producttype=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
 
         data = {"eind_datum": datetime.date(2025, 12, 31)}
@@ -1203,7 +1218,9 @@ class TestProduct(BaseApiTestCase):
             documenten_url="", zaken_url="", taken_url=""
         )
 
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         response = self.client.patch(self.detail_path(product), {"prijs": "10"})
 
@@ -1252,7 +1269,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_with_document(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"documenten": documenten}
@@ -1270,7 +1289,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_with_document_replacing_existing(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         DocumentFactory.create(product=product)
 
@@ -1290,7 +1311,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_removing_documenten(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         DocumentFactory.create(product=product)
         DocumentFactory.create(product=product)
 
@@ -1303,7 +1326,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.data["documenten"], documenten)
 
     def test_partial_update_product_existing_documenten_are_kept(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         DocumentFactory.create(product=product)
 
         response = self.client.patch(self.detail_path(product), {"prijs": "10"})
@@ -1312,7 +1337,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Document.objects.count(), 1)
 
     def test_partial_update_product_with_zaak(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"zaken": zaken}
@@ -1330,7 +1357,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_with_zaak_replacing_existing(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         ZaakFactory.create(product=product)
 
@@ -1350,7 +1379,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_removing_zaken(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         ZaakFactory.create(product=product)
         ZaakFactory.create(product=product)
 
@@ -1363,7 +1394,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.data["zaken"], zaken)
 
     def test_partial_update_product_existing_zaken_are_kept(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         ZaakFactory.create(product=product)
 
         response = self.client.patch(self.detail_path(product), {"prijs": "10"})
@@ -1372,7 +1405,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Zaak.objects.count(), 1)
 
     def test_partial_update_product_with_taak(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"taken": taken}
@@ -1390,7 +1425,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_with_taak_replacing_existing(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         TaakFactory.create(product=product)
 
@@ -1410,7 +1447,9 @@ class TestProduct(BaseApiTestCase):
         )
 
     def test_partial_update_product_removing_taken(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         TaakFactory.create(product=product)
         TaakFactory.create(product=product)
 
@@ -1423,7 +1462,9 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.data["taken"], taken)
 
     def test_partial_update_product_existing_taken_are_kept(self):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
         TaakFactory.create(product=product)
 
         response = self.client.patch(self.detail_path(product), {"prijs": "10"})
@@ -1449,9 +1490,15 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(response.data["taken"], [{"url": f"/{taak.uuid}"}])
 
     def test_read_producten(self):
-        product1 = ProductFactory.create(producttype=self.producttype)
+        product1 = ProductFactory.create(
+            producttype=self.producttype,
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
         EigenaarFactory(kvk_nummer="12345678", product=product1)
-        product2 = ProductFactory.create(producttype=self.producttype)
+        product2 = ProductFactory.create(
+            producttype=self.producttype,
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
         EigenaarFactory(kvk_nummer="12345678", product=product2)
 
         response = self.client.get(self.path)
@@ -1473,6 +1520,8 @@ class TestProduct(BaseApiTestCase):
                 "frequentie": product1.frequentie,
                 "aanmaak_datum": product1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product1.update_datum.astimezone().isoformat(),
+                "aanvraag_zaak_urn": product1.aanvraag_zaak_urn,
+                "aanvraag_zaak_url": product1.aanvraag_zaak_url,
                 "eigenaren": [
                     {
                         "bsn": "",
@@ -1523,6 +1572,8 @@ class TestProduct(BaseApiTestCase):
                 "frequentie": product2.frequentie,
                 "aanmaak_datum": product2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": product2.update_datum.astimezone().isoformat(),
+                "aanvraag_zaak_urn": product2.aanvraag_zaak_urn,
+                "aanvraag_zaak_url": product2.aanvraag_zaak_url,
                 "eigenaren": [
                     {
                         "bsn": "",
@@ -1570,7 +1621,10 @@ class TestProduct(BaseApiTestCase):
             publicatie_start_datum=datetime.date(2024, 1, 1),
         )
         producttype.themas.add(thema)
-        product = ProductFactory.create(producttype=producttype)
+        product = ProductFactory.create(
+            producttype=producttype,
+            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
         EigenaarFactory(kvk_nummer="12345678", product=product)
 
         response = self.client.get(self.detail_path(product))
@@ -1590,6 +1644,8 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": "2025-12-31T01:00:00+01:00",
             "update_datum": "2025-12-31T01:00:00+01:00",
+            "aanvraag_zaak_urn": product.aanvraag_zaak_urn,
+            "aanvraag_zaak_url": product.aanvraag_zaak_url,
             "eigenaren": [
                 {
                     "bsn": "",
@@ -1659,6 +1715,7 @@ class TestProduct(BaseApiTestCase):
             "eind_datum": datetime.date(2026, 12, 31),
             "prijs": "10",
             "frequentie": "eenmalig",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         product = ProductFactory.create(producttype=producttype, **data)
@@ -1681,6 +1738,7 @@ class TestProduct(BaseApiTestCase):
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         product = ProductFactory.create(producttype=producttype, **data)
@@ -1829,3 +1887,405 @@ class TestProduct(BaseApiTestCase):
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
             self.assertEqual(response.data, test["error"])
+
+
+@override_settings(NOTIFICATIONS_DISABLED=True)
+class TestProductUrns(BaseApiTestCase):
+    path = reverse_lazy("product-list")
+
+    def setUp(self):
+        super().setUp()
+        self.thema = ThemaFactory.create()
+        self.producttype = ProductTypeFactory.create(
+            toegestane_statussen=["gereed"],
+            publicatie_start_datum=datetime.date(2024, 1, 1),
+        )
+        self.producttype.themas.add(self.thema)
+        self.data = {
+            "producttype_uuid": self.producttype.uuid,
+            "status": "initieel",
+            "prijs": "20.20",
+            "frequentie": "eenmalig",
+            "eigenaren": [{"kvk_nummer": "12345678"}],
+        }
+
+    def detail_path(self, product):
+        return reverse("product-detail", args=[product.uuid])
+
+    def test_invalid_urns(self):
+        with self.subTest("None"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": None}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("empty"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": ""}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("string"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": "a"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+        with self.subTest("::::"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": "::::::"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+        with self.subTest("::::"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": ":a:b:c:d:e"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+            )
+
+    def test_invalid_urls(self):
+        with self.subTest("None"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": None}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("empty"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": ""}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["een url of urn is verplicht"]},
+            )
+
+        with self.subTest("string"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": "a"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+        with self.subTest("slash"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_url": "/awdaw"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+        with self.subTest("url"):
+            response = self.client.post(
+                self.path,
+                self.data | {"aanvraag_zaak_url": "https://google/128937-012837-adawd"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
+            )
+
+    def test_create_product_without_aanvraag_zaak(self):
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            {"aanvraag_zaak": ["een url of urn is verplicht"]},
+        )
+
+    def test_create_product_with_different_urn_urls(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json(),
+            {"aanvraag_zaak": ["de uuid van de url en urn komen niet overeen"]},
+        )
+
+    def test_create_product_with_urn_only(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        with self.subTest("mapping required"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn heeft geen mapping"]},
+            )
+
+        with self.subTest("allowed"):
+            with override_settings(REQUIRE_URN_URL_MAPPING=False):
+                response = self.client.post(self.path, data)
+
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_urn"],
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(response.data["aanvraag_zaak_url"], None)
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_urn,
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(product.aanvraag_zaak_url, None)
+
+        with self.subTest("in mapping"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+    def test_create_product_with_url_only(self):
+        data = self.data | {
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        with self.subTest("mapping required"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url heeft geen mapping"]},
+            )
+
+        with self.subTest("allowed"):
+            with override_settings(REQUIRE_URL_URN_MAPPING=False):
+                response = self.client.post(self.path, data)
+
+                self.assertEqual(
+                    response.status_code, status.HTTP_201_CREATED, response.data
+                )
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_url"],
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(response.data["aanvraag_zaak_urn"], None)
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_url,
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(product.aanvraag_zaak_urn, None)
+
+        with self.subTest("in mapping"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+    def test_create_product_with_urn_and_url(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        }
+
+        with self.subTest("mapping missing"):
+            response = self.client.post(self.path, data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url en/of urn hebben geen mapping"]},
+            )
+
+        with self.subTest("mapping missing allowed"):
+            with override_settings(
+                REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False
+            ):
+                response = self.client.post(self.path, data)
+                self.assertEqual(
+                    response.status_code, status.HTTP_201_CREATED, response.data
+                )
+
+                self.assertEqual(
+                    response.data["aanvraag_zaak_urn"],
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(
+                    response.data["aanvraag_zaak_url"],
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+
+                product = Product.objects.get(uuid=response.data["uuid"])
+                self.assertEqual(
+                    product.aanvraag_zaak_urn,
+                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+                self.assertEqual(
+                    product.aanvraag_zaak_url,
+                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                )
+
+        with self.subTest("different mappings"):
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+            )
+            UrnMappingConfig.objects.create(
+                urn="maykin:abc:ztc:zaakabc", url="https://maykin.ztc.com/zaken2"
+            )
+
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakabc:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn en url mappings komen niet overeen"]},
+            )
+
+        with self.subTest("mapping correct"):
+            response = self.client.post(self.path, data)
+            self.assertEqual(
+                response.status_code, status.HTTP_201_CREATED, response.data
+            )
+
+            self.assertEqual(
+                response.data["aanvraag_zaak_urn"],
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                response.data["aanvraag_zaak_url"],
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+            product = Product.objects.get(uuid=response.data["uuid"])
+            self.assertEqual(
+                product.aanvraag_zaak_urn,
+                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+            self.assertEqual(
+                product.aanvraag_zaak_url,
+                "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            )
+
+        with self.subTest("different urn in mapping"):
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakdef:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de urn in de url mapping is niet hetzelfde"]},
+            )
+
+        with self.subTest("different url in mapping"):
+            response = self.client.post(
+                self.path,
+                data
+                | {
+                    "aanvraag_zaak_url": f"https://maykin.ztc.com/zakendef/{data['aanvraag_zaak_url'].rsplit('/', 1)[1]}"
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertEqual(
+                response.json(),
+                {"aanvraag_zaak": ["de url in de urn mapping is niet hetzelfde"]},
+            )
