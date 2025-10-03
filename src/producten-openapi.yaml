@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Producten API
-  version: 1.2.0
+  version: 1.3.0
   description: |2+
 
     Een API voor Producten.
