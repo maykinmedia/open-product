@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
 from openproduct.urn.models import UrnMappingConfig
+from openproduct.urn.validators import validate_urn_or_url
 
 
 class UrnMappingMixin:
@@ -24,8 +26,10 @@ class UrnMappingMixin:
         urn, urn_uuid = self.get_base_and_uuid(attrs, urn_field, is_urn=True)
         url, url_uuid = self.get_base_and_uuid(attrs, url_field, is_urn=False)
 
-        if not urn and not url:
-            raise serializers.ValidationError({field: _("een url of urn is verplicht")})
+        try:
+            validate_urn_or_url(urn, url)
+        except ValidationError as exc:
+            raise serializers.ValidationError({field: exc.message})
 
         if urn_uuid and url_uuid and urn_uuid != url_uuid:
             raise serializers.ValidationError(

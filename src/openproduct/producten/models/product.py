@@ -121,6 +121,7 @@ class Product(BasePublishableModel):
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Producten")
+        ordering = ("-id",)
 
     def clean(self):
         validate_product_dates(self.start_datum, self.eind_datum)
