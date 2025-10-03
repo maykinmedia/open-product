@@ -516,5 +516,18 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data,
-            {"hoofd_thema": ["Een thema kan niet zijn eigen hoofd thema zijn."]},
+            {"hoofd_thema": ["Een thema kan geen referentie naar zichzelf hebben."]},
+        )
+
+    def test_thema_cannot_have_circular_reference_to_itself(self):
+        thema_a = ThemaFactory.create()
+        thema_b = ThemaFactory.create(hoofd_thema=thema_a)
+        thema_c = ThemaFactory.create(hoofd_thema=thema_b)
+
+        data = {"hoofd_thema", thema_c.uuid}
+        response = self.client.patch(self.detail_path(thema_a), data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {"hoofd_thema": ["Een thema kan geen referentie naar zichzelf hebben."]},
         )
