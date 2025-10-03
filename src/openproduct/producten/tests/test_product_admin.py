@@ -47,6 +47,7 @@ class TestProductAdminForm(TestCase):
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
             "prijs": "10",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "frequentie": "eenmalig",
         }
 
@@ -77,6 +78,7 @@ class TestProductAdminForm(TestCase):
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
             "prijs": "10",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "frequentie": "eenmalig",
         }
 
@@ -124,6 +126,7 @@ class TestProductAdminForm(TestCase):
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "verbruiksobject": {"naam": "test"},
         }
 
@@ -144,6 +147,7 @@ class TestProductAdminForm(TestCase):
                     }
                 )
             ),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -172,6 +176,7 @@ class TestProductAdminForm(TestCase):
             "prijs": "10",
             "frequentie": "eenmalig",
             "verbruiksobject": {"naam": "test"},
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         product = ProductFactory.create(**data)
@@ -191,6 +196,7 @@ class TestProductAdminForm(TestCase):
                     }
                 )
             ),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -212,6 +218,7 @@ class TestProductAdminForm(TestCase):
                     }
                 )
             ),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -235,6 +242,7 @@ class TestProductAdminForm(TestCase):
                     }
                 )
             ),
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
@@ -262,6 +270,7 @@ class TestProductAdminForm(TestCase):
             "status": "initieel",
             "prijs": "10",
             "frequentie": "eenmalig",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "dataobject": {"naam": "test"},
         }
 
@@ -284,6 +293,7 @@ class TestProductAdminForm(TestCase):
             ),
             "status": "initieel",
             "prijs": "10",
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "frequentie": "eenmalig",
         }
         product = ProductFactory.create(**data)
