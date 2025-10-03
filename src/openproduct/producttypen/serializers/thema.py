@@ -14,7 +14,7 @@ from openproduct.producttypen.models import ProductType, Thema, UniformeProductN
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
-from .validators import ThemaGepubliceerdStateValidator, ThemaSelfReferenceValidator
+from .validators import ThemaGepubliceerdStateValidator, ThemaReferenceValidator
 
 
 class NestedProductTypeSerializer(serializers.ModelSerializer):
@@ -120,7 +120,7 @@ class ThemaSerializer(serializers.ModelSerializer):
         validators = [
             DuplicateIdValidator(["producttype_uuids"]),
             ThemaGepubliceerdStateValidator(),
-            ThemaSelfReferenceValidator(),
+            ThemaReferenceValidator(),
         ]
 
     @transaction.atomic()

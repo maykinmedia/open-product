@@ -42,6 +42,18 @@ class TestThema(TestCase):
         thema.hoofd_thema = thema
 
         with self.assertRaisesMessage(
-            ValidationError, _("Een thema kan niet zijn eigen hoofd thema zijn.")
+            ValidationError, _("Een thema kan geen referentie naar zichzelf hebben.")
         ):
             thema.clean()
+
+    def test_thema_cannot_have_circular_reference_to_itself(self):
+        thema_a = ThemaFactory.create()
+        thema_b = ThemaFactory.create(hoofd_thema=thema_a)
+        thema_c = ThemaFactory.create(hoofd_thema=thema_b)
+
+        thema_a.hoofd_thema = thema_c
+
+        with self.assertRaisesMessage(
+            ValidationError, _("Een thema kan geen referentie naar zichzelf hebben.")
+        ):
+            thema_a.clean()

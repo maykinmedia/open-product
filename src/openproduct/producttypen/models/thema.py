@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 import reversion
 
 from openproduct.producttypen.models.validators import (
-    disallow_hoofd_thema_self_reference,
+    check_for_circular_reference,
     validate_thema_gepubliceerd_state,
 )
 from openproduct.utils.models import BasePublishableModel
@@ -49,7 +49,7 @@ class Thema(BasePublishableModel):
 
     def clean(self):
         if self.pk:
-            disallow_hoofd_thema_self_reference(self, self.hoofd_thema)
+            check_for_circular_reference(self, self.hoofd_thema)
 
             validate_thema_gepubliceerd_state(
                 self.hoofd_thema, self.gepubliceerd, self.sub_themas
