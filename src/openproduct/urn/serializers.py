@@ -28,8 +28,8 @@ class UrnMappingMixin:
 
         try:
             validate_urn_or_url(urn, url)
-        except ValidationError as exc:
-            raise serializers.ValidationError({field: exc.message})
+        except ValidationError as e:
+            raise serializers.ValidationError({field: e.message})
 
         if urn_uuid and url_uuid and urn_uuid != url_uuid:
             raise serializers.ValidationError(
