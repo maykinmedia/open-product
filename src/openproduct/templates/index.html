@@ -1,71 +1,61 @@
-{% extends "master.html" %}
+{% extends "maykin_common/api/index_base.html" %}
+{% load i18n %}
 
-{% block content %}
 
-    <div class="title">
-        <h1 class="title__header">{{ settings.PROJECT_NAME }} API</h1>
-        <p class="title__description">{{ settings.SITE_TITLE }}</p>
+{% block page_title %}{{ settings.PROJECT_NAME }} API{% endblock %}
+{% block page_subtitle %}{{ settings.SITE_TITLE }}{% endblock page_subtitle %}
+
+
+{% block content_nl %}
+    <p>
+        Open Product is een applicatie waarin producttypen en producten op een enkele plek kunnen worden
+        beheerd. De API is opgesplitst in twee specificaties, producten en producttypen.
+    </p>
+    <p>
+        Een producttype is de definitie van een product. Hierin wordt alle relevante data opgeslagen
+        zoals informatie over de aanvraag, prijzen, handige links of documenten en meer. Een product is
+        de instantie van een producttype. Hierin worden onder andere de gegevens van de
+        eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
+    </p>
+{% endblock content_nl %}
+
+{% block content_en %}
+    <p>
+        Open Product is an application where product types and products can be managed in a single
+        place. The API is split into two specifications, producten en producttypen.
+    </p>
+    <p>
+        A product type is the definition of a product, it contains all relevant data such as information
+        on how to request, prices, useful links or documents and more. A product is the instance of a
+        producttype, it contains among other things the information of
+        the owner, the required data for the product and, for example the status.
+    </p>
+{% endblock content_en %}
+
+
+{% block license_link %}https://github.com/maykinmedia/open-product/blob/master/LICENSE.md{% endblock %}
+
+
+{% block api_links %}
+    {% url "schema-redoc-producten" as api_docs_producten %}
+    {% url "schema-redoc-producttypen" as api_docs_producttypen %}
+
+    <a href="{{ api_docs_producten }}" class="button">
+        <i class="fas fa-file-alt"></i>
+        {% trans "Producten API specification" %}
+    </a>
+
+    <a href="{{ api_docs_producttypen }}" class="button">
+        <i class="fas fa-file-alt"></i>
+        {% trans "Producttypen API specification" %}
+    </a>
+{% endblock %}
+
+{% block extra_buttons %}
+    <div class="button-group">
+        <a href="https://github.com/maykinmedia/open-product/blob/master/src/notificaties.md" class="button">
+            <i class="fas fa-bullhorn"></i>
+            {% trans "Notifications" %}
+        </a>
     </div>
-
-    <div class="container container--center">
-        <nav class="nav">
-            <ul class="nav__list">
-                <li class="nav__item" data-id="en">English</li>
-                <li class="nav__item" data-id="nl">Nederlands</li>
-            </ul>
-
-            <div class="nav__content">
-                <div class="nav__pane" id="en">
-                    <p>
-                        Open Product is an application where product types and products can be managed in a single
-                        place. The API is split into two specifications, producten en producttypen.
-                    </p>
-                    <p>
-                        A product type is the definition of a product, it contains all relevant data such as information
-                        on how to request, prices, useful links or documents and more. A product is the instance of a
-                        producttype, it contains among other things the information of
-                        the owner, the required data for the product and, for example the status.
-                    </p>
-                </div>
-                <div class="nav__pane" id="nl">
-                    <p>
-                        Open Product is een applicatie waarin producttypen en producten op een enkele plek kunnen worden
-                        beheerd. De API is opgesplitst in twee specificaties, producten en producttypen.
-                    </p>
-                    <p>
-                        Een producttype is de definitie van een product. Hierin wordt alle relevante data opgeslagen
-                        zoals informatie over de aanvraag, prijzen, handige links of documenten en meer. Een product is
-                        de instantie van een producttype. Hierin worden onder andere de gegevens van de
-                        eigenaar, de benodigde data voor het product en bijvoorbeeld de status vastgelegd.
-                    </p>
-                </div>
-            </div>
-        </nav>
-
-        <p>
-            <b>Licensed under the <a class="link"
-                                     href="https://github.com/maykinmedia/open-product/blob/master/LICENSE.md">
-                European Union Public License (EUPL) 1.2</a></b>
-        </p>
-
-        <p>
-            <a href="{% url "schema-redoc-producten" %}" class="button"><i class="fas fa-file-alt"></i> Producten
-                API
-                specification</a>
-
-            <a href="{% url "schema-redoc-producttypen" %}" class="button"><i class="fas fa-file-alt"></i> Producttypen
-                API
-                specification</a>
-            <a href="https://github.com/maykinmedia/open-product/blob/master/src/notificaties.md" class="button"><i
-                    class="fas fa-bullhorn"></i> Notifications</a>
-        </p>
-
-
-        <p>
-            <a href="{% url 'admin:index' %}" class="button button--alert"><i class="fas fa-lock"></i>
-                Administration</a>
-        </p>
-
-    </div>
-
 {% endblock %}
