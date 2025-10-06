@@ -164,6 +164,7 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "NON_FIELD_ERRORS_KEY": "model_errors",
     "DEFAULT_FILTER_BACKENDS": ["openproduct.utils.filters.FilterBackend"],
+    "EXCEPTION_HANDLER": "openproduct.utils.views.exception_handler",
 }
 
 PRODUCTEN_API_VERSION = "1.2.0"
