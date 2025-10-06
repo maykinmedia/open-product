@@ -18,6 +18,7 @@ TIME_ZONE = "Europe/Amsterdam"  # note: this *may* affect the output of DRF date
 
 INSTALLED_APPS += [
     "maykin_common",
+    "capture_tag",
     # 'django.contrib.admindocs',
     # 'django.contrib.humanize',
     # 'django.contrib.sitemaps',
