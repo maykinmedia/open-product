@@ -19,4 +19,4 @@ django-timeline-logger
 
 jsonschema
 
-maykin-common[axes,mfa]
+git+https://github.com/maykinmedia/django-common.git@main[axes,mfa]
