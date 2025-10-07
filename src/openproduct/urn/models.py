@@ -5,7 +5,11 @@ from openproduct.urn.fields import BaseUrnField
 
 
 class UrnMappingConfig(models.Model):
-    urn = BaseUrnField(verbose_name=_("Urn"), help_text=_("Urn"), unique=True)
+    urn = BaseUrnField(
+        verbose_name=_("Urn"),
+        help_text=_("Basis urn (<organisatie>:<systeem>:<component>:<resource>)"),
+        unique=True,
+    )
 
     url = models.URLField(
         verbose_name=_("basis url"),

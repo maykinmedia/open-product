@@ -106,7 +106,9 @@ class Product(BasePublishableModel):
 
     aanvraag_zaak_urn = UrnField(
         _("aanvraag zaak urn"),
-        help_text=_("De zaak waaruit dit product is ontstaan."),
+        help_text=_(
+            "De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)"
+        ),
         null=True,
         blank=True,
     )

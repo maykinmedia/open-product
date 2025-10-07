@@ -14,7 +14,7 @@
 
 set -e
 
-DEFAULT_APPS=(producten producttypen locaties)
+DEFAULT_APPS=(producten producttypen locaties urn)
 
 export PGHOST=${DB_HOST:-db}
 export PGPORT=${DB_PORT:-5432}

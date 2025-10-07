@@ -1421,7 +1421,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan.
+          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         aanvraag_zaak_url:
           type: string
@@ -1540,7 +1540,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan.
+          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         aanvraag_zaak_url:
           type: string
@@ -1646,7 +1646,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan.
+          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         aanvraag_zaak_url:
           type: string

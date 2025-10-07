@@ -20,3 +20,4 @@ configured to make all API's accessible.
    oidc
    logging
    scripts
+   urn
