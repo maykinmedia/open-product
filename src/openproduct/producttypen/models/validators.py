@@ -45,9 +45,17 @@ validate_producttype_code = CustomRegexValidator(
 )
 
 
-def disallow_hoofd_thema_self_reference(thema, hoofd_thema):
-    if thema and hoofd_thema and thema.id == hoofd_thema.id:
-        raise ValidationError("Een thema kan niet zijn eigen hoofd thema zijn.")
+def check_for_circular_reference(thema, hoofd_thema):
+    parent = hoofd_thema
+
+    while parent:
+        if parent is None:
+            return
+        if parent == thema:
+            raise ValidationError(
+                _("Een thema kan geen referentie naar zichzelf hebben.")
+            )
+        parent = parent.hoofd_thema
 
 
 def check_externe_verwijzing_config_url(field_url):
