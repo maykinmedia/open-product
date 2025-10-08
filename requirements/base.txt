@@ -180,7 +180,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.7.2
+django-setup-configuration==0.9.0
     # via open-api-framework
 django-simple-certmanager==2.4.1
     # via zgw-consumers
