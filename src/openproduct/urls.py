@@ -10,9 +10,9 @@ from django.views.generic.base import RedirectView
 
 from maykin_2fa import monkeypatch_admin
 from maykin_2fa.urls import urlpatterns, webauthn_urlpatterns
+from maykin_common.accounts.views import PasswordResetView
 from mozilla_django_oidc_db.views import AdminLoginFailure
 
-from openproduct.accounts.views.password_reset import PasswordResetView
 from openproduct.producten.urls import urlpatterns as product_urlpatterns
 from openproduct.producttypen.urls import urlpatterns as producttype_urlpatterns
 
@@ -20,7 +20,7 @@ from openproduct.producttypen.urls import urlpatterns as producttype_urlpatterns
 
 monkeypatch_admin()
 
-handler500 = "openproduct.utils.views.server_error"
+handler500 = "maykin_common.views.server_error"
 
 admin.site.enable_nav_sidebar = False
 admin.site.site_header = "Open Product admin"

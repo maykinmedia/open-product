@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
         pkg-config \
         build-essential \
         # only relevant when using editable/github dependencies, which is discouraged
-        # git \
+        git \
         libpq-dev \
         # required for (log) routing support in uwsgi
         libpcre3 \
@@ -92,6 +92,7 @@ COPY --from=backend-build /app/src/ /app/src/
 
 # copy frontend build statics
 COPY --from=frontend-build /app/src/openproduct/static /app/src/openproduct/static
+COPY --from=frontend-build /app/node_modules/@fortawesome/fontawesome-free/webfonts /app/node_modules/@fortawesome/fontawesome-free/webfonts
 
 # copy source code
 COPY ./src /app/src

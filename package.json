@@ -19,8 +19,9 @@
     "license": "UNLICENSED",
     "homepage": "https://maykinmedia.nl",
     "dependencies": {
-        "wysimark-standalone": "^1.0.0",
-        "microscope-sass": "latest"
+        "@fortawesome/fontawesome-free": "^7.1.0",
+        "microscope-sass": "latest",
+        "wysimark-standalone": "^1.0.0"
     },
     "devDependencies": {
         "@babel/core": "latest",
@@ -49,7 +50,7 @@
     },
     "overrides": {
         "@portive/client": {
-            "axios": "^0.30.0"
+            "axios": "^1.12.0"
         }
     }
 }
