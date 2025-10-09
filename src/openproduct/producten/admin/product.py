@@ -16,6 +16,7 @@ from openproduct.producten.models.validators import (
 )
 from openproduct.producttypen.models.producttype import ProductStateChoices, ProductType
 
+from ...urn.validators import validate_urn_or_url
 from .document import DocumentInline
 from .eigenaar import EigenaarInline
 from .taak import TaakInline
@@ -69,6 +70,12 @@ class ProductAdminForm(forms.ModelForm):
 
         if self.errors:
             return
+
+        validate_urn_or_url(
+            self.cleaned_data["aanvraag_zaak_urn"],
+            self.cleaned_data["aanvraag_zaak_url"],
+            "aanvraag_zaak",
+        )
 
         validate_product_verbruiksobject(
             self.cleaned_data["verbruiksobject"], self.cleaned_data["producttype"]
