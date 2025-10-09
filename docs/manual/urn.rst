@@ -18,7 +18,7 @@ Transitie
 ---------
 
 Om geleidelijk te kunnen overstappen van urls naar urns worden voor nu beide ondersteund.
-Door een Urn mapping aan te maken kan een relatie worden tussen een basis urn en basis url worden gemaakt. Zo hoeft via de admin of API alleen de urn of url worden ingevuld.
+Door een urn mapping aan te maken kan een relatie worden gelegd tussen een basis urn en een basis url. Zo hoeft via de admin of API alleen de urn of url worden ingevuld.
 
 Via de settings ``REQUIRE_URL_URN_MAPPING`` & ``REQUIRE_URN_URL_MAPPING`` kan worden ingesteld of er een error moet worden teruggegeven als er geen mapping bestaat. (beide staan standaard aan)
 

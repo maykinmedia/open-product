@@ -234,5 +234,15 @@ FORCE_TRANSLATION_STRINGS = [
     _("Number of results to return per page."),
 ]
 
-REQUIRE_URN_URL_MAPPING = True
-REQUIRE_URL_URN_MAPPING = True
+REQUIRE_URN_URL_MAPPING = config(
+    "REQUIRE_URN_URL_MAPPING",
+    True,
+    group="Urns",
+    help_text="whether an urn requires an url mapping",
+)
+REQUIRE_URL_URN_MAPPING = config(
+    "REQUIRE_URL_URN_MAPPING",
+    True,
+    group="Urns",
+    help_text="whether an url requires an urn mapping",
+)
