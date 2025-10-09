@@ -1,8 +1,11 @@
-from typing import Optional, Type
+from typing import List, Optional, Type
+
+from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.openapi import AutoSchema as _AutoSchema
-from drf_spectacular.utils import OpenApiExample, OpenApiResponse
+from drf_spectacular.utils import OpenApiExample, OpenApiParameter, OpenApiResponse
 from rest_framework import serializers, status
+from vng_api_common.constants import VERSION_HEADER
 
 from openproduct.utils.serializers import DetailErrorSerializer, ErrorSerializer
 
@@ -47,3 +50,24 @@ class AutoSchema(_AutoSchema):
             **ERRORS,
         }
         return responses
+
+    def get_version_headers(self) -> List[OpenApiParameter]:
+        return [
+            OpenApiParameter(
+                name=VERSION_HEADER,
+                type=str,
+                location=OpenApiParameter.HEADER,
+                description=_(
+                    "Geeft een specifieke API-versie aan in de context van "
+                    "een specifieke aanroep. Voorbeeld: 1.2.1."
+                ),
+                response=True,
+            )
+        ]
+
+    def get_override_parameters(self):
+        params = super().get_override_parameters()
+
+        version_headers = self.get_version_headers()
+
+        return params + version_headers
