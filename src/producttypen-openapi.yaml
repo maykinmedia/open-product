@@ -1802,7 +1802,7 @@ paths:
         name: Accept-Language
         schema:
           type: string
-        description: Optionele taal (`nl, `en`).
+        description: Optionele taal (`nl`, `en`).
       - in: path
         name: uuid
         schema:
