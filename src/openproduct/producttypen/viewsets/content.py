@@ -24,7 +24,7 @@ from openproduct.utils.views import TranslatableViewSetMixin
                 name="Accept-Language",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.HEADER,
-                description="Optionele taal (`nl, `en`).",
+                description="Optionele taal (`nl`, `en`).",
             )
         ],
     ),
