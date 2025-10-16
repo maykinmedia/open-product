@@ -100,6 +100,7 @@ SITE_TITLE = "API dashboard"
 PROJECT_NAME = "Open Product"
 SHOW_ALERT = True
 
+CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
 # This setting is used by the csrf_failure view (accounts app).
 # You can specify any path that should match the request.path
 # Note: the LOGIN_URL Django setting is not used because you could have
