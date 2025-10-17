@@ -7,6 +7,7 @@ open-api-framework[celery,cors,markup,geo,csp,commonground,inclusions,sanitizati
 
 # API libraries
 # django-extra-fields
+django-capture-tag
 django-parler
 django-parler-rest
 django-reversion
@@ -17,3 +18,5 @@ flower
 django-timeline-logger
 
 jsonschema
+
+maykin-common[axes,mfa]

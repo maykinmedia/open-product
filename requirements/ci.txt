@@ -112,7 +112,7 @@ click-repl==0.3.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   celery
-commonground-api-common==2.10.0
+commonground-api-common==2.10.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -186,6 +186,7 @@ django==5.2.3
     #   drf-spectacular
     #   drf-spectacular-sidecar
     #   maykin-2fa
+    #   maykin-common
     #   mozilla-django-oidc
     #   mozilla-django-oidc-db
     #   notifications-api-common
@@ -207,6 +208,10 @@ django-axes==7.0.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+django-capture-tag==1.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 django-celery-beat==2.8.0
     # via
     #   -c requirements/base.txt
@@ -506,6 +511,10 @@ maykin-2fa==1.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
+maykin-common==0.11.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 mccabe==0.7.0
     # via pylint
 mdurl==0.1.2

@@ -8,8 +8,6 @@ def settings(request):
         "SHOW_ALERT",
         "PROJECT_NAME",
         "SITE_TITLE",
-        "RELEASE",
-        "GIT_SHA",
     )
 
     context = {

@@ -17,6 +17,8 @@ LANGUAGE_CODE = "nl"
 TIME_ZONE = "Europe/Amsterdam"  # note: this *may* affect the output of DRF datetimes
 
 INSTALLED_APPS += [
+    "maykin_common",
+    "capture_tag",
     # 'django.contrib.admindocs',
     # 'django.contrib.humanize',
     # 'django.contrib.sitemaps',
@@ -98,6 +100,7 @@ SITE_TITLE = "API dashboard"
 PROJECT_NAME = "Open Product"
 SHOW_ALERT = True
 
+CSRF_FAILURE_VIEW = "maykin_common.views.csrf_failure"
 # This setting is used by the csrf_failure view (accounts app).
 # You can specify any path that should match the request.path
 # Note: the LOGIN_URL Django setting is not used because you could have
@@ -128,7 +131,7 @@ SETUP_CONFIGURATION_STEPS = (
 # Django-Admin-Index
 #
 ADMIN_INDEX_DISPLAY_DROP_DOWN_MENU_CONDITION_FUNCTION = (
-    "openproduct.utils.django_two_factor_auth.should_display_dropdown_menu"
+    "maykin_common.django_two_factor_auth.should_display_dropdown_menu"
 )
 
 ADMIN_INDEX_SHOW_REMAINING_APPS = False
@@ -192,6 +195,7 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     "POSTPROCESSING_HOOKS": (
         "drf_spectacular.hooks.postprocess_schema_enums",
         "openproduct.utils.spectacular.custom_postprocessing_hook",
+        "maykin_common.drf_spectacular.hooks.remove_invalid_url_defaults",
     ),
     "COMPONENT_SPLIT_REQUEST": True,
     "AUTHENTICATION_WHITELIST": [
