@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.32.3
+      - python-requests/2.32.4
     method: GET
     uri: http://localhost:8080/realms/test/protocol/openid-connect/userinfo
   response:

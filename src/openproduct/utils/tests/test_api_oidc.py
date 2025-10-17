@@ -1,11 +1,10 @@
 from functools import partial
-from pathlib import Path
 
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 
 import requests
-import vcr
+from maykin_common.vcr import VCRMixin
 from mozilla_django_oidc_db.models import OpenIDConnectConfig
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
@@ -14,20 +13,17 @@ from ...accounts.tests.factories import UserFactory
 from ...producttypen.tests.factories import ProductTypeFactory
 from .keycloak import mock_oidc_db_config
 
-TEST_FILES = (Path(__file__).parent / "vcr_cassettes").resolve()
-
 mock_admin_oidc_config = partial(
     mock_oidc_db_config,
     app_label="mozilla_django_oidc_db",
     model="OpenIDConnectConfig",
-    id=1,
+    id=1,  # required for the group queries because we're using in-memory objects
     make_users_staff=True,
     username_claim=["preferred_username"],
 )
 
 
-@override_settings()
-class TestApiOidcAuthentication(TestCase):
+class TestApiOidcAuthentication(VCRMixin, TestCase):
     """
     Test results are stored in utils.vc_cassettes
 
@@ -36,6 +32,7 @@ class TestApiOidcAuthentication(TestCase):
     """
 
     def setUp(self):
+        super().setUp()
         ProductTypeFactory.create()
         UserFactory.create(superuser=True, username="testtest")
 
@@ -71,7 +68,6 @@ class TestApiOidcAuthentication(TestCase):
 
         return response.json()["access_token"]
 
-    @vcr.use_cassette(str(TEST_FILES / "valid_token"))
     @mock_admin_oidc_config()
     def test_valid_token(self):
         token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
@@ -83,7 +79,6 @@ class TestApiOidcAuthentication(TestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
 
-    @vcr.use_cassette(str(TEST_FILES / "invalid_token"))
     @mock_admin_oidc_config()
     def test_invalid_token(self):
         token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
@@ -102,7 +97,6 @@ class TestApiOidcAuthentication(TestCase):
             },
         )
 
-    @vcr.use_cassette(str(TEST_FILES / "expired_token"))
     @mock_admin_oidc_config()
     def test_expired_token(self):
         expired_token = (
@@ -135,7 +129,6 @@ class TestApiOidcAuthentication(TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @vcr.use_cassette(str(TEST_FILES / "missing_openid_scope"))
     @mock_admin_oidc_config()
     def test_missing_openid_scope(self):
         config = OpenIDConnectConfig.get_solo()
@@ -159,7 +152,6 @@ class TestApiOidcAuthentication(TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @vcr.use_cassette(str(TEST_FILES / "valid_cc_token"))
     @mock_admin_oidc_config()
     def test_valid_client_credentials_token(self):
         UserFactory.create(username="service-account-open-product", superuser=True)
