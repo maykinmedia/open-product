@@ -178,6 +178,7 @@ PRODUCTTYPEN_API_MAJOR_VERSION = PRODUCTTYPEN_API_VERSION.split(".")[0]
 #
 
 OPENPRODUCT_API_CONTACT_EMAIL = "support@maykinmedia.nl"
+OPENPRODUCT_API_CONTACT_NAME = "Maykin Media"
 OPENPRODUCT_API_CONTACT_URL = "https://www.maykinmedia.nl"
 
 SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
@@ -186,6 +187,7 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     "LICENSE": {"name": "EUPL 1.2", "url": "https://opensource.org/licenses/EUPL-1.2"},
     "CONTACT": {
         "email": OPENPRODUCT_API_CONTACT_EMAIL,
+        "name": OPENPRODUCT_API_CONTACT_NAME,
         "url": OPENPRODUCT_API_CONTACT_URL,
     },
     "SWAGGER_UI_DIST": "SIDECAR",
