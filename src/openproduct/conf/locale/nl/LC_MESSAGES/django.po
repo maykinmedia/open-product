@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 18:04+0200\n"
+"POT-Creation-Date: 2025-10-03 17:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,19 +82,19 @@ msgstr ""
 msgid "You cannot create or update a user with more permissions than yourself."
 msgstr "U kunt een gebruiker niet meer rechten geven dan u zelf heeft."
 
-#: conf/base.py:429
+#: conf/base.py:214
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: conf/base.py:430
+#: conf/base.py:215
 msgid "English"
 msgstr "Engels"
 
-#: conf/base.py:451
+#: conf/base.py:236
 msgid "A page number within the paginated result set."
 msgstr "Een pagina binnen de gepagineerde set resultaten."
 
-#: conf/base.py:452
+#: conf/base.py:237
 msgid "Number of results to return per page."
 msgstr "Het aantal resultaten terug te geven per pagina."
 
@@ -171,11 +171,11 @@ msgstr ""
 msgid "stad"
 msgstr ""
 
-#: locaties/models/locatie.py:61
+#: locaties/models/locatie.py:62
 msgid "Locatie"
 msgstr ""
 
-#: locaties/models/locatie.py:62
+#: locaties/models/locatie.py:63
 msgid "Locaties"
 msgstr ""
 
@@ -670,17 +670,17 @@ msgstr ""
 msgid "Status 'Gereed' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:634
+#: producten/tests/api/test_product_filters.py:635
 msgid ""
 "Filter '{}' moet de format 'key__operator__value' hebben, komma's kunnen "
 "alleen in de `waarde` worden toegevoegd"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:656
+#: producten/tests/api/test_product_filters.py:657
 msgid "Filter '{}' heeft niet de format 'key__operator__waarde'"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:674
+#: producten/tests/api/test_product_filters.py:675
 msgid "operator `{}` is niet bekend/ondersteund"
 msgstr ""
 
@@ -1510,6 +1510,18 @@ msgstr ""
 msgid "Ongeldig format voor parameter query parameter."
 msgstr ""
 
+#: producttypen/viewsets/producttype.py:177
+msgid "Lijst van contact uuids waarop kan worden gezocht."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:183
+msgid "Lijst van locatie uuids waarop kan worden gezocht."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:189
+msgid "Lijst van organisatie uuids waarop kan worden gezocht."
+msgstr ""
+
 #: producttypen/viewsets/thema.py:76
 msgid "Producttype {} moet aan een minimaal één thema zijn gelinkt."
 msgstr ""
@@ -1695,7 +1707,7 @@ msgstr ""
 msgid "The provided value contains an invalid character: %s"
 msgstr "Uw invoer bevat een ongeldig teken: %s"
 
-#: utils/tests/test_validators.py:67 utils/validators.py:58
+#: utils/tests/test_validators.py:62 utils/validators.py:58
 #, fuzzy
 #| msgid ""
 #| "Invalid postal code. A postal code must consist of 4 numbers followed by "
@@ -1704,9 +1716,10 @@ msgid ""
 "Invalid postal code. A postal code must consist of 4 numbers followed by two "
 "capital letters (e.g. 1234 AB)."
 msgstr ""
-"Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door twee hoofdletters (bv: 1234 AB)."
+"Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door "
+"twee hoofdletters (bv: 1234 AB)."
 
-#: utils/tests/test_validators.py:86 utils/validators.py:36
+#: utils/tests/test_validators.py:84 utils/validators.py:36
 msgid "Ongeldig telefoonnummer."
 msgstr ""
 

@@ -1,3 +1,40 @@
+1.4.0 (13-10-2025)
+------------------
+
+.. warning::
+
+     The default number of ``UWSGI_THREADS`` has been changed to 4.
+
+**New features**
+
+* [:open-product:`109`] added csv export for producttypes to admin and as management command
+* [:open-api-framework:`157`] added datadump script
+* [:open-product:`168`] added producttype `publicatie_start_datum` and `publicatie_eind_datum`
+* added locatie & organisatie filters to product and producttype
+* [:open-product:`201`] changed postcode validation to allow both with space and without and uppercase and lowercase, will be changed to correct format on save
+* [:open-product:`187`] added required aanvraag zaak to product which can be saved as url or urn.
+* improved exception handler with structlog see :ref:`manual_logging_exceptions`
+
+**Bugfixes**
+
+* [:open-product:`206`] fixed duplicate Elastic APM registration
+* [:open-product:`195`] fixed content element response example in api spec
+* [:open-product:`207`] fixed productstatechoices syntax warning
+* [:open-product:`224`] fixed hoofd thema circular reference error
+
+**Project maintenance**
+
+* [:open-product:`212`] added issues to team bron project board
+* [:open-api-framework:`85`] set default uwsgi threads to 4
+
+* Upgrade dependencies
+
+    * open-api-framework to 0.13.1
+    * django to 5.2.7
+    * zgw-consumers to 1.0.0
+    * commonground-api-common to 2.10.0
+    * django-setup-configuration to 0.9.0
+
 1.3.0 (14-07-2025)
 ------------------
 
@@ -20,8 +57,7 @@
 * [:open-product:`176`] changed pagination keys to english
 * [:open-api-framework:`148`] added postgres section to docs
 * added prefetch & select related to viewsets
-
-**Project maintenance**
+* added maykin-common
 
 * Upgrade dependencies
 
