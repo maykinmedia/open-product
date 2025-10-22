@@ -4,16 +4,17 @@ from django.test import TestCase
 
 from ..admin.producttype import ProductTypeAdminForm
 from ..models import Thema
+from ..models.producttype import DoelgroepChoices
 from .factories import ThemaFactory, UniformeProductNaamFactory
 
 
 class TestProductTypeAdminForm(TestCase):
     def setUp(self):
-        upn = UniformeProductNaamFactory.create()
+        self.upn = UniformeProductNaamFactory.create()
         self.data = {
             "naam": "test",
             "code": "TEST-123",
-            "uniforme_product_naam": upn,
+            "uniforme_product_naam": self.upn,
             "beschrijving": "beschrijving",
             "samenvatting": "samenvatting",
             "interne_opmerkingen": "interne opmerkingen",
@@ -96,3 +97,48 @@ class TestProductTypeAdminForm(TestCase):
         with self.subTest("both not set"):
             form = ProductTypeAdminForm(data=data)
             self.assertEqual(form.errors, {})
+
+    def test_upl_doelgroep(self):
+        ThemaFactory.create()
+
+        for doelgroep in (
+            DoelgroepChoices.BEDRIJVEN_EN_INSTELLINGEN,
+            DoelgroepChoices.BURGERS,
+        ):
+            with self.subTest(f"doelgroep {doelgroep}"):
+                data = self.data | {
+                    "uniforme_product_naam": None,
+                    "doelgroep": doelgroep,
+                    "themas": Thema.objects.all(),
+                }
+                form = ProductTypeAdminForm(data=data)
+
+                self.assertEqual(
+                    form.errors,
+                    {
+                        "__all__": [
+                            "Bij de doelgroep `Burgers` of `Bedrijven en instellingen` is een uniforme product naam verplicht."
+                        ]
+                    },
+                )
+
+                data["uniforme_product_naam"] = self.upn
+                form = ProductTypeAdminForm(data=data)
+                self.assertEqual(form.errors, {})
+
+        for doelgroep in (
+            DoelgroepChoices.INTERNE_ORGANISATIE,
+            DoelgroepChoices.SAMENWERKINGSPARTNERS,
+        ):
+            with self.subTest(f"doelgroep {doelgroep}"):
+                data = self.data | {
+                    "uniforme_product_naam": None,
+                    "doelgroep": doelgroep,
+                    "themas": Thema.objects.all(),
+                }
+                form = ProductTypeAdminForm(data=data)
+                self.assertEqual(form.errors, {})
+
+                data["uniforme_product_naam"] = self.upn
+                form = ProductTypeAdminForm(data=data)
+                self.assertEqual(form.errors, {})

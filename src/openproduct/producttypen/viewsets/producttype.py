@@ -28,7 +28,7 @@ from openproduct.producttypen.models import (
     ProductType,
     Thema,
 )
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.serializers import (
     ProductTypeActuelePrijsSerializer,
     ProductTypeSerializer,
@@ -199,6 +199,7 @@ class ProductTypeFilterSet(FilterSet):
             "code": ["exact"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
+            "doelgroep": ["exact"],
             "publicatie_start_datum": ["exact", "gte", "lte"],
             "publicatie_eind_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],

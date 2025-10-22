@@ -4,12 +4,12 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.utils.translation import gettext_lazy as _
 
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
 )
 
-from ...producttypen.models.producttype import ProductStateChoices
 from ..admin.product import ProductAdminForm, get_status_choices
 from .factories import ProductFactory
 

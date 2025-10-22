@@ -14,7 +14,8 @@ from openproduct.producten.models.validators import (
     validate_product_status,
     validate_product_verbruiksobject,
 )
-from openproduct.producttypen.models.producttype import ProductStateChoices, ProductType
+from openproduct.producttypen.models.enums import ProductStateChoices
+from openproduct.producttypen.models.producttype import ProductType
 
 from ...urn.validators import validate_urn_or_url
 from .document import DocumentInline

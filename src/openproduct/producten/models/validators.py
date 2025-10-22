@@ -3,7 +3,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 
 
 def validate_bsn(bsn: str):

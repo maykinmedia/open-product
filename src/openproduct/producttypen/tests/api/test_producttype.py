@@ -29,6 +29,7 @@ from openproduct.producttypen.models import (
     VerzoekType,
     ZaakType,
 )
+from openproduct.producttypen.models.enums import DoelgroepChoices
 from openproduct.producttypen.tests.factories import (
     BestandFactory,
     ContentElementFactory,
@@ -54,14 +55,15 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
     def setUp(self):
         super().setUp()
-        upn = UniformeProductNaamFactory.create()
+        self.upn = UniformeProductNaamFactory.create()
         self.thema = ThemaFactory()
 
         self.data = {
             "naam": "test-producttype",
             "code": "PT-12345",
             "samenvatting": "test",
-            "uniforme_product_naam": upn.naam,
+            "uniforme_product_naam": self.upn.naam,
+            "doelgroep": DoelgroepChoices.BURGERS,
             "thema_uuids": [self.thema.uuid],
         }
 
@@ -91,9 +93,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {
-                "uniforme_product_naam": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
@@ -104,6 +103,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
                 "code": [
+                    ErrorDetail(string=_("This field is required."), code="required")
+                ],
+                "doelgroep": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
             },
@@ -125,6 +127,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
             "dataobject_schema": None,
@@ -491,6 +494,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "doelgroep": "burgers",
             "verbruiksobject_schema": {
                 "naam": "test",
                 "schema": {
@@ -680,6 +684,60 @@ class TestProducttypeViewSet(BaseApiTestCase):
             )
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
             self.assertEqual(response.data["gepubliceerd"], False)
+
+    def test_create_producttype_with_doelgroep_and_upl(self):
+        for doelgroep in (
+            DoelgroepChoices.BURGERS,
+            DoelgroepChoices.BEDRIJVEN_EN_INSTELLINGEN,
+        ):
+            with self.subTest(f"{doelgroep} no upl"):
+                response = self.client.post(
+                    self.path,
+                    self.data
+                    | {
+                        "uniforme_product_naam": None,
+                        "doelgroep": doelgroep,
+                    },
+                )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            with self.subTest(f"{doelgroep} with upl"):
+                response = self.client.post(
+                    self.path,
+                    self.data
+                    | {
+                        "code": str(doelgroep).replace("_", "-").upper(),
+                        "uniforme_product_naam": self.upn.naam,
+                        "doelgroep": doelgroep,
+                    },
+                )
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        for doelgroep in (
+            DoelgroepChoices.SAMENWERKINGSPARTNERS,
+            DoelgroepChoices.INTERNE_ORGANISATIE,
+        ):
+            with self.subTest(f"{doelgroep} no upl"):
+                response = self.client.post(
+                    self.path,
+                    self.data
+                    | {
+                        "code": str(doelgroep).replace("_", "-").upper(),
+                        "uniforme_product_naam": None,
+                        "doelgroep": doelgroep,
+                    },
+                )
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            with self.subTest(f"{doelgroep} with upl"):
+                response = self.client.post(
+                    self.path,
+                    self.data
+                    | {
+                        "code": str(doelgroep).replace("_", "-").upper() + "A",
+                        "uniforme_product_naam": self.upn.naam,
+                        "doelgroep": doelgroep,
+                    },
+                )
+                self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_minimal_producttype(self):
         producttype = ProductTypeFactory.create()
@@ -1635,6 +1693,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype1.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype1.uniforme_product_naam.naam,
+                "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
                 "dataobject_schema": None,
@@ -1676,6 +1735,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype2.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype2.uniforme_product_naam.naam,
+                "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
                 "dataobject_schema": None,
@@ -1728,6 +1788,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
             "dataobject_schema": None,

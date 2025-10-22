@@ -12,20 +12,15 @@ from openproduct.locaties.models import Contact, Locatie, Organisatie
 from openproduct.utils.fields import ChoiceArrayField
 from openproduct.utils.models import BasePublishableModel
 
+from .enums import DoelgroepChoices, ProductStateChoices
 from .jsonschema import JsonSchema
 from .thema import Thema
 from .upn import UniformeProductNaam
-from .validators import validate_producttype_code, validate_publicatie_dates
-
-
-class ProductStateChoices(models.TextChoices):
-    INITIEEL = "initieel", _("Initieel")
-    IN_AANVRAAG = "in_aanvraag", _("In aanvraag")
-    GEREED = "gereed", _("Gereed")
-    ACTIEF = "actief", _("Actief")
-    INGETROKKEN = "ingetrokken", _("Ingetrokken")
-    GEWEIGERD = "geweigerd", _("Geweigerd")
-    VERLOPEN = "verlopen", _("Verlopen")
+from .validators import (
+    validate_producttype_code,
+    validate_publicatie_dates,
+    validate_uniforme_product_naam_constraint,
+)
 
 
 @reversion.register(
@@ -102,9 +97,18 @@ class ProductType(BasePublishableModel, TranslatableModel):
     uniforme_product_naam = models.ForeignKey(
         UniformeProductNaam,
         verbose_name=_("Uniforme Product naam"),
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         help_text=_("Uniforme product naam gedefinieerd door de overheid."),
         related_name="producttypen",
+        blank=True,
+        null=True,
+    )
+
+    doelgroep = models.CharField(
+        verbose_name=_("doelgroep"),
+        choices=DoelgroepChoices.choices,
+        help_text=_("De doelgroep van het producttype."),
+        default=DoelgroepChoices.BURGERS,
     )
 
     themas = models.ManyToManyField(
@@ -173,6 +177,9 @@ class ProductType(BasePublishableModel, TranslatableModel):
     def clean(self):
         validate_publicatie_dates(
             self.publicatie_start_datum, self.publicatie_eind_datum
+        )
+        validate_uniforme_product_naam_constraint(
+            self.uniforme_product_naam, self.doelgroep
         )
 
     def add_contact_organisaties(self):

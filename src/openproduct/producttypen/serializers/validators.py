@@ -9,6 +9,7 @@ from ..models.validators import (
     validate_prijs_optie_xor_regel,
     validate_publicatie_dates,
     validate_thema_gepubliceerd_state,
+    validate_uniforme_product_naam_constraint,
 )
 
 
@@ -79,5 +80,21 @@ class PublicatieDateValidator:
         )
         try:
             validate_publicatie_dates(pub_start_datum, pub_eind_datum)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message)
+
+
+class DoelgroepUplValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        upl = get_from_serializer_data_or_instance(
+            "uniforme_product_naam", value, serializer
+        )
+
+        doelgroep = get_from_serializer_data_or_instance("doelgroep", value, serializer)
+
+        try:
+            validate_uniforme_product_naam_constraint(upl, doelgroep)
         except ValidationError as e:
             raise serializers.ValidationError(e.message)

@@ -11,7 +11,7 @@ import reversion
 from openproduct.logging.logevent import audit_automation_update
 from openproduct.producten.models.validators import validate_product_dates
 from openproduct.producttypen.models import ProductType
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.urn.fields import UrlField, UrnField
 from openproduct.utils.models import BasePublishableModel
 

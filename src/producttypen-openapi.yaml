@@ -4653,6 +4653,22 @@ paths:
         explode: false
         style: form
       - in: query
+        name: doelgroep
+        schema:
+          type: string
+          enum:
+          - bedrijven_en_instellingen
+          - burgers
+          - interne_organisatie
+          - samenwerkingspartners
+        description: |-
+          De doelgroep van het producttype.
+
+          * `burgers` - Burgers
+          * `interne_organisatie` - Interne organisatie
+          * `samenwerkingspartners` - Samenwerkingspartners
+          * `bedrijven_en_instellingen` - Bedrijven en instellingen
+      - in: query
         name: externe_code
         schema:
           type: string
@@ -4919,6 +4935,7 @@ paths:
                     results:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       uniforme_product_naam: parkeervergunning
+                      doelgroep: burgers
                       themas:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeren
@@ -4989,8 +5006,8 @@ paths:
                       - naam: CBS
                         code: '456'
                       parameters:
-                      - naam: doelgroep
-                        waarde: inwoners
+                      - naam: betalingskenmerk
+                        waarde: 12345AB
                       zaaktypen:
                       - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                       verzoektypen:
@@ -5076,6 +5093,7 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
+                  doelgroep: burgers
                   thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
                   locatie_uuids:
@@ -5101,8 +5119,8 @@ paths:
                   - naam: CBS
                     code: '456'
                   parameters:
-                  - naam: doelgroep
-                    waarde: inwoners
+                  - naam: betalingskenmerk
+                    waarde: 12345AB
                   zaaktypen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
@@ -5133,6 +5151,7 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
+                    doelgroep: burgers
                     themas:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
@@ -5203,8 +5222,8 @@ paths:
                     - naam: CBS
                       code: '456'
                     parameters:
-                    - naam: doelgroep
-                      waarde: inwoners
+                    - naam: betalingskenmerk
+                      waarde: 12345AB
                     zaaktypen:
                     - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
@@ -5314,6 +5333,7 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
+                    doelgroep: burgers
                     themas:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
@@ -5384,8 +5404,8 @@ paths:
                     - naam: CBS
                       code: '456'
                     parameters:
-                    - naam: doelgroep
-                      waarde: inwoners
+                    - naam: betalingskenmerk
+                      waarde: 12345AB
                     zaaktypen:
                     - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
@@ -5478,6 +5498,7 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
+                  doelgroep: burgers
                   thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
                   locatie_uuids:
@@ -5503,8 +5524,8 @@ paths:
                   - naam: CBS
                     code: '456'
                   parameters:
-                  - naam: doelgroep
-                    waarde: inwoners
+                  - naam: betalingskenmerk
+                    waarde: 12345AB
                   zaaktypen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
@@ -5535,6 +5556,7 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
+                    doelgroep: burgers
                     themas:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
@@ -5605,8 +5627,8 @@ paths:
                     - naam: CBS
                       code: '456'
                     parameters:
-                    - naam: doelgroep
-                      waarde: inwoners
+                    - naam: betalingskenmerk
+                      waarde: 12345AB
                     zaaktypen:
                     - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
@@ -5701,6 +5723,7 @@ paths:
               ProducttypeRequest:
                 value:
                   uniforme_product_naam: aanleunwoning
+                  doelgroep: burgers
                   thema_uuids:
                   - 497f6eca-6276-4993-bfeb-53cbbbba6f08
                   locatie_uuids:
@@ -5726,8 +5749,8 @@ paths:
                   - naam: CBS
                     code: '456'
                   parameters:
-                  - naam: doelgroep
-                    waarde: inwoners
+                  - naam: betalingskenmerk
+                    waarde: 12345AB
                   zaaktypen:
                   - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
@@ -5757,6 +5780,7 @@ paths:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     uniforme_product_naam: parkeervergunning
+                    doelgroep: burgers
                     themas:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeren
@@ -5827,8 +5851,8 @@ paths:
                     - naam: CBS
                       code: '456'
                     parameters:
-                    - naam: doelgroep
-                      waarde: inwoners
+                    - naam: betalingskenmerk
+                      waarde: 12345AB
                     zaaktypen:
                     - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
@@ -7716,6 +7740,18 @@ components:
           type: string
       required:
       - detail
+    DoelgroepEnum:
+      enum:
+      - burgers
+      - interne_organisatie
+      - samenwerkingspartners
+      - bedrijven_en_instellingen
+      type: string
+      description: |-
+        * `burgers` - Burgers
+        * `interne_organisatie` - Interne organisatie
+        * `samenwerkingspartners` - Samenwerkingspartners
+        * `bedrijven_en_instellingen` - Bedrijven en instellingen
     Error:
       type: object
       properties:
@@ -8858,6 +8894,17 @@ components:
           type: string
           minLength: 1
           description: Uniforme product naam
+          nullable: true
+        doelgroep:
+          allOf:
+          - $ref: '#/components/schemas/DoelgroepEnum'
+          description: |-
+            De doelgroep van het producttype.
+
+            * `burgers` - Burgers
+            * `interne_organisatie` - Interne organisatie
+            * `samenwerkingspartners` - Samenwerkingspartners
+            * `bedrijven_en_instellingen` - Bedrijven en instellingen
         thema_uuids:
           type: array
           items:
@@ -9149,6 +9196,17 @@ components:
         uniforme_product_naam:
           type: string
           description: Uniforme product naam
+          nullable: true
+        doelgroep:
+          allOf:
+          - $ref: '#/components/schemas/DoelgroepEnum'
+          description: |-
+            De doelgroep van het producttype.
+
+            * `burgers` - Burgers
+            * `interne_organisatie` - Interne organisatie
+            * `samenwerkingspartners` - Samenwerkingspartners
+            * `bedrijven_en_instellingen` - Bedrijven en instellingen
         themas:
           type: array
           items:
@@ -9289,7 +9347,6 @@ components:
       - samenvatting
       - taal
       - themas
-      - uniforme_product_naam
       - update_datum
       - uuid
       - verbruiksobject_schema
@@ -9332,6 +9389,17 @@ components:
           type: string
           minLength: 1
           description: Uniforme product naam
+          nullable: true
+        doelgroep:
+          allOf:
+          - $ref: '#/components/schemas/DoelgroepEnum'
+          description: |-
+            De doelgroep van het producttype.
+
+            * `burgers` - Burgers
+            * `interne_organisatie` - Interne organisatie
+            * `samenwerkingspartners` - Samenwerkingspartners
+            * `bedrijven_en_instellingen` - Bedrijven en instellingen
         thema_uuids:
           type: array
           items:
@@ -9438,7 +9506,6 @@ components:
       - naam
       - samenvatting
       - thema_uuids
-      - uniforme_product_naam
     ProductTypeTranslation:
       type: object
       properties:
