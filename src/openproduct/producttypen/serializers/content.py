@@ -22,6 +22,7 @@ from openproduct.utils.fields import UUIDRelatedField
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
+                "aanvullende_info": "",
                 "taal": "nl",
                 "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
@@ -32,6 +33,7 @@ from openproduct.utils.fields import UUIDRelatedField
             value={
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
+                "aanvullende_info": "",
                 "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             request_only=True,
@@ -51,6 +53,13 @@ class ContentElementSerializer(TranslatableModelSerializer):
         help_text=get_help_text("producttypen.ContentElementTranslation", "content"),
     )
 
+    aanvullende_info = serializers.CharField(
+        help_text=get_help_text(
+            "producttypen.ContentElementTranslation", "aanvullende_info"
+        ),
+        required=False,
+    )
+
     producttype_uuid = UUIDRelatedField(
         source="producttype", queryset=ProductType.objects.all()
     )
@@ -66,7 +75,14 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     class Meta:
         model = ContentElement
-        fields = ("uuid", "content", "labels", "producttype_uuid", "taal")
+        fields = (
+            "uuid",
+            "content",
+            "aanvullende_info",
+            "labels",
+            "producttype_uuid",
+            "taal",
+        )
 
 
 class NestedContentElementSerializer(ContentElementSerializer):
@@ -76,6 +92,7 @@ class NestedContentElementSerializer(ContentElementSerializer):
             "uuid",
             "taal",
             "content",
+            "aanvullende_info",
             "labels",
         )
 
@@ -86,9 +103,16 @@ class ContentElementTranslationSerializer(serializers.ModelSerializer):
         help_text=get_help_text("producttypen.ContentElementTranslation", "content"),
     )
 
+    aanvullende_info = serializers.CharField(
+        help_text=get_help_text(
+            "producttypen.ContentElementTranslation", "aanvullende_info"
+        ),
+        required=False,
+    )
+
     class Meta:
         model = ContentElement
-        fields = ("uuid", "content")
+        fields = ("uuid", "content", "aanvullende_info")
 
 
 class ContentLabelSerializer(serializers.ModelSerializer):

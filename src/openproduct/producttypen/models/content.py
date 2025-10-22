@@ -50,6 +50,8 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
 
     content = TranslatedField()
 
+    aanvullende_info = TranslatedField()
+
     order_with_respect_to = "producttype"
     objects = ContentElementManager()
 
@@ -73,6 +75,11 @@ class ContentElementTranslation(TranslatedFieldsModel):
     content = models.TextField(
         _("content"),
         help_text=_("De content van dit content element"),
+    )
+    aanvullende_info = models.TextField(
+        _("aanvullende info"),
+        help_text=_("De aanvullende info van dit content element"),
+        default="",
     )
 
     class Meta:
