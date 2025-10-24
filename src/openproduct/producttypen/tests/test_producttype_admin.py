@@ -18,6 +18,7 @@ class TestProductTypeAdminForm(TestCase):
             "beschrijving": "beschrijving",
             "samenvatting": "samenvatting",
             "interne_opmerkingen": "interne opmerkingen",
+            "doelgroep": DoelgroepChoices.BURGERS,
         }
 
     def test_at_least_one_thema_is_required(self):

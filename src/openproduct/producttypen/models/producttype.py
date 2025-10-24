@@ -108,7 +108,6 @@ class ProductType(BasePublishableModel, TranslatableModel):
         verbose_name=_("doelgroep"),
         choices=DoelgroepChoices.choices,
         help_text=_("De doelgroep van het producttype."),
-        default=DoelgroepChoices.BURGERS,
     )
 
     themas = models.ManyToManyField(

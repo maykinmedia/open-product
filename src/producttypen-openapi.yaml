@@ -9338,6 +9338,7 @@ components:
       - code
       - contacten
       - dataobject_schema
+      - doelgroep
       - gepubliceerd
       - links
       - locaties
@@ -9503,6 +9504,7 @@ components:
             $ref: '#/components/schemas/NestedProcesRequest'
       required:
       - code
+      - doelgroep
       - naam
       - samenvatting
       - thema_uuids
