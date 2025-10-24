@@ -1755,6 +1755,7 @@ paths:
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
+                    aanvullende_info: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
@@ -1833,6 +1834,7 @@ paths:
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
+                    aanvullende_info: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
@@ -1919,6 +1921,7 @@ paths:
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
+                    aanvullende_info: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
@@ -2004,6 +2007,7 @@ paths:
                     labels:
                     - openingstijden
                     content: ma-vr 8:00-17:00
+                    aanvullende_info: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
@@ -6119,6 +6123,7 @@ paths:
                       labels:
                       - openingstijden
                       content: ma-vr 8:00-17:00
+                      aanvullende_info: ''
                       taal: nl
                       producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
                   summary: content element response
@@ -7670,6 +7675,9 @@ components:
         content:
           type: string
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          description: De aanvullende info van dit content element
         labels:
           type: array
           items:
@@ -7694,6 +7702,10 @@ components:
           type: string
           minLength: 1
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          minLength: 1
+          description: De aanvullende info van dit content element
         labels:
           type: array
           items:
@@ -7715,6 +7727,9 @@ components:
         content:
           type: string
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          description: De aanvullende info van dit content element
       required:
       - content
       - uuid
@@ -7725,6 +7740,10 @@ components:
           type: string
           minLength: 1
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          minLength: 1
+          description: De aanvullende info van dit content element
       required:
       - content
     ContentLabel:
@@ -7980,6 +7999,9 @@ components:
         content:
           type: string
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          description: De aanvullende info van dit content element
         labels:
           type: array
           items:
@@ -8772,6 +8794,10 @@ components:
           type: string
           minLength: 1
           description: De content van dit content element
+        aanvullende_info:
+          type: string
+          minLength: 1
+          description: De aanvullende info van dit content element
         labels:
           type: array
           items:

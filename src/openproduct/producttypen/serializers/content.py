@@ -33,7 +33,6 @@ from openproduct.utils.fields import UUIDRelatedField
             value={
                 "labels": ["openingstijden"],
                 "content": "ma-vr 8:00-17:00",
-                "aanvullende_info": "",
                 "producttype_uuid": "5f6a2219-5768-4e11-8a8e-ffbafff32482",
             },
             request_only=True,

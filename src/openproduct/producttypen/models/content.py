@@ -79,7 +79,7 @@ class ContentElementTranslation(TranslatedFieldsModel):
     aanvullende_info = models.TextField(
         _("aanvullende info"),
         help_text=_("De aanvullende info van dit content element"),
-        default="",
+        blank=True,
     )
 
     class Meta:
