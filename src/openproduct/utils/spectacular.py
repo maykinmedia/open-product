@@ -48,6 +48,11 @@ def custom_postprocessing_hook(result, generator, request, public):
                 items.pop("default", None)
                 items.pop("writeOnly", None)
 
+            # fix for missing type for nested serializers.
+            if "nullable" in prop and "type" not in prop:
+                stdout.write(f"added type:object to {schema_key}.{prop_key}\n")
+                prop["type"] = "object"
+
     return result
 
 

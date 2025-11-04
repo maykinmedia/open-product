@@ -7608,6 +7608,7 @@ components:
           - $ref: '#/components/schemas/Organisatie'
           readOnly: true
           nullable: true
+          type: object
         naam:
           type: string
           description: Naam van het contact (persoon, afdeling, enz..)
@@ -9272,11 +9273,13 @@ components:
           - $ref: '#/components/schemas/JsonSchema'
           readOnly: true
           nullable: true
+          type: object
         dataobject_schema:
           allOf:
           - $ref: '#/components/schemas/JsonSchema'
           readOnly: true
           nullable: true
+          type: object
         gepubliceerd:
           type: boolean
           readOnly: true
@@ -9379,6 +9382,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedPrijs'
           nullable: true
+          type: object
       required:
       - actuele_prijs
       - code

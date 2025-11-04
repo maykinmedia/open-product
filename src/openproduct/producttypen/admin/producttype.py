@@ -138,7 +138,7 @@ class ProductTypeAdmin(
         "naam",
         "code",
         "doelgroep",
-        "toegestane_statussen",
+        "uniforme_product_naam",
         "publicatie_start_datum",
         "publicatie_eind_datum",
         "samenvatting",
