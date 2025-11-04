@@ -78,7 +78,8 @@ class ProductType(BasePublishableModel, TranslatableModel):
                 choice
                 for choice in ProductStateChoices.choices
                 if choice[0] != ProductStateChoices.INITIEEL
-            ]
+            ],
+            max_length=100,
         ),
         verbose_name=_("toegestane statussen"),
         default=list,
@@ -106,6 +107,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
 
     doelgroep = models.CharField(
         verbose_name=_("doelgroep"),
+        max_length=100,
         choices=DoelgroepChoices.choices,
         help_text=_("De doelgroep van het producttype."),
     )

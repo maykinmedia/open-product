@@ -81,7 +81,7 @@ class PublicatieDateValidator:
         try:
             validate_publicatie_dates(pub_start_datum, pub_eind_datum)
         except ValidationError as e:
-            raise serializers.ValidationError(e.message)
+            raise serializers.ValidationError(e.message_dict)
 
 
 class DoelgroepUplValidator:
@@ -97,4 +97,4 @@ class DoelgroepUplValidator:
         try:
             validate_uniforme_product_naam_constraint(upl, doelgroep)
         except ValidationError as e:
-            raise serializers.ValidationError(e.message)
+            raise serializers.ValidationError(e.message_dict)

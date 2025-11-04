@@ -287,7 +287,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     bestanden = NestedBestandSerializer(many=True, read_only=True)
     acties = NestedActieSerializer(many=True, read_only=True)
 
-    verbruiksobject_schema = JsonSchemaSerializer(read_only=True)
+    verbruiksobject_schema = JsonSchemaSerializer(read_only=True, allow_null=True)
     verbruiksobject_schema_naam = serializers.SlugRelatedField(
         slug_field="naam",
         queryset=JsonSchema.objects.all(),
@@ -297,7 +297,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         source="verbruiksobject_schema",
     )
 
-    dataobject_schema = JsonSchemaSerializer(read_only=True)
+    dataobject_schema = JsonSchemaSerializer(read_only=True, allow_null=True)
     dataobject_schema_naam = serializers.SlugRelatedField(
         slug_field="naam",
         queryset=JsonSchema.objects.all(),

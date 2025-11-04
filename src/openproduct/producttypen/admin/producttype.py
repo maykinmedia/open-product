@@ -137,7 +137,7 @@ class ProductTypeAdmin(
         "uuid",
         "naam",
         "code",
-        "uniforme_product_naam",
+        "doelgroep",
         "toegestane_statussen",
         "publicatie_start_datum",
         "publicatie_eind_datum",

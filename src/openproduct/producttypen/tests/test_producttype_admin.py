@@ -46,7 +46,7 @@ class TestProductTypeAdminForm(TestCase):
             self.assertEqual(
                 form.errors,
                 {
-                    "__all__": [
+                    "publicatie_eind_datum": [
                         "De publicatie eind datum van een producttype mag niet op een eerdere of dezelfde dag vallen als de publicate start datum."
                     ]
                 },
@@ -63,7 +63,7 @@ class TestProductTypeAdminForm(TestCase):
             self.assertEqual(
                 form.errors,
                 {
-                    "__all__": [
+                    "publicatie_eind_datum": [
                         "De publicatie eind datum van een producttype mag niet op een eerdere of dezelfde dag vallen als de publicate start datum."
                     ]
                 },
@@ -89,7 +89,7 @@ class TestProductTypeAdminForm(TestCase):
             self.assertEqual(
                 form.errors,
                 {
-                    "__all__": [
+                    "publicatie_eind_datum": [
                         "De publicatie eind datum kan niet zonder een publicatie start datum worden gezet."
                     ]
                 },
@@ -117,7 +117,7 @@ class TestProductTypeAdminForm(TestCase):
                 self.assertEqual(
                     form.errors,
                     {
-                        "__all__": [
+                        "doelgroep": [
                             "Bij de doelgroep `Burgers` of `Bedrijven en instellingen` is een uniforme product naam verplicht."
                         ]
                     },

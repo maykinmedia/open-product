@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='producttype',
             name='doelgroep',
-            field=models.CharField(choices=[('burgers', 'Burgers'), ('interne_organisatie', 'Interne organisatie'), ('samenwerkingspartners', 'Samenwerkingspartners'), ('bedrijven_en_instellingen', 'Bedrijven en instellingen')], default='doelgroep', help_text='De doelgroep van het producttype.', verbose_name='doelgroep'),
+            field=models.CharField(choices=[('burgers', 'Burgers'), ('interne_organisatie', 'Interne organisatie'), ('samenwerkingspartners', 'Samenwerkingspartners'), ('bedrijven_en_instellingen', 'Bedrijven en instellingen')], default='burgers', help_text='De doelgroep van het producttype.', verbose_name='doelgroep'),
             preserve_default=False,
         ),
         migrations.AlterField(

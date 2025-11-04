@@ -45,7 +45,7 @@ from .organisatie import OrganisatieSerializer
     ],
 )
 class ContactSerializer(serializers.ModelSerializer):
-    organisatie = OrganisatieSerializer(read_only=True)
+    organisatie = OrganisatieSerializer(read_only=True, allow_null=True)
     organisatie_uuid = UUIDRelatedField(
         queryset=Organisatie.objects.all(),
         source="organisatie",

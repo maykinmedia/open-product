@@ -7607,6 +7607,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/Organisatie'
           readOnly: true
+          nullable: true
         naam:
           type: string
           description: Naam van het contact (persoon, afdeling, enz..)
@@ -9270,10 +9271,12 @@ components:
           allOf:
           - $ref: '#/components/schemas/JsonSchema'
           readOnly: true
+          nullable: true
         dataobject_schema:
           allOf:
           - $ref: '#/components/schemas/JsonSchema'
           readOnly: true
+          nullable: true
         gepubliceerd:
           type: boolean
           readOnly: true

@@ -62,6 +62,7 @@ class Product(BasePublishableModel):
 
     status = models.CharField(
         _("status"),
+        max_length=100,
         choices=ProductStateChoices.choices,
         help_text=_(
             "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype)."
