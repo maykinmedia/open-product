@@ -65,7 +65,10 @@ class ContentElementInlineForm(TranslatableModelForm):
     class Meta:
         model = ContentElement
         fields = "__all__"
-        widgets = {"content": WysimarkWidget(), "aanvullende_info": WysimarkWidget()}
+        widgets = {
+            "content": WysimarkWidget(),
+            "aanvullende_informatie": WysimarkWidget(),
+        }
 
 
 class ContentElementInlineFormset(AuditLogInlineformset, TranslatableBaseInlineFormSet):
@@ -93,9 +96,9 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
             },
         ),
         (
-            "Aanvullende info",
+            "Aanvullende informatie",
             {
-                "fields": ["aanvullende_info"],
+                "fields": ["aanvullende_informatie"],
                 "classes": ("collapse",),
             },
         ),

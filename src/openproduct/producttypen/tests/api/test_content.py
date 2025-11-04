@@ -63,7 +63,7 @@ class TestContentElement(BaseApiTestCase):
         expected_data = {
             "labels": [self.label.naam],
             "content": "Voorwaarden",
-            "aanvullende_info": "",
+            "aanvullende_informatie": "",
             "producttype_uuid": self.producttype.uuid,
             "taal": "nl",
         }
@@ -121,7 +121,7 @@ class TestContentElement(BaseApiTestCase):
         expected_data = {
             "uuid": str(self.content_element.uuid),
             "content": self.content_element.content,
-            "aanvullende_info": "",
+            "aanvullende_informatie": "",
             "labels": [
                 self.label.naam,
             ],
@@ -178,7 +178,7 @@ class TestContentElementActions(BaseApiTestCase):
             {
                 "uuid": str(self.content_element.uuid),
                 "content": "content EN",
-                "aanvullende_info": "",
+                "aanvullende_informatie": "",
             },
         )
         self.content_element.set_current_language("en")
