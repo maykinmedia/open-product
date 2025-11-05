@@ -21,6 +21,7 @@ from ..models import (
     ZaakType,
 )
 from ..models.dmn_config import DmnConfig
+from ..models.enums import DoelgroepChoices
 
 fake = Faker()
 
@@ -36,6 +37,7 @@ class UniformeProductNaamFactory(factory.django.DjangoModelFactory):
 class ProductTypeFactory(factory.django.DjangoModelFactory):
     code = factory.Sequence(lambda n: f"producttype code {n}")
     uniforme_product_naam = factory.SubFactory(UniformeProductNaamFactory)
+    doelgroep = DoelgroepChoices.BURGERS
 
     class Meta:
         model = ProductType

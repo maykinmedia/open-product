@@ -18,7 +18,7 @@ from openproduct.producten.tests.factories import (
     TaakFactory,
     ZaakFactory,
 )
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,

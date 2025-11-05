@@ -31,7 +31,7 @@ from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
 from .proces import NestedProcesSerializer, ProcesSerializer
-from .validators import PublicatieDateValidator
+from .validators import DoelgroepUplValidator, PublicatieDateValidator
 from .verzoektype import NestedVerzoekTypeSerializer, VerzoekTypeSerializer
 from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
@@ -62,6 +62,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "uniforme_product_naam": "parkeervergunning",
+                "doelgroep": "burgers",
                 "themas": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -159,7 +160,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                     {"naam": "CBS", "code": "456"},
                 ],
                 "parameters": [
-                    {"naam": "doelgroep", "waarde": "inwoners"},
+                    {"naam": "betalingskenmerk", "waarde": "12345AB"},
                 ],
                 "zaaktypen": [
                     {
@@ -208,6 +209,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
             "producttype request",
             value={
                 "uniforme_product_naam": "aanleunwoning",
+                "doelgroep": "burgers",
                 "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
                 "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
@@ -225,7 +227,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                     {"naam": "CBS", "code": "456"},
                 ],
                 "parameters": [
-                    {"naam": "doelgroep", "waarde": "inwoners"},
+                    {"naam": "betalingskenmerk", "waarde": "12345AB"},
                 ],
                 "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
                 "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
@@ -239,7 +241,10 @@ class NestedThemaSerializer(serializers.ModelSerializer):
 )
 class ProductTypeSerializer(TranslatableModelSerializer):
     uniforme_product_naam = serializers.SlugRelatedField(
-        slug_field="naam", queryset=UniformeProductNaam.objects.all()
+        slug_field="naam",
+        queryset=UniformeProductNaam.objects.all(),
+        required=False,
+        allow_null=True,
     )
 
     themas = NestedThemaSerializer(many=True, read_only=True)
@@ -282,7 +287,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     bestanden = NestedBestandSerializer(many=True, read_only=True)
     acties = NestedActieSerializer(many=True, read_only=True)
 
-    verbruiksobject_schema = JsonSchemaSerializer(read_only=True)
+    verbruiksobject_schema = JsonSchemaSerializer(read_only=True, allow_null=True)
     verbruiksobject_schema_naam = serializers.SlugRelatedField(
         slug_field="naam",
         queryset=JsonSchema.objects.all(),
@@ -292,7 +297,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         source="verbruiksobject_schema",
     )
 
-    dataobject_schema = JsonSchemaSerializer(read_only=True)
+    dataobject_schema = JsonSchemaSerializer(read_only=True, allow_null=True)
     dataobject_schema_naam = serializers.SlugRelatedField(
         slug_field="naam",
         queryset=JsonSchema.objects.all(),
@@ -381,6 +386,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         fields = [
             "uuid",
             "uniforme_product_naam",
+            "doelgroep",
             "themas",
             "thema_uuids",
             "locaties",
@@ -420,6 +426,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
                 ["thema_uuids", "locatie_uuids", "organisatie_uuids", "contacten_uuids"]
             ),
             PublicatieDateValidator(),
+            DoelgroepUplValidator(),
         ]
 
     def validate_thema_uuids(self, themas: list[Thema]) -> list[Thema]:

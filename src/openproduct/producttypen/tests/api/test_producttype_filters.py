@@ -12,6 +12,7 @@ from openproduct.locaties.tests.factories import (
     LocatieFactory,
     OrganisatieFactory,
 )
+from openproduct.producttypen.models.enums import DoelgroepChoices
 from openproduct.producttypen.tests.factories import (
     ContentElementFactory,
     ContentLabelFactory,
@@ -142,14 +143,18 @@ class TestProductTypeFilters(BaseApiTestCase):
 
     def test_parameter_filter(self):
         producttype_1 = ProductTypeFactory.create()
-        ParameterFactory(naam="doelgroep", waarde="inwoners", producttype=producttype_1)
+        ParameterFactory(
+            naam="betalingskemerk", waarde="12345AB", producttype=producttype_1
+        )
 
         producttype_2 = ProductTypeFactory.create()
         ParameterFactory(
-            naam="doelgroep", waarde="bedrijven", producttype=producttype_2
+            naam="betalingskemerk", waarde="ZAQ123", producttype=producttype_2
         )
 
-        response = self.client.get(self.path, {"parameter": "[doelgroep:inwoners]"})
+        response = self.client.get(
+            self.path, {"parameter": "[betalingskemerk:12345AB]"}
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
@@ -157,16 +162,14 @@ class TestProductTypeFilters(BaseApiTestCase):
 
     def test_multiple_parameter_filters(self):
         producttype_1 = ProductTypeFactory.create()
-        ParameterFactory(naam="doelgroep", waarde="inwoners", producttype=producttype_1)
+        ParameterFactory(naam="sector", waarde="Z", producttype=producttype_1)
         ParameterFactory(naam="buurt", waarde="kwartier", producttype=producttype_1)
 
         producttype_2 = ProductTypeFactory.create()
-        ParameterFactory(
-            naam="doelgroep", waarde="bedrijven", producttype=producttype_2
-        )
+        ParameterFactory(naam="sector", waarde="q", producttype=producttype_2)
 
         response = self.client.get(
-            self.path, {"parameter": ("[doelgroep:inwoners]", "[buurt:kwartier]")}
+            self.path, {"parameter": ("[sector:Z]", "[buurt:kwartier]")}
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -185,7 +188,7 @@ class TestProductTypeFilters(BaseApiTestCase):
 
     def test_first_parameter_filter_without_key_value(self):
         response = self.client.get(
-            self.path, {"parameter": ("[:]", "[doelgroep:inwoners]")}
+            self.path, {"parameter": ("[:]", "[buurt:kwartier]")}
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -974,3 +977,14 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn("ABC", response.data["results"][0]["organisaties"][0]["code"])
+
+    def test_doelgroep_filter(self):
+        ProductTypeFactory.create(doelgroep=DoelgroepChoices.BURGERS)
+        ProductTypeFactory.create(doelgroep=DoelgroepChoices.SAMENWERKINGSPARTNERS)
+
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"doelgroep": "burgers"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn("burgers", response.data["results"][0]["doelgroep"])

@@ -11,7 +11,7 @@ import reversion
 from openproduct.logging.logevent import audit_automation_update
 from openproduct.producten.models.validators import validate_product_dates
 from openproduct.producttypen.models import ProductType
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.urn.fields import UrlField, UrnField
 from openproduct.utils.models import BasePublishableModel
 
@@ -62,6 +62,7 @@ class Product(BasePublishableModel):
 
     status = models.CharField(
         _("status"),
+        max_length=100,
         choices=ProductStateChoices.choices,
         help_text=_(
             "De status opties worden bepaald door het veld 'toegestane statussen' van het gerelateerde producttype. Via start & eind_datum kan de status automatisch naar ACTIEF of VERLOPEN worden gezet (mits deze statussen zijn toegestaan op het producttype)."

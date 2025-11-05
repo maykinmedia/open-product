@@ -7,9 +7,9 @@ from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
 
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import ProductTypeFactory
 
-from ...producttypen.models.producttype import ProductStateChoices
 from ..models.validators import (
     validate_product_eind_datum,
     validate_product_start_datum,

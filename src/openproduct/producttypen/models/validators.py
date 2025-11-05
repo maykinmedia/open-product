@@ -6,6 +6,7 @@ from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 
 from openproduct.utils.validators import CustomRegexValidator
 
+from .enums import DoelgroepChoices
 from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
@@ -126,14 +127,32 @@ def validate_publicatie_dates(publicatie_start_datum, publicatie_eind_datum):
 
     if publicatie_start_datum is None:
         raise ValidationError(
-            _(
-                "De publicatie eind datum kan niet zonder een publicatie start datum worden gezet."
-            )
+            {
+                "publicatie_eind_datum": _(
+                    "De publicatie eind datum kan niet zonder een publicatie start datum worden gezet."
+                )
+            }
         )
 
     if publicatie_start_datum >= publicatie_eind_datum:
         raise ValidationError(
-            _(
-                "De publicatie eind datum van een producttype mag niet op een eerdere of dezelfde dag vallen als de publicate start datum."
-            )
+            {
+                "publicatie_eind_datum": _(
+                    "De publicatie eind datum van een producttype mag niet op een eerdere of dezelfde dag vallen als de publicate start datum."
+                )
+            }
+        )
+
+
+def validate_uniforme_product_naam_constraint(upl, doelgroep: DoelgroepChoices):
+    if not upl and doelgroep in (
+        DoelgroepChoices.BURGERS,
+        DoelgroepChoices.BEDRIJVEN_EN_INSTELLINGEN,
+    ):
+        raise ValidationError(
+            {
+                "doelgroep": _(
+                    "Bij de doelgroep `Burgers` of `Bedrijven en instellingen` is een uniforme product naam verplicht."
+                )
+            }
         )

@@ -24,7 +24,7 @@ from openproduct.producten.tests.factories import (
     ZaakFactory,
 )
 from openproduct.producttypen.models import ExterneVerwijzingConfig
-from openproduct.producttypen.models.producttype import ProductStateChoices
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
