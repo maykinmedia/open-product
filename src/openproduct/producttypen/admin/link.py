@@ -1,12 +1,13 @@
 from django.contrib import admin
 
+from guardian.admin import GuardedInlineAdminMixin
 from reversion_compare.admin import CompareVersionAdmin
 
 from ...logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 from ..models import Link
 
 
-class LinkInline(admin.TabularInline):
+class LinkInline(GuardedInlineAdminMixin, admin.TabularInline):
     formset = AuditLogInlineformset
     model = Link
     extra = 1

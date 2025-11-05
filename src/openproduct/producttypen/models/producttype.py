@@ -171,6 +171,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
         verbose_name = _("Producttype")
         verbose_name_plural = _("Producttypen")
         ordering = ("-id",)
+        permissions = (("producten", "alter products of this producttype"),)
 
     def __str__(self):
         return self.code

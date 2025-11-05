@@ -1,10 +1,13 @@
 from django.contrib import admin
 
+from guardian.admin import GuardedInlineAdminMixin
+
 from openproduct.logging.admin_tools import AuditLogInlineformset
 from openproduct.producttypen.models import Actie
+from openproduct.utils.guardian import GuardedModelAdminMixin
 
 
-class ActieInline(admin.TabularInline):
+class ActieInline(GuardedInlineAdminMixin, admin.TabularInline):
     formset = AuditLogInlineformset
     model = Actie
     extra = 1
@@ -15,7 +18,7 @@ class ActieInline(admin.TabularInline):
 
 
 @admin.register(Actie)
-class ActieAdmin(admin.ModelAdmin):
+class ActieAdmin(GuardedModelAdminMixin, admin.ModelAdmin):
     list_display = ("naam", "producttype", "__str__", "url")
     list_filter = ("producttype__code", "dmn_config__naam")
     list_select_related = ("producttype", "dmn_config")

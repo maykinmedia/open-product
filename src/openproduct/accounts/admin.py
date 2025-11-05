@@ -3,6 +3,8 @@ from django.contrib.admin.utils import unquote
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 from django.core.exceptions import PermissionDenied, ValidationError
 
+from guardian.models import UserObjectPermission
+
 from .forms import PreventPrivilegeEscalationMixin, UserChangeForm
 from .models import User
 from .utils import validate_max_user_permissions
@@ -30,3 +32,8 @@ class UserAdmin(_UserAdmin):
             raise PermissionDenied from exc
 
         return super().user_change_password(request, id, form_url)
+
+
+@admin.register(UserObjectPermission)
+class UserObjectPermissionAdmin(admin.ModelAdmin):
+    pass

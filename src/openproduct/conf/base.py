@@ -30,6 +30,7 @@ INSTALLED_APPS += [
     "django_celery_beat",
     "reversion",
     "reversion_compare",
+    "guardian",
     "openproduct.accounts",
     "openproduct.logging",
     "openproduct.utils",
@@ -110,6 +111,9 @@ LOGIN_URLS = [reverse_lazy("admin:login")]
 # Default (connection timeout, read timeout) for the requests library (in seconds)
 REQUESTS_DEFAULT_TIMEOUT = (10, 30)
 
+
+AUTHENTICATION_BACKENDS += ["guardian.backends.ObjectPermissionBackend"]
+
 ##############################
 #                            #
 # 3RD PARTY LIBRARY SETTINGS #
@@ -152,7 +156,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        # "openproduct.utils.auth.DjangoModelPermissions",
+        "openproduct.utils.auth.DjangoObjectPermissions",
     ],
     "DEFAULT_SCHEMA_CLASS": "openproduct.utils.schema.AutoSchema",
     "DEFAULT_PARSER_CLASSES": [

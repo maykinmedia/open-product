@@ -18,6 +18,7 @@ from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.models.producttype import ProductType
 
 from ...urn.validators import validate_urn_or_url
+from ...utils.guardian import GuardedModelAdminMixin
 from .document import DocumentInline
 from .eigenaar import EigenaarInline
 from .taak import TaakInline
@@ -105,7 +106,7 @@ class ProductAdminForm(forms.ModelForm):
 
 
 @admin.register(Product)
-class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
+class ProductAdmin(GuardedModelAdminMixin, AdminAuditLogMixin, CompareVersionAdmin):
     list_display = (
         "naam",
         "producttype",

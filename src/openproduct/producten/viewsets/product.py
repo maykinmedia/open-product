@@ -16,6 +16,7 @@ from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
 from openproduct.producttypen.models import ExterneVerwijzingConfig, ProductType, Thema
+from openproduct.utils.auth import DjangoObjectPermissionsProduct
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     CharArrayFilter,
@@ -223,6 +224,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
     notifications_kanaal = KANAAL_PRODUCTEN
+    permission_classes = (DjangoObjectPermissionsProduct,)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

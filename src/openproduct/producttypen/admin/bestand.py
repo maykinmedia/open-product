@@ -1,12 +1,13 @@
 from django.contrib import admin
 
+from guardian.admin import GuardedInlineAdminMixin
 from reversion_compare.admin import CompareVersionAdmin
 
 from ...logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 from ..models import Bestand
 
 
-class BestandInline(admin.TabularInline):
+class BestandInline(GuardedInlineAdminMixin, admin.TabularInline):
     formset = AuditLogInlineformset
     model = Bestand
     extra = 1

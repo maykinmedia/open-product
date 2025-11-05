@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 
+from guardian.admin import GuardedInlineAdminMixin
 from ordered_model.admin import OrderedInlineMixin
 from parler.admin import TranslatableStackedInline
 from parler.forms import TranslatableBaseInlineFormSet, TranslatableModelForm
@@ -72,7 +73,9 @@ class ContentElementInlineFormset(AuditLogInlineformset, TranslatableBaseInlineF
     pass
 
 
-class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
+class ContentElementInline(
+    GuardedInlineAdminMixin, OrderedInlineMixin, TranslatableStackedInline
+):
     model = ContentElement
     readonly_fields = ("move_up_down_links",)
     ordering = ("order",)

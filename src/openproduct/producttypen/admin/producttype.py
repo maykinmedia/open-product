@@ -12,6 +12,7 @@ from openproduct.utils.admin import TranslatableAdmin
 from openproduct.utils.export import ExportMixin, export_csv, export_json
 
 from ...logging.admin_tools import AdminAuditLogMixin
+from ...utils.guardian import GuardedModelAdminMixin
 from ...utils.widgets import WysimarkWidget
 from ..models import ProductType, Thema
 from ..models.producttype import ProductTypeTranslation
@@ -91,6 +92,7 @@ class ProductTypeAdmin(
     AdminAuditLogMixin,
     OrderedInlineModelAdminMixin,
     ExportMixin,
+    GuardedModelAdminMixin,
     TranslatableAdmin,
     CompareVersionAdmin,
 ):
