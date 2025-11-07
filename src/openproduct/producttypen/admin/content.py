@@ -65,7 +65,10 @@ class ContentElementInlineForm(TranslatableModelForm):
     class Meta:
         model = ContentElement
         fields = "__all__"
-        widgets = {"content": WysimarkWidget()}
+        widgets = {
+            "content": WysimarkWidget(),
+            "aanvullende_informatie": WysimarkWidget(),
+        }
 
 
 class ContentElementInlineFormset(AuditLogInlineformset, TranslatableBaseInlineFormSet):
@@ -76,11 +79,30 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
     model = ContentElement
     readonly_fields = ("move_up_down_links",)
     ordering = ("order",)
-    fields = ("move_up_down_links", "content", "labels")
     autocomplete_fields = ("labels",)
     extra = 1
     form = ContentElementInlineForm
     formset = AuditLogInlineformset
+
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    "move_up_down_links",
+                    "content",
+                    "labels",
+                ],
+            },
+        ),
+        (
+            "Aanvullende informatie",
+            {
+                "fields": ["aanvullende_informatie"],
+                "classes": ("collapse",),
+            },
+        ),
+    ]
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("translations", "labels")
