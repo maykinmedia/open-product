@@ -8,3 +8,5 @@ class ZaakInline(admin.TabularInline):
     formset = AuditLogInlineformset
     model = Zaak
     extra = 1
+
+    # TODO call validate_urn_or_url

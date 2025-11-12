@@ -710,41 +710,198 @@ class TestProductFilters(BaseApiTestCase):
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(response.data["results"][0]["verbruiksobject"]["naam"], "test")
 
-    def test_document_uuid_filter(self):
+    def test_aanvraag_zaak_urn_filter(self):
         uuid = uuid4()
 
-        DocumentFactory.create(uuid=uuid)
-        DocumentFactory.create()
+        ProductFactory.create(
+            aanvraag_zaak_urn=f"maykin:abc:ztc:zaak:{uuid}",
+            aanvraag_zaak_url=f"https://maykin.ztc.com/zaken/{uuid}",
+        )
+        ProductFactory.create(
+            aanvraag_zaak_urn=f"maykin:def:ztc:zaak:{uuid4()}",
+            aanvraag_zaak_url=f"https://maykin.ztc.nl/zaken/{uuid4()}",
+        )
 
-        response = self.client.get(self.path, {"documenten__uuid": uuid})
+        with self.subTest("urn exact"):
+            response = self.client.get(
+                self.path, {"aanvraag_zaak_urn": f"maykin:abc:ztc:zaak:{uuid}"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertIn(str(uuid), response.data["results"][0]["documenten"][0]["url"])
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["aanvraag_zaak_urn"])
 
-    def test_zaak_uuid_filter(self):
+        with self.subTest("urn contains"):
+            response = self.client.get(
+                self.path, {"aanvraag_zaak_urn__contains": str(uuid)}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["aanvraag_zaak_urn"])
+
+        with self.subTest("url exact"):
+            response = self.client.get(
+                self.path, {"aanvraag_zaak_url": f"https://maykin.ztc.com/zaken/{uuid}"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["aanvraag_zaak_url"])
+
+        with self.subTest("url contains"):
+            response = self.client.get(
+                self.path, {"aanvraag_zaak_url__contains": str(uuid)}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["aanvraag_zaak_url"])
+
+    def test_documenten_filter(self):
         uuid = uuid4()
 
-        ZaakFactory.create(uuid=uuid)
-        ZaakFactory.create()
+        DocumentFactory.create(
+            urn=f"maykin:abc:ztc:document:{uuid}",
+            url=f"https://maykin.ztc.com/documenten/{uuid}",
+        )
+        DocumentFactory.create(
+            urn=f"maykin:def:ztc:document:{uuid4()}",
+            url=f"https://maykin.ztc.nl/documenten/{uuid4()}",
+        )
 
-        response = self.client.get(self.path, {"zaken__uuid": uuid})
+        with self.subTest("urn exact"):
+            response = self.client.get(
+                self.path, {"documenten__urn": f"maykin:abc:ztc:document:{uuid}"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertIn(str(uuid), response.data["results"][0]["zaken"][0]["url"])
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["documenten"][0]["urn"]
+            )
 
-    def test_taak_uuid_filter(self):
+        with self.subTest("urn contains"):
+            response = self.client.get(
+                self.path, {"documenten__urn__contains": str(uuid)}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["documenten"][0]["urn"]
+            )
+
+        with self.subTest("url exact"):
+            response = self.client.get(
+                self.path,
+                {"documenten__url": f"https://maykin.ztc.com/documenten/{uuid}"},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["documenten"][0]["url"]
+            )
+
+        with self.subTest("url contains"):
+            response = self.client.get(
+                self.path, {"documenten__url__contains": str(uuid)}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(
+                str(uuid), response.data["results"][0]["documenten"][0]["url"]
+            )
+
+    def test_taken_filter(self):
         uuid = uuid4()
 
-        TaakFactory.create(uuid=uuid)
-        TaakFactory.create()
+        TaakFactory.create(
+            urn=f"maykin:abc:ztc:taak:{uuid}",
+            url=f"https://maykin.ztc.com/taken/{uuid}",
+        )
+        TaakFactory.create(
+            urn=f"maykin:def:ztc:taak:{uuid4()}",
+            url=f"https://maykin.ztc.nl/taken/{uuid4()}",
+        )
 
-        response = self.client.get(self.path, {"taken__uuid": uuid})
+        with self.subTest("urn exact"):
+            response = self.client.get(
+                self.path, {"taken__urn": f"maykin:abc:ztc:taak:{uuid}"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertIn(str(uuid), response.data["results"][0]["taken"][0]["url"])
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["taken"][0]["urn"])
+
+        with self.subTest("urn contains"):
+            response = self.client.get(self.path, {"taken__urn__contains": str(uuid)})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["taken"][0]["urn"])
+
+        with self.subTest("url exact"):
+            response = self.client.get(
+                self.path, {"taken__url": f"https://maykin.ztc.com/taken/{uuid}"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["taken"][0]["url"])
+
+        with self.subTest("url contains"):
+            response = self.client.get(self.path, {"taken__url__contains": str(uuid)})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["taken"][0]["url"])
+
+    def test_zaken_filter(self):
+        uuid = uuid4()
+
+        ZaakFactory.create(
+            urn=f"maykin:abc:ztc:zaak:{uuid}",
+            url=f"https://maykin.ztc.com/zaken/{uuid}",
+        )
+        ZaakFactory.create(
+            urn=f"maykin:def:ztc:zaak:{uuid4()}",
+            url=f"https://maykin.ztc.nl/zaken/{uuid4()}",
+        )
+
+        with self.subTest("urn exact"):
+            response = self.client.get(
+                self.path, {"zaken__urn": f"maykin:abc:ztc:zaak:{uuid}"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["zaken"][0]["urn"])
+
+        with self.subTest("urn contains"):
+            response = self.client.get(self.path, {"zaken__urn__contains": str(uuid)})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["zaken"][0]["urn"])
+
+        with self.subTest("url exact"):
+            response = self.client.get(
+                self.path, {"zaken__url": f"https://maykin.ztc.com/zaken/{uuid}"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["zaken"][0]["url"])
+
+        with self.subTest("url contains"):
+            response = self.client.get(self.path, {"zaken__url__contains": str(uuid)})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertIn(str(uuid), response.data["results"][0]["zaken"][0]["url"])
 
     def test_eigenaar_uuid_filter(self):
         uuid = uuid4()

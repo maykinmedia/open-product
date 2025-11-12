@@ -25,7 +25,6 @@ class EigenaarFactory(factory.django.DjangoModelFactory):
 
 class DocumentFactory(factory.django.DjangoModelFactory):
     product = factory.SubFactory(ProductFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = Document
@@ -33,7 +32,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
 
 class ZaakFactory(factory.django.DjangoModelFactory):
     product = factory.SubFactory(ProductFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = Zaak
@@ -41,7 +39,6 @@ class ZaakFactory(factory.django.DjangoModelFactory):
 
 class TaakFactory(factory.django.DjangoModelFactory):
     product = factory.SubFactory(ProductFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = Taak

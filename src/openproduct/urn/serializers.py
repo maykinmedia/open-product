@@ -20,8 +20,12 @@ class UrnMappingMixin:
         return attrs
 
     def validate_field(self, field, attrs):
-        urn_field = f"{field}_urn"
-        url_field = f"{field}_url"
+        if field == ".":
+            urn_field = "urn"
+            url_field = "url"
+        else:
+            urn_field = f"{field}_urn"
+            url_field = f"{field}_url"
 
         urn, urn_uuid = self.get_base_and_uuid(attrs, urn_field, is_urn=True)
         url, url_uuid = self.get_base_and_uuid(attrs, url_field, is_urn=False)
