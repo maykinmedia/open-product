@@ -1,20 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.producttypen.models.validators import (
-    check_externe_verwijzing_config_url,
-)
-from openproduct.utils.models import BaseModel
-
+from ...urn.models import UrnAbstractModel
 from .product import Product
 
 
-class Zaak(BaseModel):
-    uuid = models.UUIDField(
-        verbose_name=_("uuid"),
-        help_text=_("Uuid van de zaak."),
-    )
-
+class Zaak(UrnAbstractModel):
     product = models.ForeignKey(
         Product,
         verbose_name=_("product"),
@@ -26,10 +17,7 @@ class Zaak(BaseModel):
     class Meta:
         verbose_name = _("Zaak")
         verbose_name_plural = _("Zaken")
-        unique_together = (("product", "uuid"),)
-
-    def clean(self):
-        check_externe_verwijzing_config_url("zaken_url")
+        unique_together = (("product", "urn"), ("product", "url"))
 
     def __str__(self):
-        return str(self.uuid)
+        return self.urn if self.urn else self.url

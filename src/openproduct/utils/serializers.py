@@ -59,11 +59,12 @@ def validate_key_value_model_keys(
     seen = set()
 
     for data in data_list:
-        if data[unique_field] in seen:
-            raise serializers.ValidationError(
-                error_message.format(data[unique_field]), code="unique"
-            )
-        seen.add(data[unique_field])
+        if value := data.get(unique_field):
+            if value in seen:
+                raise serializers.ValidationError(
+                    error_message.format(data[unique_field]), code="unique"
+                )
+            seen.add(data[unique_field])
 
     return data_list
 

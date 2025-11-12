@@ -24,9 +24,6 @@ from openproduct.producten.serializers.validators import (
 )
 from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
 from openproduct.producttypen.models import ProductType, UniformeProductNaam
-from openproduct.producttypen.models.validators import (
-    check_externe_verwijzing_config_url,
-)
 from openproduct.producttypen.serializers.producttype import NestedThemaSerializer
 from openproduct.urn.serializers import UrnMappingMixin
 from openproduct.utils.drf_validators import NestedObjectsValidator
@@ -212,31 +209,49 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         return eigenaren
 
     def validate_documenten(self, documenten: list[dict]):
-        check_externe_verwijzing_config_url("documenten_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             documenten,
-            "uuid",
-            _("Er bestaat al een document met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een document met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            documenten,
+            "url",
+            _("Er bestaat al een document met de url {} voor dit Product."),
+        )
+
+        return documenten
 
     def validate_zaken(self, zaken: list[dict]):
-        check_externe_verwijzing_config_url("zaken_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             zaken,
-            "uuid",
-            _("Er bestaat al een zaak met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een zaak met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            zaken,
+            "url",
+            _("Er bestaat al een zaak met de url {} voor dit Product."),
+        )
+
+        return zaken
 
     def validate_taken(self, taken: list[dict]):
-        check_externe_verwijzing_config_url("taken_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             taken,
-            "uuid",
-            _("Er bestaat al een taak met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een taak met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            taken,
+            "url",
+            _("Er bestaat al een taak met de url {} voor dit Product."),
+        )
+
+        return taken
 
     @transaction.atomic()
     def create(self, validated_data):
@@ -248,9 +263,12 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         product = super().create(validated_data)
 
         for eigenaar in eigenaren:
-            eigenaar.pop("uuid", None)
+            eigenaar.pop(
+                "uuid", None
+            )  # TODO because serializer is used for all methods uuid is allowed on create.
             EigenaarSerializer().create(eigenaar | {"product": product})
 
+        # TODO set_nested_serializer is used for m2m lists that can be overwritten.
         set_nested_serializer(
             [document | {"product": product.pk} for document in documenten],
             DocumentSerializer,
