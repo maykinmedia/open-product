@@ -3,11 +3,12 @@ from django.conf import settings
 from django.db import migrations
 from django.db.migrations.exceptions import IrreversibleError
 
-from openproduct.producttypen.models import ExterneVerwijzingConfig
-from openproduct.urn.models import UrnMappingConfig
 
 
 def migrate_externe_verwijzingen(apps, schema_editor):
+    UrnMappingConfig = apps.get_model('producttypen', 'URNMappingConfig')
+    ExterneVerwijzingConfig = apps.get_model('producttypen', 'ExterneVerwijzingConfig')
+
     def _update(model, url):
 
         mapping = UrnMappingConfig.objects.filter(url=url).first()

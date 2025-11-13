@@ -7,7 +7,6 @@ from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 from openproduct.utils.validators import CustomRegexValidator
 
 from .enums import DoelgroepChoices
-from .externeverwijzingconfig import ExterneVerwijzingConfig
 
 
 def validate_prijs_optie_xor_regel(optie_count: int, regel_count: int):
@@ -57,15 +56,6 @@ def check_for_circular_reference(thema, hoofd_thema):
                 _("Een thema kan geen referentie naar zichzelf hebben.")
             )
         parent = parent.hoofd_thema
-
-
-def check_externe_verwijzing_config_url(field_url):
-    if not getattr(ExterneVerwijzingConfig.get_solo(), field_url, ""):
-        raise ValidationError(
-            _(
-                "De {field_url} is niet geconfigureerd in de externe verwijzing config"
-            ).format(field_url=field_url.replace("_", " "))
-        )
 
 
 def validate_dmn_mapping(mapping):

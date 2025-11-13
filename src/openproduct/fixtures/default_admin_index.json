@@ -149,10 +149,6 @@
                 "dmnconfig"
             ],
             [
-                "producttypen",
-                "externeverwijzingconfig"
-            ],
-            [
                 "urn",
                 "urnmappingconfig"
             ]
