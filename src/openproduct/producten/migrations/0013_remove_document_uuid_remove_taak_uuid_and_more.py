@@ -5,7 +5,7 @@ from django.db.migrations.exceptions import IrreversibleError
 
 
 def migrate_externe_verwijzingen(apps, schema_editor):
-    UrnMappingConfig = apps.get_model('producttypen', 'URNMappingConfig')
+    UrnMappingConfig = apps.get_model('urn', 'UrnMappingConfig')
     ExterneVerwijzingConfig = apps.get_model('producttypen', 'ExterneVerwijzingConfig')
 
     def _update(model, url):
@@ -21,7 +21,10 @@ def migrate_externe_verwijzingen(apps, schema_editor):
                 obj.urn = f"{mapping.urn}:{obj.uuid}"
             obj.save()
 
-    externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
+    externe_verwijzing_config = ExterneVerwijzingConfig.objects.first()
+
+    if externe_verwijzing_config is None:
+        return
 
     Zaak = apps.get_model('producten', 'Zaak')
     _update(Zaak, externe_verwijzing_config.zaken_url)

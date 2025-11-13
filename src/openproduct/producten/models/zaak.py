@@ -18,6 +18,7 @@ class Zaak(UrnAbstractModel):
         verbose_name = _("Zaak")
         verbose_name_plural = _("Zaken")
         unique_together = (("product", "urn"), ("product", "url"))
+        ordering = ("-id",)
 
     def __str__(self):
         return self.urn if self.urn else self.url

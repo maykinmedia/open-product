@@ -2030,43 +2030,6 @@ class TestProductUrns(BaseApiTestCase):
             "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
-        with self.subTest("mapping missing"):
-            response = self.client.post(self.path, data)
-
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de url en/of urn hebben geen mapping"]},
-            )
-
-        with self.subTest("mapping missing allowed"):
-            with override_settings(
-                REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False
-            ):
-                response = self.client.post(self.path, data)
-                self.assertEqual(
-                    response.status_code, status.HTTP_201_CREATED, response.data
-                )
-
-                self.assertEqual(
-                    response.data["aanvraag_zaak_urn"],
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-                self.assertEqual(
-                    response.data["aanvraag_zaak_url"],
-                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-
-                product = Product.objects.get(uuid=response.data["uuid"])
-                self.assertEqual(
-                    product.aanvraag_zaak_urn,
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-                self.assertEqual(
-                    product.aanvraag_zaak_url,
-                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-
         with self.subTest("different mappings"):
             UrnMappingConfig.objects.create(
                 urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
@@ -2143,3 +2106,33 @@ class TestProductUrns(BaseApiTestCase):
                 response.json(),
                 {"aanvraag_zaak": ["de url in de urn mapping is niet hetzelfde"]},
             )
+
+    def test_create_product_with_urn_and_url_no_mapping(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(UrnMappingConfig.objects.count(), 1)
+
+        self.assertEqual(
+            response.data["aanvraag_zaak_urn"],
+            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(
+            response.data["aanvraag_zaak_url"],
+            "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+        product = Product.objects.get(uuid=response.data["uuid"])
+        self.assertEqual(
+            product.aanvraag_zaak_urn,
+            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(
+            product.aanvraag_zaak_url,
+            "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
