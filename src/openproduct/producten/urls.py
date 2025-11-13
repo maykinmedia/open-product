@@ -29,7 +29,7 @@ Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar 
 
 ### Document, Zaak, Taak
 Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
-Een zaak is een verwijziing naar een `Zaak` uit de [zaken API](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/).
+Een zaak is een verwijzing naar een `Zaak` uit de [zaken API](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/).
 Taken is een verwijzingen naar taken uit externe API's.
 
 ---
@@ -77,6 +77,7 @@ custom_settings = {
         },
     ],
 }
+# TODO docs
 
 
 urlpatterns = [

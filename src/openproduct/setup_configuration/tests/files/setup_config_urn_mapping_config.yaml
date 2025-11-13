@@ -1,0 +1,8 @@
+urn_mapping_config_enable: true
+urn_mapping_config:
+  configs:
+  - urn: maykin:abc:ztc:zaak
+    url: https://maykin.ztc.com/api/v1/zaken
+
+  - urn: maykin:abc:ztc:taak
+    url: https://maykin.ztc.com/api/v1/taken

@@ -109,7 +109,7 @@ Daarnaast kan ook een contact (persoon) van een organisaties aan een producttype
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
 """
-
+# TODO docs
 custom_settings = {
     "TITLE": "Producttypen API",
     "VERSION": settings.PRODUCTTYPEN_API_VERSION,

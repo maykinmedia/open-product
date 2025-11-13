@@ -91,7 +91,6 @@ API
 * ``product_created``: created a ``Product`` via the API. Additional context: ``id``, ``naam``.
 * ``product_updated``: updated a ``Product`` via the API. Additional context: ``id``, ``naam``.
 * ``product_deleted``: deleted a ``Product`` via the API. Additional context: ``id``, ``naam``.
-* ``externe_verwijzing_config_missing_urls``: externe verwijzing is missing urls.
 
 .. _manual_logging_exceptions:
 
