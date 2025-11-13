@@ -20,5 +20,5 @@ class ProcesSerializer(UrnMappingMixin, serializers.ModelSerializer):
     class Meta:
         model = Proces
         fields = ("producttype", "urn", "url")
-        extra_kwargs = {"urn": {"required": False}}  # TODO
+        extra_kwargs = {"urn": {"required": False}, "url": {"required": False}}
         validators = []

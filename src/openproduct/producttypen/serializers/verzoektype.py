@@ -20,5 +20,5 @@ class VerzoekTypeSerializer(UrnMappingMixin, serializers.ModelSerializer):
     class Meta:
         model = VerzoekType
         fields = ("producttype", "urn", "url")
-        extra_kwargs = {"urn": {"required": False}}  # TODO
+        extra_kwargs = {"urn": {"required": False}, "url": {"required": False}}
         validators = []

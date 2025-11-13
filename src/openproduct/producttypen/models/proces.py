@@ -17,7 +17,7 @@ class Proces(UrnAbstractModel):
     class Meta:
         verbose_name = _("Proces")
         verbose_name_plural = _("Processen")
-        ordering = ("-id",)  # TODO add to product models
+        ordering = ("-id",)
         unique_together = (("producttype", "urn"), ("producttype", "url"))
 
     def __str__(self):

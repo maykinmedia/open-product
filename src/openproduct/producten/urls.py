@@ -31,6 +31,7 @@ Aan een product kunnen één of meerdere eigenaren worden gelinkt. Een eigenaar 
 Een document is een verwijzing naar een `EnkelvoudigInformatieObject` uit de [documenten API](https://vng-realisatie.github.io/gemma-zaken/standaard/documenten/).
 Een zaak is een verwijzing naar een `Zaak` uit de [zaken API](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/).
 Taken is een verwijzingen naar taken uit externe API's.
+Een verwijzing kan als een URN en/of URL worden opgeslagen waarna via URN_MAPPING_CONFIG de missende urn/url automatisch wordt ingevuld.
 
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
@@ -63,8 +64,6 @@ custom_settings = {
     - dit veld is een lijst van objecten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als `documenten` wordt meegegeven.
-    - Om het veld te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
-    Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
 - Het veld `eigenaren` wordt samen met het product genest aangemaakt of gewijzigd maar heeft een paar verschillen met de hiervoor beschreven velden.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
@@ -77,8 +76,6 @@ custom_settings = {
         },
     ],
 }
-# TODO docs
-
 
 urlpatterns = [
     # API documentation

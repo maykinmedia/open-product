@@ -20,5 +20,5 @@ class ZaakSerializer(UrnMappingMixin, serializers.ModelSerializer):
     class Meta:
         model = Zaak
         fields = ("product", "urn", "url")
-        extra_kwargs = {"urn": {"required": False}}  # TODO
+        extra_kwargs = {"urn": {"required": False}, "url": {"required": False}}
         validators = []

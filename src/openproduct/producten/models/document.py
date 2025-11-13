@@ -18,6 +18,7 @@ class Document(UrnAbstractModel):
         verbose_name = _("Document")
         verbose_name_plural = _("Documenten")
         unique_together = (("product", "urn"), ("product", "url"))
+        ordering = ("-id",)
 
     def __str__(self):
         return self.urn if self.urn else self.url

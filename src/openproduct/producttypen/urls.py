@@ -73,6 +73,7 @@ Via `toegestane statussen` kan worden aangegeven welke statussen een product van
 #### Zaaktype, verzoektype & proces
 Een zaaktype is een verwijzing naar een zaaktype uit de [catalogi API](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/)
 Verzoektypen & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
+Een verwijzing kan als een URN en/of URL worden opgeslagen waarna via URN_MAPPING_CONFIG de missende urn/url automatisch wordt ingevuld.
 
 #### Externe code
 Externe codes zijn bedoeld voor de producttype code van hetzelfde soort product uit externe systemen.
@@ -109,7 +110,6 @@ Daarnaast kan ook een contact (persoon) van een organisaties aan een producttype
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
 """
-# TODO docs
 custom_settings = {
     "TITLE": "Producttypen API",
     "VERSION": settings.PRODUCTTYPEN_API_VERSION,
@@ -147,8 +147,6 @@ custom_settings = {
     - Deze velden zijn een lijst van objecten.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-- Om de velden `zaaktypen`, `verzoektypen` en `processen` te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
-Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
 #### vertalingen
 - De velden `naam` en `samenvatting` zijn meertalig, waarbij Nederlands verplicht is en Engels optioneel is.
