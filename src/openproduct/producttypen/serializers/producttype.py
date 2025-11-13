@@ -22,7 +22,6 @@ from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
-from ..models.validators import check_externe_verwijzing_config_url
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -355,31 +354,49 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         )
 
     def validate_zaaktypen(self, zaaktypen: list[dict]):
-        check_externe_verwijzing_config_url("zaaktypen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             zaaktypen,
-            "uuid",
-            _("Er bestaat al een zaaktype met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een zaaktype met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            zaaktypen,
+            "url",
+            _("Er bestaat al een zaaktype met de url {} voor dit ProductType."),
+        )
+
+        return zaaktypen
 
     def validate_verzoektypen(self, verzoektypen: list[dict]):
-        check_externe_verwijzing_config_url("verzoektypen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             verzoektypen,
-            "uuid",
-            _("Er bestaat al een verzoektype met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een verzoektype met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            verzoektypen,
+            "url",
+            _("Er bestaat al een verzoektype met de url {} voor dit ProductType."),
+        )
+
+        return verzoektypen
 
     def validate_processen(self, processen: list[dict]):
-        check_externe_verwijzing_config_url("processen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             processen,
-            "uuid",
-            _("Er bestaat al een proces met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een proces met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            processen,
+            "url",
+            _("Er bestaat al een proces met de url {} voor dit ProductType."),
+        )
+
+        return processen
 
     class Meta:
         model = ProductType
