@@ -453,21 +453,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     @transaction.atomic()
     def create(self, validated_data):
-        themas = validated_data.pop("themas")
-        locaties = validated_data.pop("locaties")
-        organisaties = validated_data.pop("organisaties")
-        contacten = validated_data.pop("contacten")
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
         zaaktypen = validated_data.pop("zaaktypen", [])
         verzoektypen = validated_data.pop("verzoektypen", [])
         processen = validated_data.pop("processen", [])
 
-        producttype = ProductType.objects.create(**validated_data)
-        producttype.themas.set(themas)
-        producttype.locaties.set(locaties)
-        producttype.organisaties.set(organisaties)
-        producttype.contacten.set(contacten)
+        producttype = super().create(validated_data)
 
         set_nested_serializer(
             [

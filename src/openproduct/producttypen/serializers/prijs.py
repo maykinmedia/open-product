@@ -205,7 +205,7 @@ class PrijsSerializer(serializers.ModelSerializer):
         prijsregels = validated_data.pop("prijsregels", [])
         producttype = validated_data.pop("producttype")
 
-        prijs = Prijs.objects.create(**validated_data, producttype=producttype)
+        prijs = super().create({**validated_data, "producttype": producttype})
 
         for optie in prijsopties:
             optie.pop("uuid", None)

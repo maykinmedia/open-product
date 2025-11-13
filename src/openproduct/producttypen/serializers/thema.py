@@ -124,15 +124,6 @@ class ThemaSerializer(serializers.ModelSerializer):
         ]
 
     @transaction.atomic()
-    def create(self, validated_data):
-        producttypen = validated_data.pop("producttypen")
-
-        thema = Thema.objects.create(**validated_data)
-        thema.producttypen.set(producttypen)
-
-        return thema
-
-    @transaction.atomic()
     def update(self, instance, validated_data):
         producttypen = validated_data.pop("producttypen", None)
         hoofd_thema = validated_data.pop(
