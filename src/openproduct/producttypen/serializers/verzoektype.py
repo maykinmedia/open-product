@@ -5,8 +5,8 @@ from openproduct.urn.serializers import UrnMappingMixin
 
 
 class NestedVerzoekTypeSerializer(UrnMappingMixin, serializers.ModelSerializer):
-
     urn_fields = ["."]
+
     class Meta:
         model = VerzoekType
         fields = ("urn", "url")

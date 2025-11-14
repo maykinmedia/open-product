@@ -5,7 +5,6 @@ from openproduct.urn.serializers import UrnMappingMixin
 
 
 class NestedTaakSerializer(UrnMappingMixin, serializers.ModelSerializer):
-
     urn_fields = ["."]
 
     class Meta:
