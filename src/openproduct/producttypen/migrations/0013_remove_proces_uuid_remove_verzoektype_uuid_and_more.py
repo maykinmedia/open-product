@@ -39,7 +39,7 @@ def migrate_externe_verwijzingen(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producttypen', '0011_alter_proces_unique_together_and_more'),
+        ('producttypen', '0012_alter_proces_unique_together_and_more'),
         ('producttypen', '0005_externeverwijzingconfig_taken_url_and_more'),
         ('urn', '0001_initial'),
     ]

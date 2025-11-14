@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producttypen', '0010_alter_producttype_doelgroep_and_more'),
+        ('producttypen', '0011_contentelementtranslation_aanvullende_informatie'),
     ]
 
     operations = [

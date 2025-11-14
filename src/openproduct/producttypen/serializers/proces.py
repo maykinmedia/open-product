@@ -5,7 +5,6 @@ from openproduct.urn.serializers import UrnMappingMixin
 
 
 class NestedProcesSerializer(UrnMappingMixin, serializers.ModelSerializer):
-
     urn_fields = ["."]
 
     class Meta:
@@ -17,7 +16,6 @@ class ProcesSerializer(serializers.ModelSerializer):
     producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
-
 
     class Meta:
         model = Proces
