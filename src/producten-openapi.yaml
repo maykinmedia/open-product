@@ -1111,6 +1111,9 @@ paths:
           description: ''
 components:
   schemas:
+    BlankEnum:
+      enum:
+      - ''
     DetailError:
       type: object
       properties:
@@ -1504,10 +1507,9 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
           description: De prijs van het product.
         frequentie:
-          allOf:
-          - $ref: '#/components/schemas/FrequentieEnum'
           title: Prijs frequentie
           description: |-
             De frequentie van betalingen.
@@ -1515,6 +1517,9 @@ components:
             * `eenmalig` - Eenmalig
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
+          oneOf:
+          - $ref: '#/components/schemas/FrequentieEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         verbruiksobject:
           type: object
           additionalProperties: true
@@ -1623,10 +1628,9 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
           description: De prijs van het product.
         frequentie:
-          allOf:
-          - $ref: '#/components/schemas/FrequentieEnum'
           title: Prijs frequentie
           description: |-
             De frequentie van betalingen.
@@ -1634,6 +1638,9 @@ components:
             * `eenmalig` - Eenmalig
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
+          oneOf:
+          - $ref: '#/components/schemas/FrequentieEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         verbruiksobject:
           type: object
           additionalProperties: true
@@ -1660,8 +1667,6 @@ components:
       required:
       - aanmaak_datum
       - eigenaren
-      - frequentie
-      - prijs
       - producttype
       - update_datum
       - url
@@ -1729,10 +1734,9 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
           description: De prijs van het product.
         frequentie:
-          allOf:
-          - $ref: '#/components/schemas/FrequentieEnum'
           title: Prijs frequentie
           description: |-
             De frequentie van betalingen.
@@ -1740,6 +1744,9 @@ components:
             * `eenmalig` - Eenmalig
             * `maandelijks` - Maandelijks
             * `jaarlijks` - Jaarlijks
+          oneOf:
+          - $ref: '#/components/schemas/FrequentieEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         verbruiksobject:
           type: object
           additionalProperties: true
@@ -1765,8 +1772,6 @@ components:
           maxLength: 200
       required:
       - eigenaren
-      - frequentie
-      - prijs
       - producttype_uuid
     StatusEnum:
       enum:
