@@ -6,27 +6,18 @@ from openproduct.urn.models import UrnMappingConfig
 
 
 class UrnMappingConfigConfigurationModel(ConfigurationModel):
-    urn: str = DjangoModelRef(UrnMappingConfig, "urn")
-    url: str = DjangoModelRef(UrnMappingConfig, "url")
-
-    class Meta:
-        # django_model_refs = {
-        #     UrnMappingConfig: (
-        #         "urn",
-        #         "url"
-        #     )
-        # }
-
-        extra_kwargs = {
-            "urn": {
-                "examples": ["https://urn.gemeente.cloud/api/v1/urn"],
-                "description": "Base url of the urn API.",
-            },
-            "url": {
-                "examples": ["https://url-api.gemeente.cloud/api/v1/url"],
-                "description": "Base url of the urn API.",
-            },
-        }
+    urn: str = DjangoModelRef(
+        UrnMappingConfig,
+        "urn",
+        examples=["maykin:abc:ztc:zaak"],
+        description="Base urn (<organisatie>:<systeem>:<component>:<resource>)",
+    )
+    url: str = DjangoModelRef(
+        UrnMappingConfig,
+        "url",
+        examples=["https://gemeente-a.zgw.nl/zaken"],
+        description="Base url of the urn.",
+    )
 
 
 class UrnMappingConfigsConfigurationModel(ConfigurationModel):

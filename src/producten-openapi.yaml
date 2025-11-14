@@ -527,11 +527,14 @@ paths:
                       - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                         bsn: '111222333'
                       documenten:
-                      - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                      - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                        url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                       zaken:
-                      - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                        url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       taken:
-                      - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                      - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                        url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                       status: gereed
                       prijs: '20.20'
                       frequentie: eenmalig
@@ -539,6 +542,8 @@ paths:
                         uren: 130
                       dataobject:
                         max_uren: 150
+                      aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                      aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
         '400':
@@ -595,12 +600,6 @@ paths:
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
-                  documenten:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
-                  zaken:
-                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
-                  taken:
-                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
                   status: gereed
                   prijs: '20.20'
                   frequentie: eenmalig
@@ -608,6 +607,13 @@ paths:
                     uren: 130
                   dataobject:
                     max_uren: 150
+                  documenten:
+                  - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
         required: true
       security:
@@ -661,11 +667,14 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                      url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -673,6 +682,8 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
+                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
         '400':
@@ -773,11 +784,14 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                      url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -785,6 +799,8 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
+                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
         '400':
@@ -848,12 +864,6 @@ paths:
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
-                  documenten:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
-                  zaken:
-                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
-                  taken:
-                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
                   status: gereed
                   prijs: '20.20'
                   frequentie: eenmalig
@@ -861,6 +871,13 @@ paths:
                     uren: 130
                   dataobject:
                     max_uren: 150
+                  documenten:
+                  - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
         required: true
       security:
@@ -914,11 +931,14 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                      url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -926,6 +946,8 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
+                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
         '400':
@@ -989,12 +1011,6 @@ paths:
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
-                  documenten:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
-                  zaken:
-                  - uuid: eb188bea-51f2-44f0-8acc-eec1c710b4bf
-                  taken:
-                  - uuid: cec996f4-2efa-4307-a035-32c2c9032e89
                   status: gereed
                   prijs: '20.20'
                   frequentie: eenmalig
@@ -1002,6 +1018,13 @@ paths:
                     uren: 130
                   dataobject:
                     max_uren: 150
+                  documenten:
+                  - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                  zaken:
+                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  taken:
+                  - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
       security:
       - jwtAuth: []
@@ -1054,11 +1077,14 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                      url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
                     frequentie: eenmalig
@@ -1066,6 +1092,8 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
+                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
         '400':

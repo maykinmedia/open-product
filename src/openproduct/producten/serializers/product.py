@@ -110,17 +110,20 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 ],
                 "documenten": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "zaken": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf"
+                        "urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf",
+                        "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf",
                     }
                 ],
                 "taken": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                        "urn": "maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89",
+                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89",
                     }
                 ],
                 "status": "gereed",
@@ -128,6 +131,8 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
+                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
             },
             response_only=True,
         ),
@@ -142,14 +147,25 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "eigenaren": [
                     {"bsn": "111222333"},
                 ],
-                "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "zaken": [{"uuid": "eb188bea-51f2-44f0-8acc-eec1c710b4bf"}],
-                "taken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
+                "documenten": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "zaken": [
+                    {"urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf"}
+                ],
+                "taken": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                    }
+                ],
+                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             },
             request_only=True,
         ),
@@ -263,12 +279,9 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         product = super().create(validated_data)
 
         for eigenaar in eigenaren:
-            eigenaar.pop(
-                "uuid", None
-            )  # TODO because serializer is used for all methods uuid is allowed on create.
+            eigenaar.pop("uuid", None)
             EigenaarSerializer().create(eigenaar | {"product": product})
 
-        # TODO set_nested_serializer is used for m2m lists that can be overwritten.
         set_nested_serializer(
             [document | {"product": product.pk} for document in documenten],
             DocumentSerializer,

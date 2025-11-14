@@ -4,18 +4,18 @@ from openproduct.producttypen.models import ProductType, VerzoekType
 from openproduct.urn.serializers import UrnMappingMixin
 
 
-class NestedVerzoekTypeSerializer(serializers.ModelSerializer):
+class NestedVerzoekTypeSerializer(UrnMappingMixin, serializers.ModelSerializer):
+
+    urn_fields = ["."]
     class Meta:
         model = VerzoekType
         fields = ("urn", "url")
 
 
-class VerzoekTypeSerializer(UrnMappingMixin, serializers.ModelSerializer):
+class VerzoekTypeSerializer(serializers.ModelSerializer):
     producttype = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=ProductType.objects.all()
     )
-
-    urn_fields = ["."]
 
     class Meta:
         model = VerzoekType
