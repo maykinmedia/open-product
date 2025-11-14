@@ -163,17 +163,20 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "zaaktypen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:ztc:zaaktype:9a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verzoektypen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:vtc:verzoektype:9a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "processen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:ptc:proces:9a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verbruiksobject_schema": {
@@ -228,9 +231,21 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "parameters": [
                     {"naam": "betalingskenmerk", "waarde": "12345AB"},
                 ],
-                "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "zaaktypen": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "verzoektypen": [
+                    {
+                        "urn": "maykin:abc:vtc:verzoektype:9a8bd4f-4144-4105-9850-e477628852fc",
+                    }
+                ],
+                "processen": [
+                    {
+                        "urn": "maykin:abc:ptc:proces:9a8bd4f-4144-4105-9850-e477628852fc",
+                    }
+                ],
                 "verbruiksobject_schema_naam": "verbruik_schema",
                 "dataobject_schema_naam": "data_schema",
             },
