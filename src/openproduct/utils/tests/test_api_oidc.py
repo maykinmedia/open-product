@@ -1,4 +1,7 @@
-from django.test import TestCase
+from unittest import expectedFailure
+
+from django.contrib.auth import get_user_model
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 import requests
@@ -10,6 +13,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
 from ...accounts.tests.factories import OIDCClientFactory, UserFactory
 from ...producttypen.tests.factories import ProductTypeFactory
+
+User = get_user_model()
 
 
 class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
@@ -25,15 +30,20 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
         ProductTypeFactory.create()
         UserFactory.create(superuser=True, username="testtest")
 
-        self.oidc_client = OIDCClientFactory.create(
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.oidc_client = OIDCClientFactory.create(
             with_keycloak_provider=True,
             with_admin=True,
             with_admin_options=True,
         )
-
-        # # FIXME `oidc_client.oidc_provider` is None for some reason
-        # self.oidc_client = OIDCClient.objects.get()
-        # self.provider = OIDCProvider.objects.get()
+        # FIXME this field is overridden in `test_oidc.py`, but even though the
+        # OIDCClients are removed on setUp via OIDCMixin, this change seems to be
+        # persisted for newly created clients
+        cls.oidc_client.options["user_settings"]["claim_mappings"]["username"] = ["sub"]
+        cls.oidc_client.save()
 
     def generate_token_with_password(self, client: OIDCClient):
         payload = {
@@ -80,6 +90,31 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
 
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            User.objects.filter(
+                username="aa10cfc7-2c4d-41f6-8fac-7bf405c572c4"
+            ).count(),
+            1,
+        )
+
+    # FIXME `OIDC_CREATE_USER=False` currently raises 401
+    @expectedFailure
+    @override_settings(OIDC_CREATE_USER=False)
+    def test_valid_token_oidc_create_user_false(self):
+        token = self.generate_token_with_password(self.oidc_client)
+
+        response = self.client.get(
+            reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
+        )
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            User.objects.filter(
+                username="aa10cfc7-2c4d-41f6-8fac-7bf405c572c4"
+            ).count(),
+            0,
+        )
 
     def test_invalid_token(self):
         token = self.generate_token_with_password(self.oidc_client)
