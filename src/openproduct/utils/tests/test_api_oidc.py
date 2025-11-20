@@ -1,29 +1,18 @@
-from functools import partial
-
 from django.test import TestCase
 from django.urls import reverse
 
 import requests
 from maykin_common.vcr import VCRMixin
-from mozilla_django_oidc_db.models import OpenIDConnectConfig
+from mozilla_django_oidc_db.models import OIDCClient, OIDCProvider
+from mozilla_django_oidc_db.tests.mixins import OIDCMixin
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
-from ...accounts.tests.factories import UserFactory
+from ...accounts.tests.factories import OIDCClientFactory, UserFactory
 from ...producttypen.tests.factories import ProductTypeFactory
-from .keycloak import mock_oidc_db_config
-
-mock_admin_oidc_config = partial(
-    mock_oidc_db_config,
-    app_label="mozilla_django_oidc_db",
-    model="OpenIDConnectConfig",
-    id=1,  # required for the group queries because we're using in-memory objects
-    make_users_staff=True,
-    username_claim=["preferred_username"],
-)
 
 
-class TestApiOidcAuthentication(VCRMixin, TestCase):
+class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
     """
     Test results are stored in utils.vc_cassettes
 
@@ -36,41 +25,54 @@ class TestApiOidcAuthentication(VCRMixin, TestCase):
         ProductTypeFactory.create()
         UserFactory.create(superuser=True, username="testtest")
 
-    def generate_token_with_password(self, config):
+        self.oidc_client = OIDCClientFactory.create(
+            with_keycloak_provider=True,
+            with_admin=True,
+            with_admin_options=True,
+        )
+
+        # # FIXME `oidc_client.oidc_provider` is None for some reason
+        # self.oidc_client = OIDCClient.objects.get()
+        # self.provider = OIDCProvider.objects.get()
+
+    def generate_token_with_password(self, client: OIDCClient):
         payload = {
-            "client_id": config.oidc_rp_client_id,
-            "client_secret": config.oidc_rp_client_secret,
+            "client_id": client.oidc_rp_client_id,
+            "client_secret": client.oidc_rp_client_secret,
             "username": "testuser",
             "password": "testuser",
             "grant_type": "password",
             "scope": "openid",
         }
 
+        assert isinstance(client.oidc_provider, OIDCProvider)
+
         response = requests.post(
-            config.oidc_op_token_endpoint,
+            client.oidc_provider.oidc_op_token_endpoint,
             data=payload,
         )
 
         return response.json()["access_token"]
 
-    def generate_client_credentials(self, config):
+    def generate_client_credentials(self, client: OIDCClient):
         payload = {
-            "client_id": config.oidc_rp_client_id,
-            "client_secret": config.oidc_rp_client_secret,
+            "client_id": client.oidc_rp_client_id,
+            "client_secret": client.oidc_rp_client_secret,
             "grant_type": "client_credentials",
             "scope": "openid",
         }
 
+        assert isinstance(client.oidc_provider, OIDCProvider)
+
         response = requests.post(
-            config.oidc_op_token_endpoint,
+            client.oidc_provider.oidc_op_token_endpoint,
             data=payload,
         )
 
         return response.json()["access_token"]
 
-    @mock_admin_oidc_config()
     def test_valid_token(self):
-        token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
+        token = self.generate_token_with_password(self.oidc_client)
 
         response = self.client.get(
             reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
@@ -79,9 +81,8 @@ class TestApiOidcAuthentication(VCRMixin, TestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
 
-    @mock_admin_oidc_config()
     def test_invalid_token(self):
-        token = self.generate_token_with_password(OpenIDConnectConfig.get_solo())
+        token = self.generate_token_with_password(self.oidc_client)
         token += "b"
         response = self.client.get(
             reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
@@ -97,7 +98,6 @@ class TestApiOidcAuthentication(VCRMixin, TestCase):
             },
         )
 
-    @mock_admin_oidc_config()
     def test_expired_token(self):
         expired_token = (
             "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0VU5RQWN2VWN2LURGVU94XzRPMWd0M"
@@ -129,18 +129,15 @@ class TestApiOidcAuthentication(VCRMixin, TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @mock_admin_oidc_config()
     def test_missing_openid_scope(self):
-        config = OpenIDConnectConfig.get_solo()
-
         payload = {
-            "client_id": config.oidc_rp_client_id,
-            "client_secret": config.oidc_rp_client_secret,
+            "client_id": self.oidc_client.oidc_rp_client_id,
+            "client_secret": self.oidc_client.oidc_rp_client_secret,
             "grant_type": "client_credentials",
         }
 
         response = requests.post(
-            config.oidc_op_token_endpoint,
+            self.oidc_client.oidc_provider.oidc_op_token_endpoint,
             data=payload,
         )
 
@@ -152,11 +149,10 @@ class TestApiOidcAuthentication(VCRMixin, TestCase):
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
-    @mock_admin_oidc_config()
     def test_valid_client_credentials_token(self):
         UserFactory.create(username="service-account-open-product", superuser=True)
 
-        token = self.generate_client_credentials(OpenIDConnectConfig.get_solo())
+        token = self.generate_client_credentials(self.oidc_client)
 
         response = self.client.get(
             reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
