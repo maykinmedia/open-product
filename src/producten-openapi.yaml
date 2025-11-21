@@ -48,14 +48,14 @@ info:
 
 
 
-    ### Authorisatie
+    ### Autorisatie
 
     Voor CREATE, UPDATE, PARTIAL_UPDATE en DELETE requests moet user de juiste permissie hebben. Deze permissies zijn in te stellen in de Admin.
     - CREATE: ``producten.add_product``
     - UPDATE: ``producten.change_product``
     - DELETE: ``producten.delete_product``
 
-    Producten hebben daarnaast authorisatie via producttypen. Een user moet read/write permissies hebben om producten van een producttype te kunnen lezen/aanmaken/updaten of verwijderen.
+    De producten endpoints worden daarnaast geautoriseerd via producttypen. Een user moet read/write permissies hebben om producten van een producttype te kunnen lezen/aanmaken/updaten of verwijderen.
     Deze permissies zijn ook in te stellen in de Admin.
 
 
