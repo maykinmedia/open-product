@@ -8,6 +8,7 @@ import django_filters
 import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.viewsets import ModelViewSet
 from vng_api_common.utils import get_help_text
 
@@ -223,15 +224,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
     permission_classes = [ProductTypeObjectPermission, DjangoModelPermissions]
 
     def get_queryset(self):
-        """
-        This method can also be called by its mixins, which means it will have an empty request.
-        """
-        # TODO
-        if (
-            self.action != "list"
-            or not hasattr(self.request, "user")
-            or self.request.user.is_superuser
-        ):
+        if self.action != "list" or self.request.user.is_superuser:
             qs = Product.objects
         else:
             qs = Product.objects.filter(
