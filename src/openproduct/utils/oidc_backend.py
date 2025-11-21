@@ -1,13 +1,16 @@
 from typing import List, Union
 
+from django.contrib.auth import get_user_model
+
 from drf_spectacular.extensions import OpenApiAuthenticationExtension, _SchemaType
 from drf_spectacular.openapi import AutoSchema
 from drf_spectacular.plumbing import build_bearer_security_scheme_object
 from mozilla_django_oidc_db.backends import (
     OIDCAuthenticationBackend as _OIDCAuthenticationBackendDB,
 )
-from mozilla_django_oidc_db.models import OpenIDConnectConfig
-from mozilla_django_oidc_db.typing import JSONObject
+from mozilla_django_oidc_db.models import OIDCClient
+
+User = get_user_model()
 
 
 class OIDCAuthenticationBackend(_OIDCAuthenticationBackendDB):
@@ -18,11 +21,10 @@ class OIDCAuthenticationBackend(_OIDCAuthenticationBackendDB):
     This class sets the config_class so that it is accessible in the get_userinfo method.
     """
 
-    def get_userinfo(
-        self, access_token: str, id_token: str, payload: JSONObject
-    ) -> JSONObject:
-        self.config_class = OpenIDConnectConfig
-        return super().get_userinfo(access_token, id_token, payload)
+    def get_or_create_user(self, access_token: str, id_token: str, payload):
+        # FIXME is this the correct client?
+        self.config = OIDCClient.objects.resolve("admin-oidc")
+        return super().get_or_create_user(access_token, id_token, payload)
 
 
 class JWTScheme(OpenApiAuthenticationExtension):

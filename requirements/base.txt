@@ -187,7 +187,7 @@ django-sendfile2==0.7.1
     # via django-privates
 django-sessionprofile==3.0.0
     # via open-api-framework
-django-setup-configuration==0.9.0
+django-setup-configuration==0.11.0
     # via open-api-framework
 django-simple-certmanager==2.4.1
     # via zgw-consumers
@@ -195,7 +195,6 @@ django-solo==2.4.0
     # via
     #   commonground-api-common
     #   django-log-outgoing-requests
-    #   mozilla-django-oidc-db
     #   notifications-api-common
     #   zgw-consumers
 django-structlog==9.1.1
@@ -280,7 +279,7 @@ mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==4.0.1
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==0.23.0
+mozilla-django-oidc-db==1.1.0
     # via open-api-framework
 notifications-api-common==0.7.3
     # via commonground-api-common

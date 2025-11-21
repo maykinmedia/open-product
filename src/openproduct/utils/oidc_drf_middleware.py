@@ -11,6 +11,10 @@ class OIDCAuthentication(_OIDCAuthentication):
     """
 
     def authenticate(self, request):
+        # `OIDCAuthenticationBackend.get_or_create_user` relies on the underlying
+        # WSGIRequest
+        self.backend.request = request._request
+
         try:
             return super().authenticate(request)
         except HTTPError as exc:
