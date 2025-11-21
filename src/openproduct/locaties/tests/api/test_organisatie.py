@@ -12,6 +12,7 @@ from ..factories import OrganisatieFactory
 
 
 class TestOrganisatie(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("organisatie-list")
 
     def setUp(self):

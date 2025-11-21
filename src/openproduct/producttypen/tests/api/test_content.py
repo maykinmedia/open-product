@@ -12,6 +12,7 @@ from ..factories import ContentElementFactory, ContentLabelFactory, ProductTypeF
 
 
 class TestContentElement(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("content-list")
 
     def setUp(self):
@@ -162,6 +163,8 @@ class TestContentElement(BaseApiTestCase):
 
 
 class TestContentElementActions(BaseApiTestCase):
+    is_superuser = True
+
     def setUp(self):
         super().setUp()
         self.content_element = ContentElementFactory.create()
@@ -232,6 +235,7 @@ class TestContentElementActions(BaseApiTestCase):
 
 
 class TestContentLabel(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("contentlabel-list")
 
     def test_read_content_labels(self):
