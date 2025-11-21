@@ -91,12 +91,6 @@ class TestProduct(BaseApiTestCase):
                 "producttype_uuid": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "prijs": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "frequentie": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
                 "eigenaren": [
                     ErrorDetail(_("This field is required."), code="required")
                 ],

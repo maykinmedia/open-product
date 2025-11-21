@@ -76,6 +76,8 @@ class Product(BasePublishableModel):
         max_digits=8,
         validators=[MinValueValidator(Decimal("0"))],
         help_text=_("De prijs van het product."),
+        blank=True,
+        null=True,
     )
 
     frequentie = models.CharField(
@@ -83,6 +85,7 @@ class Product(BasePublishableModel):
         max_length=30,
         choices=PrijsFrequentieChoices.choices,
         help_text=_("De frequentie van betalingen."),
+        blank=True,
     )
 
     verbruiksobject = models.JSONField(
