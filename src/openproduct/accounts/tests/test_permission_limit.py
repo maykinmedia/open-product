@@ -87,6 +87,8 @@ class PasswordResetViewTests(TestCase):
                 "date_joined_0": "2022-01-01",
                 "date_joined_1": "12:00:00",
                 "_save": "1",
+                "producttype_permissions-TOTAL_FORMS": 0,
+                "producttype_permissions-INITIAL_FORMS": 0,
             },
         )
         return response
