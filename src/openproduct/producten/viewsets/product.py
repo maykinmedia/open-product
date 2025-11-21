@@ -15,7 +15,14 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
-from openproduct.producttypen.models import ExterneVerwijzingConfig, ProductType, Thema
+from openproduct.producten.viewsets.permissions import ProductTypeObjectPermission
+from openproduct.producttypen.models import (
+    ExterneVerwijzingConfig,
+    ProductType,
+    ProductTypePermission,
+    Thema,
+)
+from openproduct.utils.auth import DjangoModelPermissions
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     CharArrayFilter,
@@ -202,27 +209,48 @@ class ProductFilterSet(FilterSet):
     ),
 )
 class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelViewSet):
-    queryset = Product.objects.prefetch_related(
-        "eigenaren",
-        "documenten",
-        "taken",
-        "zaken",
-        Prefetch(
-            "producttype",
-            queryset=ProductType.objects.select_related(
-                "uniforme_product_naam"
-            ).prefetch_related(
-                "translations",
-                Prefetch(
-                    "themas", queryset=Thema.objects.select_related("hoofd_thema")
-                ),
-            ),
-        ),
-    )
+    queryset = Product.objects.all()
     lookup_field = "uuid"
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
     notifications_kanaal = KANAAL_PRODUCTEN
+    permission_classes = [ProductTypeObjectPermission, DjangoModelPermissions]
+
+    def get_queryset(self):
+        """
+        This method can also be called by its mixins, which means it will have an empty request.
+        """
+        # TODO
+        if (
+            self.action != "list"
+            or not hasattr(self.request, "user")
+            or self.request.user.is_superuser
+        ):
+            qs = Product.objects
+        else:
+            qs = Product.objects.filter(
+                producttype__in=ProductTypePermission.objects.filter(
+                    user=self.request.user
+                ).values("producttype")
+            )
+
+        return qs.prefetch_related(
+            "eigenaren",
+            "documenten",
+            "taken",
+            "zaken",
+            Prefetch(
+                "producttype",
+                queryset=ProductType.objects.select_related(
+                    "uniforme_product_naam"
+                ).prefetch_related(
+                    "translations",
+                    Prefetch(
+                        "themas", queryset=Thema.objects.select_related("hoofd_thema")
+                    ),
+                ),
+            ),
+        )
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
