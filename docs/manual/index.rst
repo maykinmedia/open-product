@@ -18,6 +18,5 @@ configured to make all API's accessible.
    users
    api-authorizations
    oidc
-   logging
    scripts
    urn
