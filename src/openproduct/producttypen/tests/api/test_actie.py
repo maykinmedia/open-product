@@ -12,6 +12,7 @@ from ..factories import ActieFactory, ProductTypeFactory
 
 
 class TestProductTypeActie(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("actie-list")
 
     def setUp(self):
