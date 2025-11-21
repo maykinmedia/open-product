@@ -1,6 +1,5 @@
 import datetime
 from datetime import date
-from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
@@ -21,7 +20,6 @@ from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
 from openproduct.producttypen.models import (
     ExterneCode,
-    ExterneVerwijzingConfig,
     Link,
     Parameter,
     Proces,
@@ -47,6 +45,7 @@ from openproduct.producttypen.tests.factories import (
     VerzoekTypeFactory,
     ZaakTypeFactory,
 )
+from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -58,6 +57,21 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.upn = UniformeProductNaamFactory.create()
         self.thema = ThemaFactory()
 
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:verzoektype",
+            url="https://gemeente-a.zgw.nl/verzoektypen",
+        )
+
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:zaaktype",
+            url="https://gemeente-a.zgw.nl/zaaktypen",
+        )
+
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:proces",
+            url="https://gemeente-a.zgw.nl/processen",
+        )
+
         self.data = {
             "naam": "test-producttype",
             "code": "PT-12345",
@@ -66,18 +80,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "doelgroep": DoelgroepChoices.BURGERS,
             "thema_uuids": [self.thema.uuid],
         }
-
-        config_patch = patch(
-            "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
-            return_value=ExterneVerwijzingConfig(
-                zaaktypen_url="https://gemeente-a.zgw.nl/zaaktypen",
-                verzoektypen_url="https://gemeente-a.zgw.nl/verzoektypen",
-                processen_url="https://gemeente-a.zgw.nl/processen",
-            ),
-        )
-
-        self.config_mock = config_patch.start()
-        self.addCleanup(config_patch.stop)
 
     def detail_path(self, producttype):
         return reverse("producttype-detail", args=[producttype.uuid])
@@ -301,126 +303,111 @@ class TestProducttypeViewSet(BaseApiTestCase):
             },
         )
 
-    def test_create_producttype_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        response = self.client.post(self.path, self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_create_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
-    def test_create_producttype_with_duplicate_zaaktype_uuids_returns_error(
-        self,
-    ):
+    def test_create_product_with_external_objects(self):
         data = self.data | {
             "zaaktypen": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"}
             ],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="Er bestaat al een zaaktype met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
-                        code="unique",
-                    )
-                ]
-            },
-        )
-
-    def test_create_producttype_with_duplicate_verzoektype_uuids_returns_error(
-        self,
-    ):
-        data = self.data | {
             "verzoektypen": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {
+                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="Er bestaat al een verzoektype met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
-                        code="unique",
-                    )
-                ]
-            },
-        )
-
-    def test_create_producttype_with_duplicate_proces_uuids_returns_error(
-        self,
-    ):
-        data = self.data | {
             "processen": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"}
             ],
         }
         response = self.client.post(self.path, data)
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(VerzoekType.objects.count(), 1)
         self.assertEqual(
-            response.data,
-            {
-                "processen": [
-                    ErrorDetail(
-                        string="Er bestaat al een proces met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit ProductType.",
-                        code="unique",
-                    )
-                ]
-            },
+            VerzoekType.objects.first().url,
+            "https://gemeente-a.zgw.nl/verzoektypen/d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
+        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(
+            ZaakType.objects.first().url,
+            "https://gemeente-a.zgw.nl/zaaktypen/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(Proces.objects.count(), 1)
+        self.assertEqual(
+            Proces.objects.first().url,
+            "https://gemeente-a.zgw.nl/processen/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+    def test_create_product_with_duplicate_verzoektypen(self):
+        with self.subTest("duplicate urns"):
+            verzoektypen = [
+                {
+                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"verzoektypen": verzoektypen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            verzoektypen = [
+                {
+                    "https://gemeente-a.zgw.nl/verzoektypen/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                },
+                {
+                    "https://gemeente-a.zgw.nl/verzoektypen/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                },
+            ]
+            data = self.data | {"verzoektypen": verzoektypen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_product_with_duplicate_zaaktypen(self):
+        with self.subTest("duplicate urns"):
+            zaaktypen = [
+                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+            ]
+            data = self.data | {"zaaktypen": zaaktypen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            zaaktypen = [
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"zaaktypen": zaaktypen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_product_with_duplicate_processen(self):
+        with self.subTest("duplicate urns"):
+            processen = [
+                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+            ]
+            data = self.data | {"processen": processen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            processen = [
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "url": "https://gemeente-a.zgw.nl/processen/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"processen": processen}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_producttype_with_duplicate_uuids_returns_error(self):
         thema = ThemaFactory.create()
@@ -472,9 +459,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "contact_uuids": [contact.uuid],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
             "verbruiksobject_schema_naam": schema.naam,
             "dataobject_schema_naam": schema.naam,
         }
@@ -574,21 +558,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
-            "zaaktypen": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
-                }
-            ],
-            "verzoektypen": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
-                }
-            ],
-            "processen": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
-                }
-            ],
+            "zaaktypen": [],
+            "verzoektypen": [],
+            "processen": [],
             "gepubliceerd": False,
             "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
             "update_datum": producttype.update_datum.astimezone().isoformat(),
@@ -967,63 +939,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
-    def test_update_producttype_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        response = self.client.put(self.detail_path(producttype), self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_update_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.put(self.detail_path(producttype), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_update_producttype_with_zaaktype(self):
         producttype = ProductTypeFactory.create()
 
-        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaaktypen = [
+            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"zaaktypen": zaaktypen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1033,7 +954,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1042,7 +964,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         ZaakTypeFactory.create(producttype=producttype)
 
-        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaaktypen = [
+            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"zaaktypen": zaaktypen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1052,7 +976,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1082,7 +1007,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_update_producttype_with_verzoektype(self):
         producttype = ProductTypeFactory.create()
 
-        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        verzoektypen = [
+            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"verzoektypen": verzoektypen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1092,7 +1019,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1101,7 +1029,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         VerzoekTypeFactory.create(producttype=producttype)
 
-        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        verzoektypen = [
+            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"verzoektypen": verzoektypen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1111,7 +1041,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1141,7 +1072,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_update_producttype_with_proces(self):
         producttype = ProductTypeFactory.create()
 
-        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        processen = [
+            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"processen": processen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1151,7 +1084,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1160,7 +1094,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         ProcesFactory.create(producttype=producttype)
 
-        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        processen = [
+            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = self.data | {"processen": processen}
         response = self.client.put(self.detail_path(producttype), data)
 
@@ -1170,7 +1106,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1360,65 +1297,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Parameter.objects.count(), 1)
 
-    def test_partial_update_producttype_without_externe_verwijzingen_without_config(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        response = self.client.patch(self.detail_path(producttype), {"naam": "test"})
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(ProductType.objects.count(), 1)
-
-    def test_partial_update_producttype_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-
-        data = self.data | {
-            "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.patch(self.detail_path(producttype), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaaktypen": [
-                    ErrorDetail(
-                        string="De zaaktypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "verzoektypen": [
-                    ErrorDetail(
-                        string="De verzoektypen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "processen": [
-                    ErrorDetail(
-                        string="De processen url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_partial_update_producttype_with_zaaktype(self):
         producttype = ProductTypeFactory.create()
 
-        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaaktypen = [
+            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"zaaktypen": zaaktypen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1428,7 +1312,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1437,7 +1322,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         ZaakTypeFactory.create(producttype=producttype)
 
-        zaaktypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaaktypen = [
+            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"zaaktypen": zaaktypen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1447,7 +1334,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1477,7 +1365,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_partial_update_producttype_with_verzoektype(self):
         producttype = ProductTypeFactory.create()
 
-        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        verzoektypen = [
+            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"verzoektypen": verzoektypen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1487,7 +1377,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1496,7 +1387,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         VerzoekTypeFactory.create(producttype=producttype)
 
-        verzoektypen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        verzoektypen = [
+            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"verzoektypen": verzoektypen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1506,7 +1399,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1536,7 +1430,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_partial_update_producttype_with_proces(self):
         producttype = ProductTypeFactory.create()
 
-        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        processen = [
+            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"processen": processen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1546,7 +1442,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1555,7 +1452,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         ProcesFactory.create(producttype=producttype)
 
-        processen = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        processen = [
+            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"processen": processen}
         response = self.client.patch(self.detail_path(producttype), data)
 
@@ -1565,7 +1464,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1647,25 +1547,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             }
         ]
         self.assertEqual(response.data["prijzen"], expected_data)
-
-    def test_read_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            zaaktypen_url="", verzoektypen_url="", processen_url=""
-        )
-
-        producttype = ProductTypeFactory.create()
-        zaaktype = ZaakTypeFactory(producttype=producttype)
-        verzoektype = VerzoekTypeFactory(producttype=producttype)
-        proces = ProcesFactory(producttype=producttype)
-
-        response = self.client.get(self.detail_path(producttype))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["zaaktypen"], [{"url": f"/{zaaktype.uuid}"}])
-        self.assertEqual(
-            response.data["verzoektypen"], [{"url": f"/{verzoektype.uuid}"}]
-        )
-        self.assertEqual(response.data["processen"], [{"url": f"/{proces.uuid}"}])
 
     def test_read_producttypen(self):
         producttype1 = ProductTypeFactory.create(

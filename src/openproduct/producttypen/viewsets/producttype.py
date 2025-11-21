@@ -22,7 +22,6 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
     Actie,
     ContentElement,
-    ExterneVerwijzingConfig,
     Prijs,
     PrijsRegel,
     ProductType,
@@ -203,9 +202,12 @@ class ProductTypeFilterSet(FilterSet):
             "publicatie_start_datum": ["exact", "gte", "lte"],
             "publicatie_eind_datum": ["exact", "gte", "lte"],
             "verbruiksobject_schema__naam": ["exact"],
-            "zaaktypen__uuid": ["exact"],
-            "verzoektypen__uuid": ["exact"],
-            "processen__uuid": ["exact"],
+            "zaaktypen__urn": ["exact", "contains"],
+            "verzoektypen__urn": ["exact", "contains"],
+            "processen__urn": ["exact", "contains"],
+            "zaaktypen__url": ["exact", "contains"],
+            "verzoektypen__url": ["exact", "contains"],
+            "processen__url": ["exact", "contains"],
             "contacten__uuid": ["exact"],
             "locaties__uuid": ["exact"],
             "organisaties__uuid": ["exact"],
@@ -319,22 +321,6 @@ class ProductTypeViewSet(
         if self.action in ["create", "update", "partial_update"]:
             activate("nl")
         return super().initial(request, *args, **kwargs)
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
-
-        if not all(
-            (
-                externe_verwijzing_config.zaaktypen_url,
-                externe_verwijzing_config.verzoektypen_url,
-                externe_verwijzing_config.processen_url,
-            )
-        ):
-            logger.warning("externe_verwijzing_config_missing_urls")
-
-        context["externe_verwijzing_config"] = externe_verwijzing_config
-        return context
 
     @extend_schema(
         summary="De vertaling van een producttype aanpassen.",

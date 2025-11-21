@@ -123,7 +123,7 @@ SETUP_CONFIGURATION_STEPS = (
     "zgw_consumers.contrib.setup_configuration.steps.ServiceConfigurationStep",
     "notifications_api_common.contrib.setup_configuration.steps.NotificationConfigurationStep",
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
-    "openproduct.setup_configuration.steps.ExterneVerwijzingConfigConfigurationStep",
+    "openproduct.setup_configuration.steps.UrnMappingConfigsConfigurationStep",
     "openproduct.setup_configuration.steps.DmnConfigsConfigurationStep",
 )
 

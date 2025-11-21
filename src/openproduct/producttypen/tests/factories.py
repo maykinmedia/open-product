@@ -154,7 +154,6 @@ class ParameterFactory(factory.django.DjangoModelFactory):
 
 class ZaakTypeFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = ZaakType
@@ -162,7 +161,6 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
 
 class VerzoekTypeFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = VerzoekType
@@ -170,7 +168,6 @@ class VerzoekTypeFactory(factory.django.DjangoModelFactory):
 
 class ProcesFactory(factory.django.DjangoModelFactory):
     producttype = factory.SubFactory(ProductTypeFactory)
-    uuid = factory.Faker("uuid4")
 
     class Meta:
         model = Proces
