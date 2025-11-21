@@ -7,6 +7,7 @@ from .jsonschema import JsonSchemaAdmin
 from .link import LinkAdmin
 from .prijs import PrijsAdmin
 from .producttype import ProductTypeAdmin
+from .producttypepermission import ProductTypePermissionAdmin
 from .thema import ThemaAdmin
 from .upn import UniformeProductNaamAdmin
 
@@ -23,4 +24,5 @@ __all__ = [
     "DmnConfigAdmin",
     "ActieInline",
     "ExterneVerwijzingConfigAdmin",
+    "ProductTypePermissionAdmin",
 ]
