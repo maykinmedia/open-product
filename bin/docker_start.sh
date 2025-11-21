@@ -18,9 +18,12 @@ ${SCRIPTPATH}/wait_for_db.sh
 
 >&2 echo "Database is up."
 
+# Set defaults for OTEL
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openproduct}"
+
 # Apply database migrations
 >&2 echo "Apply database migrations"
-python src/manage.py migrate
+OTEL_SDK_DISABLED=True python src/manage.py migrate
 
 # Create superuser
 # specify password by setting OPENPRODUCT_SUPERUSER_PASSWORD in the env
