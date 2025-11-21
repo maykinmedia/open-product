@@ -3,6 +3,7 @@ from django.contrib.admin.utils import unquote
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 from django.core.exceptions import PermissionDenied, ValidationError
 
+from ..producttypen.admin.producttypepermission import ProductTypePermissionInline
 from .forms import PreventPrivilegeEscalationMixin, UserChangeForm
 from .models import User
 from .utils import validate_max_user_permissions
@@ -11,6 +12,7 @@ from .utils import validate_max_user_permissions
 @admin.register(User)
 class UserAdmin(_UserAdmin):
     form = UserChangeForm
+    inlines = (ProductTypePermissionInline,)
 
     def get_form(self, request, obj=None, **kwargs):
         ModelForm = super().get_form(request, obj, **kwargs)
