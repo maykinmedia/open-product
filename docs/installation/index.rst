@@ -52,6 +52,7 @@ Guides
    docker_compose
    provision_superuser
    config/index
+   observability/index
    updating
 
 Reference

@@ -18,9 +18,12 @@ ${SCRIPTPATH}/wait_for_db.sh
 
 >&2 echo "Database is up."
 
+# Set defaults for OTEL
+export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-openproduct}"
+
 # Apply database migrations
 >&2 echo "Apply database migrations"
-python src/manage.py migrate
+OTEL_SDK_DISABLED=True python src/manage.py migrate
 
 # Create superuser
 # specify password by setting OPENPRODUCT_SUPERUSER_PASSWORD in the env
@@ -37,6 +40,7 @@ fi
 # Start server
 >&2 echo "Starting server"
 exec uwsgi \
+    --strict \
     --ini "${SCRIPTPATH}/uwsgi.ini" \
     --http :$uwsgi_port \
     --http-keepalive \
@@ -46,6 +50,9 @@ exec uwsgi \
     --static-map /media=/app/media  \
     --chdir src \
     --enable-threads \
+    --single-interpreter \
+    --die-on-term \
+    --need-app \
     --processes $uwsgi_processes \
     --threads $uwsgi_threads \
     --post-buffering=8192 \

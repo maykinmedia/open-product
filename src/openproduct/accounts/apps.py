@@ -43,4 +43,7 @@ class AccountsConfig(AppConfig):
     name = "openproduct.accounts"
 
     def ready(self):
+        from . import metrics  # noqa
+        from . import signals  # noqa
+
         post_migrate.connect(update_admin_index, sender=self)

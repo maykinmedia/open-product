@@ -29,6 +29,12 @@ from openproduct.utils.filters import (
 from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
+from ..metrics import (
+    product_create_counter,
+    product_delete_counter,
+    product_update_counter,
+)
+
 logger = structlog.stdlib.get_logger(__name__)
 
 DATA_ATTR_HELP_TEXT = _(
@@ -249,6 +255,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             id=str(product.id),
             naam=product.naam,
         )
+        product_create_counter.add(1)
 
     @transaction.atomic
     def perform_update(self, serializer):
@@ -259,6 +266,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             id=str(product.id),
             naam=product.naam,
         )
+        product_update_counter.add(1)
 
     @transaction.atomic
     def perform_destroy(self, instance):
@@ -268,3 +276,4 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             id=str(instance.id),
             naam=instance.naam,
         )
+        product_delete_counter.add(1)

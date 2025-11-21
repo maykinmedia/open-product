@@ -19,4 +19,4 @@ django-timeline-logger
 
 jsonschema
 
-maykin-common[axes,mfa]
+maykin-common[axes,mfa,otel]
