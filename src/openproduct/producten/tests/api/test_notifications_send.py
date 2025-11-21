@@ -18,6 +18,8 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 @freeze_time("2024-2-2T00:00:00Z")
 @override_settings(NOTIFICATIONS_DISABLED=False)
 class SendNotifTestCase(BaseApiTestCase):
+    is_superuser = True
+
     @classmethod
     def setUpTestData(cls):
         service, _ = Service.objects.update_or_create(

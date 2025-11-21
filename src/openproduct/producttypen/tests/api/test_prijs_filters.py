@@ -15,6 +15,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestPrijsFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("prijs-list")
 
     def test_prijs_opties_bedrag_filter(self):

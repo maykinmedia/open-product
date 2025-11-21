@@ -13,6 +13,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestThemaViewSet(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("thema-list")
 
     def setUp(self):

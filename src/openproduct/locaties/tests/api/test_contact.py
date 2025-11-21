@@ -12,6 +12,7 @@ from ..factories import ContactFactory, OrganisatieFactory
 
 
 class TestContact(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("contact-list")
 
     def setUp(self):

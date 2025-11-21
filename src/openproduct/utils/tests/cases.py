@@ -11,8 +11,12 @@ from openproduct.accounts.models import User
 
 
 class BaseApiTestCase(APITestCase):
+    is_superuser = False
+
     def setUp(self):
-        user = User.objects.create_user(username="testuser", password="testpassword")
+        user = User.objects.create_user(
+            username="testuser", password="testpassword", is_superuser=self.is_superuser
+        )
         token = Token.objects.create(user=user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 

@@ -35,6 +35,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 @freeze_time("2024-01-01")
 @override_settings(NOTIFICATIONS_DISABLED=True, PRODUCTEN_API_MAJOR_VERSION=0)
 class TestProduct(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("product-list")
 
     def setUp(self):
@@ -1745,6 +1746,7 @@ class TestProduct(BaseApiTestCase):
 
 @override_settings(NOTIFICATIONS_DISABLED=True)
 class TestProductUrns(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("product-list")
 
     def setUp(self):
