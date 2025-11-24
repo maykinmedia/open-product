@@ -90,13 +90,13 @@ Producten
 ---------
 
 
-``openproduct.producten.creates``
+``openproduct.product.creates``
     Reports the number of producten created via the API.
 
-``openproduct.producten.updates``
+``openproduct.product.updates``
     Reports the number of producten updated via the API.
 
-``openproduct.producten.deletes``
+``openproduct.product.deletes``
     Reports the number of producten deleted via the API.
 
 The producten metrics show how many entities are created, updated, or deleted via the API,
@@ -106,4 +106,4 @@ helping to monitor load and the most frequent operations, and allow for various 
 
     .. code-block:: promql
 
-        sum by (otel_scope_name) (otel_openproduct_producten_updates_total)
+        sum by (otel_scope_name) (otel_openproduct_product_updates_total)
