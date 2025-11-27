@@ -1,5 +1,3 @@
-from unittest import expectedFailure
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -28,7 +26,6 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
     def setUp(self):
         super().setUp()
         ProductTypeFactory.create()
-        UserFactory.create(superuser=True, username="testtest")
 
     @classmethod
     def setUpTestData(cls):
@@ -97,10 +94,11 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
             1,
         )
 
-    # FIXME `OIDC_CREATE_USER=False` currently raises 401
-    @expectedFailure
     @override_settings(OIDC_CREATE_USER=False)
     def test_valid_token_oidc_create_user_false(self):
+        # The user must exist in the database already
+        UserFactory.create(username="aa10cfc7-2c4d-41f6-8fac-7bf405c572c4")
+
         token = self.generate_token_with_password(self.oidc_client)
 
         response = self.client.get(
@@ -113,7 +111,7 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
             User.objects.filter(
                 username="aa10cfc7-2c4d-41f6-8fac-7bf405c572c4"
             ).count(),
-            0,
+            1,
         )
 
     def test_invalid_token(self):

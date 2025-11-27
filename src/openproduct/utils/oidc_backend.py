@@ -8,6 +8,7 @@ from drf_spectacular.plumbing import build_bearer_security_scheme_object
 from mozilla_django_oidc_db.backends import (
     OIDCAuthenticationBackend as _OIDCAuthenticationBackendDB,
 )
+from mozilla_django_oidc_db.constants import OIDC_ADMIN_CONFIG_IDENTIFIER
 from mozilla_django_oidc_db.models import OIDCClient
 
 User = get_user_model()
@@ -22,8 +23,7 @@ class OIDCAuthenticationBackend(_OIDCAuthenticationBackendDB):
     """
 
     def get_or_create_user(self, access_token: str, id_token: str, payload):
-        # FIXME is this the correct client?
-        self.config = OIDCClient.objects.resolve("admin-oidc")
+        self.config = OIDCClient.objects.resolve(OIDC_ADMIN_CONFIG_IDENTIFIER)
         return super().get_or_create_user(access_token, id_token, payload)
 
 
