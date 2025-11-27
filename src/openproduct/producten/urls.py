@@ -43,7 +43,7 @@ Een verwijzing kan als een URN en/of URL worden opgeslagen waarna via URN_MAPPIN
 
 ### Autorisatie
 
-Voor CREATE, UPDATE, PARTIAL_UPDATE en DELETE requests moet user de juiste permissie hebben. Deze permissies zijn in te stellen in de Admin.
+Voor schrijfacties (POST, PUT, PATCH, DELETE) moet de user de juiste permissie hebben. Deze permissies zijn in te stellen in de Admin.
 - CREATE: ``producten.add_product``
 - UPDATE: ``producten.change_product``
 - DELETE: ``producten.delete_product``

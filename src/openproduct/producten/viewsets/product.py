@@ -17,8 +17,7 @@ from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
 from openproduct.producten.viewsets.permissions import ProductTypeObjectPermission
-from openproduct.producttypen.models import ProductType, Thema, ProductTypePermission
-from openproduct.utils.auth import DjangoModelPermissions
+from openproduct.producttypen.models import ProductType, ProductTypePermission, Thema
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     CharArrayFilter,
@@ -225,7 +224,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
     def get_queryset(self):
         if self.action != "list" or self.request.user.is_superuser:
-            qs = Product.objects
+            qs = Product.objects.all()
         else:
             qs = Product.objects.filter(
                 producttype__in=ProductTypePermission.objects.filter(
