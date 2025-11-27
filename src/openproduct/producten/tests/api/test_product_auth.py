@@ -53,12 +53,19 @@ class TestProductAuth(BaseApiTestCase):
         with self.subTest("no permissions"):
             self.assertStatusCode("get", status.HTTP_403_FORBIDDEN, product)
 
+        ProductTypePermissionFactory.create(
+            producttype=self.producttype,
+            user=self.user,
+            mode=PermissionModes.read_only,
+        )
+        with self.subTest("other producttype permission"):
+            self.assertStatusCode("get", status.HTTP_403_FORBIDDEN, product)
+
         permission = ProductTypePermissionFactory.create(
             producttype=product.producttype,
             user=self.user,
             mode=PermissionModes.read_only,
         )
-
         with self.subTest("producttype read permission"):
             self.assertStatusCode("get", status.HTTP_200_OK, product)
 

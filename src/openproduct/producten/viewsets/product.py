@@ -218,7 +218,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
 
     def get_queryset(self):
         if self.action != "list" or self.request.user.is_superuser:
-            qs = Product.objects
+            qs = Product.objects.all()
         else:
             qs = Product.objects.filter(
                 producttype__in=ProductTypePermission.objects.filter(
