@@ -6,6 +6,9 @@ os.environ.setdefault("SECRET_KEY", "for-testing-purposes-only")
 os.environ.setdefault("IS_HTTPS", "no")
 os.environ.setdefault("ALLOWED_HOSTS", "")
 
+os.environ.setdefault("OTEL_SDK_DISABLED", "true")
+os.environ.setdefault("OTEL_SERVICE_NAME", "openproduct-ci")
+
 from open_api_framework.conf.utils import mute_logging
 
 from .base import *  # noqa isort:skip

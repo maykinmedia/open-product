@@ -19,6 +19,9 @@ os.environ.setdefault("DB_PASSWORD", "openproduct")
 
 os.environ.setdefault("ENVIRONMENT", "development")
 
+os.environ.setdefault("OTEL_SDK_DISABLED", "true")
+os.environ.setdefault("OTEL_EXPORTER_OTLP_METRICS_INSECURE", "true")
+
 from .base import *  # noqa isort:skip
 
 # Feel free to switch dev to sqlite3 for simple projects,
