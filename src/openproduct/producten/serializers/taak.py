@@ -20,5 +20,6 @@ class TaakSerializer(serializers.ModelSerializer):
     class Meta:
         model = Taak
         fields = ("product", "urn", "url")
+        # because of the unique together constraint in the model, drf makes both fields required, but only one is.
         extra_kwargs = {"urn": {"required": False}, "url": {"required": False}}
         validators = []

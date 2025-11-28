@@ -1908,13 +1908,14 @@ class TestProductUrns(BaseApiTestCase):
         }
 
         with self.subTest("mapping required"):
-            response = self.client.post(self.path, data)
+            with override_settings(REQUIRE_URN_URL_MAPPING=True):
+                response = self.client.post(self.path, data)
 
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de urn heeft geen mapping"]},
-            )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(
+                    response.json(),
+                    {"aanvraag_zaak": ["de urn heeft geen mapping"]},
+                )
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URN_URL_MAPPING=False):
@@ -1968,13 +1969,14 @@ class TestProductUrns(BaseApiTestCase):
         }
 
         with self.subTest("mapping required"):
-            response = self.client.post(self.path, data)
+            with override_settings(REQUIRE_URL_URN_MAPPING=True):
+                response = self.client.post(self.path, data)
 
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de url heeft geen mapping"]},
-            )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(
+                    response.json(),
+                    {"aanvraag_zaak": ["de url heeft geen mapping"]},
+                )
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URL_URN_MAPPING=False):

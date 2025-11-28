@@ -38,13 +38,13 @@ def migrate_externe_verwijzingen(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producten', '0012_alter_document_unique_together_and_more'),
+        ('producten', '0013_alter_document_unique_together_and_more'),
         ('producttypen', '0005_externeverwijzingconfig_taken_url_and_more'),
         ('urn', '0001_initial'),
     ]
 
     operations = [
-        migrations.RunPython(migrate_externe_verwijzingen),
+        migrations.RunPython(migrate_externe_verwijzingen, migrations.RunPython.noop),
         migrations.RemoveField(
             model_name='document',
             name='uuid',

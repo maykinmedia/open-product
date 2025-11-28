@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(migrate_externe_verwijzingen),
+        migrations.RunPython(migrate_externe_verwijzingen, migrations.RunPython.noop),
         migrations.RemoveField(
             model_name='proces',
             name='uuid',

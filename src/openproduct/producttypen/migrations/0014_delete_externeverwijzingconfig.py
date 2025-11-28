@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('producttypen', '0013_remove_proces_uuid_remove_verzoektype_uuid_and_more'),
-        ('producten', '0013_remove_document_uuid_remove_taak_uuid_and_more'),
+        ('producten', '0014_remove_document_uuid_remove_taak_uuid_and_more'),
     ]
 
     operations = [

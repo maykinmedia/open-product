@@ -248,7 +248,7 @@ REQUIRE_URN_URL_MAPPING = config(
 )
 REQUIRE_URL_URN_MAPPING = config(
     "REQUIRE_URL_URN_MAPPING",
-    True,
+    False,
     group="Urns",
     help_text="whether an url requires an urn mapping",
 )
