@@ -61,8 +61,8 @@
             "woonplaats": "Amsterdam",
             "documentnummer": "ABC1234"
         },
-        "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-        "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+        "aanvraag_zaak_urn": "maykin:abc:zrc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        "aanvraag_zaak_url": "https://maykin.zrc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
     }
 },
 {
@@ -89,15 +89,15 @@
         "dataobject": {
             "kenteken": "AB-123-C"
         },
-        "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-        "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+        "aanvraag_zaak_urn": "maykin:abc:zrc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        "aanvraag_zaak_url": "https://maykin.zrc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
     }
 },
 {
     "model": "producten.document",
     "pk": 1,
     "fields": {
-        "uuid": "d57def4b-1135-4c34-9507-3cd15770d0fe",
+        "urn": "maykin:abc:drc:document:d57def4b-1135-4c34-9507-3cd15770d0fe",
         "product": 4
     }
 },
@@ -205,18 +205,6 @@
             },
             "additionalProperties": false
         }
-    }
-},
-{
-    "model": "producttypen.externeverwijzingconfig",
-    "pk": 1,
-    "fields": {
-        "zaaktypen_url": "https://catalogi-api.gemeente.cloud/api/v1/zaaktypen",
-        "processen_url": "https://processen-api.gemeente.cloud/api/v1/processen",
-        "verzoektypen_url": "https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen",
-        "documenten_url": "https://documenten-api.vng.cloud/api/v1/enkelvoudiginformatieobjecten",
-        "zaken_url": "https://zaken-api.vng.cloud/api/v1/zaken",
-        "taken_url": "https://taken-api.vng.cloud/api/v1/taken"
     }
 },
 {
@@ -559,7 +547,7 @@
     "model": "producttypen.proces",
     "pk": 1,
     "fields": {
-        "uuid": "12fda81b-1581-4aec-9597-0251ccb8877a",
+        "urn": "maykin:abc:prc:process:12fda81b-1581-4aec-9597-0251ccb8877a",
         "producttype": 24
     }
 },
@@ -567,7 +555,7 @@
     "model": "producttypen.verzoektype",
     "pk": 1,
     "fields": {
-        "uuid": "83f0348e-f0c6-4859-9f3b-69ba0833d674",
+        "urn": "maykin:abc:vtc:verzoektype:83f0348e-f0c6-4859-9f3b-69ba0833d674",
         "producttype": 24
     }
 },
@@ -575,7 +563,7 @@
     "model": "producttypen.zaaktype",
     "pk": 1,
     "fields": {
-        "uuid": "f981fe35-d517-4304-80b3-de5ceea18c32",
+        "urn": "maykin:abc:ztc:zaaktype:f981fe35-d517-4304-80b3-de5ceea18c32",
         "producttype": 24
     }
 },
@@ -583,7 +571,7 @@
     "model": "producttypen.zaaktype",
     "pk": 2,
     "fields": {
-        "uuid": "81d4b529-5d7c-4ac9-b585-2f7dc260389b",
+        "urn": "maykin:abc:ztc:zaaktype:81d4b529-5d7c-4ac9-b585-2f7dc260389b",
         "producttype": 23
     }
 },
@@ -591,8 +579,40 @@
     "model": "urn.urnmappingconfig",
     "pk": 1,
     "fields": {
-        "urn": "maykin:abc:ztc:zaak",
-        "url": "https://maykin.ztc.com/api/v1/zaken"
+        "urn": "maykin:abc:zrc:zaak",
+        "url": "https://maykin.zrc.com/api/v1/zaken"
+    }
+},
+{
+    "model": "urn.urnmappingconfig",
+    "pk": 2,
+    "fields": {
+        "urn": "maykin:abc:ztc:zaaktype",
+        "url": "https://maykin.ztc.com/api/v1/zaaktypen"
+    }
+},
+    {
+    "model": "urn.urnmappingconfig",
+    "pk": 3,
+    "fields": {
+        "urn": "maykin:abc:drc:document",
+        "url": "https://maykin.ztc.com/api/v1/documenten"
+    }
+},
+        {
+    "model": "urn.urnmappingconfig",
+    "pk": 4,
+    "fields": {
+        "urn": "maykin:abc:vtc:verzoektype",
+        "url": "https://maykin.ztc.com/api/v1/verzoektypen"
+    }
+},
+            {
+    "model": "urn.urnmappingconfig",
+    "pk": 5,
+    "fields": {
+        "urn": "maykin:abc:prc:process",
+        "url": "https://maykin.ztc.com/api/v1/processen"
     }
 }
 ]

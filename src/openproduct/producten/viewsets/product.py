@@ -15,7 +15,7 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producten.kanalen import KANAAL_PRODUCTEN
 from openproduct.producten.models import Product
 from openproduct.producten.serializers.product import ProductSerializer
-from openproduct.producttypen.models import ExterneVerwijzingConfig, ProductType, Thema
+from openproduct.producttypen.models import ProductType, Thema
 from openproduct.utils.enums import Operators
 from openproduct.utils.filters import (
     CharArrayFilter,
@@ -179,9 +179,14 @@ class ProductFilterSet(FilterSet):
             "eind_datum": ["exact", "gte", "lte"],
             "aanmaak_datum": ["exact", "gte", "lte"],
             "update_datum": ["exact", "gte", "lte"],
-            "documenten__uuid": ["exact"],
-            "zaken__uuid": ["exact"],
-            "taken__uuid": ["exact"],
+            "aanvraag_zaak_urn": ["exact", "contains"],
+            "aanvraag_zaak_url": ["exact", "contains"],
+            "documenten__urn": ["exact", "contains"],
+            "zaken__urn": ["exact", "contains"],
+            "taken__urn": ["exact", "contains"],
+            "documenten__url": ["exact", "contains"],
+            "zaken__url": ["exact", "contains"],
+            "taken__url": ["exact", "contains"],
             "eigenaren__uuid": ["exact"],
         }
 
@@ -229,22 +234,6 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
     notifications_kanaal = KANAAL_PRODUCTEN
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        externe_verwijzing_config = ExterneVerwijzingConfig.get_solo()
-
-        if not all(
-            (
-                externe_verwijzing_config.documenten_url,
-                externe_verwijzing_config.zaken_url,
-                externe_verwijzing_config.taken_url,
-            )
-        ):
-            logger.warning("externe_verwijzing_config_missing_urls")
-
-        context["externe_verwijzing_config"] = externe_verwijzing_config
-        return context
 
     @transaction.atomic
     def perform_create(self, serializer):
