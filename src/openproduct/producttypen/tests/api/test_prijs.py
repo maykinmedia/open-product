@@ -23,6 +23,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 @freeze_time("2024-01-01")
 class TestProductTypePrijs(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("prijs-list")
 
     def setUp(self):

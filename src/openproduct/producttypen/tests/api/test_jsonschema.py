@@ -11,6 +11,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductTypeSchema(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("schema-list")
 
     def setUp(self):

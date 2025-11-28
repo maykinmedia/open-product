@@ -9,6 +9,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestActieFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("actie-list")
 
     def test_naam_filter(self):

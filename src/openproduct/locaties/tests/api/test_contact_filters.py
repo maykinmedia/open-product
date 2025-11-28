@@ -9,6 +9,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestContactFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("contact-list")
 
     def test_rol_filter(self):
