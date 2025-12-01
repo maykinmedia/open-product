@@ -1,5 +1,4 @@
 import datetime
-from unittest.mock import patch
 from uuid import uuid4
 
 from django.contrib.contenttypes.models import ContentType
@@ -23,7 +22,6 @@ from openproduct.producten.tests.factories import (
     TaakFactory,
     ZaakFactory,
 )
-from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
@@ -52,6 +50,16 @@ class TestProduct(BaseApiTestCase):
             url="https://maykin.ztc.com/api/v1/zaken",
         )
 
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:taak",
+            url="https://maykin.ztc.com/api/v1/taken",
+        )
+
+        UrnMappingConfig.objects.create(
+            urn="maykin:abc:ztc:document",
+            url="https://maykin.ztc.com/api/v1/documenten",
+        )
+
         self.producttype.themas.add(self.thema)
         self.data = {
             "producttype_uuid": self.producttype.uuid,
@@ -61,18 +69,6 @@ class TestProduct(BaseApiTestCase):
             "eigenaren": [{"kvk_nummer": "12345678"}],
             "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
-
-        config_patch = patch(
-            "openproduct.producttypen.models.ExterneVerwijzingConfig.get_solo",
-            return_value=ExterneVerwijzingConfig(
-                documenten_url="https://gemeente-a.zgw.nl/documenten",
-                zaken_url="https://gemeente-a.zgw.nl/zaken",
-                taken_url="https://gemeente-a.zgw.nl/taken",
-            ),
-        )
-
-        self.config_mock = config_patch.start()
-        self.addCleanup(config_patch.stop)
 
     def detail_path(self, product):
         return reverse("product-detail", args=[product.uuid])
@@ -309,12 +305,7 @@ class TestProduct(BaseApiTestCase):
         self.producttype.dataobject_schema = json_schema
         self.producttype.save()
 
-        data = self.data | {
-            "dataobject": {"naam": "Test"},
-            "documenten": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
-            "zaken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
-            "taken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
-        }
+        data = self.data | {"dataobject": {"naam": "Test"}}
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -347,21 +338,9 @@ class TestProduct(BaseApiTestCase):
                     "uuid": str(product.eigenaren.get().uuid),
                 }
             ],
-            "documenten": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/documenten/cec996f4-2efa-4307-a035-32c2c9032e89"
-                }
-            ],
-            "zaken": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/zaken/cec996f4-2efa-4307-a035-32c2c9032e89"
-                }
-            ],
-            "taken": [
-                {
-                    "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
-                }
-            ],
+            "documenten": [],
+            "zaken": [],
+            "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
@@ -552,126 +531,105 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(log.event, Events.create)
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
-    def test_create_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        response = self.client.post(self.path, self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Product.objects.count(), 1)
-
-    def test_create_product_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        data = self.data | {
-            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "documenten": [
-                    ErrorDetail(
-                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "zaken": [
-                    ErrorDetail(
-                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "taken": [
-                    ErrorDetail(
-                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
-    def test_create_product_with_duplicate_document_uuids_returns_error(
-        self,
-    ):
-        data = self.data | {
-            "documenten": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-            ],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "documenten": [
-                    ErrorDetail(
-                        string="Er bestaat al een document met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
-                        code="unique",
-                    )
-                ]
-            },
-        )
-
-    def test_create_product_with_duplicate_zaak_uuids_returns_error(
-        self,
-    ):
+    def test_create_product_with_external_objects(self):
         data = self.data | {
             "zaken": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"}
             ],
-        }
-        response = self.client.post(self.path, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "zaken": [
-                    ErrorDetail(
-                        string="Er bestaat al een zaak met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
-                        code="unique",
-                    )
-                ]
-            },
-        )
-
-    def test_create_product_with_duplicate_taak_uuids_returns_error(
-        self,
-    ):
-        data = self.data | {
             "taken": [
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
-                {"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"},
+                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+            ],
+            "documenten": [
+                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
             ],
         }
         response = self.client.post(self.path, data)
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Zaak.objects.count(), 1)
         self.assertEqual(
-            response.data,
-            {
-                "taken": [
-                    ErrorDetail(
-                        string="Er bestaat al een taak met de uuid 99a8bd4f-4144-4105-9850-e477628852fc voor dit Product.",
-                        code="unique",
-                    )
-                ]
-            },
+            Zaak.objects.first().url,
+            "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
+        self.assertEqual(Taak.objects.count(), 1)
+        self.assertEqual(
+            Taak.objects.first().url,
+            "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(Document.objects.count(), 1)
+        self.assertEqual(
+            Document.objects.first().url,
+            "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+    def test_create_product_with_duplicate_zaken(self):
+        with self.subTest("duplicate urns"):
+            zaken = [
+                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+            ]
+            data = self.data | {"zaken": zaken}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            zaken = [
+                {
+                    "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"zaken": zaken}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_product_with_duplicate_taken(self):
+        with self.subTest("duplicate urns"):
+            taken = [
+                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+            ]
+            data = self.data | {"taken": taken}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            taken = [
+                {
+                    "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"taken": taken}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_product_with_duplicate_documenten(self):
+        with self.subTest("duplicate urns"):
+            documenten = [
+                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+            ]
+            data = self.data | {"documenten": documenten}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("duplicate urls"):
+            documenten = [
+                {
+                    "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+            ]
+            data = self.data | {"documenten": documenten}
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_free_product(self):
         data = self.data | {"prijs": 0}
@@ -961,63 +919,12 @@ class TestProduct(BaseApiTestCase):
         # version is not created with factoryboy
         self.assertEqual(Version.objects.get_for_object(product).count(), 1)
 
-    def test_update_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        product = ProductFactory.create()
-
-        response = self.client.put(self.detail_path(product), self.data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Product.objects.count(), 1)
-
-    def test_update_product_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        product = ProductFactory.create()
-
-        data = self.data | {
-            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.put(self.detail_path(product), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "documenten": [
-                    ErrorDetail(
-                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "zaken": [
-                    ErrorDetail(
-                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "taken": [
-                    ErrorDetail(
-                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_update_product_with_document(self):
         product = ProductFactory.create()
 
-        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        documenten = [
+            {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+        ]
         data = self.data | {"documenten": documenten}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1027,7 +934,8 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1037,7 +945,9 @@ class TestProduct(BaseApiTestCase):
 
         DocumentFactory.create(product=product)
 
-        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        documenten = [
+            {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+        ]
         data = self.data | {"documenten": documenten}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1047,7 +957,8 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1077,17 +988,17 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_zaak(self):
         product = ProductFactory.create()
 
-        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [{"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"}]
         data = self.data | {"zaken": zaken}
         response = self.client.put(self.detail_path(product), data)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Zaak.objects.count(), 1)
         self.assertEqual(
             response.data["zaken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1097,7 +1008,11 @@ class TestProduct(BaseApiTestCase):
 
         ZaakFactory.create(product=product)
 
-        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [
+            {
+                "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            }
+        ]
         data = self.data | {"zaken": zaken}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1107,7 +1022,8 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1137,7 +1053,7 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_taak(self):
         product = ProductFactory.create()
 
-        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [{"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"}]
         data = self.data | {"taken": taken}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1147,7 +1063,8 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1157,7 +1074,11 @@ class TestProduct(BaseApiTestCase):
 
         TaakFactory.create(product=product)
 
-        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [
+            {
+                "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            }
+        ]
         data = self.data | {"taken": taken}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1167,7 +1088,8 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
         )
@@ -1207,67 +1129,14 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(Product.objects.count(), 1)
         self.assertEqual(Product.objects.get().eind_datum, data["eind_datum"])
 
-    def test_partial_update_product_without_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
-        )
-
-        response = self.client.patch(self.detail_path(product), {"prijs": "10"})
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Product.objects.count(), 1)
-
-    def test_partial_update_product_with_externe_verwijzingen_without_config_returns_error(
-        self,
-    ):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        product = ProductFactory.create()
-
-        data = {
-            "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "zaken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-            "taken": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-        }
-        response = self.client.patch(self.detail_path(product), data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "documenten": [
-                    ErrorDetail(
-                        string="De documenten url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "zaken": [
-                    ErrorDetail(
-                        string="De zaken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-                "taken": [
-                    ErrorDetail(
-                        string="De taken url is niet geconfigureerd in de externe verwijzing config",
-                        code="invalid",
-                    )
-                ],
-            },
-        )
-
     def test_partial_update_product_with_document(self):
         product = ProductFactory.create(
             aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
-        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        documenten = [
+            {"urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"documenten": documenten}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1277,7 +1146,8 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1289,7 +1159,9 @@ class TestProduct(BaseApiTestCase):
 
         DocumentFactory.create(product=product)
 
-        documenten = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        documenten = [
+            {"urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc"}
+        ]
         data = {"documenten": documenten}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1299,7 +1171,8 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1335,7 +1208,7 @@ class TestProduct(BaseApiTestCase):
             aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
-        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [{"urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"zaken": zaken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1345,7 +1218,8 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/zaken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1357,17 +1231,18 @@ class TestProduct(BaseApiTestCase):
 
         ZaakFactory.create(product=product)
 
-        zaken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [{"urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"zaken": zaken}
         response = self.client.patch(self.detail_path(product), data)
-
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Zaak.objects.count(), 1)
         self.assertEqual(
             response.data["zaken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/zaken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/zaken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1403,7 +1278,7 @@ class TestProduct(BaseApiTestCase):
             aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
-        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [{"urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"taken": taken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1413,7 +1288,8 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/taken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1425,7 +1301,7 @@ class TestProduct(BaseApiTestCase):
 
         TaakFactory.create(product=product)
 
-        taken = [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [{"urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc"}]
         data = {"taken": taken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1435,7 +1311,8 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "url": "https://gemeente-a.zgw.nl/taken/99a8bd4f-4144-4105-9850-e477628852fc"
+                    "urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "url": "https://maykin.ztc.com/api/v1/taken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
         )
@@ -1465,23 +1342,6 @@ class TestProduct(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Taak.objects.count(), 1)
-
-    def test_read_externe_verwijzingen_without_config(self):
-        self.config_mock.return_value = ExterneVerwijzingConfig(
-            documenten_url="", zaken_url="", taken_url=""
-        )
-
-        product = ProductFactory.create()
-        document = DocumentFactory(product=product)
-        zaak = ZaakFactory(product=product)
-        taak = TaakFactory(product=product)
-
-        response = self.client.get(self.detail_path(product))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["documenten"], [{"url": f"/{document.uuid}"}])
-        self.assertEqual(response.data["zaken"], [{"url": f"/{zaak.uuid}"}])
-        self.assertEqual(response.data["taken"], [{"url": f"/{taak.uuid}"}])
 
     def test_read_producten(self):
         product1 = ProductFactory.create(
@@ -2048,13 +1908,14 @@ class TestProductUrns(BaseApiTestCase):
         }
 
         with self.subTest("mapping required"):
-            response = self.client.post(self.path, data)
+            with override_settings(REQUIRE_URN_URL_MAPPING=True):
+                response = self.client.post(self.path, data)
 
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de urn heeft geen mapping"]},
-            )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(
+                    response.json(),
+                    {"aanvraag_zaak": ["de urn heeft geen mapping"]},
+                )
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URN_URL_MAPPING=False):
@@ -2108,13 +1969,14 @@ class TestProductUrns(BaseApiTestCase):
         }
 
         with self.subTest("mapping required"):
-            response = self.client.post(self.path, data)
+            with override_settings(REQUIRE_URL_URN_MAPPING=True):
+                response = self.client.post(self.path, data)
 
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de url heeft geen mapping"]},
-            )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(
+                    response.json(),
+                    {"aanvraag_zaak": ["de url heeft geen mapping"]},
+                )
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URL_URN_MAPPING=False):
@@ -2169,43 +2031,6 @@ class TestProductUrns(BaseApiTestCase):
             "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
-
-        with self.subTest("mapping missing"):
-            response = self.client.post(self.path, data)
-
-            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de url en/of urn hebben geen mapping"]},
-            )
-
-        with self.subTest("mapping missing allowed"):
-            with override_settings(
-                REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False
-            ):
-                response = self.client.post(self.path, data)
-                self.assertEqual(
-                    response.status_code, status.HTTP_201_CREATED, response.data
-                )
-
-                self.assertEqual(
-                    response.data["aanvraag_zaak_urn"],
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-                self.assertEqual(
-                    response.data["aanvraag_zaak_url"],
-                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-
-                product = Product.objects.get(uuid=response.data["uuid"])
-                self.assertEqual(
-                    product.aanvraag_zaak_urn,
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
-                self.assertEqual(
-                    product.aanvraag_zaak_url,
-                    "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
-                )
 
         with self.subTest("different mappings"):
             UrnMappingConfig.objects.create(
@@ -2283,3 +2108,33 @@ class TestProductUrns(BaseApiTestCase):
                 response.json(),
                 {"aanvraag_zaak": ["de url in de urn mapping is niet hetzelfde"]},
             )
+
+    def test_create_product_with_urn_and_url_no_mapping(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(UrnMappingConfig.objects.count(), 1)
+
+        self.assertEqual(
+            response.data["aanvraag_zaak_urn"],
+            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(
+            response.data["aanvraag_zaak_url"],
+            "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+        product = Product.objects.get(uuid=response.data["uuid"])
+        self.assertEqual(
+            product.aanvraag_zaak_urn,
+            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        self.assertEqual(
+            product.aanvraag_zaak_url,
+            "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )

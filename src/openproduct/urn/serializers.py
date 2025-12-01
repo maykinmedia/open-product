@@ -20,8 +20,12 @@ class UrnMappingMixin:
         return attrs
 
     def validate_field(self, field, attrs):
-        urn_field = f"{field}_urn"
-        url_field = f"{field}_url"
+        if field == ".":
+            urn_field = "urn"
+            url_field = "url"
+        else:
+            urn_field = f"{field}_urn"
+            url_field = f"{field}_url"
 
         urn, urn_uuid = self.get_base_and_uuid(attrs, urn_field, is_urn=True)
         url, url_uuid = self.get_base_and_uuid(attrs, url_field, is_urn=False)
@@ -62,10 +66,11 @@ class UrnMappingMixin:
         # both
         else:
             if not urn_mapping and not url_mapping:
-                if settings.REQUIRE_URN_URL_MAPPING or settings.REQUIRE_URL_URN_MAPPING:
-                    raise serializers.ValidationError(
-                        {field: _("de url en/of urn hebben geen mapping")}
-                    )
+                # if settings.REQUIRE_URN_URL_MAPPING or settings.REQUIRE_URL_URN_MAPPING:
+                #     raise serializers.ValidationError(
+                #         {field: _("de url en/of urn hebben geen mapping")}
+                #     )
+                UrnMappingConfig.objects.create(urn=urn, url=url)
             elif urn_mapping and url_mapping:
                 if urn_mapping != url_mapping:
                     raise serializers.ValidationError(

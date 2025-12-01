@@ -1,51 +1,27 @@
+from django_setup_configuration import DjangoModelRef
 from django_setup_configuration.models import ConfigurationModel
 
-from openproduct.producttypen.models import ExterneVerwijzingConfig
 from openproduct.producttypen.models.dmn_config import DmnConfig
+from openproduct.urn.models import UrnMappingConfig
 
 
-class ExterneVerwijzingConfigConfigurationModel(ConfigurationModel):
-    class Meta:
-        django_model_refs = {
-            ExterneVerwijzingConfig: (
-                "zaaktypen_url",
-                "processen_url",
-                "verzoektypen_url",
-                "documenten_url",
-                "zaken_url",
-                "taken_url",
-            )
-        }
-        extra_kwargs = {
-            "zaaktypen_url": {
-                "examples": ["https://catalogi-api.gemeente.cloud/api/v1/zaaktypen"],
-                "description": "Base url of the zaaktypen API.",
-            },
-            "processen_url": {
-                "examples": ["https://processen-api.gemeente.cloud/api/v1/processen"],
-                "description": "Base url of processen.",
-            },
-            "verzoektypen_url": {
-                "examples": [
-                    "https://verzoektypen-api.gemeente.cloud/api/v1/verzoektypen"
-                ],
-                "description": "Base url of the verzoektypen.",
-            },
-            "documenten_url": {
-                "examples": [
-                    "https://documenten-api.gemeente.cloud/api/v1/enkelvoudiginformatieobjecten"
-                ],
-                "description": "Base url of the Documenten API.",
-            },
-            "zaken_url": {
-                "examples": ["https://zaken-api.gemeente.cloud/api/v1/zaken"],
-                "description": "Base url of the Zaken API.",
-            },
-            "taken_url": {
-                "examples": ["https://taken-api.gemeente.cloud/api/v1/taken"],
-                "description": "Base url of the taken.",
-            },
-        }
+class UrnMappingConfigConfigurationModel(ConfigurationModel):
+    urn: str = DjangoModelRef(
+        UrnMappingConfig,
+        "urn",
+        examples=["maykin:abc:ztc:zaak"],
+        description="Base urn (<organisatie>:<systeem>:<component>:<resource>)",
+    )
+    url: str = DjangoModelRef(
+        UrnMappingConfig,
+        "url",
+        examples=["https://gemeente-a.zgw.nl/zaken"],
+        description="Base url of the urn.",
+    )
+
+
+class UrnMappingConfigsConfigurationModel(ConfigurationModel):
+    configs: list[UrnMappingConfigConfigurationModel]
 
 
 class DmnConfigConfigurationModel(ConfigurationModel):

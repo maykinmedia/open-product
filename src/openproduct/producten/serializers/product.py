@@ -24,9 +24,6 @@ from openproduct.producten.serializers.validators import (
 )
 from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
 from openproduct.producttypen.models import ProductType, UniformeProductNaam
-from openproduct.producttypen.models.validators import (
-    check_externe_verwijzing_config_url,
-)
 from openproduct.producttypen.serializers.producttype import NestedThemaSerializer
 from openproduct.urn.serializers import UrnMappingMixin
 from openproduct.utils.drf_validators import NestedObjectsValidator
@@ -113,17 +110,20 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 ],
                 "documenten": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "zaken": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf"
+                        "urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf",
+                        "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf",
                     }
                 ],
                 "taken": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                        "urn": "maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89",
+                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89",
                     }
                 ],
                 "status": "gereed",
@@ -131,6 +131,8 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
+                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
             },
             response_only=True,
         ),
@@ -145,14 +147,25 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "eigenaren": [
                     {"bsn": "111222333"},
                 ],
-                "documenten": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "zaken": [{"uuid": "eb188bea-51f2-44f0-8acc-eec1c710b4bf"}],
-                "taken": [{"uuid": "cec996f4-2efa-4307-a035-32c2c9032e89"}],
                 "status": "gereed",
                 "prijs": "20.20",
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
+                "documenten": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "zaken": [
+                    {"urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf"}
+                ],
+                "taken": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
+                    }
+                ],
+                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
             },
             request_only=True,
         ),
@@ -212,31 +225,49 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         return eigenaren
 
     def validate_documenten(self, documenten: list[dict]):
-        check_externe_verwijzing_config_url("documenten_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             documenten,
-            "uuid",
-            _("Er bestaat al een document met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een document met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            documenten,
+            "url",
+            _("Er bestaat al een document met de url {} voor dit Product."),
+        )
+
+        return documenten
 
     def validate_zaken(self, zaken: list[dict]):
-        check_externe_verwijzing_config_url("zaken_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             zaken,
-            "uuid",
-            _("Er bestaat al een zaak met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een zaak met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            zaken,
+            "url",
+            _("Er bestaat al een zaak met de url {} voor dit Product."),
+        )
+
+        return zaken
 
     def validate_taken(self, taken: list[dict]):
-        check_externe_verwijzing_config_url("taken_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             taken,
-            "uuid",
-            _("Er bestaat al een taak met de uuid {} voor dit Product."),
+            "urn",
+            _("Er bestaat al een taak met de urn {} voor dit Product."),
         )
+
+        validate_key_value_model_keys(
+            taken,
+            "url",
+            _("Er bestaat al een taak met de url {} voor dit Product."),
+        )
+
+        return taken
 
     @transaction.atomic()
     def create(self, validated_data):

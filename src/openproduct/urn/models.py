@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.urn.fields import BaseUrnField
+from openproduct.urn.fields import BaseUrnField, UrnField
 
 
 class UrnMappingConfig(models.Model):
@@ -23,3 +23,17 @@ class UrnMappingConfig(models.Model):
 
     def __str__(self):
         return f"{self.urn}: {self.url}"
+
+
+class UrnAbstractModel(models.Model):
+    urn = UrnField(
+        null=True,
+        blank=True,
+    )
+    url = models.URLField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True

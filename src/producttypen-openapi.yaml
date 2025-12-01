@@ -38,6 +38,7 @@ info:
     #### Zaaktype, verzoektype & proces
     Een zaaktype is een verwijzing naar een zaaktype uit de [catalogi API](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/)
     Verzoektypen & processen zijn verwijzingen naar verzoektypen & processen uit externe API's.
+    Een verwijzing kan als een URN en/of URL worden opgeslagen waarna via URN_MAPPING_CONFIG de missende urn/url automatisch wordt ingevuld.
 
     #### Externe code
     Externe codes zijn bedoeld voor de producttype code van hetzelfde soort product uit externe systemen.
@@ -4761,11 +4762,21 @@ paths:
           type: string
         description: Producttype parameters. [naam:waarde]
       - in: query
-        name: processen__uuid
+        name: processen__url
         schema:
           type: string
-          format: uuid
-        description: Uuid van het proces.
+      - in: query
+        name: processen__url__contains
+        schema:
+          type: string
+      - in: query
+        name: processen__urn
+        schema:
+          type: string
+      - in: query
+        name: processen__urn__contains
+        schema:
+          type: string
       - in: query
         name: publicatie_eind_datum
         schema:
@@ -4902,17 +4913,37 @@ paths:
           type: string
         description: Naam van het json schema.
       - in: query
-        name: verzoektypen__uuid
+        name: verzoektypen__url
         schema:
           type: string
-          format: uuid
-        description: Uuid van het verzoektype.
       - in: query
-        name: zaaktypen__uuid
+        name: verzoektypen__url__contains
         schema:
           type: string
-          format: uuid
-        description: Uuid van het zaaktype.
+      - in: query
+        name: verzoektypen__urn
+        schema:
+          type: string
+      - in: query
+        name: verzoektypen__urn__contains
+        schema:
+          type: string
+      - in: query
+        name: zaaktypen__url
+        schema:
+          type: string
+      - in: query
+        name: zaaktypen__url__contains
+        schema:
+          type: string
+      - in: query
+        name: zaaktypen__urn
+        schema:
+          type: string
+      - in: query
+        name: zaaktypen__urn__contains
+        schema:
+          type: string
       tags:
       - producttypen
       security:
@@ -5013,11 +5044,14 @@ paths:
                       - naam: betalingskenmerk
                         waarde: 12345AB
                       zaaktypen:
-                      - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                      - urn: maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc
+                        url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                       verzoektypen:
-                      - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                      - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
+                        url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
                       processen:
-                      - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
+                      - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
+                        url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                       verbruiksobject_schema:
                         naam: verbruik_schema
                         schema:
@@ -5126,11 +5160,11 @@ paths:
                   - naam: betalingskenmerk
                     waarde: 12345AB
                   zaaktypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
                   processen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema_naam: data_schema
                 summary: producttype request
@@ -5229,11 +5263,14 @@ paths:
                     - naam: betalingskenmerk
                       waarde: 12345AB
                     zaaktypen:
-                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
-                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
                     processen:
-                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -5411,11 +5448,14 @@ paths:
                     - naam: betalingskenmerk
                       waarde: 12345AB
                     zaaktypen:
-                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
-                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
                     processen:
-                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -5531,11 +5571,11 @@ paths:
                   - naam: betalingskenmerk
                     waarde: 12345AB
                   zaaktypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
                   processen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema_naam: data_schema
                 summary: producttype request
@@ -5634,11 +5674,14 @@ paths:
                     - naam: betalingskenmerk
                       waarde: 12345AB
                     zaaktypen:
-                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
-                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
                     processen:
-                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -5756,11 +5799,11 @@ paths:
                   - naam: betalingskenmerk
                     waarde: 12345AB
                   zaaktypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                   verzoektypen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
                   processen:
-                  - uuid: 99a8bd4f-4144-4105-9850-e477628852fc
+                  - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
                   verbruiksobject_schema_naam: verbruik_schema
                   dataobject_schema_naam: data_schema
                 summary: producttype request
@@ -5858,11 +5901,14 @@ paths:
                     - naam: betalingskenmerk
                       waarde: 12345AB
                     zaaktypen:
-                    - url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc
                     verzoektypen:
-                    - url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc
                     processen:
-                    - url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc
+                      url: https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc
                     verbruiksobject_schema:
                       naam: verbruik_schema
                       schema:
@@ -8159,23 +8205,27 @@ components:
     NestedProces:
       type: object
       properties:
+        urn:
+          type: string
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         url:
           type: string
           format: uri
-          readOnly: true
-          description: De url naar het proces.
-      required:
-      - url
+          nullable: true
+          maxLength: 200
     NestedProcesRequest:
       type: object
       properties:
-        uuid:
+        urn:
           type: string
-          format: uuid
-          writeOnly: true
-          description: Uuid van het proces.
-      required:
-      - uuid
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
     NestedProductType:
       type: object
       properties:
@@ -8335,43 +8385,51 @@ components:
     NestedVerzoekType:
       type: object
       properties:
+        urn:
+          type: string
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         url:
           type: string
           format: uri
-          readOnly: true
-          description: De url naar het verzoektype.
-      required:
-      - url
+          nullable: true
+          maxLength: 200
     NestedVerzoekTypeRequest:
       type: object
       properties:
-        uuid:
+        urn:
           type: string
-          format: uuid
-          writeOnly: true
-          description: Uuid van het verzoektype.
-      required:
-      - uuid
-    NestedZaakType:
-      type: object
-      properties:
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         url:
           type: string
           format: uri
-          readOnly: true
-          description: De url naar het zaaktype.
-      required:
-      - url
+          nullable: true
+          maxLength: 200
+    NestedZaakType:
+      type: object
+      properties:
+        urn:
+          type: string
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
     NestedZaakTypeRequest:
       type: object
       properties:
-        uuid:
+        urn:
           type: string
-          format: uuid
-          writeOnly: true
-          description: Uuid van het zaaktype.
-      required:
-      - uuid
+          nullable: true
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+        url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
     Organisatie:
       type: object
       properties:
@@ -9704,8 +9762,6 @@ tags:
         - Deze velden zijn een lijst van objecten.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-    - Om de velden `zaaktypen`, `verzoektypen` en `processen` te gebruiken moet er in de ExterneVerwijzingConfig in de beheer interface de url voor elk object worden gedefinieerd.
-    Tijdens het aanmaken/wijzigen wordt een uuid meegegeven. In de response zal deze uuid worden gecombineerd met de url uit de ExterneVerwijzingConfig.
 
     #### vertalingen
     - De velden `naam` en `samenvatting` zijn meertalig, waarbij Nederlands verplicht is en Engels optioneel is.

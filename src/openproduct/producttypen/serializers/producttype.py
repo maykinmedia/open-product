@@ -22,7 +22,6 @@ from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
-from ..models.validators import check_externe_verwijzing_config_url
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -164,17 +163,20 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "zaaktypen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verzoektypen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "processen": [
                     {
-                        "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc"
+                        "urn": "maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verbruiksobject_schema": {
@@ -229,9 +231,21 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "parameters": [
                     {"naam": "betalingskenmerk", "waarde": "12345AB"},
                 ],
-                "zaaktypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "verzoektypen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
-                "processen": [{"uuid": "99a8bd4f-4144-4105-9850-e477628852fc"}],
+                "zaaktypen": [
+                    {
+                        "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc"
+                    }
+                ],
+                "verzoektypen": [
+                    {
+                        "urn": "maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    }
+                ],
+                "processen": [
+                    {
+                        "urn": "maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    }
+                ],
                 "verbruiksobject_schema_naam": "verbruik_schema",
                 "dataobject_schema_naam": "data_schema",
             },
@@ -355,31 +369,49 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         )
 
     def validate_zaaktypen(self, zaaktypen: list[dict]):
-        check_externe_verwijzing_config_url("zaaktypen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             zaaktypen,
-            "uuid",
-            _("Er bestaat al een zaaktype met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een zaaktype met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            zaaktypen,
+            "url",
+            _("Er bestaat al een zaaktype met de url {} voor dit ProductType."),
+        )
+
+        return zaaktypen
 
     def validate_verzoektypen(self, verzoektypen: list[dict]):
-        check_externe_verwijzing_config_url("verzoektypen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             verzoektypen,
-            "uuid",
-            _("Er bestaat al een verzoektype met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een verzoektype met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            verzoektypen,
+            "url",
+            _("Er bestaat al een verzoektype met de url {} voor dit ProductType."),
+        )
+
+        return verzoektypen
 
     def validate_processen(self, processen: list[dict]):
-        check_externe_verwijzing_config_url("processen_url")
-
-        return validate_key_value_model_keys(
+        validate_key_value_model_keys(
             processen,
-            "uuid",
-            _("Er bestaat al een proces met de uuid {} voor dit ProductType."),
+            "urn",
+            _("Er bestaat al een proces met de urn {} voor dit ProductType."),
         )
+
+        validate_key_value_model_keys(
+            processen,
+            "url",
+            _("Er bestaat al een proces met de url {} voor dit ProductType."),
+        )
+
+        return processen
 
     class Meta:
         model = ProductType
@@ -436,21 +468,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     @transaction.atomic()
     def create(self, validated_data):
-        themas = validated_data.pop("themas")
-        locaties = validated_data.pop("locaties")
-        organisaties = validated_data.pop("organisaties")
-        contacten = validated_data.pop("contacten")
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
         zaaktypen = validated_data.pop("zaaktypen", [])
         verzoektypen = validated_data.pop("verzoektypen", [])
         processen = validated_data.pop("processen", [])
 
-        producttype = ProductType.objects.create(**validated_data)
-        producttype.themas.set(themas)
-        producttype.locaties.set(locaties)
-        producttype.organisaties.set(organisaties)
-        producttype.contacten.set(contacten)
+        producttype = super().create(validated_data)
 
         set_nested_serializer(
             [
