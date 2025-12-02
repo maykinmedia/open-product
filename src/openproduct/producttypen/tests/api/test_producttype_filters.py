@@ -30,6 +30,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductTypeFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("producttype-list")
 
     @freeze_time("2025-01-01")

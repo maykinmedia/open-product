@@ -19,6 +19,7 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TestProductTypeBestand(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("bestand-list")
 
     def setUp(self):

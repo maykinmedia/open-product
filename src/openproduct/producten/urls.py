@@ -40,6 +40,18 @@ Een verwijzing kan als een URN en/of URL worden opgeslagen waarna via URN_MAPPIN
 
 {notification_documentation(KANAAL_PRODUCTEN)}
 
+
+### Autorisatie
+
+Voor schrijfacties (POST, PUT, PATCH, DELETE) moet de user de juiste permissie hebben. Deze permissies zijn in te stellen in de Admin.
+- CREATE: ``producten.add_product``
+- UPDATE: ``producten.change_product``
+- DELETE: ``producten.delete_product``
+
+De producten endpoints worden daarnaast geautoriseerd via producttypen. Een user moet read/write permissies hebben om producten van een producttype te kunnen lezen/aanmaken/updaten of verwijderen.
+Deze permissies zijn ook in te stellen in de Admin.
+
+
 """
 
 custom_settings = {

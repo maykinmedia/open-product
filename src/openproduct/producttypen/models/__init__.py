@@ -8,6 +8,7 @@ from .parameter import Parameter
 from .prijs import Prijs, PrijsOptie, PrijsRegel
 from .proces import Proces
 from .producttype import ProductType, ProductTypeTranslation
+from .producttypepermission import ProductTypePermission
 from .thema import Thema
 from .upn import UniformeProductNaam
 from .verzoektype import VerzoekType
@@ -33,4 +34,5 @@ __all__ = [
     "Proces",
     "ZaakType",
     "VerzoekType",
+    "ProductTypePermission",
 ]

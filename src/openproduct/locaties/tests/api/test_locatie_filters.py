@@ -7,6 +7,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestLocatieFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("locatie-list")
 
     def test_naam_filter(self):

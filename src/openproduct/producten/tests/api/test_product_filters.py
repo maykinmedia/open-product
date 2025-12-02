@@ -28,6 +28,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProductFilters(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("product-list")
 
     def test_gepubliceerd_filter(self):

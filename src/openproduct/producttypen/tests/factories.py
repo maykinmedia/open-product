@@ -15,6 +15,7 @@ from ..models import (
     PrijsRegel,
     Proces,
     ProductType,
+    ProductTypePermission,
     Thema,
     UniformeProductNaam,
     VerzoekType,
@@ -188,3 +189,8 @@ class ActieFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Actie
+
+
+class ProductTypePermissionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ProductTypePermission

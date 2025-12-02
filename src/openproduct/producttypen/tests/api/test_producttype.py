@@ -50,6 +50,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 class TestProducttypeViewSet(BaseApiTestCase):
+    is_superuser = True
     path = reverse_lazy("producttype-list")
 
     def setUp(self):
@@ -1767,6 +1768,8 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
 @freeze_time("2024-01-01")
 class TestProductTypeActions(BaseApiTestCase):
+    is_superuser = True
+
     def setUp(self):
         super().setUp()
         self.producttype = ProductTypeFactory.create()

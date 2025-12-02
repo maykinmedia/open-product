@@ -109,6 +109,15 @@ Daarnaast kan ook een contact (persoon) van een organisaties aan een producttype
 
 ---
 *Zie de opmerkingen bij de endpoints voor verdere toelichting op specifieke velden.*
+
+
+### Autorisatie
+
+Voor schrijfacties (POST, PUT, PATCH, DELETE) moet de user de juiste permissie hebben. Deze permissies zijn in te stellen in de Admin.
+- CREATE: ``producttypen.add_producttype``
+- UPDATE: ``producttypen.change_producttype``
+- DELETE: ``producttypen.delete_producttype``
+
 """
 custom_settings = {
     "TITLE": "Producttypen API",

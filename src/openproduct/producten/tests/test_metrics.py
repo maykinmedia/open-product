@@ -16,6 +16,8 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 @override_settings(NOTIFICATIONS_DISABLED=True, PRODUCTEN_API_MAJOR_VERSION=0)
 class ProductMetricsTests(BaseApiTestCase):
+    is_superuser = True
+
     def setUp(self):
         super().setUp()
         self.producttype = ProductTypeFactory.create(
