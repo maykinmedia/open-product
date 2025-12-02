@@ -15,7 +15,7 @@ services:
     image: redis
     networks:
       - open-product-dev
-    
+
 
   web:
     build: &web_build
@@ -27,6 +27,7 @@ services:
       DB_NAME: openproduct
       DB_USER: openproduct
       DB_HOST: db
+      DISABLE_2FA: true
       CACHE_DEFAULT: redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/1

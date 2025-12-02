@@ -24,6 +24,9 @@ class UserAdmin(_UserAdmin):
         ModelForm._target_user = obj
         return ModelForm
 
+    def get_inlines(self, request, obj=None):
+        return self.inlines if obj else ()
+
     def user_change_password(self, request, id, form_url=""):
         user = self.get_object(request, unquote(id))
         try:
