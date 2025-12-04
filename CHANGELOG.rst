@@ -36,7 +36,7 @@ Changelog
 
     * [:open-product:`230`] Add doelgroep to ProductType & make UPL requirement dependent on doelgroep
     * [:open-product:`228`] Add aanvullende_informatie to ContentElement
-    * [:open-api-workflows:`188`] Add csv option to data dump script (see :ref:`scripts` for more information)
+    * [:open-api-framework:`188`] Add csv option to data dump script (see :ref:`scripts` for more information)
 
     * [:open-api-framework:`152`] Add Open Telemetry support
 
