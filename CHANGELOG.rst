@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.0 (TBD)
------------
+1.5.0 (04-12-2025)
+------------------
 
 .. warning::
 
@@ -32,6 +32,52 @@ Changelog
     For detailed configuration, see :ref:`Admin OIDC Configuration Step  <ref_step_mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep>`.
     Make sure to check which fields are marked as ``DEPRECATED`` and replace them with the fields that are mentioned as replacements.
 
+**New features**
+
+    * [:open-product:`230`] Add doelgroep to ProductType & make UPL requirement dependent on doelgroep
+    * [:open-product:`228`] Add aanvullende_informatie to ContentElement
+    * [:open-api-workflows:`188`] Add csv option to data dump script (see :ref:`scripts` for more information)
+
+    * [:open-api-framework:`152`] Add Open Telemetry support
+
+    .. note::
+        The OpenTelemetry SDK is **enabled by default**.
+        If you do not have an endpoint to send system telemetry to, update your deployment to **disable it** by setting the environment variable:
+
+        .. code-block:: bash
+
+            OTEL_SDK_DISABLED=true
+
+        If this is not done, warnings will be emitted to the container logs. The application will continue to function normally.
+        All available metrics and details can be found in the :ref:`Observability documentation <installation_observability_index>`.
+
+    * [:open-product:`237`] Replace ExterneVerwijzingConfig with urn/url fields.
+
+        * Product Zaak, Taak, Document & ProductType ZaakType, VerzoekType & Proces now use urn/url fields. Mappings can be added in UrnMappingConfig.
+
+    * [:open-product:`19`] Add ProductType object permissions to Producten API & admin.
+
+        * (non super) Users now require read or read-write producttype object permissions to be able to create, update, read or delete product for a producttype
+        * All models also now use class permissions for each crud operation.
+
+**Project maintance**
+
+    * Upgrade dependencies
+
+        * [:open-api-framework:`171`] open-api-framework to 0.13.2
+        * django to 5.2.8
+        * [:open-api-framework:`191`] ``NodeJS`` to 24
+        * [:open-api-framework:`176`] ``mozilla-django-oidc-db`` to 1.1.0
+        * django-setup-configuration to 0.11.0
+        * uwsgi to 2.0.31
+
+    * [:open-api-workflows:`30`] Use API Design Rules linter for api spec validation
+    * [:commonground-api-common:`134`] Ensure API errors are sent to Sentry
+    * [:open-api-workflows:`31`] Update CI workflows
+
+**Bugfixes**
+
+    * [:open-product:`238`] Make Product prijs & frequentie optional
 
 1.4.0 (13-10-2025)
 ------------------
