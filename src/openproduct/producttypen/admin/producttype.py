@@ -114,7 +114,7 @@ class ProductTypeAdmin(
         "verbruiksobject_schema",
         "dataobject_schema",
     )
-    search_fields = ("naam", "uniforme_product_naam__naam", "keywords")
+    search_fields = ("code", "uniforme_product_naam__naam", "keywords")
     save_on_top = True
     form = ProductTypeAdminForm
     export_exclude = ["producten"]
@@ -173,7 +173,9 @@ class ProductTypeAdmin(
             request, queryset, search_term
         )
 
-        if not request.user.is_superuser:
+        if not request.user.is_superuser and request.path == reverse(
+            "admin:autocomplete"
+        ):
             queryset = queryset.filter(
                 producttype_permissions__user=request.user,
                 producttype_permissions__mode=PermissionModes.read_and_write,

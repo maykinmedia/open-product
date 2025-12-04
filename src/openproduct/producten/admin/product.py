@@ -148,7 +148,7 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         )
 
     def _has_permission(
-        self, user, permission=bool, obj=None, producttype=None, write=True
+        self, user, permission: bool, obj=None, producttype=None, write=True
     ):
         if (obj or producttype) and not user.is_superuser:
             return (
@@ -161,9 +161,21 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             )
         return permission
 
-    def has_add_permission(self, request, obj=None):
-        return self._has_permission(
-            request.user, super().has_add_permission(request), obj
+    def _has_any_permission(self, user, permission: bool, write=True):
+        if not user.is_superuser:
+            return (
+                permission
+                and ProductTypePermission.objects.filter(
+                    **({"mode": PermissionModes.read_and_write} if write else {})
+                ).exists()
+            )
+
+        return permission
+
+    def has_add_permission(self, request):
+        return self._has_any_permission(
+            request.user,
+            super().has_add_permission(request),
         )
 
     def has_change_permission(self, request, obj=None):

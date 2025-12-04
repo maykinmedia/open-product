@@ -113,13 +113,7 @@ class TestProductAdminAuth(WebTest):
         product_url = reverse("admin:producten_product_add")
 
         with self.subTest("no permission"):
-            response = self.app.get(product_url)
-            self.assertEqual(response.status_code, 200)
-
-            form = response.forms["product_form"]
-            self._fill_form(form, producttype)
-
-            response = form.submit(expect_errors=True)
+            response = self.app.get(product_url, expect_errors=True)
             self.assertEqual(response.status_code, 403)
 
         permission = ProductTypePermissionFactory.create(
@@ -128,13 +122,7 @@ class TestProductAdminAuth(WebTest):
             mode=PermissionModes.read_only,
         )
         with self.subTest("read permission"):
-            response = self.app.get(product_url)
-            self.assertEqual(response.status_code, 200)
-
-            form = response.forms["product_form"]
-            self._fill_form(form, producttype)
-
-            response = form.submit(expect_errors=True)
+            response = self.app.get(product_url, expect_errors=True)
             self.assertEqual(response.status_code, 403)
 
         permission.mode = PermissionModes.read_and_write
