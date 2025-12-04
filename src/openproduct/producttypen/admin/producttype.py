@@ -15,6 +15,7 @@ from ...logging.admin_tools import AdminAuditLogMixin
 from ...utils.widgets import WysimarkWidget
 from ..models import ProductType, Thema
 from ..models.producttype import ProductTypeTranslation
+from ..models.producttypepermission import PermissionModes
 from . import ActieInline
 from .bestand import BestandInline
 from .content import ContentElementInline
@@ -113,7 +114,7 @@ class ProductTypeAdmin(
         "verbruiksobject_schema",
         "dataobject_schema",
     )
-    search_fields = ("naam", "uniforme_product_naam__naam", "keywords")
+    search_fields = ("code", "uniforme_product_naam__naam", "keywords")
     save_on_top = True
     form = ProductTypeAdminForm
     export_exclude = ["producten"]
@@ -166,3 +167,18 @@ class ProductTypeAdmin(
 
     def gepubliceerd(self, obj):
         return _("Ja") if obj.gepubliceerd else _("Nee")
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, may_have_duplicates = super().get_search_results(
+            request, queryset, search_term
+        )
+
+        if not request.user.is_superuser and request.path == reverse(
+            "admin:autocomplete"
+        ):
+            queryset = queryset.filter(
+                producttype_permissions__user=request.user,
+                producttype_permissions__mode=PermissionModes.read_and_write,
+            )
+
+        return queryset, may_have_duplicates

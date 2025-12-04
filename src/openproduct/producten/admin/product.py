@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import PermissionDenied
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
@@ -17,6 +18,8 @@ from openproduct.producten.models.validators import (
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.models.producttype import ProductType
 
+from ...producttypen.models import ProductTypePermission
+from ...producttypen.models.producttypepermission import PermissionModes
 from ...urn.validators import validate_urn_or_url
 from .document import DocumentInline
 from .eigenaar import EigenaarInline
@@ -143,3 +146,78 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             '<a href="{}">{}</a>',
             actions,
         )
+
+    def _has_permission(
+        self, user, permission: bool, obj=None, producttype=None, write=True
+    ):
+        if (obj or producttype) and not user.is_superuser:
+            return (
+                permission
+                and ProductTypePermission.objects.filter(
+                    user=user,
+                    producttype=producttype if producttype else obj.producttype,
+                    **({"mode": PermissionModes.read_and_write} if write else {}),
+                ).exists()
+            )
+        return permission
+
+    def _has_any_permission(self, user, permission: bool, write=True):
+        if not user.is_superuser:
+            return (
+                permission
+                and ProductTypePermission.objects.filter(
+                    **({"mode": PermissionModes.read_and_write} if write else {})
+                ).exists()
+            )
+
+        return permission
+
+    def has_add_permission(self, request):
+        return self._has_any_permission(
+            request.user,
+            super().has_add_permission(request),
+        )
+
+    def has_change_permission(self, request, obj=None):
+        return self._has_permission(
+            request.user, super().has_change_permission(request, obj), obj
+        )
+
+    def has_view_permission(self, request, obj=None):
+        return self._has_permission(
+            request.user, super().has_view_permission(request, obj), obj, write=False
+        )
+
+    def has_delete_permission(self, request, obj=None):
+        return self._has_permission(
+            request.user, super().has_delete_permission(request, obj), obj
+        )
+
+    def save_model(self, request, obj, form, change):
+        if (
+            not request.user.is_superuser
+            and "producttype" in form.changed_data
+            and not self._has_permission(
+                request.user,
+                super().has_change_permission(request, obj)
+                if change
+                else super().has_add_permission(request),
+                producttype=form.cleaned_data["producttype"],
+            )
+        ):
+            raise PermissionDenied(
+                _("You do not have permission to perform this action.")
+            )
+
+        super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(
+                producttype__in=ProductTypePermission.objects.filter(
+                    user=request.user
+                ).values_list("producttype", flat=True)
+            )
+        return qs
