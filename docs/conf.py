@@ -116,14 +116,13 @@ extlinks = {
 }
 
 django_structlog_version = _version("django-structlog")
-oaf_version = _version("open-api-framework")
 intersphinx_mapping = {
     "django-structlog": (
         f"https://django-structlog.readthedocs.io/en/{django_structlog_version}",
         None,
     ),
-    "oaf": (
-        f"https://open-api-framework.readthedocs.io/en/{oaf_version}/",
+    "open-api-framework": (
+        "https://open-api-framework.readthedocs.io/en/latest",
         None,
     ),
 }
