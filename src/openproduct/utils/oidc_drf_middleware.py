@@ -17,6 +17,10 @@ class OIDCAuthentication(_OIDCAuthentication):
 
         try:
             return super().authenticate(request)
+        except AssertionError:
+            raise AuthenticationFailed(
+                "OIDC authentication failed: authentication is not properly configured."
+            )
         except HTTPError as exc:
             resp = exc.response
             msg = "OIDC authentication failed with status code: {}".format(
