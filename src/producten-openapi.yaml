@@ -485,7 +485,7 @@ paths:
       tags:
       - producten
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '200':
@@ -629,7 +629,7 @@ paths:
                 summary: product request
         required: true
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '201':
@@ -746,7 +746,7 @@ paths:
       tags:
       - producten
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '200':
@@ -893,7 +893,7 @@ paths:
                 summary: product request
         required: true
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '200':
@@ -1039,7 +1039,7 @@ paths:
                   aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '200':
@@ -1155,7 +1155,7 @@ paths:
       tags:
       - producten
       security:
-      - jwtAuth: []
+      - OpenID: []
       - tokenAuth: []
       responses:
         '204':
@@ -1911,10 +1911,9 @@ components:
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
   securitySchemes:
-    jwtAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
     tokenAuth:
       type: apiKey
       in: header
