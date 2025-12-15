@@ -21,7 +21,6 @@ oidc_db_config_admin_auth:
     - profile
     oidc_rp_sign_algo: RS256
     oidc_provider_identifier: admin-oidc
-    userinfo_claims_source: id_token
     options:
       user_settings:
         claim_mappings:

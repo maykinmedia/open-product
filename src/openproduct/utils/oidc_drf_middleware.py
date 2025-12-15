@@ -1,7 +1,10 @@
+import structlog
 from mozilla_django_oidc.contrib.drf import OIDCAuthentication as _OIDCAuthentication
 from mozilla_django_oidc.utils import parse_www_authenticate_header
 from requests.exceptions import HTTPError
 from rest_framework.exceptions import AuthenticationFailed
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 class OIDCAuthentication(_OIDCAuthentication):
@@ -17,14 +20,22 @@ class OIDCAuthentication(_OIDCAuthentication):
 
         try:
             return super().authenticate(request)
+        except AssertionError:
+            logger.exception("oidc_authentication_failed")
+            raise AuthenticationFailed(
+                "OIDC authentication failed: authentication is not properly configured."
+            )
         except HTTPError as exc:
             resp = exc.response
             msg = "OIDC authentication failed with status code: {}".format(
                 resp.status_code
             )
-
             if "www-authenticate" in resp.headers:
                 data = parse_www_authenticate_header(resp.headers["www-authenticate"])
-                msg = f"{msg} www_authenticate: {data}"
+                error_description = data.get(
+                    "error_description", "no error description in www-authenticate"
+                )
+                msg = "{} www_authenticate: {}".format(msg, error_description)
 
+            logger.exception("oidc_authentication_failed")
             raise AuthenticationFailed(msg)
