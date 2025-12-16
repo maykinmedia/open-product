@@ -11,6 +11,8 @@ from rest_framework import serializers
 from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import ProductType, Thema, UniformeProductNaam
+from openproduct.producttypen.models.content import ContentElement
+from openproduct.producttypen.serializers.content import NestedContentElementSerializer
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
@@ -96,12 +98,19 @@ class ThemaSerializer(serializers.ModelSerializer):
     )
     producttypen = NestedProductTypeSerializer(many=True, read_only=True)
 
-    # TODO: remove?
+    content_elementen = NestedContentElementSerializer(many=True, read_only=True)
+
     producttype_uuids = UUIDRelatedField(
         many=True,
         queryset=ProductType.objects.all(),
         write_only=True,
         source="producttypen",
+    )
+    content_element_uuids = UUIDRelatedField(
+        many=True,
+        queryset=ContentElement.objects.all(),
+        write_only=True,
+        source="content_elementen",
     )
 
     class Meta:
@@ -116,9 +125,11 @@ class ThemaSerializer(serializers.ModelSerializer):
             "hoofd_thema",
             "producttypen",
             "producttype_uuids",
+            "content_elementen",
+            "content_element_uuids",
         )
         validators = [
-            DuplicateIdValidator(["producttype_uuids"]),
+            DuplicateIdValidator(["producttype_uuids", "content_element_uuids"]),
             ThemaGepubliceerdStateValidator(),
             ThemaReferenceValidator(),
         ]
@@ -126,6 +137,7 @@ class ThemaSerializer(serializers.ModelSerializer):
     @transaction.atomic()
     def update(self, instance, validated_data):
         producttypen = validated_data.pop("producttypen", None)
+        content_elementen = validated_data.pop("content_elementen", None)
         hoofd_thema = validated_data.pop(
             "hoofd_thema", "ignore"
         )  # None is a valid value
@@ -137,5 +149,7 @@ class ThemaSerializer(serializers.ModelSerializer):
 
         if producttypen:
             instance.producttypen.set(producttypen)
+        if content_elementen:
+            instance.content_elementen.set(content_elementen)
 
         return instance

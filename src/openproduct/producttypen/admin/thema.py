@@ -22,16 +22,27 @@ class ThemaAdminForm(forms.ModelForm):
 
 @admin.register(Thema)
 class ThemaAdmin(AdminAuditLogMixin, CompareVersionAdmin):
-    list_display = ("naam", "hoofd_thema", "gepubliceerd", "producttypen_count")
+    list_display = (
+        "naam",
+        "hoofd_thema",
+        "gepubliceerd",
+        "producttypen_count",
+        "content_elementen_count",
+    )
     list_filter = ["gepubliceerd", "producttypen", "hoofd_thema"]
     search_fields = ("naam", "hoofd_thema")
     form = ThemaAdminForm
 
     readonly_fields = ("uuid",)
+    filter_horizontal = ("content_elementen",)
 
     @admin.display(description=_("Aantal producttypen"))
     def producttypen_count(self, obj):
         return obj.producttypen_count
+
+    @admin.display(description=_("Aantal content elementen"))
+    def content_elementen_count(self, obj):
+        return obj.content_elementen.count()
 
     def get_queryset(self, request):
         queryset = (

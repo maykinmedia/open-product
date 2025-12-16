@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 import reversion
 
+from openproduct.producttypen.models.content import ContentElement
 from openproduct.producttypen.models.validators import (
     check_for_circular_reference,
     validate_thema_gepubliceerd_state,
@@ -37,6 +38,14 @@ class Thema(BasePublishableModel):
         verbose_name=_("gepubliceerd"),
         default=False,
         help_text=_("Geeft aan of het thema getoond kan worden."),
+    )
+
+    content_elementen = models.ManyToManyField(
+        ContentElement,
+        blank=True,
+        related_name="themas",
+        verbose_name=_("Content Elementen"),
+        help_text=_("Content elementen gekoppeld aan dit thema of subthema"),
     )
 
     class Meta:
