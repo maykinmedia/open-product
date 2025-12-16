@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
-from openproduct.producttypen.models import Thema
+from openproduct.producttypen.models import ContentElement, Thema
 from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFactory
 from openproduct.utils.tests.cases import BaseApiTestCase
 
@@ -22,6 +22,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "naam": "test-thema",
             "hoofd_thema": None,
             "producttype_uuids": [],
+            "content_element_uuids": [],
         }
 
     def detail_path(self, thema):
@@ -63,6 +64,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "hoofd_thema": None,
             "producttypen": [],
+            "content_elementen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -86,6 +88,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "hoofd_thema": thema.hoofd_thema.uuid,
             "producttypen": [],
+            "content_elementen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -422,6 +425,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "gepubliceerd": True,
                 "hoofd_thema": None,
                 "producttypen": [],
+                "content_elementen": [],
                 "aanmaak_datum": thema1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": thema1.update_datum.astimezone().isoformat(),
             },
@@ -432,6 +436,7 @@ class TestThemaViewSet(BaseApiTestCase):
                 "gepubliceerd": True,
                 "hoofd_thema": None,
                 "producttypen": [],
+                "content_elementen": [],
                 "aanmaak_datum": thema2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": thema2.update_datum.astimezone().isoformat(),
             },
@@ -444,6 +449,7 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.get(self.detail_path(thema))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         expected_data = {
             "uuid": str(thema.uuid),
             "naam": thema.naam,
@@ -451,6 +457,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "gepubliceerd": True,
             "hoofd_thema": None,
             "producttypen": [],
+            "content_elementen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -531,4 +538,50 @@ class TestThemaViewSet(BaseApiTestCase):
         self.assertEqual(
             response.data,
             {"hoofd_thema": ["Een thema kan geen referentie naar zichzelf hebben."]},
+        )
+
+    def test_content_elementen_in_detail_response(self):
+        thema = ThemaFactory.create()
+        producttype = ProductTypeFactory.create()
+
+        ce = ContentElement.objects.create(producttype=producttype, content="Test CE")
+
+        thema.content_elementen.add(ce)
+
+        response = self.client.get(self.detail_path(thema))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertIn("content_elementen", data)
+        self.assertEqual(len(data["content_elementen"]), 1)
+        self.assertEqual(data["content_elementen"][0]["uuid"], str(ce.uuid))
+
+    def test_content_elementen_in_list_response(self):
+        thema1 = ThemaFactory.create()
+        thema2 = ThemaFactory.create()
+        producttype = ProductTypeFactory.create()
+
+        ce1 = ContentElement.objects.create(producttype=producttype, content="CE1")
+        ce2 = ContentElement.objects.create(producttype=producttype, content="CE2")
+
+        thema1.content_elementen.add(ce1)
+        thema2.content_elementen.add(ce2)
+
+        response = self.client.get(self.path)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        results = response.json()["results"]
+        thema_map = {t["uuid"]: t for t in results}
+
+        self.assertEqual(len(thema_map[str(thema1.uuid)]["content_elementen"]), 1)
+        self.assertEqual(
+            thema_map[str(thema1.uuid)]["content_elementen"][0]["uuid"],
+            str(ce1.uuid),
+        )
+
+        self.assertEqual(len(thema_map[str(thema2.uuid)]["content_elementen"]), 1)
+        self.assertEqual(
+            thema_map[str(thema2.uuid)]["content_elementen"][0]["uuid"],
+            str(ce2.uuid),
         )

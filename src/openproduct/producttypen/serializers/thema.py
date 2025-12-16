@@ -11,6 +11,7 @@ from rest_framework import serializers
 from vng_api_common.utils import get_help_text
 
 from openproduct.producttypen.models import ProductType, Thema, UniformeProductNaam
+from openproduct.producttypen.serializers.content import NestedContentElementSerializer
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
@@ -72,6 +73,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                         "update_datum": "2019-08-24T14:15:22Z",
                     }
                 ],
+                "content_elementen": [],
             },
             response_only=True,
         ),
@@ -97,6 +99,8 @@ class ThemaSerializer(serializers.ModelSerializer):
     producttypen = NestedProductTypeSerializer(many=True, read_only=True)
 
     # TODO: remove?
+    content_elementen = NestedContentElementSerializer(many=True, read_only=True)
+
     producttype_uuids = UUIDRelatedField(
         many=True,
         queryset=ProductType.objects.all(),
@@ -116,6 +120,7 @@ class ThemaSerializer(serializers.ModelSerializer):
             "hoofd_thema",
             "producttypen",
             "producttype_uuids",
+            "content_elementen",
         )
         validators = [
             DuplicateIdValidator(["producttype_uuids"]),
