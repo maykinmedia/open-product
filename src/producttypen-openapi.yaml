@@ -8065,6 +8065,25 @@ components:
       - content
       - taal
       - uuid
+    NestedContentElementRequest:
+      type: object
+      description: Serializer that saves :class:`TranslatedFieldsField` automatically.
+      properties:
+        content:
+          type: string
+          minLength: 1
+          description: De content van dit content element
+        aanvullende_informatie:
+          type: string
+          minLength: 1
+          description: De aanvullende informatie van dit content element
+        labels:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      required:
+      - content
     NestedExterneCode:
       type: object
       properties:
@@ -9139,6 +9158,13 @@ components:
             format: uuid
             writeOnly: true
           writeOnly: true
+        content_element_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            writeOnly: true
+          writeOnly: true
     Prijs:
       type: object
       properties:
@@ -9678,8 +9704,14 @@ components:
           items:
             $ref: '#/components/schemas/NestedProductType'
           readOnly: true
+        content_elementen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedContentElement'
+          readOnly: true
       required:
       - aanmaak_datum
+      - content_elementen
       - hoofd_thema
       - naam
       - producttypen
@@ -9711,7 +9743,15 @@ components:
             format: uuid
             writeOnly: true
           writeOnly: true
+        content_element_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            writeOnly: true
+          writeOnly: true
       required:
+      - content_element_uuids
       - hoofd_thema
       - naam
       - producttype_uuids
