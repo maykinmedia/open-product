@@ -2,13 +2,25 @@ from django.contrib.admin.sites import AdminSite
 from django.test import TestCase
 
 from openproduct.producttypen.admin import ThemaAdmin
-from openproduct.producttypen.models import Thema
+from openproduct.producttypen.models import ContentElement, Thema
 from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFactory
 
 
 class TestThemaAdmin(TestCase):
     def setUp(self):
         self.admin = ThemaAdmin(Thema, AdminSite())
+
+        self.producttype = ProductTypeFactory()
+
+        self.ce1 = ContentElement.objects.create(
+            producttype=self.producttype, content="Content Element 1"
+        )
+        self.ce2 = ContentElement.objects.create(
+            producttype=self.producttype, content="Content Element 2"
+        )
+
+        self.thema = ThemaFactory()
+        self.sub_thema = ThemaFactory(hoofd_thema=self.thema)
 
     def test_get_deleted_objects_when_linked_producttype_has_one_thema(self):
         producttype = ProductTypeFactory(naam="producttype", code="PT")
@@ -58,10 +70,34 @@ class TestThemaAdmin(TestCase):
         )
 
     def test_deleting_thema_with_sub_themas_raises_error(self):
-        thema = ThemaFactory()
-        sub_thema = ThemaFactory(hoofd_thema=thema)
-
         _, _, _, protected = self.admin.get_deleted_objects(
-            Thema.objects.filter(id=thema.id), self.client.request()
+            Thema.objects.filter(id=self.thema.id), self.client.request()
         )
-        self.assertEqual(protected, [f"Thema: {sub_thema.naam}"])
+        self.assertEqual(protected, [f"Thema: {self.sub_thema.naam}"])
+
+    def test_content_elementen_count_method(self):
+        self.thema.content_elementen.set([self.ce1, self.ce2])
+        self.assertEqual(self.admin.content_elementen_count(self.thema), 2)
+
+    def test_content_elementen_empty(self):
+        self.assertEqual(self.admin.content_elementen_count(self.sub_thema), 0)
+
+    def test_producttypen_count_method(self):
+        pt = ProductTypeFactory()
+        self.thema.producttypen.add(pt)
+
+        annotated_thema = self.admin.get_queryset(self.client.request()).get(
+            pk=self.thema.pk
+        )
+        self.assertEqual(self.admin.producttypen_count(annotated_thema), 1)
+
+    def test_producttypen_and_content_elementen_can_coexist(self):
+        pt = ProductTypeFactory()
+        self.thema.producttypen.add(pt)
+        self.thema.content_elementen.add(self.ce1)
+
+        annotated_thema = self.admin.get_queryset(self.client.request()).get(
+            pk=self.thema.pk
+        )
+        self.assertEqual(self.admin.producttypen_count(annotated_thema), 1)
+        self.assertEqual(self.admin.content_elementen_count(annotated_thema), 1)
