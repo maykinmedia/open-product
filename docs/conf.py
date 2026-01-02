@@ -95,6 +95,7 @@ linkcheck_ignore = [
     r"https?://.*\.gemeente.nl",
     r"http://localhost:\d+,https?://.*\.gemeente.nl",
     r"https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#.*",
+    r"https://opentelemetry\.io/docs/platforms/kubernetes/collector/components/#kubernetes-attributes-processor",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]

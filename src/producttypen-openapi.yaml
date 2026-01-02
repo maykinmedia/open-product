@@ -7082,6 +7082,7 @@ paths:
                         publicatie_eind_datum: '2030-09-24'
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
+                      content_elementen: []
                   summary: thema response
           description: ''
         '400':
@@ -7177,6 +7178,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                    content_elementen: []
                   summary: thema response
           description: ''
         '400':
@@ -7264,6 +7266,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                    content_elementen: []
                   summary: thema response
           description: ''
         '400':
@@ -7366,6 +7369,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                    content_elementen: []
                   summary: thema response
           description: ''
         '400':
@@ -7469,6 +7473,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                    content_elementen: []
                   summary: thema response
           description: ''
         '400':
@@ -8065,6 +8070,25 @@ components:
       - content
       - taal
       - uuid
+    NestedContentElementRequest:
+      type: object
+      description: Serializer that saves :class:`TranslatedFieldsField` automatically.
+      properties:
+        content:
+          type: string
+          minLength: 1
+          description: De content van dit content element
+        aanvullende_informatie:
+          type: string
+          minLength: 1
+          description: De aanvullende informatie van dit content element
+        labels:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      required:
+      - content
     NestedExterneCode:
       type: object
       properties:
@@ -9678,8 +9702,14 @@ components:
           items:
             $ref: '#/components/schemas/NestedProductType'
           readOnly: true
+        content_elementen:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedContentElement'
+          readOnly: true
       required:
       - aanmaak_datum
+      - content_elementen
       - hoofd_thema
       - naam
       - producttypen

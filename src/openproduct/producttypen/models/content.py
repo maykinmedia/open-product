@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -31,7 +32,7 @@ class ContentElementManager(OrderedModelManager.from_queryset(ContentElementQuer
     pass
 
 
-@reversion.register(follow=("labels", "producttype"))
+@reversion.register(follow=("labels", "producttype", "thema"))
 class ContentElement(TranslatableModel, OrderedModel, BaseModel):
     labels = models.ManyToManyField(
         ContentLabel,
@@ -46,6 +47,18 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
         on_delete=models.CASCADE,
         help_text=_("Het producttype van dit content element"),
         related_name="content_elementen",
+        null=True,
+        blank=True,
+    )
+
+    thema = models.ForeignKey(
+        "Thema",
+        verbose_name=_("thema"),
+        on_delete=models.CASCADE,
+        related_name="content_elementen",
+        null=True,
+        blank=True,
+        help_text=_("Het thema of subthema van dit content element"),
     )
 
     content = TranslatedField()
@@ -56,12 +69,35 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
     objects = ContentElementManager()
 
     def __str__(self):
-        return f"{self.producttype.code} - {','.join(list(self.labels.values_list('naam', flat=True)))}"
+        owner = None
+        if self.producttype:
+            owner = self.producttype.code
+        elif self.thema:
+            owner = self.thema.naam
+        else:
+            owner = _("onbekend")
+
+        labels = ",".join(self.labels.values_list("naam", flat=True))
+        return f"{owner} - {labels}"
 
     class Meta:
         verbose_name = _("content element")
         verbose_name_plural = _("content elementen")
-        ordering = ("producttype", "order")
+        ordering = ("-id",)
+
+    def clean(self):
+        """
+        Ensure exactly ONE of (producttype, thema) is provided.
+        """
+        if self.producttype and self.thema:
+            raise ValidationError(
+                _("Kies óf een producttype óf een thema, niet beide.")
+            )
+
+        if not self.producttype and not self.thema:
+            raise ValidationError(_("Geef een producttype of thema op."))
+
+        super().clean()
 
 
 @reversion.register()
