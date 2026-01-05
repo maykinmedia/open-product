@@ -92,6 +92,14 @@ API
 * ``product_updated``: updated a ``Product`` via the API. Additional context: ``id``, ``naam``.
 * ``product_deleted``: deleted a ``Product`` via the API. Additional context: ``id``, ``naam``.
 
+Authentication
+~~~~~~~~~~~~~~
+* ``oidc_authentication_failed``: OIDC authentication failed during an API request.
+
+This event is emitted when the OIDC authentication backend raises an assertion error,
+for example due to misconfiguration or an unexpected response from the identity provider.
+
+
 .. _manual_logging_exceptions:
 
 Exceptions

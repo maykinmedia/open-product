@@ -94,6 +94,29 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
             1,
         )
 
+    def test_invalid_oidc_not_configured(self):
+        self.assertEqual(User.objects.all().count(), 0)
+        self.oidc_client.oidc_provider = None
+        self.oidc_client.save()
+
+        token = "random-token"
+
+        response = self.client.get(
+            reverse("producttype-list"), headers={"Authorization": f"Bearer {token}"}
+        )
+
+        self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
+        self.assertEqual(
+            response.data,
+            {
+                "detail": ErrorDetail(
+                    string="OIDC authentication failed: authentication is not properly configured.",
+                    code="authentication_failed",
+                )
+            },
+        )
+        self.assertEqual(User.objects.all().count(), 0)
+
     @override_settings(OIDC_CREATE_USER=False)
     def test_valid_token_oidc_create_user_false(self):
         # The user must exist in the database already
