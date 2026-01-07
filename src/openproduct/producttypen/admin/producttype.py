@@ -149,6 +149,7 @@ class ProductTypeAdmin(
         "keywords",
         "interne_opmerkingen",
         "organisaties",
+        "eigenaar",
         "locaties",
         "contacten",
     )

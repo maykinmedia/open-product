@@ -9,6 +9,7 @@ from parler.fields import TranslatedField, TranslationsForeignKey
 from parler.models import TranslatableModel, TranslatedFieldsModel
 
 from openproduct.locaties.models import Contact, Locatie, Organisatie
+from openproduct.urn.models import UrnField
 from openproduct.utils.fields import ChoiceArrayField
 from openproduct.utils.models import BasePublishableModel
 
@@ -126,6 +127,13 @@ class ProductType(BasePublishableModel, TranslatableModel):
         blank=True,
         related_name="producttypen",
         help_text=_("organisaties die dit het product aanbieden."),
+    )
+
+    eigenaar = UrnField(
+        verbose_name=_("eigenaar"),
+        blank=True,
+        null=True,
+        help_text=_("Basis urn (<organisatie>:<systeem>:<component>:<resource>)"),
     )
 
     contacten = models.ManyToManyField(
