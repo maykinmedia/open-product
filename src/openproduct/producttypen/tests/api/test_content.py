@@ -48,9 +48,6 @@ class TestContentElement(BaseApiTestCase):
                 "content": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "producttype_uuid": [
-                    ErrorDetail(_("This field is required."), code="required")
-                ],
             },
         )
 
@@ -66,6 +63,34 @@ class TestContentElement(BaseApiTestCase):
             "content": "Voorwaarden",
             "aanvullende_informatie": "",
             "producttype_uuid": self.producttype.uuid,
+            "thema_uuid": None,
+            "taal": "nl",
+        }
+        self.assertEqual(response.data, expected_data)
+
+    def test_create_content_element_with_thema(self):
+        from openproduct.producttypen.tests.factories import ThemaFactory
+
+        thema = ThemaFactory.create()
+
+        data = {
+            "labels": [self.label.naam],
+            "content": "Voorwaarden",
+            "thema_uuid": thema.uuid,
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ContentElement.objects.count(), 2)
+
+        response.data.pop("uuid")
+        expected_data = {
+            "labels": [self.label.naam],
+            "content": "Voorwaarden",
+            "aanvullende_informatie": "",
+            "producttype_uuid": None,
+            "thema_uuid": thema.uuid,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)
@@ -127,6 +152,7 @@ class TestContentElement(BaseApiTestCase):
                 self.label.naam,
             ],
             "producttype_uuid": self.producttype.uuid,
+            "thema_uuid": None,
             "taal": "nl",
         }
         self.assertEqual(response.data, expected_data)
