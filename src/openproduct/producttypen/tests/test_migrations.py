@@ -2,7 +2,7 @@ from django.db.migrations.exceptions import IrreversibleError
 from django.test import override_settings
 
 from openproduct.producttypen.models import Proces, VerzoekType, ZaakType
-from openproduct.producttypen.tests.factories import ProductTypeFactory
+from openproduct.producttypen.models.enums import DoelgroepChoices
 from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseMigrationTest
 
@@ -29,7 +29,20 @@ class TestExterneVerwijzingRemovalMigrations(BaseMigrationTest):
             verzoektypen_url="https://verzoektypen.maykin.nl/verzoektypen",
         )
 
-        producttype = ProductTypeFactory.create()
+        _UniformeProductNaam = self.old_app_state.get_model(
+            "producttypen", "UniformeProductNaam"
+        )
+        _ProductType = self.old_app_state.get_model("producttypen", "ProductType")
+
+        upn = _UniformeProductNaam.objects.create(
+            naam="upn 0",
+        )
+
+        producttype = _ProductType.objects.create(
+            code="producttype code 0",
+            uniforme_product_naam=upn,
+            doelgroep=DoelgroepChoices.BURGERS,
+        )
 
         _ZaakType.objects.create(
             uuid="1c8cc827-d537-40cd-9558-b5731e240620", producttype_id=producttype.id

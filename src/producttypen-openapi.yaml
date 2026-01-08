@@ -5007,6 +5007,7 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
+                      eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                       contacten:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         organisatie:
@@ -5147,6 +5148,7 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   publicatie_start_datum: '2019-09-24'
@@ -5226,6 +5228,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
@@ -5411,6 +5414,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
@@ -5558,6 +5562,7 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   publicatie_start_datum: '2019-09-24'
@@ -5637,6 +5642,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
@@ -5786,6 +5792,7 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
                   publicatie_start_datum: '2019-09-24'
@@ -5864,6 +5871,7 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    eigenaar: maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
@@ -9021,6 +9029,12 @@ components:
             format: uuid
           writeOnly: true
           default: []
+        eigenaar:
+          type: string
+          nullable: true
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contact_uuids:
           type: array
           items:
@@ -9317,6 +9331,12 @@ components:
           items:
             $ref: '#/components/schemas/Organisatie'
           readOnly: true
+        eigenaar:
+          type: string
+          nullable: true
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contacten:
           type: array
           items:
@@ -9522,6 +9542,12 @@ components:
             format: uuid
           writeOnly: true
           default: []
+        eigenaar:
+          type: string
+          nullable: true
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contact_uuids:
           type: array
           items:

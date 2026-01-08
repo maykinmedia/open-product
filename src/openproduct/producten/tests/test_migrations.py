@@ -2,7 +2,6 @@ from django.db.migrations.exceptions import IrreversibleError
 from django.test import override_settings
 
 from openproduct.producten.models import Document, Taak, Zaak
-from openproduct.producten.tests.factories import ProductFactory
 from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseMigrationTest
 
@@ -18,7 +17,8 @@ class TestExterneVerwijzingRemovalMigrations(BaseMigrationTest):
         _ExterneVerwijzingConfig = self.old_app_state.get_model(
             "producttypen", "ExterneVerwijzingConfig"
         )
-
+        _Product = self.old_app_state.get_model("producten", "Product")
+        _ProductType = self.old_app_state.get_model("producttypen", "ProductType")
         _Zaak = self.old_app_state.get_model("producten", "Zaak")
         _Taak = self.old_app_state.get_model("producten", "Taak")
         _Document = self.old_app_state.get_model("producten", "Document")
@@ -29,7 +29,16 @@ class TestExterneVerwijzingRemovalMigrations(BaseMigrationTest):
             taken_url="https://taken.maykin.nl/taken",
         )
 
-        product = ProductFactory.create()
+        producttype = _ProductType.objects.create(
+            code="pt-0",
+        )
+
+        product = _Product.objects.create(
+            producttype=producttype,
+            status="initieel",
+            prijs="10.00",
+            frequentie="jaarlijks",
+        )
 
         _Zaak.objects.create(
             uuid="1c8cc827-d537-40cd-9558-b5731e240620", product_id=product.id
