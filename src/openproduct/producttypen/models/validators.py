@@ -146,3 +146,14 @@ def validate_uniforme_product_naam_constraint(upl, doelgroep: DoelgroepChoices):
                 )
             }
         )
+
+
+def validate_exactly_one_producttype_or_thema(*, producttype, thema):
+    """
+    Ensure exactly ONE of (producttype, thema) is provided.
+    """
+    if producttype and thema:
+        raise ValidationError(_("Kies óf een producttype óf een thema, niet beide."))
+
+    if not producttype and not thema:
+        raise ValidationError(_("Geef een producttype of thema op."))

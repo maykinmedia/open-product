@@ -6,6 +6,7 @@ from rest_framework import serializers
 from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     check_for_circular_reference,
+    validate_exactly_one_producttype_or_thema,
     validate_prijs_optie_xor_regel,
     validate_publicatie_dates,
     validate_thema_gepubliceerd_state,
@@ -98,3 +99,18 @@ class DoelgroepUplValidator:
             validate_uniforme_product_naam_constraint(upl, doelgroep)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
+
+
+class ContentElementProducttypeThemaValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        producttype = get_from_serializer_data_or_instance(
+            "producttype", value, serializer
+        )
+        thema = get_from_serializer_data_or_instance("thema", value, serializer)
+
+        validate_exactly_one_producttype_or_thema(
+            producttype=producttype,
+            thema=thema,
+        )
