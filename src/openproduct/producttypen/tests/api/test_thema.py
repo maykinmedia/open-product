@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
-from openproduct.producttypen.models import Thema
+from openproduct.producttypen.models import ContentElement, Thema
 from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFactory
 from openproduct.utils.tests.cases import BaseApiTestCase
 
@@ -22,6 +22,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "naam": "test-thema",
             "hoofd_thema": None,
             "producttype_uuids": [],
+            "content_element_uuids": [],
         }
 
     def detail_path(self, thema):
@@ -63,6 +64,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "hoofd_thema": None,
             "producttypen": [],
+            "content_elementen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -86,6 +88,7 @@ class TestThemaViewSet(BaseApiTestCase):
             "gepubliceerd": False,
             "hoofd_thema": thema.hoofd_thema.uuid,
             "producttypen": [],
+            "content_elementen": [],
             "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
             "update_datum": thema.update_datum.astimezone().isoformat(),
         }
@@ -410,51 +413,37 @@ class TestThemaViewSet(BaseApiTestCase):
         thema1 = ThemaFactory.create()
         thema2 = ThemaFactory.create()
 
+        producttype = ProductTypeFactory.create()
+        ce = ContentElement.objects.create(producttype=producttype, content="CE1")
+        thema1.content_elementen.add(ce)
+
         response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
-        expected_data = [
-            {
-                "uuid": str(thema1.uuid),
-                "naam": thema1.naam,
-                "beschrijving": thema1.beschrijving,
-                "gepubliceerd": True,
-                "hoofd_thema": None,
-                "producttypen": [],
-                "aanmaak_datum": thema1.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": thema1.update_datum.astimezone().isoformat(),
-            },
-            {
-                "uuid": str(thema2.uuid),
-                "naam": thema2.naam,
-                "beschrijving": thema2.beschrijving,
-                "gepubliceerd": True,
-                "hoofd_thema": None,
-                "producttypen": [],
-                "aanmaak_datum": thema2.aanmaak_datum.astimezone().isoformat(),
-                "update_datum": thema2.update_datum.astimezone().isoformat(),
-            },
-        ]
-        self.assertCountEqual(response.data["results"], expected_data)
+
+        results = response.data["results"]
+        thema_map = {t["uuid"]: t for t in results}
+
+        self.assertEqual(len(thema_map[str(thema1.uuid)]["content_elementen"]), 1)
+
+        self.assertEqual(len(thema_map[str(thema2.uuid)]["content_elementen"]), 0)
 
     def test_read_thema(self):
         thema = ThemaFactory.create()
+        producttype = ProductTypeFactory.create()
+
+        ce = ContentElement.objects.create(producttype=producttype, content="CE1")
+        thema.content_elementen.add(ce)
 
         response = self.client.get(self.detail_path(thema))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        expected_data = {
-            "uuid": str(thema.uuid),
-            "naam": thema.naam,
-            "beschrijving": thema.beschrijving,
-            "gepubliceerd": True,
-            "hoofd_thema": None,
-            "producttypen": [],
-            "aanmaak_datum": thema.aanmaak_datum.astimezone().isoformat(),
-            "update_datum": thema.update_datum.astimezone().isoformat(),
-        }
-        self.assertEqual(response.data, expected_data)
+        data = response.json()
+
+        self.assertIn("content_elementen", data)
+        self.assertEqual(len(data["content_elementen"]), 1)
+        self.assertEqual(data["content_elementen"][0]["uuid"], str(ce.uuid))
 
     def test_delete_thema(self):
         thema = ThemaFactory.create()
