@@ -9032,7 +9032,8 @@ components:
         eigenaar:
           type: string
           nullable: true
-          description: Basis urn (<organisatie>:<systeem>:<component>:<resource>)
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contact_uuids:
           type: array
@@ -9333,7 +9334,8 @@ components:
         eigenaar:
           type: string
           nullable: true
-          description: Basis urn (<organisatie>:<systeem>:<component>:<resource>)
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contacten:
           type: array
@@ -9543,7 +9545,8 @@ components:
         eigenaar:
           type: string
           nullable: true
-          description: Basis urn (<organisatie>:<systeem>:<component>:<resource>)
+          description: De eigenaar van dit producttype zoals een medewerker uit Open
+            Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
           pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
         contact_uuids:
           type: array

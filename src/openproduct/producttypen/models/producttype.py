@@ -133,7 +133,9 @@ class ProductType(BasePublishableModel, TranslatableModel):
         verbose_name=_("eigenaar"),
         blank=True,
         null=True,
-        help_text=_("Basis urn (<organisatie>:<systeem>:<component>:<resource>)"),
+        help_text=_(
+            "De eigenaar van dit producttype zoals een medewerker uit Open Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)"
+        ),
     )
 
     contacten = models.ManyToManyField(
