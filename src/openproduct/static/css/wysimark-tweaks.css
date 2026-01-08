@@ -1,9 +1,9 @@
-#wysimark-container > div > div:first-child {
+.wysimark-container > div > div:first-child {
     background-color: var(--darkened-bg);
     border-radius: 0.5em;
 }
 
-#wysimark-container > div > div:first-child [data-item-type="button"] {
+.wysimark-container > div > div:first-child [data-item-type="button"] {
     color: var(--body-fg);
 }
 
@@ -13,7 +13,7 @@
     border-radius: 0.5em;
 }
 
-#wysimark-container {
+.wysimark-container {
     width: 50em;
 }
 
