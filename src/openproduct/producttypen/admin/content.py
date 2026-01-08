@@ -106,3 +106,7 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("translations", "labels")
+
+    def save_model(self, request, obj, form, change):
+        obj.producttype = None
+        super().save_model(request, obj, form, change)

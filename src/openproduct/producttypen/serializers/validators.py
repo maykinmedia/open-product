@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
@@ -98,3 +99,35 @@ class DoelgroepUplValidator:
             validate_uniforme_product_naam_constraint(upl, doelgroep)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)
+
+
+def validate_exactly_one_producttype_or_thema(*, producttype, thema):
+    """
+    Ensure exactly ONE of (producttype, thema) is provided.
+    """
+    if producttype and thema:
+        raise ValidationError(_("Kies óf een producttype óf een thema, niet beide."))
+
+    if not producttype and not thema:
+        raise ValidationError(_("Geef een producttype of thema op."))
+
+
+class ContentElementProducttypeThemaValidator:
+    requires_context = True
+
+    def __call__(self, attrs, serializer):
+        instance = serializer.instance
+
+        producttype = attrs.get(
+            "producttype",
+            instance.producttype if instance else None,
+        )
+        thema = attrs.get(
+            "thema",
+            instance.thema if instance else None,
+        )
+
+        validate_exactly_one_producttype_or_thema(
+            producttype=producttype,
+            thema=thema,
+        )
