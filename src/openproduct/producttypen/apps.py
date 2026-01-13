@@ -10,6 +10,7 @@ class ProducttypenConfig(AppConfig):
     def ready(self):
         # load the signal receivers
         from . import signals  # noqa
+        import openproduct.patches.django_otp_admin  # noqa
 
         unregister_camelize_filter_extension()
 
