@@ -294,3 +294,13 @@ div:has(> div.help ) {
   display: inline-block;
   margin-left: inherit !important;
 }
+/* Fix inline help text being squeezed into 14px */
+div.help:not(:has(> div)) {
+  inline-size: auto !important;
+  block-size: auto !important;
+  background: none !important;
+}
+
+#changelist-search .help {
+  word-break: normal !important;
+}
