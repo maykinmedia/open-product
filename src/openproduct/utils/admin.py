@@ -2,6 +2,8 @@ import json
 
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.auth import get_user_model
+from django.core.exceptions import FieldDoesNotExist
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -58,3 +60,29 @@ class TranslatableAdmin(_TranslatableAdmin):
             tabs[:] = [tab for tab in tabs if settings.LANGUAGE_CODE in tab]
 
         return tabs
+
+
+def user_model_search_fields_nl(field_names):
+    User = get_user_model()
+    search_fields = []
+    help_texts = []
+
+    for name in field_names:
+        try:
+            field = User._meta.get_field(name)
+        except FieldDoesNotExist:
+            continue
+        else:
+            search_fields.append(f"user__{field.name}")
+            help_texts.append(str(field.verbose_name))
+
+    if not help_texts:
+        search_help_text = ""
+    elif len(help_texts) == 1:
+        search_help_text = _("Zoek op %(field)s") % {"field": help_texts[0]}
+    else:
+        search_help_text = _("Zoek op %(fields)s") % {
+            "fields": _(", ").join(help_texts[:-1]) + _(" of ") + help_texts[-1]
+        }
+
+    return search_fields, search_help_text
