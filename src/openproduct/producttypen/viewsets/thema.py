@@ -2,14 +2,18 @@ from django.db.models import Prefetch
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ProductType, Thema
 from openproduct.producttypen.serializers import ThemaSerializer
+from openproduct.producttypen.serializers.content import NestedContentElementSerializer
+from openproduct.producttypen.viewsets.producttype import ContentFilterSet
 from openproduct.utils.filters import FilterSet, UUIDFInFilter
 
 
@@ -65,6 +69,53 @@ class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     serializer_class = ThemaSerializer
     lookup_field = "uuid"
     filterset_class = ThemaFilterSet
+
+    @extend_schema(
+        summary="De CONTENT van een THEMA opvragen.",
+        description="Geeft de content van een THEMA terug.",
+        parameters=[
+            OpenApiParameter(
+                name="labels",
+                type={"type": "array", "items": {"type": "string"}},
+                location=OpenApiParameter.QUERY,
+                description="Filter content op basis van labels.",
+                required=False,
+                explode=False,
+            ),
+            OpenApiParameter(
+                name="exclude_labels",
+                type={"type": "array", "items": {"type": "string"}},
+                location=OpenApiParameter.QUERY,
+                description="Sluit content met bepaalde labels uit.",
+                required=False,
+                explode=False,
+            ),
+            OpenApiParameter(
+                name="Accept-Language",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.HEADER,
+                description="Optionele taal (`nl`, `en`).",
+            ),
+        ],
+        responses=NestedContentElementSerializer(many=True),
+    )
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="content-elementen",
+        serializer_class=NestedContentElementSerializer,
+        filterset_class=None,
+    )
+    def content_elementen(self, request, *args, **kwargs):
+        thema = self.get_object()
+        queryset = thema.content_elementen.all()
+
+        filterset = ContentFilterSet(request.GET, queryset=queryset)
+        if filterset.is_valid():
+            queryset = filterset.qs
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
