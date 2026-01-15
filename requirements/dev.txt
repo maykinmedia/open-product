@@ -136,7 +136,7 @@ click-repl==0.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-commonground-api-common==2.10.1
+commonground-api-common==2.10.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -972,6 +972,7 @@ sentry-sdk==2.19.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   commonground-api-common
     #   open-api-framework
 six==1.16.0
     # via
