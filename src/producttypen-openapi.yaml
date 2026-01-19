@@ -1735,13 +1735,20 @@ paths:
             schema:
               $ref: '#/components/schemas/ContentElementRequest'
             examples:
-              ContentElementRequest:
+              ContentElementRequest(linkedToProducttype):
                 value:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                summary: content element request
+                summary: content element request (linked to producttype)
+              ContentElementRequest(linkedToThema):
+                value:
+                  labels:
+                  - openingstijden
+                  content: ma-vr 8:00-17:00
+                  thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                summary: content element request (linked to thema)
         required: true
       security:
       - OpenID: []
@@ -1759,7 +1766,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ContentElement'
               examples:
-                ContentElementResponse:
+                ContentElementResponse(linkedToProducttype):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
@@ -1768,7 +1775,19 @@ paths:
                     aanvullende_informatie: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  summary: content element response
+                    thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: null
+                    thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
           description: ''
         '400':
           headers:
@@ -1838,7 +1857,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ContentElement'
               examples:
-                ContentElementResponse:
+                ContentElementResponse(linkedToProducttype):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
@@ -1847,7 +1866,19 @@ paths:
                     aanvullende_informatie: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  summary: content element response
+                    thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: null
+                    thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
           description: ''
         '400':
           headers:
@@ -1901,13 +1932,20 @@ paths:
             schema:
               $ref: '#/components/schemas/ContentElementRequest'
             examples:
-              ContentElementRequest:
+              ContentElementRequest(linkedToProducttype):
                 value:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                summary: content element request
+                summary: content element request (linked to producttype)
+              ContentElementRequest(linkedToThema):
+                value:
+                  labels:
+                  - openingstijden
+                  content: ma-vr 8:00-17:00
+                  thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                summary: content element request (linked to thema)
         required: true
       security:
       - OpenID: []
@@ -1925,7 +1963,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ContentElement'
               examples:
-                ContentElementResponse:
+                ContentElementResponse(linkedToProducttype):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
@@ -1934,7 +1972,19 @@ paths:
                     aanvullende_informatie: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  summary: content element response
+                    thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: null
+                    thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
           description: ''
         '400':
           headers:
@@ -1988,13 +2038,20 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedContentElementRequest'
             examples:
-              ContentElementRequest:
+              ContentElementRequest(linkedToProducttype):
                 value:
                   labels:
                   - openingstijden
                   content: ma-vr 8:00-17:00
                   producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                summary: content element request
+                summary: content element request (linked to producttype)
+              ContentElementRequest(linkedToThema):
+                value:
+                  labels:
+                  - openingstijden
+                  content: ma-vr 8:00-17:00
+                  thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                summary: content element request (linked to thema)
       security:
       - OpenID: []
       - tokenAuth: []
@@ -2011,7 +2068,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ContentElement'
               examples:
-                ContentElementResponse:
+                ContentElementResponse(linkedToProducttype):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     labels:
@@ -2020,7 +2077,19 @@ paths:
                     aanvullende_informatie: ''
                     taal: nl
                     producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  summary: content element response
+                    thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: null
+                    thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
           description: ''
         '400':
           headers:
@@ -6176,7 +6245,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedNestedContentElementList'
               examples:
-                ContentElementResponse:
+                ContentElementResponse(linkedToProducttype):
                   value:
                     count: 123
                     next: http://api.example.org/accounts/?page=4
@@ -6189,7 +6258,23 @@ paths:
                       aanvullende_informatie: ''
                       taal: nl
                       producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                  summary: content element response
+                      thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    count: 123
+                    next: http://api.example.org/accounts/?page=4
+                    previous: http://api.example.org/accounts/?page=2
+                    results:
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      labels:
+                      - openingstijden
+                      content: ma-vr 8:00-17:00
+                      aanvullende_informatie: ''
+                      taal: nl
+                      producttype_uuid: null
+                      thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
           description: ''
   /producttypen/{uuid}/vertaling/{taal}:
     put:
@@ -7571,6 +7656,100 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
+  /themas/{uuid}/content-elementen:
+    get:
+      operationId: themas_content_elementen_list
+      description: Geeft de content van een THEMA terug.
+      summary: De CONTENT van een THEMA opvragen.
+      parameters:
+      - in: header
+        name: Accept-Language
+        schema:
+          type: string
+        description: Optionele taal (`nl`, `en`).
+      - in: query
+        name: exclude_labels
+        schema:
+          type: array
+          items:
+            type: string
+        description: Sluit content met bepaalde labels uit.
+        explode: false
+      - in: query
+        name: labels
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter content op basis van labels.
+        explode: false
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Het aantal resultaten terug te geven per pagina.
+        schema:
+          type: integer
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - themas
+      security:
+      - OpenID: []
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNestedContentElementList'
+              examples:
+                ContentElementResponse(linkedToProducttype):
+                  value:
+                    count: 123
+                    next: http://api.example.org/accounts/?page=4
+                    previous: http://api.example.org/accounts/?page=2
+                    results:
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      labels:
+                      - openingstijden
+                      content: ma-vr 8:00-17:00
+                      aanvullende_informatie: ''
+                      taal: nl
+                      producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                      thema_uuid: null
+                  summary: content element response (linked to producttype)
+                ContentElementResponse(linkedToThema):
+                  value:
+                    count: 123
+                    next: http://api.example.org/accounts/?page=4
+                    previous: http://api.example.org/accounts/?page=2
+                    results:
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      labels:
+                      - openingstijden
+                      content: ma-vr 8:00-17:00
+                      aanvullende_informatie: ''
+                      taal: nl
+                      producttype_uuid: null
+                      thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  summary: content element response (linked to thema)
+          description: ''
 components:
   schemas:
     Actie:
@@ -7748,13 +7927,18 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+          nullable: true
+        thema_uuid:
+          type: string
+          format: uuid
+          nullable: true
+          description: Het thema of subthema van dit content element.
         taal:
           type: string
           readOnly: true
           description: De huidige taal van het content element.
       required:
       - content
-      - producttype_uuid
       - taal
       - uuid
     ContentElementRequest:
@@ -7777,9 +7961,14 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+          nullable: true
+        thema_uuid:
+          type: string
+          format: uuid
+          nullable: true
+          description: Het thema of subthema van dit content element.
       required:
       - content
-      - producttype_uuid
     ContentElementTranslation:
       type: object
       properties:
@@ -8881,6 +9070,12 @@ components:
         producttype_uuid:
           type: string
           format: uuid
+          nullable: true
+        thema_uuid:
+          type: string
+          format: uuid
+          nullable: true
+          description: Het thema of subthema van dit content element.
     PatchedJsonSchemaRequest:
       type: object
       properties:

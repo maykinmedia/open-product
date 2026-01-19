@@ -96,7 +96,6 @@ class ThemaSerializer(serializers.ModelSerializer):
     )
     producttypen = NestedProductTypeSerializer(many=True, read_only=True)
 
-    # TODO: remove?
     producttype_uuids = UUIDRelatedField(
         many=True,
         queryset=ProductType.objects.all(),
