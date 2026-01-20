@@ -60,7 +60,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-commonground-api-common==2.10.1
+commonground-api-common==2.10.7
     # via open-api-framework
 cron-descriptor==1.4.5
     # via django-celery-beat
@@ -442,7 +442,9 @@ ruamel-yaml-clib==0.2.12
 semantic-version==2.10.0
     # via django-upgrade-check
 sentry-sdk==2.19.0
-    # via open-api-framework
+    # via
+    #   commonground-api-common
+    #   open-api-framework
 six==1.16.0
     # via
     #   furl
