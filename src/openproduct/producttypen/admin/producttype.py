@@ -138,6 +138,7 @@ class ProductTypeAdmin(
         "uuid",
         "naam",
         "code",
+        "toegestane_statussen",
         "doelgroep",
         "uniforme_product_naam",
         "publicatie_start_datum",
