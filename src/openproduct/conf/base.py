@@ -253,3 +253,14 @@ REQUIRE_URL_URN_MAPPING = config(
     group="Urns",
     help_text="whether an url requires an urn mapping",
 )
+
+NOTIFICATIONS_DISABLED = config(
+    "NOTIFICATIONS_DISABLED",
+    default=True,
+    help_text=(
+        "indicates whether or not notifications should be sent to the Notificaties API "
+        "for operations on the API endpoints. "
+        "Defaults to ``True``"
+    ),
+    auto_display_default=True,
+)
