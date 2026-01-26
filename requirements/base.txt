@@ -30,7 +30,7 @@ boltons==24.1.0
     # via
     #   face
     #   glom
-cbor2==5.6.5
+cbor2==5.8.0
     # via webauthn
 celery==5.4.0
     # via
@@ -73,7 +73,7 @@ cryptography==44.0.2
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.8
+django==5.2.10
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -360,7 +360,7 @@ prometheus-client==0.21.0
     # via flower
 prompt-toolkit==3.0.48
     # via click-repl
-protobuf==6.33.1
+protobuf==6.33.5
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
@@ -484,7 +484,7 @@ tzdata==2024.2
     #   kombu
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   elastic-apm
     #   requests

@@ -60,7 +60,7 @@ boltons==24.1.0
     #   -r requirements/base.txt
     #   face
     #   glom
-cbor2==5.6.5
+cbor2==5.8.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -143,7 +143,7 @@ diff-match-patch==20241021
     #   django-reversion-compare
 dill==0.3.9
     # via pylint
-django==5.2.8
+django==5.2.10
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -676,7 +676,7 @@ prompt-toolkit==3.0.48
     #   click-repl
 propcache==0.3.1
     # via yarl
-protobuf==6.33.1
+protobuf==6.33.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -954,7 +954,7 @@ uritemplate==4.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
