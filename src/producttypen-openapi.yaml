@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Producttypen API
-  version: 1.4.0
+  version: 1.5.0
   description: |2+
 
     Een API voor Producttypen.
