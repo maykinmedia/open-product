@@ -73,7 +73,7 @@ def receiver_setup_logging(
                     "handlers": ["console"],
                     "level": "INFO",
                 },
-                "objects": {
+                "openproduct": {
                     "handlers": ["console"],
                     "level": "INFO",
                 },
