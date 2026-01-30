@@ -243,8 +243,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query

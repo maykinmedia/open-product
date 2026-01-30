@@ -153,7 +153,22 @@ def validate_exactly_one_producttype_or_thema(*, producttype, thema):
     Ensure exactly ONE of (producttype, thema) is provided.
     """
     if producttype and thema:
-        raise ValidationError(_("Kies óf een producttype óf een thema, niet beide."))
+        raise ValidationError(_("Kies óf een producttype of een thema, niet beide."))
 
     if not producttype and not thema:
         raise ValidationError(_("Geef een producttype of thema op."))
+
+
+def validate_actie_url_xor_dmn(url, dmn_config, dmn_tabel_id):
+    dmn = dmn_config and dmn_tabel_id
+
+    if url and dmn:
+        raise ValidationError(_("Een actie moet een url of een dmn tabel hebben."))
+
+    if not url:
+        if not (dmn_config or dmn_tabel_id):
+            raise ValidationError(_("Een actie moet een url of een dmn tabel hebben."))
+        if not dmn:
+            raise ValidationError(
+                _("Een actie dmn bestaat uit een dmn_config en dmn_tabel_id.")
+            )

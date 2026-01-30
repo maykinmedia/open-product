@@ -98,6 +98,11 @@ paths:
       summary: Alle ACTIE opvragen.
       parameters:
       - in: query
+        name: direct_url
+        schema:
+          type: string
+        description: url van de actie.
+      - in: query
         name: dmn_config__naam
         schema:
           type: string
@@ -131,8 +136,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -173,7 +177,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedActieList'
               examples:
-                ActieResponse:
+                ActieResponse(url):
+                  value:
+                    count: 123
+                    next: http://api.example.org/accounts/?page=4
+                    previous: http://api.example.org/accounts/?page=2
+                    results:
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                      naam: Parkeervergunning opzegging
+                      url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping: null
+                  summary: actie response (url)
+                ActieResponse(dmn):
                   value:
                     count: 123
                     next: http://api.example.org/accounts/?page=4
@@ -198,7 +214,7 @@ paths:
                         - name: formulieren
                           classType: String
                           value: https://openformulieren-gemeente-a.nl
-                  summary: actie response
+                  summary: actie response (dmn)
           description: ''
         '400':
           headers:
@@ -245,7 +261,13 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest:
+              ActieRequest(url):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                summary: actie request (url)
+              ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -266,7 +288,7 @@ paths:
                     - name: formulieren
                       classType: String
                       value: https://openformulieren-gemeente-a.nl
-                summary: actie request
+                summary: actie request (dmn)
         required: true
       security:
       - OpenID: []
@@ -284,7 +306,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse:
+                ActieResponse(url):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: null
+                  summary: actie response (url)
+                ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -305,7 +335,7 @@ paths:
                       - name: formulieren
                         classType: String
                         value: https://openformulieren-gemeente-a.nl
-                  summary: actie response
+                  summary: actie response (dmn)
           description: ''
         '400':
           headers:
@@ -370,7 +400,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse:
+                ActieResponse(url):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: null
+                  summary: actie response (url)
+                ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -391,7 +429,7 @@ paths:
                       - name: formulieren
                         classType: String
                         value: https://openformulieren-gemeente-a.nl
-                  summary: actie response
+                  summary: actie response (dmn)
           description: ''
         '400':
           headers:
@@ -445,7 +483,13 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest:
+              ActieRequest(url):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                summary: actie request (url)
+              ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -466,7 +510,7 @@ paths:
                     - name: formulieren
                       classType: String
                       value: https://openformulieren-gemeente-a.nl
-                summary: actie request
+                summary: actie request (dmn)
         required: true
       security:
       - OpenID: []
@@ -484,7 +528,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse:
+                ActieResponse(url):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: null
+                  summary: actie response (url)
+                ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -505,7 +557,7 @@ paths:
                       - name: formulieren
                         classType: String
                         value: https://openformulieren-gemeente-a.nl
-                  summary: actie response
+                  summary: actie response (dmn)
           description: ''
         '400':
           headers:
@@ -559,7 +611,13 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedActieRequest'
             examples:
-              ActieRequest:
+              ActieRequest(url):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                summary: actie request (url)
+              ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -580,7 +638,7 @@ paths:
                     - name: formulieren
                       classType: String
                       value: https://openformulieren-gemeente-a.nl
-                summary: actie request
+                summary: actie request (dmn)
       security:
       - OpenID: []
       - tokenAuth: []
@@ -597,7 +655,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse:
+                ActieResponse(url):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping: null
+                  summary: actie response (url)
+                ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -618,7 +684,7 @@ paths:
                       - name: formulieren
                         classType: String
                         value: https://openformulieren-gemeente-a.nl
-                  summary: actie response
+                  summary: actie response (dmn)
           description: ''
         '400':
           headers:
@@ -732,8 +798,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -1216,8 +1281,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2340,8 +2404,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -2421,8 +2484,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -2916,8 +2978,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -3434,8 +3495,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -3961,8 +4021,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -4839,8 +4898,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -6227,8 +6285,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: path
@@ -6580,8 +6637,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       tags:
@@ -7106,8 +7162,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: query
@@ -7704,8 +7759,7 @@ paths:
       - name: page_size
         required: false
         in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100).'
         schema:
           type: integer
       - in: path
@@ -7802,6 +7856,12 @@ components:
           minLength: 1
           description: naam van de actie.
           maxLength: 255
+        direct_url:
+          type: string
+          format: uri
+          writeOnly: true
+          minLength: 1
+          description: url van de actie.
         tabel_endpoint:
           type: string
           format: uri
@@ -7823,10 +7883,8 @@ components:
           nullable: true
           description: De mapping tussen de velden in Open Product & DMN variabele.
       required:
-      - dmn_tabel_id
       - naam
       - producttype_uuid
-      - tabel_endpoint
     Bestand:
       type: object
       properties:
@@ -9008,6 +9066,12 @@ components:
           minLength: 1
           description: naam van de actie.
           maxLength: 255
+        direct_url:
+          type: string
+          format: uri
+          writeOnly: true
+          minLength: 1
+          description: url van de actie.
         tabel_endpoint:
           type: string
           format: uri
