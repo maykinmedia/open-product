@@ -45,14 +45,8 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "tabel_endpoint": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
                 "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
-                ],
-                "dmn_tabel_id": [
-                    ErrorDetail(string=_("This field is required."), code="required")
                 ],
             },
         )
@@ -118,6 +112,48 @@ class TestProductTypeActie(BaseApiTestCase):
             {
                 "product": [
                     {"name": "status", "classType": "String", "regex": "$.status"}
+                ]
+            },
+        )
+
+    def test_create_actie_with_url(self):
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Actie.objects.count(), 2)
+
+        response.data.pop("uuid")
+
+        self.assertEqual(
+            response.data,
+            {
+                "naam": data["naam"],
+                "producttype_uuid": data["producttype_uuid"],
+                "url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                "mapping": None,
+            },
+        )
+
+    def test_create_actie_with_url_and_dmn(self):
+        data = self.data | {
+            "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a"
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                "model_errors": [
+                    ErrorDetail(
+                        string=_("Een actie moet een url of een dmn tabel hebben."),
+                        code="invalid",
+                    )
                 ]
             },
         )

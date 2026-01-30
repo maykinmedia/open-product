@@ -98,7 +98,7 @@ Schema's kunnen worden gelinkt aan een producttype als `dataobject_schema` of `v
 Aan een producttype kunnen handige links en bestanden worden gekoppeld waar meer informatie over het producttype te vinden is.
 
 ### Actie
-Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
+Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een directe verwijzing naar een url van een formulier of naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
 
 ### Locatie
 Een locatie kan aan een producttype worden gelinkt om bijvoorbeeld aan te geven waar het product is aan te vragen.

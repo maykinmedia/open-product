@@ -6,6 +6,7 @@ from rest_framework import serializers
 from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     check_for_circular_reference,
+    validate_actie_url_xor_dmn,
     validate_exactly_one_producttype_or_thema,
     validate_prijs_optie_xor_regel,
     validate_publicatie_dates,
@@ -114,3 +115,23 @@ class ContentElementProducttypeThemaValidator:
             producttype=producttype,
             thema=thema,
         )
+
+
+class ActieUrlValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        direct_url = get_from_serializer_data_or_instance(
+            "direct_url", value, serializer
+        )
+        dmn_config = get_from_serializer_data_or_instance(
+            "dmn_config", value, serializer
+        )
+        dmn_tabel_id = get_from_serializer_data_or_instance(
+            "dmn_tabel_id", value, serializer
+        )
+
+        try:
+            validate_actie_url_xor_dmn(direct_url, dmn_config, dmn_tabel_id)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message)
