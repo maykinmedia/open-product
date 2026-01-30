@@ -63,7 +63,7 @@ info:
     Aan een producttype kunnen handige links en bestanden worden gekoppeld waar meer informatie over het producttype te vinden is.
 
     ### Actie
-    Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een verwijzing naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
+    Aan een producttype kunnen meerdere acties worden gekoppeld. Dit is een directe verwijzing naar een url van een formulier of naar een DMN tabel uit een externe applicatie om een product bijvoorbeeld op te zeggen of te verlengen.
 
     ### Locatie
     Een locatie kan aan een producttype worden gelinkt om bijvoorbeeld aan te geven waar het product is aan te vragen.
@@ -101,7 +101,7 @@ paths:
         name: direct_url
         schema:
           type: string
-        description: url van de actie.
+        description: url naar het formulier van de actie, hierbij is geen dmn nodig.
       - in: query
         name: dmn_config__naam
         schema:
@@ -7861,7 +7861,7 @@ components:
           format: uri
           writeOnly: true
           minLength: 1
-          description: url van de actie.
+          description: url naar het formulier van de actie, hierbij is geen dmn nodig.
         tabel_endpoint:
           type: string
           format: uri
@@ -9071,7 +9071,7 @@ components:
           format: uri
           writeOnly: true
           minLength: 1
-          description: url van de actie.
+          description: url naar het formulier van de actie, hierbij is geen dmn nodig.
         tabel_endpoint:
           type: string
           format: uri

@@ -45,14 +45,8 @@ class TestProductTypeActie(BaseApiTestCase):
                 "naam": [
                     ErrorDetail(string=_("This field is required."), code="required")
                 ],
-                "tabel_endpoint": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
                 "producttype_uuid": [
                     ErrorDetail(_("This field is required."), code="required")
-                ],
-                "dmn_tabel_id": [
-                    ErrorDetail(string=_("This field is required."), code="required")
                 ],
             },
         )
