@@ -62,9 +62,9 @@ class Actie(BaseModel):
     @property
     def url(self):
         return (
-            self.direct_url
-            if self.direct_url
-            else f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
+            f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
+            if self.dmn_config and self.dmn_tabel_id
+            else self.direct_url
         )
 
     def __str__(self):

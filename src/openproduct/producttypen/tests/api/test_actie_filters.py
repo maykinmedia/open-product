@@ -56,10 +56,12 @@ class TestActieFilters(BaseApiTestCase):
 
     def test_direct_url_filter(self):
         ActieFactory.create(
-            direct_url="https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a"
+            direct_url="https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            dmn_config=None,
         )
         ActieFactory.create(
-            direct_url="https://gemeente.a.forms/a4dcf122-e224-48f9-8c09-79e5bbb10154"
+            direct_url="https://gemeente.a.forms/a4dcf122-e224-48f9-8c09-79e5bbb10154",
+            dmn_config=None,
         )
 
         response = self.client.get(
