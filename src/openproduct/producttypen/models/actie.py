@@ -8,7 +8,7 @@ from openproduct.utils.models import BaseModel
 
 from .dmn_config import DmnConfig
 from .producttype import ProductType
-from .validators import validate_dmn_mapping
+from .validators import validate_actie_url_xor_dmn, validate_dmn_mapping
 
 
 @reversion.register(follow=("producttype",))
@@ -27,18 +27,27 @@ class Actie(BaseModel):
         related_name="acties",
     )
 
+    direct_url = models.URLField(
+        verbose_name=_("url"),
+        help_text=_("url naar het formulier van de actie, hierbij is geen dmn nodig."),
+        blank=True,
+    )
+
     dmn_config = models.ForeignKey(
         DmnConfig,
         verbose_name=_("dmn config"),
         on_delete=models.PROTECT,
         related_name="acties",
         help_text=_("de dmn engine waar de tabel is gedefinieerd."),
+        null=True,
+        blank=True,
     )
 
     dmn_tabel_id = models.CharField(
         verbose_name=_("dmn tabel id"),
         max_length=255,
         help_text=_("id van de dmn tabel binnen de dmn instantie."),
+        blank=True,
     )
 
     mapping = models.JSONField(
@@ -52,10 +61,17 @@ class Actie(BaseModel):
 
     @property
     def url(self):
-        return f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
+        return (
+            f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
+            if self.dmn_config and self.dmn_tabel_id
+            else self.direct_url
+        )
 
     def __str__(self):
         return f"{self.naam} {self.url}"
+
+    def clean(self):
+        validate_actie_url_xor_dmn(self.direct_url, self.dmn_config, self.dmn_tabel_id)
 
     class Meta:
         verbose_name = _("actie")

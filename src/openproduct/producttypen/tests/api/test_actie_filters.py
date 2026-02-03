@@ -54,6 +54,30 @@ class TestActieFilters(BaseApiTestCase):
             f"{dmn_config.tabel_endpoint}/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
         )
 
+    def test_direct_url_filter(self):
+        ActieFactory.create(
+            direct_url="https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            dmn_config=None,
+        )
+        ActieFactory.create(
+            direct_url="https://gemeente.a.forms/a4dcf122-e224-48f9-8c09-79e5bbb10154",
+            dmn_config=None,
+        )
+
+        response = self.client.get(
+            self.path,
+            {
+                "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a"
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            response.data["results"][0]["url"],
+            "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+        )
+
     def test_dmn_config_naam_filter(self):
         dmn_config = DmnConfigFactory(
             tabel_endpoint="https://gemeente-a-flowable/dmn-repository/decision-tables",

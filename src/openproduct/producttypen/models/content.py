@@ -9,6 +9,8 @@ from parler.models import TranslatableModel, TranslatedFieldsModel
 
 from openproduct.utils.models import BaseModel
 
+from .validators import validate_exactly_one_producttype_or_thema
+
 
 @reversion.register()
 class ContentLabel(BaseModel):
@@ -81,10 +83,6 @@ class ContentElement(TranslatableModel, OrderedModel, BaseModel):
         ordering = ("producttype", "thema", "order")
 
     def clean(self):
-        from openproduct.producttypen.serializers.validators import (
-            validate_exactly_one_producttype_or_thema,
-        )
-
         validate_exactly_one_producttype_or_thema(
             producttype=self.producttype,
             thema=self.thema,
