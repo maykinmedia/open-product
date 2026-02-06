@@ -29,3 +29,4 @@ a separate package, `Open Notificaties`_.
    architecture
    diagrams
    open-source/index
+   versioning
