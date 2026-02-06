@@ -30,7 +30,7 @@ boltons==24.1.0
     # via
     #   face
     #   glom
-cbor2==5.6.5
+cbor2==5.8.0
     # via webauthn
 celery==5.4.0
     # via
@@ -73,7 +73,7 @@ cryptography==44.0.2
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.8
+django==5.2.11
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -287,11 +287,11 @@ mdurl==0.1.2
     # via markdown-it-py
 mozilla-django-oidc==4.0.1
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.0
+mozilla-django-oidc-db==1.1.1
     # via open-api-framework
-notifications-api-common==0.7.3
+notifications-api-common==0.10.1
     # via commonground-api-common
-open-api-framework==0.13.2
+open-api-framework==0.13.4
     # via -r requirements/base.in
 opentelemetry-api==1.38.0
     # via
@@ -360,7 +360,7 @@ prometheus-client==0.21.0
     # via flower
 prompt-toolkit==3.0.48
     # via click-repl
-protobuf==6.33.1
+protobuf==6.33.5
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
@@ -484,7 +484,7 @@ tzdata==2024.2
     #   kombu
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   elastic-apm
     #   requests
@@ -506,7 +506,7 @@ wrapt==1.17.0
     # via
     #   elastic-apm
     #   opentelemetry-instrumentation
-zgw-consumers==1.0.0
+zgw-consumers==1.2.0
     # via
     #   commonground-api-common
     #   notifications-api-common

@@ -1,6 +1,44 @@
 Changelog
 =========
 
+1.6.0 (06-02-2026)
+------------------
+
+**New features**
+
+    * [:open-product:`254`] Add eigenaar URN field to producttype
+    * [:open-product:`253`] Add thema/subthema to Content Elements
+    * [:open-product:`135`] Add direct_url to Actie
+
+**Project maintance**
+
+    * Upgrade dependencies
+
+        * [:open-api-framework:`197`] ``commonground-api-common`` to 2.10.7
+        * django to 5.2.11
+        * protobuf to 6.33.4
+        * cbor2 to 5.8.0
+        * urllib3 to 2.6.3
+        * mozilla-django-oidc-db to 1.1.1
+        * notifications-api-common to 0.10.1
+        * open-api-framework to 0.13.4
+        * zgw-consumers to 1.2.0
+
+    * Updated `uwsgi logs` from event to msg for high-cardinality log messages
+
+**Bugfixes**
+
+    * [:open-product:`260`] Fix API auth error when OIDC is not configured correctly
+    * [:open-product:`266`] Fix wysimark so all Content Elements  are saved correctly
+    * [:open-product:`239`] Fix help texts that do not have horizontal spacing in the admin
+    * [:open-product:`271`] Fix missing toegestane_statussen is producttype admin
+    * [:open-product:`271`] Disable notifications by default
+    * Fix `celery logger` name
+
+**Documentation**
+
+    * [:open-api-framework:`197`] Fix documentation with maximum pagination ``page_size`` in the OAS.
+
 1.5.0 (04-12-2025)
 ------------------
 

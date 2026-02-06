@@ -89,12 +89,14 @@ html_css_files = [
 
 todo_include_todos = True
 
+linkcheck_timeout = 10
 linkcheck_ignore = [
     r"http://localhost:\d+/",
     r"http://127\.0\.0\.1:\d+/",
     r"https?://.*\.gemeente.nl",
     r"http://localhost:\d+,https?://.*\.gemeente.nl",
     r"https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#.*",
+    r"https://opentelemetry.io/.*",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]

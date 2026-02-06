@@ -60,7 +60,7 @@ boltons==24.1.0
     #   -r requirements/base.txt
     #   face
     #   glom
-cbor2==5.6.5
+cbor2==5.8.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -143,7 +143,7 @@ diff-match-patch==20241021
     #   django-reversion-compare
 dill==0.3.9
     # via pylint
-django==5.2.8
+django==5.2.11
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -542,19 +542,19 @@ mozilla-django-oidc==4.0.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.0
+mozilla-django-oidc-db==1.1.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
 multidict==6.2.0
     # via yarl
-notifications-api-common==0.7.3
+notifications-api-common==0.10.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
-open-api-framework==0.13.2
+open-api-framework==0.13.4
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -676,7 +676,7 @@ prompt-toolkit==3.0.48
     #   click-repl
 propcache==0.3.1
     # via yarl
-protobuf==6.33.1
+protobuf==6.33.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -954,7 +954,7 @@ uritemplate==4.1.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   drf-spectacular
-urllib3==2.5.0
+urllib3==2.6.3
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -1005,7 +1005,7 @@ wrapt==1.17.0
     #   vcrpy
 yarl==1.18.3
     # via vcrpy
-zgw-consumers==1.0.0
+zgw-consumers==1.2.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
