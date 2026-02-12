@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.locaties.tests.factories import LocatieFactory, OrganisatieFactory
 from openproduct.producten.models.product import PrijsFrequentieChoices
@@ -628,17 +628,16 @@ class TestProductFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid-data-attr-query")
         self.assertEqual(
-            response.data,
-            [
-                ErrorDetail(
-                    string=_(
-                        "Filter '{}' moet de format 'key__operator__value' hebben, "
-                        "komma's kunnen alleen in de `waarde` worden toegevoegd"
-                    ).format(filter),
-                    code="invalid-data-attr-query",
-                )
-            ],
+            error["reason"],
+            _(
+                "Filter '{}' moet de format 'key__operator__value' hebben, "
+                "komma's kunnen alleen in de `waarde` worden toegevoegd"
+            ).format(filter),
         )
 
     def test_verbruiksobject_attr_filter_with_wrong_shape(self):
@@ -650,16 +649,16 @@ class TestProductFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid-data-attr-query")
         self.assertEqual(
-            response.data,
-            [
-                ErrorDetail(
-                    string=_(
-                        "Filter '{}' heeft niet de format 'key__operator__waarde'"
-                    ).format(filter),
-                    code="invalid-data-attr-query",
-                )
-            ],
+            error["reason"],
+            _("Filter '{}' heeft niet de format 'key__operator__waarde'").format(
+                filter
+            ),
         )
 
     def test_verbruiksobject_attr_filter_with_unknown_operator(self):
@@ -669,16 +668,13 @@ class TestProductFilters(BaseApiTestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid-data-attr-query")
         self.assertEqual(
-            response.data,
-            [
-                ErrorDetail(
-                    string=_("operator `{}` is niet bekend/ondersteund").format(
-                        "contains"
-                    ),
-                    code="invalid-data-attr-query",
-                )
-            ],
+            error["reason"],
+            _("operator `{}` is niet bekend/ondersteund").format("contains"),
         )
 
     def test_verbruiksobject_attr_multiple_filters(self):
