@@ -4,8 +4,8 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.producttypen.models import ContentElement, Thema
 from openproduct.producttypen.tests.factories import ProductTypeFactory, ThemaFactory
@@ -36,20 +36,18 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.post(self.path, {})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "naam": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "producttype_uuids": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "hoofd_thema": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-            },
-        )
+
+        error = get_validation_errors(response, "naam")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+
+        error = get_validation_errors(response, "hoofdThema")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+
+        error = get_validation_errors(response, "producttypeUuids")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
 
     def test_create_minimal_thema(self):
         response = self.client.post(self.path, self.data)
@@ -112,18 +110,13 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "producttypeUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "producttype_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(
-                            producttype.uuid
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(producttype.uuid),
         )
 
     def test_create_published_sub_thema_with_unpublished_hoofd_thema_returns_error(
@@ -136,18 +129,13 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "hoofd_thema": [
-                    ErrorDetail(
-                        string=_(
-                            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd.",
         )
 
     def test_update_change_from_root_to_hoofd_thema(self):
@@ -198,18 +186,13 @@ class TestThemaViewSet(BaseApiTestCase):
         thema.refresh_from_db()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "producttypeUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "producttype_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(
-                            producttype.uuid
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            f"Dubbel uuid: {producttype.uuid} op index 1.",
         )
 
     def test_update_unpublished_sub_thema_to_published_with_unpublished_hoofd_thema_returns_error(
@@ -223,18 +206,13 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.put(self.detail_path(sub_thema), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "hoofd_thema": [
-                    ErrorDetail(
-                        string=_(
-                            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd.",
         )
 
     def test_update_published_hoofd_thema_to_unpublished_with_published_sub_thema_returns_error(
@@ -250,18 +228,13 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.put(self.detail_path(hoofd_thema), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "hoofd_thema": [
-                    ErrorDetail(
-                        string=_(
-                            "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben.",
         )
 
     def test_partial_update(self):
@@ -315,18 +288,13 @@ class TestThemaViewSet(BaseApiTestCase):
         thema.refresh_from_db()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "producttypeUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "producttype_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(
-                            producttype.uuid
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(producttype.uuid),
         )
 
     def test_partial_update_unpublished_sub_thema_to_published_with_unpublished_hoofd_thema_returns_error(
@@ -340,18 +308,13 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.patch(self.detail_path(sub_thema), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "hoofd_thema": [
-                    ErrorDetail(
-                        string=_(
-                            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden gepubliceerd.",
         )
 
     def test_partial_update_published_hoofd_thema_to_unpublished_with_published_sub_thema_returns_error(
@@ -367,18 +330,14 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.patch(self.detail_path(hoofd_thema), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "hoofd_thema": [
-                    ErrorDetail(
-                        string=_(
-                            "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's hebben.",
         )
 
     def test_read_producttype(self):
@@ -496,9 +455,13 @@ class TestThemaViewSet(BaseApiTestCase):
         data = {"hoofd_thema": thema.uuid}
         response = self.client.patch(self.detail_path(thema), data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
         self.assertEqual(
-            response.data,
-            {"hoofd_thema": ["Een thema kan geen referentie naar zichzelf hebben."]},
+            error["reason"],
+            "Een thema kan geen referentie naar zichzelf hebben.",
         )
 
     def test_thema_cannot_have_circular_reference_to_itself(self):
@@ -509,7 +472,10 @@ class TestThemaViewSet(BaseApiTestCase):
         data = {"hoofd_thema": thema_c.uuid}
         response = self.client.patch(self.detail_path(thema_a), data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "hoofdThema")
+
+        self.assertIsNotNone(error)
         self.assertEqual(
-            response.data,
-            {"hoofd_thema": ["Een thema kan geen referentie naar zichzelf hebben."]},
+            error["reason"],
+            "Een thema kan geen referentie naar zichzelf hebben.",
         )
