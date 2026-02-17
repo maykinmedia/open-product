@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.locaties.tests.factories import (
     ContactFactory,
@@ -606,16 +606,14 @@ class TestProductTypeFilters(BaseApiTestCase):
             response = self.client.get(self.path, {"toegestane_statussen": "abc"})
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "toegestaneStatussen")
+
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid_choice")
             self.assertEqual(
-                response.data,
-                {
-                    "toegestane_statussen": [
-                        ErrorDetail(
-                            string="Selecteer een geldige keuze. abc is geen beschikbare keuze.",
-                            code="invalid_choice",
-                        )
-                    ]
-                },
+                error["reason"],
+                "Selecteer een geldige keuze. abc is geen beschikbare keuze.",
             )
 
     def test_verbruiksobject_schema_filter(self):

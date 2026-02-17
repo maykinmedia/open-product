@@ -8,9 +8,9 @@ from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 from reversion.models import Version
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
@@ -82,17 +82,16 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, {})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "producttype_uuid": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "eigenaren": [
-                    ErrorDetail(_("This field is required."), code="required")
-                ],
-            },
-        )
+
+        error = get_validation_errors(response, "producttypeUuid")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], _("This field is required."))
+
+        error = get_validation_errors(response, "eigenaren")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], _("This field is required."))
 
     def test_create_product(self):
         response = self.client.post(self.path, self.data)
@@ -280,18 +279,15 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "verbruiksobject")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "verbruiksobject": [
-                    ErrorDetail(
-                        string=_(
-                            "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _(
+                "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
+            ),
         )
 
     def test_create_product_with_dataobject(self):
@@ -384,34 +380,29 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "dataobject")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "dataobject": [
-                    ErrorDetail(
-                        string="Het dataobject komt niet overeen met het schema gedefinieerd op het producttype.",
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype.",
         )
 
     def test_create_product_with_not_allowed_state(self):
         data = self.data | {"status": "actief"}
         response = self.client.post(self.path, data)
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "status")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "status": [
-                    ErrorDetail(
-                        string=_(
-                            "Status 'Actief' is niet toegestaan voor het producttype {}."
-                        ).format(self.producttype.naam),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Status 'Actief' is niet toegestaan voor het producttype {}.").format(
+                self.producttype.naam
+            ),
         )
 
     def test_create_product_with_allowed_state(self):
@@ -452,22 +443,14 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "eigenaren.0.modelErrors")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "eigenaren": [
-                    {
-                        "model_errors": [
-                            ErrorDetail(
-                                string=_(
-                                    "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
-                                ),
-                                code="invalid",
-                            )
-                        ]
-                    }
-                ]
-            },
+            error["reason"],
+            _(
+                "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+            ),
         )
 
     def test_create_product_with_vestigingsnummer_only(self):
@@ -475,37 +458,24 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "eigenaren.0.vestigingsnummer")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "eigenaren": [
-                    {
-                        "vestigingsnummer": [
-                            ErrorDetail(
-                                string="Een vestigingsnummer kan alleen in combinatie met een kvk nummer worden ingevuld.",
-                                code="invalid",
-                            )
-                        ]
-                    }
-                ]
-            },
+            error["reason"],
+            "Een vestigingsnummer kan alleen in combinatie met een kvk nummer worden ingevuld.",
         )
 
     def test_create_product_without_eigenaren(self):
         response = self.client.post(self.path, self.data | {"eigenaren": []})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "eigenaren": [
-                    ErrorDetail(
-                        string=_("Er is minimaal één eigenaar vereist."),
-                        code="invalid",
-                    )
-                ]
-            },
-        )
+
+        error = get_validation_errors(response, "eigenaren")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(error["reason"], _("Er is minimaal één eigenaar vereist."))
 
     def test_create_product_with_vestigingsnummer_and_kvk(self):
         data = self.data | {
@@ -694,21 +664,19 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_not_allowed_state(self):
         product = ProductFactory.create()
         data = self.data.copy() | {"status": "actief"}
+
         response = self.client.put(self.detail_path(product), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "status")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "status": [
-                    ErrorDetail(
-                        string=_(
-                            "Status 'Actief' is niet toegestaan voor het producttype {}."
-                        ).format(self.producttype.naam),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Status 'Actief' is niet toegestaan voor het producttype {}.").format(
+                self.producttype.naam
+            ),
         )
 
     def test_update_product_removing_eigenaren(self):
@@ -716,14 +684,7 @@ class TestProduct(BaseApiTestCase):
         EigenaarFactory.create(product=product, bsn="111222333")
         EigenaarFactory.create(product=product, kvk_nummer="12345678")
 
-        expected_error = {
-            "eigenaren": [
-                ErrorDetail(
-                    string=_("Er is minimaal één eigenaar vereist."),
-                    code="invalid",
-                )
-            ]
-        }
+        expected_reason = _("Er is minimaal één eigenaar vereist.")
 
         with self.subTest("PUT"):
             response = self.client.put(
@@ -732,14 +693,22 @@ class TestProduct(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(Eigenaar.objects.count(), 2)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
         with self.subTest("PATCH"):
             response = self.client.patch(self.detail_path(product), {"eigenaren": []})
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(Eigenaar.objects.count(), 2)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
     def test_update_updating_and_removing_eigenaren(self):
         product = ProductFactory.create()
@@ -814,28 +783,29 @@ class TestProduct(BaseApiTestCase):
             ]
         }
 
-        expected_error = {
-            "eigenaren": [
-                ErrorDetail(
-                    string=_(
-                        "Eigenaar uuid {} op index 0 is niet onderdeel van het Product object."
-                    ).format(eigenaar_of_other_product.uuid),
-                    code="invalid",
-                )
-            ]
-        }
+        expected_reason = _(
+            "Eigenaar uuid {} op index 0 is niet onderdeel van het Product object."
+        ).format(eigenaar_of_other_product.uuid)
 
         with self.subTest("PUT"):
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
         with self.subTest("PATCH"):
             response = self.client.patch(self.detail_path(product), data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
     def test_update_product_with_eigenaar_uuid_not_existing(self):
         product = ProductFactory.create()
@@ -844,28 +814,29 @@ class TestProduct(BaseApiTestCase):
 
         data = {"eigenaren": [{"uuid": eigenaar_uuid, "klantnummer": "1234"}]}
 
-        expected_error = {
-            "eigenaren": [
-                ErrorDetail(
-                    string=_("Eigenaar uuid {} op index 0 bestaat niet.").format(
-                        eigenaar_uuid
-                    ),
-                    code="invalid",
-                )
-            ]
-        }
+        expected_reason = _("Eigenaar uuid {} op index 0 bestaat niet.").format(
+            eigenaar_uuid
+        )
 
         with self.subTest("PUT"):
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
         with self.subTest("PATCH"):
             response = self.client.patch(self.detail_path(product), data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
     def test_update_product_with_duplicate_eigenaren_uuids(self):
         product = ProductFactory.create()
@@ -873,16 +844,9 @@ class TestProduct(BaseApiTestCase):
             product=product, bsn="111222333"
         )
 
-        expected_error = {
-            "eigenaren": [
-                ErrorDetail(
-                    string=_("Dubbel uuid: {} op index 1.").format(
-                        eigenaar_to_be_updated.uuid
-                    ),
-                    code="invalid",
-                )
-            ]
-        }
+        expected_reason = _("Dubbel uuid: {} op index 1.").format(
+            eigenaar_to_be_updated.uuid
+        )
 
         data = {
             "eigenaren": [
@@ -895,13 +859,21 @@ class TestProduct(BaseApiTestCase):
             response = self.client.put(self.detail_path(product), self.data | data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
         with self.subTest("PATCH"):
             response = self.client.patch(self.detail_path(product), data)
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(response.data, expected_error)
+
+            error = get_validation_errors(response, "eigenaren")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
 
     def test_update_product_creates_log_and_history(self):
         product = ProductFactory.create()
@@ -1608,42 +1580,24 @@ class TestProduct(BaseApiTestCase):
         tests = [
             {
                 "field": {"status": "gereed"},
-                "error": {
-                    "status": [
-                        ErrorDetail(
-                            string=_(
-                                "Status 'Gereed' is niet toegestaan voor het producttype {}."
-                            ).format(new_producttype.naam),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "status",
+                "reason": _(
+                    "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                ).format(new_producttype.naam),
             },
             {
                 "field": {"start_datum": datetime.date(2025, 12, 31)},
-                "error": {
-                    "start_datum": [
-                        ErrorDetail(
-                            string=_(
-                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
-                            ),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "startDatum",
+                "reason": _(
+                    "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
+                ),
             },
             {
                 "field": {"eind_datum": datetime.date(2026, 12, 31)},
-                "error": {
-                    "eind_datum": [
-                        ErrorDetail(
-                            string=_(
-                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
-                            ),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "eindDatum",
+                "reason": _(
+                    "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
+                ),
             },
         ]
 
@@ -1669,9 +1623,12 @@ class TestProduct(BaseApiTestCase):
                         "eigenaren": [{"kvk_nummer": "12345678"}],
                     },
                 )
+
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-            self.assertEqual(response.data, test["error"])
+                error = get_validation_errors(response, test["param"])
+                self.assertIsNotNone(error)
+                self.assertEqual(error["reason"], test["reason"])
 
     @freeze_time("2025-11-30")
     def test_update_state_and_dates_are_checked_when_changed(self):
@@ -1679,42 +1636,24 @@ class TestProduct(BaseApiTestCase):
         tests = [
             {
                 "field": {"status": "gereed"},
-                "error": {
-                    "status": [
-                        ErrorDetail(
-                            string=_(
-                                "Status 'Gereed' is niet toegestaan voor het producttype {}."
-                            ).format(producttype.naam),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "status",
+                "reason": _(
+                    "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                ).format(producttype.naam),
             },
             {
                 "field": {"start_datum": datetime.date(2025, 12, 31)},
-                "error": {
-                    "start_datum": [
-                        ErrorDetail(
-                            string=_(
-                                "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
-                            ),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "startDatum",
+                "reason": _(
+                    "De start datum van het product kan niet worden gezet omdat de status ACTIEF niet is toegestaan op het producttype."
+                ),
             },
             {
                 "field": {"eind_datum": datetime.date(2026, 12, 31)},
-                "error": {
-                    "eind_datum": [
-                        ErrorDetail(
-                            string=_(
-                                "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
-                            ),
-                            code="invalid",
-                        )
-                    ]
-                },
+                "param": "eindDatum",
+                "reason": _(
+                    "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN niet is toegestaan op het producttype."
+                ),
             },
         ]
 
@@ -1739,9 +1678,12 @@ class TestProduct(BaseApiTestCase):
                         "producttype_uuid": producttype.uuid,
                     },
                 )
+
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-            self.assertEqual(response.data, test["error"])
+                error = get_validation_errors(response, test["param"])
+                self.assertIsNotNone(error)
+                self.assertEqual(error["reason"], test["reason"])
 
 
 @override_settings(NOTIFICATIONS_DISABLED=True)
@@ -1775,10 +1717,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["een url of urn is verplicht"]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "een url of urn is verplicht")
 
         with self.subTest("empty"):
             response = self.client.post(
@@ -1786,10 +1728,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["een url of urn is verplicht"]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "een url of urn is verplicht")
 
         with self.subTest("string"):
             response = self.client.post(
@@ -1797,10 +1739,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaakUrn")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige waarde in.")
 
         with self.subTest("::::"):
             response = self.client.post(
@@ -1808,21 +1750,32 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
-            )
 
-        with self.subTest("::::"):
+            error = get_validation_errors(response, "aanvraagZaakUrn")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige waarde in.")
+
+        with self.subTest(":a:b:c:d:e"):
             response = self.client.post(
                 self.path, self.data | {"aanvraag_zaak_urn": ":a:b:c:d:e"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_urn": ["Voer een geldige waarde in."]},
+
+            error = get_validation_errors(response, "aanvraagZaakUrn")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige waarde in.")
+
+        with self.subTest(":a:b:c:d:e duplicate"):
+            response = self.client.post(
+                self.path, self.data | {"aanvraag_zaak_urn": ":a:b:c:d:e"}
             )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "aanvraagZaakUrn")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige waarde in.")
 
     def test_invalid_urls(self):
         with self.subTest("None"):
@@ -1831,10 +1784,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["een url of urn is verplicht"]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "een url of urn is verplicht")
 
         with self.subTest("empty"):
             response = self.client.post(
@@ -1842,10 +1795,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["een url of urn is verplicht"]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "een url of urn is verplicht")
 
         with self.subTest("string"):
             response = self.client.post(
@@ -1853,10 +1806,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaakUrl")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige URL in.")
 
         with self.subTest("slash"):
             response = self.client.post(
@@ -1864,10 +1817,10 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaakUrl")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige URL in.")
 
         with self.subTest("url"):
             response = self.client.post(
@@ -1876,19 +1829,19 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak_url": ["Voer een geldige URL in."]},
-            )
+
+            error = get_validation_errors(response, "aanvraagZaakUrl")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["reason"], "Voer een geldige URL in.")
 
     def test_create_product_without_aanvraag_zaak(self):
         response = self.client.post(self.path, self.data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.json(),
-            {"aanvraag_zaak": ["een url of urn is verplicht"]},
-        )
+
+        error = get_validation_errors(response, "aanvraagZaak")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["reason"], "een url of urn is verplicht")
 
     def test_create_product_with_different_urn_urls(self):
         data = self.data | {
@@ -1899,9 +1852,12 @@ class TestProductUrns(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "aanvraagZaak")
+        self.assertIsNotNone(error)
         self.assertEqual(
-            response.json(),
-            {"aanvraag_zaak": ["de uuid van de url en urn komen niet overeen"]},
+            error["reason"],
+            "de uuid van de url en urn komen niet overeen",
         )
 
     def test_create_product_with_urn_only(self):
@@ -1914,10 +1870,10 @@ class TestProductUrns(BaseApiTestCase):
                 response = self.client.post(self.path, data)
 
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-                self.assertEqual(
-                    response.json(),
-                    {"aanvraag_zaak": ["de urn heeft geen mapping"]},
-                )
+
+                error = get_validation_errors(response, "aanvraagZaak")
+                self.assertIsNotNone(error)
+                self.assertEqual(error["reason"], "de urn heeft geen mapping")
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URN_URL_MAPPING=False):
@@ -1975,10 +1931,10 @@ class TestProductUrns(BaseApiTestCase):
                 response = self.client.post(self.path, data)
 
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-                self.assertEqual(
-                    response.json(),
-                    {"aanvraag_zaak": ["de url heeft geen mapping"]},
-                )
+
+                error = get_validation_errors(response, "aanvraagZaak")
+                self.assertIsNotNone(error)
+                self.assertEqual(error["reason"], "de url heeft geen mapping")
 
         with self.subTest("allowed"):
             with override_settings(REQUIRE_URL_URN_MAPPING=False):
@@ -2051,9 +2007,11 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
             self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de urn en url mappings komen niet overeen"]},
+                error["reason"], "de urn en url mappings komen niet overeen"
             )
 
         with self.subTest("mapping correct"):
@@ -2091,9 +2049,11 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
             self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de urn in de url mapping is niet hetzelfde"]},
+                error["reason"], "de urn in de url mapping is niet hetzelfde"
             )
 
         with self.subTest("different url in mapping"):
@@ -2106,9 +2066,11 @@ class TestProductUrns(BaseApiTestCase):
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "aanvraagZaak")
+            self.assertIsNotNone(error)
             self.assertEqual(
-                response.json(),
-                {"aanvraag_zaak": ["de url in de urn mapping is niet hetzelfde"]},
+                error["reason"], "de url in de urn mapping is niet hetzelfde"
             )
 
     def test_create_product_with_urn_and_url_no_mapping(self):

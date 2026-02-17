@@ -6,7 +6,6 @@ import requests
 from maykin_common.vcr import VCRMixin
 from mozilla_django_oidc_db.models import OIDCClient, OIDCProvider
 from mozilla_django_oidc_db.tests.mixins import OIDCMixin
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
 from ...accounts.tests.factories import OIDCClientFactory, UserFactory
@@ -106,15 +105,14 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
+
+        self.assertEqual(response.data["status"], 401)
+        self.assertEqual(response.data["code"], "authentication_failed")
         self.assertEqual(
-            response.data,
-            {
-                "detail": ErrorDetail(
-                    string="OIDC authentication failed: authentication is not properly configured.",
-                    code="authentication_failed",
-                )
-            },
+            response.data["detail"],
+            "OIDC authentication failed: authentication is not properly configured.",
         )
+
         self.assertEqual(User.objects.all().count(), 0)
 
     @override_settings(OIDC_CREATE_USER=False)
@@ -145,14 +143,9 @@ class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
-        self.assertEqual(
-            response.data,
-            {
-                "detail": ErrorDetail(
-                    string="Token verification failed", code="authentication_failed"
-                )
-            },
-        )
+        self.assertEqual(response.data["status"], 401)
+        self.assertEqual(response.data["code"], "authentication_failed")
+        self.assertEqual(response.data["detail"], "Token verification failed")
 
     def test_expired_token(self):
         expired_token = (

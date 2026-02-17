@@ -7,9 +7,9 @@ from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 from reversion.models import Version
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.locaties.tests.factories import (
     ContactFactory,
@@ -93,25 +93,45 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.post(self.path, {})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "naam")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
         self.assertEqual(
-            response.data,
-            {
-                "naam": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "thema_uuids": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "samenvatting": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "code": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "doelgroep": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-            },
+            error["reason"],
+            "Dit veld is verplicht.",
+        )
+        error = get_validation_errors(response, "themaUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(
+            error["reason"],
+            "Dit veld is verplicht.",
+        )
+        error = get_validation_errors(response, "samenvatting")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(
+            error["reason"],
+            "Dit veld is verplicht.",
+        )
+        error = get_validation_errors(response, "code")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(
+            error["reason"],
+            "Dit veld is verplicht.",
+        )
+        error = get_validation_errors(response, "doelgroep")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(
+            error["reason"],
+            "Dit veld is verplicht.",
         )
 
     def test_create_minimal_producttype(self):
@@ -193,16 +213,10 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Er is minimaal één thema vereist."), code="invalid"
-                    )
-                ],
-            },
-        )
+        thema_error = get_validation_errors(response, "themaUuids")
+        self.assertIsNotNone(thema_error)
+        self.assertEqual(thema_error["code"], "invalid")
+        self.assertEqual(thema_error["reason"], _("Er is minimaal één thema vereist."))
 
     def test_create_producttype_with_location(self):
         locatie = LocatieFactory.create()
@@ -267,18 +281,13 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "externeCodes")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "unique")
         self.assertEqual(
-            response.data,
-            {
-                "externe_codes": [
-                    ErrorDetail(
-                        string=_(
-                            "Er bestaat al een externe code met de naam ISO voor dit ProductType."
-                        ),
-                        code="unique",
-                    )
-                ]
-            },
+            error["reason"],
+            "Er bestaat al een externe code met de naam ISO voor dit ProductType.",
         )
 
     def test_create_producttype_with_duplicate_parameter_names_returns_error(
@@ -293,16 +302,13 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "parameters")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "unique")
         self.assertEqual(
-            response.data,
-            {
-                "parameters": [
-                    ErrorDetail(
-                        string="Er bestaat al een parameter met de naam doelgroep voor dit ProductType.",
-                        code="unique",
-                    )
-                ]
-            },
+            error["reason"],
+            "Er bestaat al een parameter met de naam doelgroep voor dit ProductType.",
         )
 
     def test_create_product_with_external_objects(self):
@@ -424,22 +430,21 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "themaUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
-                        code="invalid",
-                    )
-                ],
-                "locatie_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(locatie.uuid),
-                        code="invalid",
-                    )
-                ],
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(thema.uuid),
+        )
+        error = get_validation_errors(response, "locatieUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(locatie.uuid),
         )
 
     def test_create_complete_producttype(self):
@@ -765,15 +770,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "themaUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Er is minimaal één thema vereist."), code="invalid"
-                    )
-                ]
-            },
+            error["reason"],
+            "Er is minimaal één thema vereist.",
         )
 
     def test_update_producttype_with_location(self):
@@ -834,22 +838,21 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        thema_error = get_validation_errors(response, "themaUuids")
+        self.assertIsNotNone(thema_error)
+        self.assertEqual(thema_error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
-                        code="invalid",
-                    )
-                ],
-                "locatie_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(locatie.uuid),
-                        code="invalid",
-                    )
-                ],
-            },
+            thema_error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(thema.uuid),
+        )
+
+        locatie_error = get_validation_errors(response, "locatieUuids")
+        self.assertIsNotNone(locatie_error)
+        self.assertEqual(locatie_error["code"], "invalid")
+        self.assertEqual(
+            locatie_error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(locatie.uuid),
         )
 
     def test_update_producttype_with_externe_code(self):
@@ -1181,16 +1184,13 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.patch(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "themaUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(thema.uuid),
-                        code="invalid",
-                    )
-                ],
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(thema.uuid),
         )
 
     def test_partial_update_producttype_removing_thema(self):
@@ -1199,16 +1199,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
         response = self.client.patch(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "thema_uuids": [
-                    ErrorDetail(
-                        string=_("Er is minimaal één thema vereist."), code="invalid"
-                    )
-                ]
-            },
-        )
+
+        error = get_validation_errors(response, "themaUuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(error["reason"], _("Er is minimaal één thema vereist."))
 
     def test_partial_update_producttype_with_externe_code(self):
         producttype = ProductTypeFactory.create()
