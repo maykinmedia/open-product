@@ -18,9 +18,9 @@ services:
 
 
   web:
-    build: &web_build
+    build:
       context: .
-    image: maykinmedia/open-product:latest
+    image: maykinmedia/open-product:${TAG:-latest}
     environment: &web_env
       DJANGO_SETTINGS_MODULE: openproduct.conf.docker
       SECRET_KEY: ${SECRET_KEY:-django-insecure-@4wj9(+*bu7*v&%on7+e_8!d1ckl%r=6+sz#d2!pw^@lb0+=}
@@ -58,8 +58,7 @@ services:
       - open-product-dev
 
   web-init:
-    build: *web_build
-    image: maykinmedia/open-product:latest
+    image: maykinmedia/open-product:${TAG:-latest}
     environment:
       <<: *web_env
       # Django-setup-configuration
@@ -76,8 +75,7 @@ services:
       - open-product-dev
 
   celery:
-    build: *web_build
-    image: maykinmedia/open-product:latest
+    image: maykinmedia/open-product:${TAG:-latest}
     environment: *web_env
     command: /celery_worker.sh
     healthcheck:
@@ -94,8 +92,7 @@ services:
       - open-product-dev
 
   celery-beat:
-    build: *web_build
-    image: maykinmedia/open-product:latest
+    image: maykinmedia/open-product:${TAG:-latest}
     environment: *web_env
     command: /celery_beat.sh
     depends_on:
@@ -104,8 +101,7 @@ services:
       - open-product-dev
 
   celery-flower:
-    build: *web_build
-    image: maykinmedia/open-product:latest
+    image: maykinmedia/open-product:${TAG:-latest}
     environment: *web_env
     command: /celery_flower.sh
     ports:
