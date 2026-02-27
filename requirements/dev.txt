@@ -99,7 +99,7 @@ certifi==2024.8.30
     #   httpx
     #   requests
     #   sentry-sdk
-cffi==1.17.1
+cffi==2.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -154,7 +154,7 @@ cron-descriptor==1.4.5
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-celery-beat
-cryptography==44.0.2
+cryptography==46.0.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -836,7 +836,7 @@ pylint==3.3.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-pyopenssl==24.3.0
+pyopenssl==25.3.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1092,6 +1092,7 @@ typing-extensions==4.12.2
     #   psycopg
     #   pydantic
     #   pydantic-core
+    #   pyopenssl
     #   qrcode
     #   rich-click
     #   typing-inspection
