@@ -174,6 +174,19 @@ class ProductType(BasePublishableModel, TranslatableModel):
         null=True,
     )
 
+    kanalen = ArrayField(
+        models.CharField(
+            max_length=100,
+            unique=True,
+        ),
+        verbose_name=_("kanalen"),
+        default=list,
+        blank=True,
+        help_text=_(
+            "Lijst van kanalen per producttype via de API van de referentielijsten"
+        ),
+    )
+
     naam = TranslatedField()
     samenvatting = TranslatedField()
 
