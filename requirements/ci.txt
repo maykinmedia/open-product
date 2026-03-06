@@ -79,7 +79,7 @@ certifi==2024.8.30
     #   elastic-apm
     #   requests
     #   sentry-sdk
-cffi==1.17.1
+cffi==2.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -125,7 +125,7 @@ cron-descriptor==1.4.5
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-celery-beat
-cryptography==44.0.2
+cryptography==46.0.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -728,7 +728,7 @@ pyjwt==2.10.1
     #   zgw-consumers
 pylint==3.3.1
     # via -r requirements/test-tools.in
-pyopenssl==24.3.0
+pyopenssl==25.3.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -899,7 +899,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via
     #   -r requirements/test-tools.in
     #   sphinx
-sqlparse==0.5.2
+sqlparse==0.5.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -933,6 +933,7 @@ typing-extensions==4.12.2
     #   psycopg
     #   pydantic
     #   pydantic-core
+    #   pyopenssl
     #   qrcode
     #   typing-inspection
     #   zgw-consumers
