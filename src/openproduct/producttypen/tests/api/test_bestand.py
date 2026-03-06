@@ -6,8 +6,8 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.producttypen.models import Bestand
 from openproduct.utils.tests.cases import BaseApiTestCase
@@ -43,19 +43,21 @@ class TestProductTypeBestand(BaseApiTestCase):
         response = self.client.post(self.path, {}, format="multipart")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "bestand")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
         self.assertEqual(
-            response.data,
-            {
-                "bestand": [
-                    ErrorDetail(
-                        string=_("Er is geen bestand opgestuurd."), code="required"
-                    )
-                ],
-                "producttype_uuid": [
-                    ErrorDetail(_("This field is required."), code="required")
-                ],
-            },
+            error["reason"],
+            _("Er is geen bestand opgestuurd."),
         )
+
+        error = get_validation_errors(response, "producttypeUuid")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], _("This field is required."))
 
     def test_create_bestand(self):
         response = self.client.post(self.path, self.data, format="multipart")

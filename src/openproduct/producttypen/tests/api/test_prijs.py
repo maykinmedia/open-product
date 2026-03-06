@@ -7,8 +7,8 @@ from django.utils.translation import gettext as _
 
 from freezegun import freeze_time
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.producttypen.models import Prijs, PrijsOptie, PrijsRegel, ProductType
 from openproduct.producttypen.tests.factories import (
@@ -50,88 +50,71 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.post(self.path, {})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "actiefVanaf")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], _("This field is required."))
+        error = get_validation_errors(response, "producttypeUuid")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
         self.assertEqual(
-            response.data,
-            {
-                "actief_vanaf": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-                "producttype_uuid": [
-                    ErrorDetail(_("This field is required."), code="required")
-                ],
-            },
+            error["reason"],
+            _("This field is required."),
         )
 
     def test_create_prijs_with_empty_opties(self):
         response = self.client.post(self.path, self.prijs_data | {"prijsopties": []})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_create_prijs_with_empty_regels(self):
         response = self.client.post(self.path, self.prijs_data | {"prijsregels": []})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_create_prijs_without_opties(self):
         response = self.client.post(self.path, self.prijs_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_create_prijs_without_regels(self):
         response = self.client.post(self.path, self.prijs_data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_create_prijs_with_prijs_opties(self):
@@ -228,16 +211,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_("Een prijs kan niet zowel opties als regels hebben."),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs kan niet zowel opties als regels hebben."),
         )
 
     def test_create_prijs_with_regel_with_invalid_mapping(self):
@@ -257,22 +237,14 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "prijsregels.0.mapping")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsregels": [
-                    {
-                        "mapping": [
-                            ErrorDetail(
-                                string=_(
-                                    "De mapping komt niet overeen met het schema. (zie API spec)"
-                                ),
-                                code="invalid",
-                            )
-                        ]
-                    }
-                ]
-            },
+            error["reason"],
+            _("De mapping komt niet overeen met het schema. (zie API spec)"),
         )
 
     def test_create_prijs_with_regel_with_valid_mapping(self):
@@ -322,18 +294,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_update_prijs_removing_all_regels(self):
@@ -349,18 +316,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_(
-                            "Een prijs moet één of meerdere opties of regels hebben."
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs moet één of meerdere opties of regels hebben."),
         )
 
     def test_update_prijs_removing_optie_adding_regel(self):
@@ -512,18 +474,15 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsopties")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsopties": [
-                    ErrorDetail(
-                        string=_(
-                            "Prijs optie uuid {} op index 0 is niet onderdeel van het Prijs object."
-                        ).format(optie.uuid),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _(
+                "Prijs optie uuid {} op index 0 is niet onderdeel van het Prijs object."
+            ).format(optie.uuid),
         )
 
     def test_update_prijs_with_regel_not_part_of_prijs_returns_error(self):
@@ -545,18 +504,15 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsregels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsregels": [
-                    ErrorDetail(
-                        string=_(
-                            "Prijs regel uuid {} op index 0 is niet onderdeel van het Prijs object."
-                        ).format(regel.uuid),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _(
+                "Prijs regel uuid {} op index 0 is niet onderdeel van het Prijs object."
+            ).format(regel.uuid),
         )
 
     def test_update_prijs_with_optie_with_unknown_uuid_returns_error(self):
@@ -573,18 +529,14 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "prijsopties")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsopties": [
-                    ErrorDetail(
-                        string=_("Prijs optie uuid {} op index 0 bestaat niet.").format(
-                            non_existing_uuid
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Prijs optie uuid {} op index 0 bestaat niet.").format(non_existing_uuid),
         )
 
     def test_update_prijs_with_regel_with_unknown_uuid_returns_error(self):
@@ -606,18 +558,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsregels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsregels": [
-                    ErrorDetail(
-                        string=_("Prijs regel uuid {} op index 0 bestaat niet.").format(
-                            non_existing_uuid
-                        ),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Prijs regel uuid {} op index 0 bestaat niet.").format(non_existing_uuid),
         )
 
     def test_update_prijs_with_duplicate_optie_uuids_returns_error(self):
@@ -643,16 +590,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsopties")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsopties": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(optie.uuid),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(optie.uuid),
         )
 
     def test_update_prijs_with_duplicate_regel_uuids_returns_error(self):
@@ -680,16 +624,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsregels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "prijsregels": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(regel.uuid),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(regel.uuid),
         )
 
     def test_update_prijs_with_opties_and_regels(self):
@@ -709,16 +650,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.put(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "optiesOrRegels")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_("Een prijs kan niet zowel opties als regels hebben."),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs kan niet zowel opties als regels hebben."),
         )
 
     def test_partial_update_prijs(self):
@@ -859,29 +797,32 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.patch(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        errors = response.json()["invalid_params"]
+        prijsregels_errors = [e for e in errors if e["name"] == "prijsopties"]
+
+        self.assertEqual(len(prijsregels_errors), 3)
+
         self.assertEqual(
-            response.data,
-            {
-                "prijsopties": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(optie.uuid),
-                        code="invalid",
-                    ),
-                    ErrorDetail(
-                        string=_(
-                            "Prijs optie uuid {} op index 2 is niet onderdeel van het Prijs object."
-                        ).format(optie_of_other_prijs.uuid),
-                        code="invalid",
-                    ),
-                    ErrorDetail(
-                        string=_("Prijs optie uuid {} op index 3 bestaat niet.").format(
-                            non_existing_optie
-                        ),
-                        code="invalid",
-                    ),
-                ]
-            },
+            prijsregels_errors[0]["reason"],
+            _("Dubbel uuid: {} op index 1.").format(optie.uuid),
         )
+        self.assertEqual(prijsregels_errors[0]["code"], "invalid")
+
+        self.assertEqual(
+            prijsregels_errors[1]["reason"],
+            _(
+                "Prijs optie uuid {} op index 2 is niet onderdeel van het Prijs object."
+            ).format(optie_of_other_prijs.uuid),
+        )
+        self.assertEqual(prijsregels_errors[1]["code"], "invalid")
+
+        self.assertEqual(
+            prijsregels_errors[2]["reason"],
+            _("Prijs optie uuid {} op index 3 bestaat niet.").format(
+                non_existing_optie
+            ),
+        )
+        self.assertEqual(prijsregels_errors[2]["code"], "invalid")
 
     def test_partial_update_with_multiple_regel_errors(self):
         regel = PrijsRegelFactory.create(prijs=self.prijs)
@@ -920,29 +861,33 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.patch(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        errors = response.json()["invalid_params"]
+        prijsregels_errors = [e for e in errors if e["name"] == "prijsregels"]
+
+        self.assertEqual(len(prijsregels_errors), 3)
+
         self.assertEqual(
-            response.data,
-            {
-                "prijsregels": [
-                    ErrorDetail(
-                        string=_("Dubbel uuid: {} op index 1.").format(regel.uuid),
-                        code="invalid",
-                    ),
-                    ErrorDetail(
-                        string=_(
-                            "Prijs regel uuid {} op index 2 is niet onderdeel van het Prijs object."
-                        ).format(regel_of_other_prijs.uuid),
-                        code="invalid",
-                    ),
-                    ErrorDetail(
-                        string=_("Prijs regel uuid {} op index 3 bestaat niet.").format(
-                            non_existing_regel
-                        ),
-                        code="invalid",
-                    ),
-                ]
-            },
+            prijsregels_errors[0]["reason"],
+            _("Dubbel uuid: {} op index 1.").format(regel.uuid),
         )
+        self.assertEqual(prijsregels_errors[0]["code"], "invalid")
+
+        self.assertEqual(
+            prijsregels_errors[1]["reason"],
+            _(
+                "Prijs regel uuid {} op index 2 is niet onderdeel van het Prijs object."
+            ).format(regel_of_other_prijs.uuid),
+        )
+        self.assertEqual(prijsregels_errors[1]["code"], "invalid")
+
+        self.assertEqual(
+            prijsregels_errors[2]["reason"],
+            _("Prijs regel uuid {} op index 3 bestaat niet.").format(
+                non_existing_regel
+            ),
+        )
+        self.assertEqual(prijsregels_errors[2]["code"], "invalid")
 
     def test_partial_update_prijs_with_opties_and_regels(self):
         data = {
@@ -961,16 +906,13 @@ class TestProductTypePrijs(BaseApiTestCase):
         response = self.client.patch(self.detail_path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "optiesOrRegels")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "opties_or_regels": [
-                    ErrorDetail(
-                        string=_("Een prijs kan niet zowel opties als regels hebben."),
-                        code="invalid",
-                    )
-                ]
-            },
+            error["reason"],
+            _("Een prijs kan niet zowel opties als regels hebben."),
         )
 
     def test_read_prijzen(self):

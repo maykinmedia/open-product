@@ -64,6 +64,7 @@ urlpatterns = [
         ),
         name="home",
     ),
+    path("ref/", include("vng_api_common.urls")),
     path(
         "producttypen/api/v{}/".format(settings.PRODUCTTYPEN_API_MAJOR_VERSION),
         include(producttype_urlpatterns),
