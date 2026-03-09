@@ -74,9 +74,7 @@ class ReferentielijstenConfig(SingletonModel):
         try:
             with get_referentielijsten_client(self) as client:
                 if client.can_connect:
-                    items = client.get_cached_items_by_tabel_code(
-                        self.kanalen_tabel_code
-                    )
+                    items = client.get_items_for_table_cached(self.kanalen_tabel_code)
                     return items, status.HTTP_200_OK
                 return _("Unable to connect to Referentielijsten API"), None
         except Timeout:

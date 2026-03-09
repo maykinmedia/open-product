@@ -1,4 +1,5 @@
 import json
+from dataclasses import asdict
 
 from django.contrib import admin
 from django.utils.safestring import mark_safe
@@ -32,8 +33,7 @@ class ReferentielijstenConfigAdmin(SingletonModelAdmin):
             return _("n/a")
 
         result, status_code = obj.connection_check
-
         if isinstance(result, (dict, list)):
-            pretty = json.dumps(result, indent=2)
+            pretty = json.dumps([asdict(t) for t in result], indent=2, default=str)
             return mark_safe(f"Status code: {status_code}<br><pre>{pretty}</pre>")
         return f"{status_code} - {result}" if status_code else result

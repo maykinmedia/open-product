@@ -31,6 +31,7 @@ INSTALLED_APPS += [
     "reversion",
     "reversion_compare",
     "openproduct.accounts",
+    "openproduct.config",
     "openproduct.logging",
     "openproduct.utils",
     "openproduct.producttypen",
@@ -125,6 +126,7 @@ SETUP_CONFIGURATION_STEPS = (
     "mozilla_django_oidc_db.setup_configuration.steps.AdminOIDCConfigurationStep",
     "openproduct.setup_configuration.steps.UrnMappingConfigsConfigurationStep",
     "openproduct.setup_configuration.steps.DmnConfigsConfigurationStep",
+    "openproduct.setup_configuration.steps.ReferentielijstenConfigurationStep",
 )
 
 #
