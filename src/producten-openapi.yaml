@@ -291,6 +291,11 @@ paths:
           type: string
         description: De Nederlandse naam van het producttype
       - in: query
+        name: producttype__naam__icontains
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
         name: producttype__naam__in
         schema:
           type: array
