@@ -656,10 +656,6 @@ phonenumberslite==8.13.50
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-pillow==11.0.0
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
 platformdirs==4.3.6
     # via pylint
 prometheus-client==0.21.0
