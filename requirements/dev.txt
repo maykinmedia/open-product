@@ -180,7 +180,7 @@ dill==0.3.9
     #   pylint
 distlib==0.3.9
     # via virtualenv
-django==5.2.11
+django==5.2.12
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -592,11 +592,6 @@ lxml==5.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pyquery
-markdown==3.3.6
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   sphinx-markdown-tables
 markdown-it-py==3.0.0
     # via
     #   -c requirements/ci.txt
@@ -752,10 +747,6 @@ phonenumberslite==8.13.50
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-pillow==11.0.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 platformdirs==4.3.6
     # via
     #   -c requirements/ci.txt
@@ -826,7 +817,7 @@ pygments==2.18.0
     #   rich
     #   sphinx
     #   sphinx-tabs
-pyjwt==2.10.1
+pyjwt==2.12.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -943,6 +934,11 @@ rich==14.0.0
     #   rich-click
 rich-click==1.8.5
     # via bump-my-version
+roman-numerals==4.1.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   sphinx
 rpds-py==0.21.0
     # via
     #   -c requirements/ci.txt
@@ -995,7 +991,7 @@ soupsieve==2.6
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   beautifulsoup4
-sphinx==7.3.7
+sphinx==9.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1003,11 +999,7 @@ sphinx==7.3.7
     #   sphinx-rtd-theme
     #   sphinx-tabs
     #   sphinxcontrib-jquery
-sphinx-markdown-tables==0.0.15
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-sphinx-rtd-theme==3.0.2
+sphinx-rtd-theme==3.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1015,17 +1007,17 @@ sphinx-tabs==3.4.7
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-sphinxcontrib-applehelp==1.0.1
+sphinxcontrib-applehelp==2.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
-sphinxcontrib-devhelp==1.0.1
+sphinxcontrib-devhelp==2.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
-sphinxcontrib-htmlhelp==2.0.0
+sphinxcontrib-htmlhelp==2.1.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1040,7 +1032,7 @@ sphinxcontrib-jsmath==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
-sphinxcontrib-qthelp==1.0.2
+sphinxcontrib-qthelp==2.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1071,7 +1063,7 @@ tomlkit==0.13.2
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.5.1
+tornado==6.5.5
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

@@ -73,7 +73,7 @@ cryptography==46.0.5
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.11
+django==5.2.12
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -354,8 +354,6 @@ packaging==25.0
     #   opentelemetry-instrumentation
 phonenumberslite==8.13.50
     # via django-two-factor-auth
-pillow==11.0.0
-    # via -r requirements/base.in
 prometheus-client==0.21.0
     # via flower
 prompt-toolkit==3.0.48
@@ -380,7 +378,7 @@ pydantic-settings==2.9.1
     # via django-setup-configuration
 pygments==2.18.0
     # via rich
-pyjwt==2.10.1
+pyjwt==2.12.1
     # via
     #   commonground-api-common
     #   zgw-consumers
@@ -456,7 +454,7 @@ structlog==25.4.0
     # via
     #   django-structlog
     #   open-api-framework
-tornado==6.5.1
+tornado==6.5.5
     # via flower
 typing-extensions==4.12.2
     # via
