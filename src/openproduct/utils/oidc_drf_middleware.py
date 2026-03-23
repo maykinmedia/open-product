@@ -1,3 +1,5 @@
+from django.core.exceptions import ImproperlyConfigured
+
 import structlog
 from mozilla_django_oidc.contrib.drf import OIDCAuthentication as _OIDCAuthentication
 from mozilla_django_oidc.utils import parse_www_authenticate_header
@@ -20,7 +22,7 @@ class OIDCAuthentication(_OIDCAuthentication):
 
         try:
             return super().authenticate(request)
-        except AssertionError:
+        except ImproperlyConfigured:
             logger.exception("oidc_authentication_failed")
             raise AuthenticationFailed(
                 "OIDC authentication failed: authentication is not properly configured."

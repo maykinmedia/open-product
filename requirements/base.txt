@@ -67,7 +67,6 @@ cron-descriptor==1.4.5
 cryptography==46.0.5
     # via
     #   django-simple-certmanager
-    #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
     #   webauthn
@@ -265,8 +264,6 @@ inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
     # via commonground-api-common
-josepy==1.14.0
-    # via mozilla-django-oidc
 jsonschema==4.23.0
     # via
     #   -r requirements/base.in
@@ -285,9 +282,9 @@ maykin-common==0.11.0
     # via -r requirements/base.in
 mdurl==0.1.2
     # via markdown-it-py
-mozilla-django-oidc==4.0.1
+mozilla-django-oidc==5.0.2
     # via mozilla-django-oidc-db
-mozilla-django-oidc-db==1.1.1
+mozilla-django-oidc-db==2.0.1
     # via open-api-framework
 notifications-api-common==0.10.1
     # via commonground-api-common
@@ -381,11 +378,10 @@ pygments==2.18.0
 pyjwt==2.12.1
     # via
     #   commonground-api-common
+    #   mozilla-django-oidc
     #   zgw-consumers
 pyopenssl==25.3.0
-    # via
-    #   josepy
-    #   webauthn
+    # via webauthn
 pypng==0.20220715.0
     # via qrcode
 python-crontab==3.2.0
