@@ -123,6 +123,9 @@ jobs:
     uses: maykinmedia/open-api-workflows/.github/workflows/ci.yml@v6
     needs:
       - store-reusable-workflow-vars
+    permissions:
+      contents: read
+      security-events: write  # required for `Scan docker image` step
     with:
       main-branch: 'master'
       run-docs: true
