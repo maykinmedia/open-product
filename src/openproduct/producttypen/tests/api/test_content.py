@@ -2,8 +2,8 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
+from vng_api_common.tests import get_validation_errors
 
 from openproduct.producttypen.models import ContentElement, ContentLabel
 from openproduct.utils.tests.cases import BaseApiTestCase
@@ -42,14 +42,12 @@ class TestContentElement(BaseApiTestCase):
         response = self.client.post(self.path, {})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data,
-            {
-                "content": [
-                    ErrorDetail(string=_("This field is required."), code="required")
-                ],
-            },
-        )
+
+        error = get_validation_errors(response, "content")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
+        self.assertEqual(error["reason"], _("This field is required."))
 
     def test_create_content_element(self):
         response = self.client.post(self.path, self.data)

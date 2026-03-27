@@ -165,7 +165,7 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "NON_FIELD_ERRORS_KEY": "model_errors",
     "DEFAULT_FILTER_BACKENDS": ["openproduct.utils.filters.FilterBackend"],
-    "EXCEPTION_HANDLER": "openproduct.utils.views.exception_handler",
+    "EXCEPTION_HANDLER": "vng_api_common.exception_handling.exception_handler",
 }
 
 PRODUCTEN_API_VERSION = "1.5.0"
@@ -263,3 +263,6 @@ NOTIFICATIONS_DISABLED = config(
     ),
     auto_display_default=True,
 )
+COMMONGROUND_API_COMMON = {
+    "API_EXCEPTION_CAMELIZE": False,
+}
