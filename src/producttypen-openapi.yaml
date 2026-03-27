@@ -151,6 +151,11 @@ paths:
           type: string
         description: De Nederlandse naam van het producttype
       - in: query
+        name: producttype__naam__icontains
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
         name: producttype__uuid
         schema:
           type: string
@@ -810,6 +815,11 @@ paths:
         description: code van het producttype.
       - in: query
         name: producttype__naam
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
+        name: producttype__naam__icontains
         schema:
           type: string
         description: De Nederlandse naam van het producttype
@@ -2503,6 +2513,11 @@ paths:
           type: string
         description: De Nederlandse naam van het producttype
       - in: query
+        name: producttype__naam__icontains
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
         name: producttype__uuid
         schema:
           type: string
@@ -4073,6 +4088,11 @@ paths:
           type: string
         description: De Nederlandse naam van het producttype
       - in: query
+        name: producttype__naam__icontains
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
         name: producttype__uuid
         schema:
           type: string
@@ -4870,6 +4890,11 @@ paths:
         style: form
       - in: query
         name: naam
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
+        name: naam__icontains
         schema:
           type: string
         description: De Nederlandse naam van het producttype

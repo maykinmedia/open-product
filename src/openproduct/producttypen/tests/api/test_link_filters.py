@@ -107,12 +107,24 @@ class TestLinkFilters(BaseApiTestCase):
         )
         LinkFactory.create(producttype__naam="aanbouw")
 
-        response = self.client.get(
-            self.path, {"producttype__naam": "parkeervergunning"}
-        )
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__naam": "parkeervergunning"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype_uuid
-        )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype_uuid"], producttype_uuid
+            )
+
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"producttype__naam__icontains": "vergunning"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype_uuid"], producttype_uuid
+            )

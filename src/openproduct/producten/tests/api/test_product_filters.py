@@ -179,6 +179,18 @@ class TestProductFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 2)
 
+        with self.subTest("icontains"):
+            response = self.client.get(
+                self.path, {"producttype__naam__icontains": "vergunning"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype"]["uuid"],
+                str(producttype_uuid),
+            )
+
     def test_start_datum_filter(self):
         ProductFactory.create(start_datum=date(2024, 6, 7))
         ProductFactory.create(start_datum=date(2025, 6, 7))

@@ -25,6 +25,12 @@ class PrijsFilterSet(FilterSet):
         help_text=_("De Nederlandse naam van het producttype"),
     )
 
+    producttype__naam__icontains = TranslationFilter(
+        field_name="producttype__naam",
+        lookup_expr="icontains",
+        help_text=_("De Nederlandse naam van het producttype"),
+    )
+
     def filter_queryset(self, queryset):
         return super().filter_queryset(queryset).distinct()
 

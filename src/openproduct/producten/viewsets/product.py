@@ -75,6 +75,12 @@ class ProductFilterSet(FilterSet):
         help_text=_("De Nederlandse naam van het producttype"),
     )
 
+    producttype__naam__icontains = TranslationFilter(
+        field_name="producttype__naam",
+        lookup_expr="icontains",
+        help_text=_("De Nederlandse naam van het producttype"),
+    )
+
     dataobject_attr = ManyCharFilter(
         method="filter_dataobject_attr",
         validators=[validate_data_attr],
