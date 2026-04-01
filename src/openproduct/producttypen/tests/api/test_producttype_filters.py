@@ -244,11 +244,19 @@ class TestProductTypeFilters(BaseApiTestCase):
         ProductTypeFactory.create(naam="parkeervergunning", uuid=uuid)
         ProductTypeFactory.create(naam="aanbouw")
 
-        response = self.client.get(self.path, {"naam": "parkeervergunning"})
+        with self.subTest("exact"):
+            response = self.client.get(self.path, {"naam": "parkeervergunning"})
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["uuid"], str(uuid))
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["uuid"], str(uuid))
+
+        with self.subTest("icontains"):
+            response = self.client.get(self.path, {"naam__icontains": "vergunning"})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["uuid"], str(uuid))
 
     def test_producttype_content_label_filter(self):
         producttype = ProductTypeFactory.create()

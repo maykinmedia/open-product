@@ -84,6 +84,12 @@ class ProductTypeFilterSet(FilterSet):
         help_text=_("De Nederlandse naam van het producttype"),
     )
 
+    naam__icontains = TranslationFilter(
+        field_name="naam",
+        lookup_expr="icontains",
+        help_text=_("De Nederlandse naam van het producttype"),
+    )
+
     keywords = CharArrayFilter(
         field_name="keywords",
         lookup_expr="overlap",
