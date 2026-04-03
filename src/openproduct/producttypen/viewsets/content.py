@@ -1,10 +1,10 @@
-from django.utils.translation import activate
+from django.utils.translation import activate, gettext_lazy as _
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins
 from rest_framework.decorators import action
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ContentElement, ContentLabel
@@ -13,10 +13,38 @@ from openproduct.producttypen.serializers.content import (
     ContentElementTranslationSerializer,
     ContentLabelSerializer,
 )
+from openproduct.utils.filters import FilterSet, TranslationFilter
 from openproduct.utils.views import TranslatableViewSetMixin
 
 
+class ContentElementFilterSet(FilterSet):
+    content__contains = TranslationFilter(field_name="content", lookup_expr="icontains")
+
+    producttype__naam = TranslationFilter(
+        field_name="producttype__naam",
+        lookup_expr="exact",
+        help_text=_("De Nederlandse naam van het producttype"),
+    )
+
+    class Meta:
+        model = ContentElement
+        fields = {
+            "producttype__uuid": ["exact"],
+            "producttype__code": ["exact"],
+            "producttype__zaaktypen__urn": ["exact"],
+            "producttype__zaaktypen__url": ["exact"],
+            "producttype__themas__uuid": ["exact"],
+            "producttype__themas__naam": ["exact"],
+            "thema__uuid": ["exact"],
+            "thema__naam": ["exact"],
+        }
+
+
 @extend_schema_view(
+    list=extend_schema(
+        summary="Alle CONTENTELEMENTEN opvragen.",
+        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+    ),
     retrieve=extend_schema(
         summary="Een specifiek CONTENTELEMENT opvragen.",
         parameters=[
@@ -42,19 +70,14 @@ from openproduct.utils.views import TranslatableViewSetMixin
     ),
 )
 class ContentElementViewSet(
-    AuditTrailViewSetMixin,
-    mixins.CreateModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    TranslatableViewSetMixin,
-    GenericViewSet,
+    AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
 ):
     queryset = ContentElement.objects.select_related("producttype").prefetch_related(
         "translations", "labels"
     )
     serializer_class = ContentElementSerializer
     lookup_field = "uuid"
+    filterset_class = ContentElementFilterSet
 
     def initial(self, request, *args, **kwargs):
         # passing the translated fields to  the create call will set them for the language in the Accept-Language header.
