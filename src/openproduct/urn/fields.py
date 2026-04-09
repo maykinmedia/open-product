@@ -97,7 +97,12 @@ class URNValidator(RegexValidator):
 
 class UrnField(models.CharField):
     description = _("URN (RFC 8141)")
-    default_validators = [URNValidator(), RegexValidator(f":uuid:{UUID_REGEX}$", _("Urn moet eindigen met `:uuid:<uuid>`."))]
+    default_validators = [
+        URNValidator(),
+        RegexValidator(
+            f":uuid:{UUID_REGEX}$", _("Urn moet eindigen met `:uuid:<uuid>`.")
+        ),
+    ]
 
 
 class UrlField(models.URLField):
