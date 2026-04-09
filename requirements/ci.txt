@@ -60,7 +60,7 @@ boltons==24.1.0
     #   -r requirements/base.txt
     #   face
     #   glom
-cbor2==5.8.0
+cbor2==5.9.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -125,7 +125,7 @@ cron-descriptor==1.4.5
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-celery-beat
-cryptography==46.0.5
+cryptography==46.0.7
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -142,7 +142,7 @@ diff-match-patch==20241021
     #   django-reversion-compare
 dill==0.3.9
     # via pylint
-django==5.2.12
+django==5.2.13
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -701,7 +701,7 @@ pydantic-settings==2.9.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-setup-configuration
-pygments==2.18.0
+pygments==2.20.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -790,7 +790,7 @@ referencing==0.35.1
     #   -r requirements/base.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.4
+requests==2.33.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt

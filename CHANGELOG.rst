@@ -1,6 +1,53 @@
 Changelog
 =========
 
+1.7.0 (10-04-2026)
+------------------
+
+**New features**
+
+    * [:open-product:`288`] Add producttype naam icontains filter
+    * [:open-product:`306`] Change urn validation to RFC 8141 (see :ref:`urns`)
+
+**Project maintenance**
+
+    * Upgrade dependencies
+
+        * django to 5.2.13
+        * cbor2 to 5.9.0
+        * cryptography to 46.0.7
+        * pygments to 2.20.0
+        * requests to 2.33.1
+        * cffi to 2.0.0
+        * pyopenssl to 26.0.0
+        * sqlparse to 0.5.5
+        * pyjwt to 2.12.1
+        * tornado to 6.5.5
+        * mozilla-django-oidc to 5.0.2
+        * mozilla-django-oidc-db to 2.0.1
+
+    * Upgrade NPM dependencies
+    * Fix CodeQL warning for codeql-analysis action
+    * Add explicit least privilege permissions for each workflow
+
+    * [:commonground-api-common:`142`] Update API response error format to be compliant with ``application/problem+json``
+
+    * [:open-api-framework:`211`] Optimize memory usage for uWSGI and celery-flower
+
+        * Make sure uWSGI workers restart after 1000 requests
+        * Set ``FLOWER_MAX_TASKS=1000`` and ``FLOWER_MAX_WORKERS=50``
+
+**Bugfixes**
+
+    * Fix styling for ``account_blocked.html`` template
+
+**Documentation**
+
+    * [:open-api-framework:`205`] Describe version policy in documentation (see :ref:`versioning_policy`)
+    * Update docker compose example images
+    * Fix docs styling & add logo img
+    * Update rtd os version
+
 1.6.0 (06-02-2026)
 ------------------
 
@@ -10,7 +57,7 @@ Changelog
     * [:open-product:`253`] Add thema/subthema to Content Elements
     * [:open-product:`135`] Add direct_url to Actie
 
-**Project maintance**
+**Project maintenance**
 
     * Upgrade dependencies
 
@@ -29,7 +76,7 @@ Changelog
 **Bugfixes**
 
     * [:open-product:`260`] Fix API auth error when OIDC is not configured correctly
-    * [:open-product:`266`] Fix wysimark so all Content Elements  are saved correctly
+    * [:open-product:`266`] Fix wysimark so all Content Elements are saved correctly
     * [:open-product:`239`] Fix help texts that do not have horizontal spacing in the admin
     * [:open-product:`271`] Fix missing toegestane_statussen is producttype admin
     * [:open-product:`271`] Disable notifications by default

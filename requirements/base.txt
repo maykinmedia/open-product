@@ -30,7 +30,7 @@ boltons==24.1.0
     # via
     #   face
     #   glom
-cbor2==5.8.0
+cbor2==5.9.0
     # via webauthn
 celery==5.4.0
     # via
@@ -64,7 +64,7 @@ commonground-api-common==2.12.0
     # via open-api-framework
 cron-descriptor==1.4.5
     # via django-celery-beat
-cryptography==46.0.5
+cryptography==46.0.7
     # via
     #   django-simple-certmanager
     #   mozilla-django-oidc
@@ -72,7 +72,7 @@ cryptography==46.0.5
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.12
+django==5.2.13
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -373,7 +373,7 @@ pydantic-core==2.33.2
     # via pydantic
 pydantic-settings==2.9.1
     # via django-setup-configuration
-pygments==2.18.0
+pygments==2.20.0
     # via rich
 pyjwt==2.12.1
     # via
@@ -414,7 +414,7 @@ referencing==0.35.1
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.4
+requests==2.33.1
     # via
     #   ape-pie
     #   commonground-api-common
