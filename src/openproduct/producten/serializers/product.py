@@ -110,19 +110,19 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 ],
                 "documenten": [
                     {
-                        "urn": "maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                         "url": "https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "zaken": [
                     {
-                        "urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf",
+                        "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf",
                         "url": "https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf",
                     }
                 ],
                 "taken": [
                     {
-                        "urn": "maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89",
+                        "urn": "urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89",
                         "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89",
                     }
                 ],
@@ -131,7 +131,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "frequentie": "eenmalig",
                 "verbruiksobject": {"uren": 130},
                 "dataobject": {"max_uren": 150},
-                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                 "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
             },
             response_only=True,
@@ -158,14 +158,16 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                     }
                 ],
                 "zaken": [
-                    {"urn": "maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf"}
+                    {
+                        "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf"
+                    }
                 ],
                 "taken": [
                     {
                         "url": "https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89"
                     }
                 ],
-                "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             },
             request_only=True,
         ),

@@ -7,9 +7,11 @@ Urns
 syntax
 ------
 
-``<organisatie>:<systeem>:<component>:<resource>:<identificatie>``
+De urns worden gevalideerd op de syntax van RFC 8141, de aanbevolen syntax is:
 
-``maykin:zaken-sociaal:zrc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1``
+``urn:nld:<organisatie>:<systeem>:<component>:<resource>:<identificatie>``
+
+``urn:nld:maykin:zaken-sociaal:zrc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1``
 
 .. note::
     Houd het systeem-fragment leverancier en product agnostisch. Een afdeling of domein zou bijvoorbeeld wel kunnen.
@@ -27,6 +29,6 @@ Voorbeeld
 
 De product aanvraag_zaak is de link naar de zaak waaruit het product is afgeleid. Product heeft twee velden ``aanvraag_zaak_urn`` & ``aanvraag_zaak_url``
 
-- De volgende urn mapping is toegevoegd: maykin:zaken-sociaal:zrc:zaak -> https://maykin.zrc.com/api/v1/zaken
-- Een product kan worden aangemaakt met bijvoorbeeld de urn ``maykin:zaken-sociaal:zrc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1`` of url ``https://maykin.zrc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1`` waarna de ander vanuit de urn mapping automatisch wordt ingevuld.
+- De volgende urn mapping is toegevoegd: urn:nld:maykin:zaken-sociaal:zrc:zaak -> https://maykin.zrc.com/api/v1/zaken
+- Een product kan worden aangemaakt met bijvoorbeeld de urn ``urn:nld:maykin:zaken-sociaal:zrc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1`` of url ``https://maykin.zrc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1`` waarna de ander vanuit de urn mapping automatisch wordt ingevuld.
 - Open Product heeft verder geen authenticatie gegevens van in dit geval een Open Zaak instantie en doet verder geen validatie, dit is een taak van de clients.

@@ -19,11 +19,11 @@ class TestDmnConfigStep(TestCase):
         self.assertEqual(UrnMappingConfig.objects.all().count(), 2)
 
         self.assertEqual(
-            UrnMappingConfig.objects.get(urn="maykin:abc:ztc:zaak").url,
+            UrnMappingConfig.objects.get(urn="urn:nld:maykin:openzaak:ztc:zaak").url,
             "https://maykin.ztc.com/api/v1/zaken",
         )
         self.assertEqual(
-            UrnMappingConfig.objects.get(urn="maykin:abc:ztc:taak").url,
+            UrnMappingConfig.objects.get(urn="urn:nld:maykin:openzaak:ztc:taak").url,
             "https://maykin.ztc.com/api/v1/taken",
         )
 
@@ -36,7 +36,7 @@ class TestDmnConfigStep(TestCase):
 
     def test_execute_configuration_step_update_existing(self):
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:zaak",
+            urn="urn:nld:maykin:openzaak:ztc:zaak",
             url="test",
         )
 

@@ -78,13 +78,14 @@ class TestExterneVerwijzingRemovalMigrations(BaseMigrationTest):
 
     def test_with_urn_mapping(self):
         UrnMappingConfig.objects.create(
-            url="https://documenten.maykin.nl/documenten", urn="maykin:abc:drc:document"
+            url="https://documenten.maykin.nl/documenten",
+            urn="urn:nld:maykin:openzaak:drc:document",
         )
         UrnMappingConfig.objects.create(
-            url="https://taken.maykin.nl/taken", urn="maykin:abc:trc:taak"
+            url="https://taken.maykin.nl/taken", urn="urn:nld:maykin:openzaak:trc:taak"
         )
         UrnMappingConfig.objects.create(
-            url="https://zaken.maykin.nl/zaken", urn="maykin:abc:zrc:zaak"
+            url="https://zaken.maykin.nl/zaken", urn="urn:nld:maykin:openzaak:zrc:zaak"
         )
 
         self._perform_migration()
@@ -104,13 +105,13 @@ class TestExterneVerwijzingRemovalMigrations(BaseMigrationTest):
 
         self.assertEqual(
             Zaak.objects.get().urn,
-            "maykin:abc:zrc:zaak:1c8cc827-d537-40cd-9558-b5731e240620",
+            "urn:nld:maykin:openzaak:zrc:zaak:1c8cc827-d537-40cd-9558-b5731e240620",
         )
         self.assertEqual(
             Taak.objects.get().urn,
-            "maykin:abc:trc:taak:1c8cc827-d537-40cd-9558-b5731e240621",
+            "urn:nld:maykin:openzaak:trc:taak:1c8cc827-d537-40cd-9558-b5731e240621",
         )
         self.assertEqual(
             Document.objects.get().urn,
-            "maykin:abc:drc:document:1c8cc827-d537-40cd-9558-b5731e240622",
+            "urn:nld:maykin:openzaak:drc:document:1c8cc827-d537-40cd-9558-b5731e240622",
         )
