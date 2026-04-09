@@ -95,7 +95,7 @@ paths:
     get:
       operationId: acties_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
-      summary: Alle ACTIE opvragen.
+      summary: Alle ACTIES opvragen.
       parameters:
       - in: query
         name: direct_url
@@ -1799,6 +1799,10 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle CONTENTELEMENTEN opvragen.
       parameters:
+      - in: query
+        name: content__contains
+        schema:
+          type: string
       - name: page
         required: false
         in: query
@@ -1812,6 +1816,49 @@ paths:
           maximum: 500).'
         schema:
           type: integer
+      - in: query
+        name: producttype__code
+        schema:
+          type: string
+        description: code van het producttype.
+      - in: query
+        name: producttype__naam
+        schema:
+          type: string
+        description: De Nederlandse naam van het producttype
+      - in: query
+        name: producttype__themas__naam
+        schema:
+          type: string
+        description: Naam van het thema.
+      - in: query
+        name: producttype__themas__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: producttype__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: producttype__zaaktypen__url
+        schema:
+          type: string
+      - in: query
+        name: producttype__zaaktypen__urn
+        schema:
+          type: string
+      - in: query
+        name: thema__naam
+        schema:
+          type: string
+        description: Naam van het thema.
+      - in: query
+        name: thema__uuid
+        schema:
+          type: string
+          format: uuid
       tags:
       - content
       security:
