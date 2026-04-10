@@ -723,7 +723,7 @@ class TestProductFilters(BaseApiTestCase):
         uuid = uuid4()
 
         ProductFactory.create(
-            aanvraag_zaak_urn=f"maykin:abc:ztc:zaak:{uuid}",
+            aanvraag_zaak_urn=f"urn:nld:maykin:openzaak:ztc:zaak:{uuid}",
             aanvraag_zaak_url=f"https://maykin.ztc.com/zaken/{uuid}",
         )
         ProductFactory.create(
@@ -733,7 +733,8 @@ class TestProductFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"aanvraag_zaak_urn": f"maykin:abc:ztc:zaak:{uuid}"}
+                self.path,
+                {"aanvraag_zaak_urn": f"urn:nld:maykin:openzaak:ztc:zaak:{uuid}"},
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -771,7 +772,7 @@ class TestProductFilters(BaseApiTestCase):
         uuid = uuid4()
 
         DocumentFactory.create(
-            urn=f"maykin:abc:ztc:document:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:document:{uuid}",
             url=f"https://maykin.ztc.com/documenten/{uuid}",
         )
         DocumentFactory.create(
@@ -781,7 +782,8 @@ class TestProductFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"documenten__urn": f"maykin:abc:ztc:document:{uuid}"}
+                self.path,
+                {"documenten__urn": f"urn:nld:maykin:openzaak:ztc:document:{uuid}"},
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -828,7 +830,7 @@ class TestProductFilters(BaseApiTestCase):
         uuid = uuid4()
 
         TaakFactory.create(
-            urn=f"maykin:abc:ztc:taak:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:taak:{uuid}",
             url=f"https://maykin.ztc.com/taken/{uuid}",
         )
         TaakFactory.create(
@@ -838,7 +840,7 @@ class TestProductFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"taken__urn": f"maykin:abc:ztc:taak:{uuid}"}
+                self.path, {"taken__urn": f"urn:nld:maykin:openzaak:ztc:taak:{uuid}"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -872,7 +874,7 @@ class TestProductFilters(BaseApiTestCase):
         uuid = uuid4()
 
         ZaakFactory.create(
-            urn=f"maykin:abc:ztc:zaak:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:zaak:{uuid}",
             url=f"https://maykin.ztc.com/zaken/{uuid}",
         )
         ZaakFactory.create(
@@ -882,7 +884,7 @@ class TestProductFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"zaken__urn": f"maykin:abc:ztc:zaak:{uuid}"}
+                self.path, {"zaken__urn": f"urn:nld:maykin:openzaak:ztc:zaak:{uuid}"}
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)

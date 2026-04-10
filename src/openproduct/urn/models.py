@@ -7,7 +7,9 @@ from openproduct.urn.fields import BaseUrnField, UrnField
 class UrnMappingConfig(models.Model):
     urn = BaseUrnField(
         verbose_name=_("Urn"),
-        help_text=_("Basis urn (<organisatie>:<systeem>:<component>:<resource>)"),
+        help_text=_(
+            "Basis urn (RFC 8141) (voorbeeld: urn:nld:<organisatie>:<systeem>:<component>:<resource>)"
+        ),
         unique=True,
     )
 

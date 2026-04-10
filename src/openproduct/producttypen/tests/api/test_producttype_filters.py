@@ -654,7 +654,7 @@ class TestProductTypeFilters(BaseApiTestCase):
         uuid = uuid4()
 
         ZaakTypeFactory.create(
-            urn=f"maykin:abc:ztc:zaaktype:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:zaaktype:{uuid}",
             url=f"https://maykin.ztc.com/zaaktypen/{uuid}",
         )
         ZaakTypeFactory.create(
@@ -664,7 +664,8 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"zaaktypen__urn": f"maykin:abc:ztc:zaaktype:{uuid}"}
+                self.path,
+                {"zaaktypen__urn": f"urn:nld:maykin:openzaak:ztc:zaaktype:{uuid}"},
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -703,7 +704,7 @@ class TestProductTypeFilters(BaseApiTestCase):
         uuid = uuid4()
 
         VerzoekTypeFactory.create(
-            urn=f"maykin:abc:ztc:verzoektype:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:verzoektype:{uuid}",
             url=f"https://maykin.ztc.com/verzoektypen/{uuid}",
         )
         VerzoekTypeFactory.create(
@@ -713,7 +714,10 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"verzoektypen__urn": f"maykin:abc:ztc:verzoektype:{uuid}"}
+                self.path,
+                {
+                    "verzoektypen__urn": f"urn:nld:maykin:openzaak:ztc:verzoektype:{uuid}"
+                },
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -760,7 +764,7 @@ class TestProductTypeFilters(BaseApiTestCase):
         uuid = uuid4()
 
         ProcesFactory.create(
-            urn=f"maykin:abc:ztc:proces:{uuid}",
+            urn=f"urn:nld:maykin:openzaak:ztc:proces:{uuid}",
             url=f"https://maykin.ztc.com/processen/{uuid}",
         )
         ProcesFactory.create(
@@ -770,7 +774,8 @@ class TestProductTypeFilters(BaseApiTestCase):
 
         with self.subTest("urn exact"):
             response = self.client.get(
-                self.path, {"processen__urn": f"maykin:abc:ztc:proces:{uuid}"}
+                self.path,
+                {"processen__urn": f"urn:nld:maykin:openzaak:ztc:proces:{uuid}"},
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)

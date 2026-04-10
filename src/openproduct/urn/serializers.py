@@ -48,7 +48,7 @@ class UrnMappingMixin:
         # URL only
         if not urn:
             if url_mapping:
-                attrs[urn_field] = f"{url_mapping.urn}:{uuid}"
+                attrs[urn_field] = f"{url_mapping.urn}:uuid:{uuid}"
             elif settings.REQUIRE_URL_URN_MAPPING:
                 raise serializers.ValidationError(
                     {field: _("de url heeft geen mapping")}
@@ -90,7 +90,7 @@ class UrnMappingMixin:
     def get_base_and_uuid(
         self, attrs, field, is_urn=True
     ) -> tuple[str, str] | tuple[None, None]:
-        sep = ":" if is_urn else "/"
+        sep = ":uuid:" if is_urn else "/"
 
         value = attrs.get(field) or getattr(self.instance, field, None)
 

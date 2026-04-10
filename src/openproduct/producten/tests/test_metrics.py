@@ -26,7 +26,7 @@ class ProductMetricsTests(BaseApiTestCase):
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:zaak",
+            urn="urn:nld:maykin:openzaak:ztc:zaak",
             url="https://maykin.ztc.com/api/v1/zaken",
         )
 
@@ -36,7 +36,7 @@ class ProductMetricsTests(BaseApiTestCase):
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"kvk_nummer": "12345678"}],
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
     @patch.object(product_create_counter, "add", wraps=product_create_counter.add)

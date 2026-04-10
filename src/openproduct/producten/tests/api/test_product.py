@@ -47,17 +47,17 @@ class TestProduct(BaseApiTestCase):
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:zaak",
+            urn="urn:nld:maykin:openzaak:ztc:zaak",
             url="https://maykin.ztc.com/api/v1/zaken",
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:taak",
+            urn="urn:nld:maykin:openzaak:ztc:taak",
             url="https://maykin.ztc.com/api/v1/taken",
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:document",
+            urn="urn:nld:maykin:openzaak:ztc:document",
             url="https://maykin.ztc.com/api/v1/documenten",
         )
 
@@ -68,7 +68,7 @@ class TestProduct(BaseApiTestCase):
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"kvk_nummer": "12345678"}],
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
     def detail_path(self, product):
@@ -115,7 +115,7 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
@@ -189,7 +189,7 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
@@ -324,7 +324,7 @@ class TestProduct(BaseApiTestCase):
             "frequentie": product.frequentie,
             "aanmaak_datum": product.aanmaak_datum.astimezone().isoformat(),
             "update_datum": product.update_datum.astimezone().isoformat(),
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
             "eigenaren": [
                 {
@@ -505,13 +505,19 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_external_objects(self):
         data = self.data | {
             "zaken": [
-                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
             "taken": [
-                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
             "documenten": [
-                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
         }
         response = self.client.post(self.path, data)
@@ -536,8 +542,12 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_duplicate_zaken(self):
         with self.subTest("duplicate urns"):
             zaken = [
-                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
-                {"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
             ]
             data = self.data | {"zaken": zaken}
             response = self.client.post(self.path, data)
@@ -559,8 +569,12 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_duplicate_taken(self):
         with self.subTest("duplicate urns"):
             taken = [
-                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
-                {"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
             ]
             data = self.data | {"taken": taken}
             response = self.client.post(self.path, data)
@@ -582,8 +596,12 @@ class TestProduct(BaseApiTestCase):
     def test_create_product_with_duplicate_documenten(self):
         with self.subTest("duplicate urns"):
             documenten = [
-                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"},
-                {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
             ]
             data = self.data | {"documenten": documenten}
             response = self.client.post(self.path, data)
@@ -896,7 +914,9 @@ class TestProduct(BaseApiTestCase):
         product = ProductFactory.create()
 
         documenten = [
-            {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            }
         ]
         data = self.data | {"documenten": documenten}
         response = self.client.put(self.detail_path(product), data)
@@ -907,7 +927,7 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -919,7 +939,9 @@ class TestProduct(BaseApiTestCase):
         DocumentFactory.create(product=product)
 
         documenten = [
-            {"urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            }
         ]
         data = self.data | {"documenten": documenten}
         response = self.client.put(self.detail_path(product), data)
@@ -930,7 +952,7 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "urn": "maykin:abc:ztc:document:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/documenten/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -961,7 +983,11 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_zaak(self):
         product = ProductFactory.create()
 
-        zaken = [{"urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"}]
+        zaken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            }
+        ]
         data = self.data | {"zaken": zaken}
         response = self.client.put(self.detail_path(product), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -970,7 +996,7 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -983,7 +1009,7 @@ class TestProduct(BaseApiTestCase):
 
         zaken = [
             {
-                "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             }
         ]
         data = self.data | {"zaken": zaken}
@@ -995,7 +1021,7 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -1026,7 +1052,11 @@ class TestProduct(BaseApiTestCase):
     def test_update_product_with_taak(self):
         product = ProductFactory.create()
 
-        taken = [{"urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1"}]
+        taken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            }
+        ]
         data = self.data | {"taken": taken}
         response = self.client.put(self.detail_path(product), data)
 
@@ -1036,7 +1066,7 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -1049,7 +1079,7 @@ class TestProduct(BaseApiTestCase):
 
         taken = [
             {
-                "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             }
         ]
         data = self.data | {"taken": taken}
@@ -1061,7 +1091,7 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:taak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                     "url": "https://maykin.ztc.com/api/v1/taken/d42613cd-ee22-4455-808c-c19c7b8442a1",
                 }
             ],
@@ -1092,7 +1122,7 @@ class TestProduct(BaseApiTestCase):
     def test_partial_update_product(self):
         product = ProductFactory.create(
             producttype=ProductTypeFactory.create(toegestane_statussen=["verlopen"]),
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
 
         data = {"eind_datum": datetime.date(2025, 12, 31)}
@@ -1104,11 +1134,13 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_document(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
         documenten = [
-            {"urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"documenten": documenten}
         response = self.client.patch(self.detail_path(product), data)
@@ -1119,7 +1151,7 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1127,13 +1159,15 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_document_replacing_existing(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
         DocumentFactory.create(product=product)
 
         documenten = [
-            {"urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"documenten": documenten}
         response = self.client.patch(self.detail_path(product), data)
@@ -1144,7 +1178,7 @@ class TestProduct(BaseApiTestCase):
             response.data["documenten"],
             [
                 {
-                    "urn": "maykin:abc:ztc:document:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/documenten/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1152,7 +1186,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_removing_documenten(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         DocumentFactory.create(product=product)
         DocumentFactory.create(product=product)
@@ -1167,7 +1201,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_existing_documenten_are_kept(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         DocumentFactory.create(product=product)
 
@@ -1178,10 +1212,14 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_zaak(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
-        zaken = [{"urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
+        ]
         data = {"zaken": zaken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1191,7 +1229,7 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/zaken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1199,12 +1237,16 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_zaak_replacing_existing(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
         ZaakFactory.create(product=product)
 
-        zaken = [{"urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc"}]
+        zaken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
+        ]
         data = {"zaken": zaken}
         response = self.client.patch(self.detail_path(product), data)
         print(response.data)
@@ -1214,7 +1256,7 @@ class TestProduct(BaseApiTestCase):
             response.data["zaken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/zaken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1222,7 +1264,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_removing_zaken(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         ZaakFactory.create(product=product)
         ZaakFactory.create(product=product)
@@ -1237,7 +1279,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_existing_zaken_are_kept(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         ZaakFactory.create(product=product)
 
@@ -1248,10 +1290,14 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_taak(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
-        taken = [{"urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
+        ]
         data = {"taken": taken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1261,7 +1307,7 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/taken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1269,12 +1315,16 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_with_taak_replacing_existing(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
 
         TaakFactory.create(product=product)
 
-        taken = [{"urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc"}]
+        taken = [
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
+        ]
         data = {"taken": taken}
         response = self.client.patch(self.detail_path(product), data)
 
@@ -1284,7 +1334,7 @@ class TestProduct(BaseApiTestCase):
             response.data["taken"],
             [
                 {
-                    "urn": "maykin:abc:ztc:taak:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:taak:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://maykin.ztc.com/api/v1/taken/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1292,7 +1342,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_removing_taken(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         TaakFactory.create(product=product)
         TaakFactory.create(product=product)
@@ -1307,7 +1357,7 @@ class TestProduct(BaseApiTestCase):
 
     def test_partial_update_product_existing_taken_are_kept(self):
         product = ProductFactory.create(
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         )
         TaakFactory.create(product=product)
 
@@ -1319,12 +1369,12 @@ class TestProduct(BaseApiTestCase):
     def test_read_producten(self):
         product1 = ProductFactory.create(
             producttype=self.producttype,
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         EigenaarFactory(kvk_nummer="12345678", product=product1)
         product2 = ProductFactory.create(
             producttype=self.producttype,
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         EigenaarFactory(kvk_nummer="12345678", product=product2)
 
@@ -1450,7 +1500,7 @@ class TestProduct(BaseApiTestCase):
         producttype.themas.add(thema)
         product = ProductFactory.create(
             producttype=producttype,
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         EigenaarFactory(kvk_nummer="12345678", product=product)
 
@@ -1542,7 +1592,7 @@ class TestProduct(BaseApiTestCase):
             "eind_datum": datetime.date(2026, 12, 31),
             "prijs": "10",
             "frequentie": "eenmalig",
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         product = ProductFactory.create(producttype=producttype, **data)
@@ -1565,7 +1615,7 @@ class TestProduct(BaseApiTestCase):
             "status": "gereed",
             "start_datum": datetime.date(2025, 12, 31),
             "eind_datum": datetime.date(2026, 12, 31),
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         product = ProductFactory.create(producttype=producttype, **data)
@@ -1845,7 +1895,7 @@ class TestProductUrns(BaseApiTestCase):
 
     def test_create_product_with_different_urn_urls(self):
         data = self.data | {
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2",
         }
 
@@ -1862,7 +1912,7 @@ class TestProductUrns(BaseApiTestCase):
 
     def test_create_product_with_urn_only(self):
         data = self.data | {
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
         }
 
         with self.subTest("mapping required"):
@@ -1883,20 +1933,21 @@ class TestProductUrns(BaseApiTestCase):
 
                 self.assertEqual(
                     response.data["aanvraag_zaak_urn"],
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                 )
                 self.assertEqual(response.data["aanvraag_zaak_url"], None)
 
                 product = Product.objects.get(uuid=response.data["uuid"])
                 self.assertEqual(
                     product.aanvraag_zaak_urn,
-                    "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                    "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
                 )
                 self.assertEqual(product.aanvraag_zaak_url, None)
 
         with self.subTest("in mapping"):
             UrnMappingConfig.objects.create(
-                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+                urn="urn:nld:maykin:openzaak:ztc:zaak",
+                url="https://maykin.ztc.com/zaken",
             )
 
             response = self.client.post(self.path, data)
@@ -1904,7 +1955,7 @@ class TestProductUrns(BaseApiTestCase):
 
             self.assertEqual(
                 response.data["aanvraag_zaak_urn"],
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 response.data["aanvraag_zaak_url"],
@@ -1914,7 +1965,7 @@ class TestProductUrns(BaseApiTestCase):
             product = Product.objects.get(uuid=response.data["uuid"])
             self.assertEqual(
                 product.aanvraag_zaak_urn,
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 product.aanvraag_zaak_url,
@@ -1959,7 +2010,8 @@ class TestProductUrns(BaseApiTestCase):
 
         with self.subTest("in mapping"):
             UrnMappingConfig.objects.create(
-                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+                urn="urn:nld:maykin:openzaak:ztc:zaak",
+                url="https://maykin.ztc.com/zaken",
             )
 
             response = self.client.post(self.path, data)
@@ -1967,7 +2019,7 @@ class TestProductUrns(BaseApiTestCase):
 
             self.assertEqual(
                 response.data["aanvraag_zaak_urn"],
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 response.data["aanvraag_zaak_url"],
@@ -1977,7 +2029,7 @@ class TestProductUrns(BaseApiTestCase):
             product = Product.objects.get(uuid=response.data["uuid"])
             self.assertEqual(
                 product.aanvraag_zaak_urn,
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 product.aanvraag_zaak_url,
@@ -1986,23 +2038,25 @@ class TestProductUrns(BaseApiTestCase):
 
     def test_create_product_with_urn_and_url(self):
         data = self.data | {
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         with self.subTest("different mappings"):
             UrnMappingConfig.objects.create(
-                urn="maykin:abc:ztc:zaak", url="https://maykin.ztc.com/zaken"
+                urn="urn:nld:maykin:openzaak:ztc:zaak",
+                url="https://maykin.ztc.com/zaken",
             )
             UrnMappingConfig.objects.create(
-                urn="maykin:abc:ztc:zaakabc", url="https://maykin.ztc.com/zaken2"
+                urn="urn:nld:maykin:openzaak:ztc:zaakabc",
+                url="https://maykin.ztc.com/zaken2",
             )
 
             response = self.client.post(
                 self.path,
                 data
                 | {
-                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakabc:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                    "aanvraag_zaak_urn": f"urn:nld:maykin:openzaak:ztc:zaakabc:uuid:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
                 },
             )
 
@@ -2022,7 +2076,7 @@ class TestProductUrns(BaseApiTestCase):
 
             self.assertEqual(
                 response.data["aanvraag_zaak_urn"],
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 response.data["aanvraag_zaak_url"],
@@ -2032,7 +2086,7 @@ class TestProductUrns(BaseApiTestCase):
             product = Product.objects.get(uuid=response.data["uuid"])
             self.assertEqual(
                 product.aanvraag_zaak_urn,
-                "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             )
             self.assertEqual(
                 product.aanvraag_zaak_url,
@@ -2044,7 +2098,7 @@ class TestProductUrns(BaseApiTestCase):
                 self.path,
                 data
                 | {
-                    "aanvraag_zaak_urn": f"maykin:abc:ztc:zaakdef:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
+                    "aanvraag_zaak_urn": f"urn:nld:maykin:openzaak:ztc:zaakdef:uuid:{data['aanvraag_zaak_urn'].rsplit(':', 1)[1]}"
                 },
             )
 
@@ -2075,7 +2129,7 @@ class TestProductUrns(BaseApiTestCase):
 
     def test_create_product_with_urn_and_url_no_mapping(self):
         data = self.data | {
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
             "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
@@ -2086,7 +2140,7 @@ class TestProductUrns(BaseApiTestCase):
 
         self.assertEqual(
             response.data["aanvraag_zaak_urn"],
-            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         self.assertEqual(
             response.data["aanvraag_zaak_url"],
@@ -2096,9 +2150,37 @@ class TestProductUrns(BaseApiTestCase):
         product = Product.objects.get(uuid=response.data["uuid"])
         self.assertEqual(
             product.aanvraag_zaak_urn,
-            "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         self.assertEqual(
             product.aanvraag_zaak_url,
             "https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
+
+    def test_old_urn(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "maykin:openzaak:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        with self.subTest("allowed"):
+            with override_settings(REQUIRE_URN_URL_MAPPING=False):
+                response = self.client.post(self.path, data)
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        with self.subTest("in mapping"):
+            UrnMappingConfig.objects.create(
+                urn="urn:nld:maykin:openzaak:ztc:zaak",
+                url="https://maykin.ztc.com/zaken",
+            )
+
+            response = self.client.post(self.path, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_urn_without_uuid(self):
+        data = self.data | {
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1"
+        }
+
+        response = self.client.post(self.path, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

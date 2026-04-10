@@ -545,13 +545,13 @@ paths:
                       - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                         bsn: '111222333'
                       documenten:
-                      - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                      - urn: urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc
                         url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                       zaken:
-                      - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                      - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                         url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       taken:
-                      - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                      - urn: urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89
                         url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                       status: gereed
                       prijs: '20.20'
@@ -560,7 +560,7 @@ paths:
                         uren: 130
                       dataobject:
                         max_uren: 150
-                      aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                      aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                       aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
@@ -628,10 +628,10 @@ paths:
                   documenten:
                   - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                   zaken:
-                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                   taken:
                   - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
-                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                  aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
         required: true
       security:
@@ -685,13 +685,13 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc
                       url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89
                       url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
@@ -700,7 +700,7 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
-                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                     aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
@@ -802,13 +802,13 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc
                       url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89
                       url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
@@ -817,7 +817,7 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
-                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                     aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
@@ -892,10 +892,10 @@ paths:
                   documenten:
                   - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                   zaken:
-                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                   taken:
                   - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
-                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                  aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
         required: true
       security:
@@ -949,13 +949,13 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc
                       url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89
                       url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
@@ -964,7 +964,7 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
-                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                     aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
@@ -1039,10 +1039,10 @@ paths:
                   documenten:
                   - url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                   zaken:
-                  - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                  - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                   taken:
                   - url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
-                  aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                  aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                 summary: product request
       security:
       - OpenID: []
@@ -1095,13 +1095,13 @@ paths:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                       bsn: '111222333'
                     documenten:
-                    - urn: maykin:abc:drc:document:99a8bd4f-4144-4105-9850-e477628852fc
+                    - urn: urn:nld:maykin:openzaak:drc:document:uuid:99a8bd4f-4144-4105-9850-e477628852fc
                       url: https://gemeente-a.zgw.nl/documenten/99a8bd4f-4144-4105-9850-e477628852fc
                     zaken:
-                    - urn: maykin:abc:ztc:zaak:eb188bea-51f2-44f0-8acc-eec1c710b4bf
+                    - urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:eb188bea-51f2-44f0-8acc-eec1c710b4bf
                       url: https://gemeente-a.zgw.nl/zaken/eb188bea-51f2-44f0-8acc-eec1c710b4bf
                     taken:
-                    - urn: maykin:abc:ttc:taak:cec996f4-2efa-4307-a035-32c2c9032e89
+                    - urn: urn:nld:maykin:openzaak:ttc:taak:uuid:cec996f4-2efa-4307-a035-32c2c9032e89
                       url: https://gemeente-a.zgw.nl/taken/cec996f4-2efa-4307-a035-32c2c9032e89
                     status: gereed
                     prijs: '20.20'
@@ -1110,7 +1110,7 @@ paths:
                       uren: 130
                     dataobject:
                       max_uren: 150
-                    aanvraag_zaak_urn: maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1
+                    aanvraag_zaak_urn: urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1
                     aanvraag_zaak_url: https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a2
                   summary: product response
           description: ''
@@ -1298,7 +1298,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1310,7 +1310,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1430,7 +1430,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1442,7 +1442,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1512,7 +1512,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1524,7 +1524,7 @@ components:
         urn:
           type: string
           nullable: true
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         url:
           type: string
           format: uri
@@ -1645,7 +1645,7 @@ components:
           type: string
           nullable: true
           description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
           format: uri
@@ -1766,7 +1766,7 @@ components:
           type: string
           nullable: true
           description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
           format: uri
@@ -1872,7 +1872,7 @@ components:
           type: string
           nullable: true
           description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
-          pattern: ^([a-z-]+):([a-z-]+):([a-z-]+):([a-z-]+):([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$
+          pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
           format: uri

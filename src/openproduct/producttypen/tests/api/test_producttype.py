@@ -59,17 +59,17 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.thema = ThemaFactory()
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:verzoektype",
+            urn="urn:nld:maykin:openzaak:ztc:verzoektype",
             url="https://gemeente-a.zgw.nl/verzoektypen",
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:zaaktype",
+            urn="urn:nld:maykin:openzaak:ztc:zaaktype",
             url="https://gemeente-a.zgw.nl/zaaktypen",
         )
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:proces",
+            urn="urn:nld:maykin:openzaak:ztc:proces",
             url="https://gemeente-a.zgw.nl/processen",
         )
 
@@ -314,15 +314,19 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_product_with_external_objects(self):
         data = self.data | {
             "zaaktypen": [
-                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
             "verzoektypen": [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
                 }
             ],
             "processen": [
-                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"}
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                }
             ],
         }
         response = self.client.post(self.path, data)
@@ -348,10 +352,10 @@ class TestProducttypeViewSet(BaseApiTestCase):
         with self.subTest("duplicate urns"):
             verzoektypen = [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
                 },
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
                 },
             ]
             data = self.data | {"verzoektypen": verzoektypen}
@@ -374,8 +378,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_product_with_duplicate_zaaktypen(self):
         with self.subTest("duplicate urns"):
             zaaktypen = [
-                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"},
-                {"urn": "maykin:abc:ztc:zaaktype:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
             ]
             data = self.data | {"zaaktypen": zaaktypen}
             response = self.client.post(self.path, data)
@@ -397,8 +405,12 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_product_with_duplicate_processen(self):
         with self.subTest("duplicate urns"):
             processen = [
-                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"},
-                {"urn": "maykin:abc:ztc:proces:d42613cd-ee22-4455-808c-c19c7b8442a1"},
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
+                {
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1"
+                },
             ]
             data = self.data | {"processen": processen}
             response = self.client.post(self.path, data)
@@ -949,7 +961,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         zaaktypen = [
-            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"zaaktypen": zaaktypen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -960,7 +974,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -971,7 +985,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ZaakTypeFactory.create(producttype=producttype)
 
         zaaktypen = [
-            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"zaaktypen": zaaktypen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -982,7 +998,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1014,7 +1030,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         verzoektypen = [
-            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"verzoektypen": verzoektypen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -1025,7 +1043,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1036,7 +1054,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         VerzoekTypeFactory.create(producttype=producttype)
 
         verzoektypen = [
-            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"verzoektypen": verzoektypen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -1047,7 +1067,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1079,7 +1099,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         processen = [
-            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"processen": processen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -1090,7 +1112,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1101,7 +1123,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ProcesFactory.create(producttype=producttype)
 
         processen = [
-            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = self.data | {"processen": processen}
         response = self.client.put(self.detail_path(producttype), data)
@@ -1112,7 +1136,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1300,7 +1324,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         zaaktypen = [
-            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"zaaktypen": zaaktypen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1311,7 +1337,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1322,7 +1348,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ZaakTypeFactory.create(producttype=producttype)
 
         zaaktypen = [
-            {"urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"zaaktypen": zaaktypen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1333,7 +1361,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["zaaktypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1365,7 +1393,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         verzoektypen = [
-            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"verzoektypen": verzoektypen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1376,7 +1406,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1387,7 +1417,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         VerzoekTypeFactory.create(producttype=producttype)
 
         verzoektypen = [
-            {"urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"verzoektypen": verzoektypen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1398,7 +1430,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["verzoektypen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1430,7 +1462,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         processen = [
-            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"processen": processen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1441,7 +1475,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],
@@ -1452,7 +1486,9 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ProcesFactory.create(producttype=producttype)
 
         processen = [
-            {"urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc"}
+            {
+                "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc"
+            }
         ]
         data = {"processen": processen}
         response = self.client.patch(self.detail_path(producttype), data)
@@ -1463,7 +1499,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             response.data["processen"],
             [
                 {
-                    "urn": "maykin:abc:ztc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                    "urn": "urn:nld:maykin:openzaak:ztc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                 }
             ],

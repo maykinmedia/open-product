@@ -30,11 +30,11 @@ class TestProductAuth(BaseApiTestCase):
             "prijs": "20.20",
             "frequentie": "eenmalig",
             "eigenaren": [{"kvk_nummer": "12345678"}],
-            "aanvraag_zaak_urn": "maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "aanvraag_zaak_urn": "urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         }
 
         UrnMappingConfig.objects.create(
-            urn="maykin:abc:ztc:zaak",
+            urn="urn:nld:maykin:openzaak:ztc:zaak",
             url="https://maykin.ztc.com/api/v1/zaken",
         )
 
@@ -157,7 +157,7 @@ class TestProductAuth(BaseApiTestCase):
     def test_partial_update_product(self):
         product = ProductFactory.create(
             producttype=self.producttype,
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         data = {"naam": "test"}
 
@@ -186,7 +186,7 @@ class TestProductAuth(BaseApiTestCase):
     def test_update_product_change_producttype(self):
         product = ProductFactory.create(
             producttype=self.producttype,
-            aanvraag_zaak_urn="maykin:abc:ztc:zaak:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
         producttype = ProductTypeFactory.create()
         data = {"producttype_uuid": producttype.uuid}

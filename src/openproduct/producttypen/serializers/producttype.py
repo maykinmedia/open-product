@@ -98,7 +98,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "stad": "Amsterdam",
                     }
                 ],
-                "eigenaar": "maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contacten": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -164,19 +164,19 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "zaaktypen": [
                     {
-                        "urn": "maykin:abc:ztc:zaaktype:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                         "url": "https://gemeente-a.zgw.nl/zaaktypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verzoektypen": [
                     {
-                        "urn": "maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:vtc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                         "url": "https://gemeente-a.zgw.nl/verzoektypen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "processen": [
                     {
-                        "urn": "maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:ptc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                         "url": "https://gemeente-a.zgw.nl/processen/99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
@@ -216,7 +216,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
                 "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
-                "eigenaar": "maykin:abc:organisatie:medewerker:497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
                 "publicatie_start_datum": "2019-09-24",
                 "publicatie_eind_datum": "2030-09-24",
@@ -240,12 +240,12 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "verzoektypen": [
                     {
-                        "urn": "maykin:abc:vtc:verzoektype:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:vtc:verzoektype:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "processen": [
                     {
-                        "urn": "maykin:abc:ptc:proces:99a8bd4f-4144-4105-9850-e477628852fc",
+                        "urn": "urn:nld:maykin:openzaak:ptc:proces:uuid:99a8bd4f-4144-4105-9850-e477628852fc",
                     }
                 ],
                 "verbruiksobject_schema_naam": "verbruik_schema",

@@ -9,7 +9,7 @@ class UrnMappingConfigConfigurationModel(ConfigurationModel):
     urn: str = DjangoModelRef(
         UrnMappingConfig,
         "urn",
-        examples=["maykin:abc:ztc:zaak"],
+        examples=["urn:nld:maykin:openzaak:ztc:zaak"],
         description="Base urn (<organisatie>:<systeem>:<component>:<resource>)",
     )
     url: str = DjangoModelRef(
