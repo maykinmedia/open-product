@@ -45,7 +45,7 @@ class ActieFilterSet(FilterSet):
 
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle ACTIE opvragen.",
+        summary="Alle ACTIES opvragen.",
         description="Deze lijst kan gefilterd wordt met query-string parameters.",
     ),
     retrieve=extend_schema(
