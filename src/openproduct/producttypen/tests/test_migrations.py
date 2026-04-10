@@ -166,6 +166,12 @@ class TestUrnPrefixMigration(BaseMigrationTest):
             urn="maykin:openzaak:ztc:zaaktype:1c8cc827-d537-40cd-9558-b5731e240620",
             producttype=producttype,
         )
+
+        self.correct_zaaktype = _ZaakType.objects.create(
+            urn="urn:nld:maykin:openzaak:ztc:zaaktype:uuid:1c8cc827-d537-40cd-9558-b5731e240621",
+            producttype=producttype,
+        )
+
         self.verzoektype = _VerzoekTypen.objects.create(
             urn="maykin:openzaak:vtc:verzoektype:1c8cc827-d537-40cd-9558-b5731e240621",
             producttype=producttype,
@@ -203,6 +209,12 @@ class TestUrnPrefixMigration(BaseMigrationTest):
         self.assertEqual(
             self.zaaktype.urn,
             "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:1c8cc827-d537-40cd-9558-b5731e240620",
+        )
+
+        self.correct_zaaktype.refresh_from_db()
+        self.assertEqual(
+            self.correct_zaaktype.urn,
+            "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:1c8cc827-d537-40cd-9558-b5731e240621",
         )
 
         self.verzoektype.refresh_from_db()

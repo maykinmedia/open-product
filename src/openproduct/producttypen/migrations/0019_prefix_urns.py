@@ -12,7 +12,7 @@ def add_urn_prefix(apps, _):
         f = F(field)
         n = StrIndex(Reverse(f), Value(":"))
 
-        model.objects.update(**{field: Concat(
+        model.objects.exclude(**{f"{field}__contains": "urn"}).update(**{field: Concat(
             Value("urn:nld:"),
             Left(f, Length(f) - n),
             Value(":uuid:" if is_full_urn else ":"),
