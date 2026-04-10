@@ -2,7 +2,7 @@
 Open Product
 ============
 
-:Version: 1.6.0
+:Version: 1.7.0
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``producten``
 
@@ -40,7 +40,10 @@ API versie      Release datum   API specificatie
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producten-openapi.yaml>`_,
-                                (`diff <https://github.com/maykinmedia/open-product/compare/1.6.0..master>`_)
+                                (`diff <https://github.com/maykinmedia/open-product/compare/1.7.0..master>`_)
+1.6.0           2026-04-10      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.7.0/src/producten-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.7.0/src/producten-openapi.yaml>`_,
+                                (`diff <https://github.com/maykinmedia/open-product/compare/1.6.0..1.7.0>`_)
 1.5.0           2026-02-06      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.6.0/src/producten-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.6.0/src/producten-openapi.yaml>`_,
                                 (`diff <https://github.com/maykinmedia/open-product/compare/1.5.0..1.6.0>`_)
@@ -68,7 +71,10 @@ API versie      Release datum   API specificatie
 ==============  ==============  =============================
 latest          n/a             `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/master/src/producttypen-openapi.yaml>`_,
-                                (`diff <https://github.com/maykinmedia/open-product/compare/1.6.0..master>`_)
+                                (`diff <https://github.com/maykinmedia/open-product/compare/1.7.0..master>`_)
+1.6.0           2026-04-10      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.7.0/src/producttypen-openapi.yaml>`_,
+                                `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.7.0/src/producttypen-openapi.yaml>`_,
+                                (`diff <https://github.com/maykinmedia/open-product/compare/1.6.0..1.7.0>`_)
 1.5.0           2026-02-06      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.6.0/src/producttypen-openapi.yaml>`_,
                                 `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/maykinmedia/open-product/1.6.0/src/producttypen-openapi.yaml>`_,
                                 (`diff <https://github.com/maykinmedia/open-product/compare/1.5.0..1.6.0>`_)
