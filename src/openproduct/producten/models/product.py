@@ -103,7 +103,8 @@ class Product(BasePublishableModel):
         null=True,
         blank=True,
         help_text=_(
-            "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het producttype."
+            "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` uit het producttype. "
+            "De inhoud kan worden gepubliceerd op overheidsportalen en mag GEEN interne informatie bevatten die niet bestemd is voor de eigenaar."
         ),
         encoder=DjangoJSONEncoder,
     )
