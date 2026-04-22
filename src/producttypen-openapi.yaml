@@ -1800,7 +1800,7 @@ paths:
       summary: Alle CONTENTELEMENTEN opvragen.
       parameters:
       - in: query
-        name: content__contains
+        name: content__icontains
         schema:
           type: string
       - name: page
