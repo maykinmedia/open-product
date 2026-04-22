@@ -1,10 +1,12 @@
 from django.utils.translation import activate, gettext_lazy as _
 
+import django_filters
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from vng_api_common.utils import get_help_text
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import ContentElement, ContentLabel
@@ -26,6 +28,13 @@ class ContentElementFilterSet(FilterSet):
         help_text=_("De Nederlandse naam van het producttype"),
     )
 
+    producttype__themas__naam = django_filters.CharFilter(
+        field_name="producttype__themas__naam",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=get_help_text("producttypen.thema", "naam"),
+    )
+
     class Meta:
         model = ContentElement
         fields = {
@@ -34,7 +43,6 @@ class ContentElementFilterSet(FilterSet):
             "producttype__zaaktypen__urn": ["exact"],
             "producttype__zaaktypen__url": ["exact"],
             "producttype__themas__uuid": ["exact"],
-            "producttype__themas__naam": ["exact"],
             "thema__uuid": ["exact"],
             "thema__naam": ["exact"],
         }

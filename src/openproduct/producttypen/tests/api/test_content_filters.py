@@ -108,13 +108,30 @@ class TestContentFilters(BaseApiTestCase):
         ContentElementFactory.create(producttype=producttype)
         ContentElementFactory.create(producttype=producttype_2)
 
-        response = self.client.get(self.path, {"producttype__themas__naam": "thema"})
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"producttype__themas__naam": "thema"}
+            )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 1)
-        self.assertEqual(
-            response.data["results"][0]["producttype_uuid"], producttype.uuid
-        )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype_uuid"], producttype.uuid
+            )
+
+        with self.subTest("distinct"):
+            producttype.themas.add(ThemaFactory.create(naam="duplicate"))
+            producttype.themas.add(ThemaFactory.create(naam="duplicate"))
+
+            response = self.client.get(
+                self.path, {"producttype__themas__naam": "duplicate"}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["producttype_uuid"], producttype.uuid
+            )
 
     def test__thema_uuid_filter(self):
         uuid = uuid4()
