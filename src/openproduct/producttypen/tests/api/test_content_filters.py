@@ -21,7 +21,7 @@ class TestContentFilters(BaseApiTestCase):
         ContentElementFactory.create(content="abc")
         ContentElementFactory.create(content="test")
 
-        response = self.client.get(self.path, {"content__contains": "a"})
+        response = self.client.get(self.path, {"content__icontains": "a"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
@@ -133,7 +133,7 @@ class TestContentFilters(BaseApiTestCase):
                 response.data["results"][0]["producttype_uuid"], producttype.uuid
             )
 
-    def test__thema_uuid_filter(self):
+    def test_thema_uuid_filter(self):
         uuid = uuid4()
 
         contentelement = ContentElementFactory.create(

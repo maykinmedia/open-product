@@ -20,7 +20,9 @@ from openproduct.utils.views import TranslatableViewSetMixin
 
 
 class ContentElementFilterSet(FilterSet):
-    content__contains = TranslationFilter(field_name="content", lookup_expr="icontains")
+    content__icontains = TranslationFilter(
+        field_name="content", lookup_expr="icontains"
+    )
 
     producttype__naam = TranslationFilter(
         field_name="producttype__naam",
