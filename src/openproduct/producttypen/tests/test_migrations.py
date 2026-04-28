@@ -167,6 +167,11 @@ class TestUrnPrefixMigration(BaseMigrationTest):
             producttype=producttype,
         )
 
+        self.zaaktype_none_urn = _ZaakType.objects.create(
+            urn=None,
+            producttype=producttype,
+        )
+
         self.correct_zaaktype = _ZaakType.objects.create(
             urn="urn:nld:maykin:openzaak:ztc:zaaktype:uuid:1c8cc827-d537-40cd-9558-b5731e240621",
             producttype=producttype,
@@ -210,6 +215,9 @@ class TestUrnPrefixMigration(BaseMigrationTest):
             self.zaaktype.urn,
             "urn:nld:maykin:openzaak:ztc:zaaktype:uuid:1c8cc827-d537-40cd-9558-b5731e240620",
         )
+
+        self.zaaktype_none_urn.refresh_from_db()
+        self.assertEqual(self.zaaktype_none_urn.urn, None)
 
         self.correct_zaaktype.refresh_from_db()
         self.assertEqual(
