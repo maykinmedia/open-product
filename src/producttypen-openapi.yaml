@@ -95,7 +95,7 @@ paths:
     get:
       operationId: acties_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
-      summary: Alle ACTIES opvragen.
+      summary: Alle ACTIE opvragen.
       parameters:
       - in: query
         name: direct_url
@@ -1804,154 +1804,6 @@ paths:
                 $ref: '#/components/schemas/DetailError'
           description: ''
   /content:
-    get:
-      operationId: content_list
-      description: Deze lijst kan gefilterd wordt met query-string parameters.
-      summary: Alle CONTENTELEMENTEN opvragen.
-      parameters:
-      - in: query
-        name: content__icontains
-        schema:
-          type: string
-      - name: page
-        required: false
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        schema:
-          type: integer
-      - name: page_size
-        required: false
-        in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
-        schema:
-          type: integer
-      - in: query
-        name: producttype__code
-        schema:
-          type: string
-        description: code van het producttype.
-      - in: query
-        name: producttype__naam
-        schema:
-          type: string
-        description: De Nederlandse naam van het producttype
-      - in: query
-        name: producttype__themas__naam
-        schema:
-          type: string
-        description: Naam van het thema.
-      - in: query
-        name: producttype__themas__uuid
-        schema:
-          type: string
-          format: uuid
-      - in: query
-        name: producttype__uuid
-        schema:
-          type: string
-          format: uuid
-      - in: query
-        name: producttype__zaaktypen__url
-        schema:
-          type: string
-      - in: query
-        name: producttype__zaaktypen__urn
-        schema:
-          type: string
-      - in: query
-        name: thema__naam
-        schema:
-          type: string
-        description: Naam van het thema.
-      - in: query
-        name: thema__uuid
-        schema:
-          type: string
-          format: uuid
-      tags:
-      - content
-      security:
-      - OpenID: []
-      - tokenAuth: []
-      responses:
-        '200':
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedContentElementList'
-              examples:
-                ContentElementResponse(linkedToProducttype):
-                  value:
-                    count: 123
-                    next: http://api.example.org/accounts/?page=4
-                    previous: http://api.example.org/accounts/?page=2
-                    results:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      labels:
-                      - openingstijden
-                      content: ma-vr 8:00-17:00
-                      aanvullende_informatie: ''
-                      taal: nl
-                      producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                      thema_uuid: null
-                  summary: content element response (linked to producttype)
-                ContentElementResponse(linkedToThema):
-                  value:
-                    count: 123
-                    next: http://api.example.org/accounts/?page=4
-                    previous: http://api.example.org/accounts/?page=2
-                    results:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      labels:
-                      - openingstijden
-                      content: ma-vr 8:00-17:00
-                      aanvullende_informatie: ''
-                      taal: nl
-                      producttype_uuid: null
-                      thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
-                  summary: content element response (linked to thema)
-          description: ''
-        '400':
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                BadRequestExample:
-                  value:
-                    veld_a:
-                    - Dit veld is vereist.
-                    veld_b:
-                    - ‘<uuid>’ is geen geldige UUID.
-                  summary: Bad request example
-                  description: Errors worden per veld teruggegeven. Hieronder volgt
-                    een voorbeeld.
-          description: Validation error
-        '403':
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailError'
-          description: ''
     post:
       operationId: content_create
       summary: Maak een CONTENTELEMENT aan.
@@ -9037,29 +8889,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Contact'
-    PaginatedContentElementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContentElement'
     PaginatedContentLabelList:
       type: object
       required:
