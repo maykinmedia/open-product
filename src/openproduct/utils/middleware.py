@@ -21,6 +21,11 @@ class APILocaleMiddleware(_LocaleMiddleware):
         if "api" in request.path:
             super().process_request(request)
 
+    def process_response(self, request, response):
+        if "api" in request.path:
+            return super().process_response(request, response)
+        return response
+
 
 def get_version_mapping() -> Dict[str, str]:
     return {
