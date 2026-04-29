@@ -169,7 +169,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
 
     publicatie_eind_datum = models.DateField(
         verbose_name=_("publicatie einddatum"),
-        help_text=_("De datum waarop het producttype gepubliceerd is"),
+        help_text=_("De datum waarop de publicatie eindigt"),
         blank=True,
         null=True,
     )

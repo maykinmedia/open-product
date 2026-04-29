@@ -21,4 +21,8 @@ class Document(UrnAbstractModel):
         ordering = ("-id",)
 
     def __str__(self):
-        return self.urn if self.urn else self.url
+        if self.urn:
+            return self.urn
+        elif self.url:
+            return self.url
+        return f"document {self.pk}"
