@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('urn', '0001_initial'),
+        ('producttypen', '0019_prefix_urns'),
     ]
 
     operations = [

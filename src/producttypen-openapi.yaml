@@ -4961,19 +4961,19 @@ paths:
         schema:
           type: string
           format: date
-        description: De datum waarop het producttype gepubliceerd is
+        description: De datum waarop de publicatie eindigt
       - in: query
         name: publicatie_eind_datum__gte
         schema:
           type: string
           format: date
-        description: De datum waarop het producttype gepubliceerd is
+        description: De datum waarop de publicatie eindigt
       - in: query
         name: publicatie_eind_datum__lte
         schema:
           type: string
           format: date
-        description: De datum waarop het producttype gepubliceerd is
+        description: De datum waarop de publicatie eindigt
       - in: query
         name: publicatie_start_datum
         schema:
@@ -8581,8 +8581,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         aanmaak_datum:
           type: string
           format: date-time
@@ -8634,8 +8634,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
       required:
       - code
       - uniforme_product_naam
@@ -9391,8 +9391,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         code:
           type: string
           minLength: 1
@@ -9717,8 +9717,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         aanmaak_datum:
           type: string
           format: date-time
@@ -9904,8 +9904,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         code:
           type: string
           minLength: 1

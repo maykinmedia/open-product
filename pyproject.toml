@@ -7,7 +7,7 @@ emit-index-url = false
 # Bumpversion configuration
 
 [tool.bumpversion]
-current_version = "1.7.0"
+current_version = "1.7.1"
 commit = false
 tag = false
 pre_commit_hooks = [

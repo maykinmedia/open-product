@@ -21,4 +21,8 @@ class VerzoekType(UrnAbstractModel):
         unique_together = (("producttype", "urn"), ("producttype", "url"))
 
     def __str__(self):
-        return self.urn if self.urn else self.url
+        if self.urn:
+            return self.urn
+        elif self.url:
+            return self.url
+        return f"verzoektype {self.pk}"

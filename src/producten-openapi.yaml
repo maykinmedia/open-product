@@ -1356,8 +1356,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         aanmaak_datum:
           type: string
           format: date-time
@@ -1414,8 +1414,8 @@ components:
           type: string
           format: date
           nullable: true
-          title: Publicatie startdatum
-          description: De datum waarop het producttype gepubliceerd is
+          title: Publicatie einddatum
+          description: De datum waarop de publicatie eindigt
         themas:
           type: array
           items:
