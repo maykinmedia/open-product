@@ -2,7 +2,7 @@
 Open Product
 ============
 
-:Version: 1.7.0
+:Version: 1.7.1
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``producten``
 

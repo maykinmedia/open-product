@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.7.1 (29-04-2026)
+------------------
+
+**Bugfixes**
+
+    * Fix urn datamigration
+    * Fix producttype einddatum admin field name
+    * Fix issue where admin sometimes changes language
+
 1.7.0 (10-04-2026)
 ------------------
 
