@@ -23,7 +23,7 @@
             {% endblock %}
         </main>
 
-        {% include "includes/footer.html" %}
+        {% include "includes/footer.html" with logo='img/open-product-logo.svg' %}
         {% block scripts %}
             <script src="{% static 'bundles/openproduct-js.js' %}" type="text/javascript"></script>
         {% endblock scripts %}
