@@ -1328,6 +1328,10 @@ components:
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
           maxLength: 255
+        naam:
+          type: string
+          description: naam van het producttype.
+          maxLength: 255
         keywords:
           type: array
           items:
@@ -1372,10 +1376,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedThema'
+        taal:
+          type: string
+          readOnly: true
+          description: De huidige taal van het producttype.
       required:
       - aanmaak_datum
       - code
       - gepubliceerd
+      - naam
+      - taal
       - themas
       - uniforme_product_naam
       - update_datum
@@ -1388,6 +1398,11 @@ components:
           minLength: 1
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
+          maxLength: 255
+        naam:
+          type: string
+          minLength: 1
+          description: naam van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -1422,6 +1437,7 @@ components:
             $ref: '#/components/schemas/NestedThemaRequest'
       required:
       - code
+      - naam
       - themas
       - uniforme_product_naam
     NestedTaak:

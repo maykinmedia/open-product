@@ -131,6 +131,7 @@ class TestProduct(BaseApiTestCase):
             "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
+                "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -151,6 +152,7 @@ class TestProduct(BaseApiTestCase):
                         "beschrijving": thema.beschrijving,
                     }
                 ],
+                "taal": "nl",
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -204,6 +206,7 @@ class TestProduct(BaseApiTestCase):
             "zaken": [],
             "taken": [],
             "producttype": {
+                "naam": producttype.naam,
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
@@ -225,6 +228,7 @@ class TestProduct(BaseApiTestCase):
                         "beschrijving": thema.beschrijving,
                     }
                 ],
+                "taal": "nl",
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -340,6 +344,7 @@ class TestProduct(BaseApiTestCase):
             "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
+                "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -360,6 +365,7 @@ class TestProduct(BaseApiTestCase):
                         "beschrijving": thema.beschrijving,
                     }
                 ],
+                "taal": "nl",
             },
         }
         self.assertEqual(response.data, expected_data)
@@ -1413,6 +1419,7 @@ class TestProduct(BaseApiTestCase):
                 "taken": [],
                 "producttype": {
                     "uuid": str(self.producttype.uuid),
+                    "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
@@ -1433,6 +1440,7 @@ class TestProduct(BaseApiTestCase):
                             "beschrijving": self.thema.beschrijving,
                         }
                     ],
+                    "taal": "nl",
                 },
             },
             {
@@ -1465,6 +1473,7 @@ class TestProduct(BaseApiTestCase):
                 "taken": [],
                 "producttype": {
                     "uuid": str(self.producttype.uuid),
+                    "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
                     "toegestane_statussen": ["gereed"],
@@ -1485,6 +1494,7 @@ class TestProduct(BaseApiTestCase):
                             "beschrijving": self.thema.beschrijving,
                         }
                     ],
+                    "taal": "nl",
                 },
             },
         ]
@@ -1537,6 +1547,7 @@ class TestProduct(BaseApiTestCase):
             "taken": [],
             "producttype": {
                 "uuid": str(producttype.uuid),
+                "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "toegestane_statussen": ["gereed"],
@@ -1557,9 +1568,44 @@ class TestProduct(BaseApiTestCase):
                         "beschrijving": thema.beschrijving,
                     }
                 ],
+                "taal": "nl",
             },
         }
         self.assertEqual(response.data, expected_data)
+
+    def test_read_producttype_in_other_language(self):
+        producttype = ProductTypeFactory.create()
+        producttype.set_current_language("en")
+        producttype.naam = "producttype EN"
+        producttype.samenvatting = "summary"
+        producttype.save()
+
+        product = ProductFactory.create(producttype=producttype)
+
+        response = self.client.get(
+            self.detail_path(product), headers={"Accept-Language": "en"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["producttype"]["naam"], "producttype EN")
+        self.assertEqual(response.data["producttype"]["taal"], "en")
+
+    def test_read_producttype_in_fallback_language(self):
+        producttype = ProductTypeFactory.create(
+            naam="producttype NL", samenvatting="samenvatting"
+        )
+        producttype.themas.add(self.thema)
+        producttype.save()
+
+        product = ProductFactory.create(producttype=producttype)
+
+        response = self.client.get(
+            self.detail_path(product), headers={"Accept-Language": "en"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["producttype"]["naam"], "producttype NL")
+        self.assertEqual(response.data["producttype"]["taal"], "nl")
 
     def test_delete_product(self):
         product = ProductFactory.create()

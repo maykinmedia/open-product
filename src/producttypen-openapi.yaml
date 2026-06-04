@@ -8553,6 +8553,10 @@ components:
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
           maxLength: 255
+        naam:
+          type: string
+          description: naam van het producttype.
+          maxLength: 255
         keywords:
           type: array
           items:
@@ -8593,10 +8597,16 @@ components:
           format: date-time
           readOnly: true
           description: De datum waarop het object voor het laatst is gewijzigd.
+        taal:
+          type: string
+          readOnly: true
+          description: De huidige taal van het producttype.
       required:
       - aanmaak_datum
       - code
       - gepubliceerd
+      - naam
+      - taal
       - uniforme_product_naam
       - update_datum
       - uuid
@@ -8608,6 +8618,11 @@ components:
           minLength: 1
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
+          maxLength: 255
+        naam:
+          type: string
+          minLength: 1
+          description: naam van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -8638,6 +8653,7 @@ components:
           description: De datum waarop de publicatie eindigt
       required:
       - code
+      - naam
       - uniforme_product_naam
     NestedThema:
       type: object

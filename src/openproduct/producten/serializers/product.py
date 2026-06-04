@@ -8,6 +8,7 @@ from drf_spectacular.utils import (
     extend_schema_serializer,
 )
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producten.models import Eigenaar, Product
 from openproduct.producten.serializers.document import (
@@ -45,15 +46,31 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
         help_text=_("Geeft aan of het producttype getoond kan worden."),
     )
 
+    naam = serializers.CharField(
+        required=True,
+        max_length=255,
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+    )
+
+    taal = serializers.SerializerMethodField(
+        read_only=True, help_text=_("De huidige taal van het producttype.")
+    )
+
     @extend_schema_field(OpenApiTypes.BOOL)
     def get_gepubliceerd(self, obj):
         return obj.gepubliceerd
+
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_taal(self, obj):
+        requested_language = self.context["request"].LANGUAGE_CODE
+        return requested_language if obj.has_translation(requested_language) else "nl"
 
     class Meta:
         model = ProductType
         fields = (
             "uuid",
             "code",
+            "naam",
             "keywords",
             "uniforme_product_naam",
             "toegestane_statussen",
@@ -63,6 +80,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "aanmaak_datum",
             "update_datum",
             "themas",
+            "taal",
         )
 
 
