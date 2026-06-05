@@ -11,24 +11,24 @@ class TestLocatieFilters(BaseApiTestCase):
     path = reverse_lazy("locatie-list")
 
     def test_naam_filter(self):
-        LocatieFactory.create(naam="Maykin Media")
+        LocatieFactory.create(naam="Maykin")
         LocatieFactory.create(naam="Gemeente A")
 
-        response = self.client.get(self.path, {"naam__iexact": "Maykin Media"})
+        response = self.client.get(self.path, {"naam__iexact": "Maykin"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["naam"], "Maykin Media")
+        self.assertEqual(response.data["results"][0]["naam"], "Maykin")
 
     def test_email_filter(self):
-        LocatieFactory.create(email="bob@maykinmedia.nl")
-        LocatieFactory.create(email="alice@maykinmedia.nl")
+        LocatieFactory.create(email="bob@maykin.nl")
+        LocatieFactory.create(email="alice@maykin.nl")
 
-        response = self.client.get(self.path, {"email__iexact": "Bob@MaykinMedia.nl"})
+        response = self.client.get(self.path, {"email__iexact": "Bob@Maykin.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["email"], "bob@maykinmedia.nl")
+        self.assertEqual(response.data["results"][0]["email"], "bob@maykin.nl")
 
     def test_telefoonnummer_filter(self):
         LocatieFactory.create(telefoonnummer="0611223344")

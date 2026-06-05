@@ -88,5 +88,8 @@ if settings.DEBUG and apps.is_installed("debug_toolbar"):
 
     urlpatterns = [
         path("__debug__/", include(debug_toolbar.urls)),
-        path("favicon.ico", RedirectView.as_view(url="/static/ico/favicon.png")),
+        path(
+            "favicon.ico",
+            RedirectView.as_view(url="/static/maykin_common/ico/favicon.png"),
+        ),
     ] + urlpatterns

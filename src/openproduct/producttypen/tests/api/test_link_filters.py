@@ -34,23 +34,23 @@ class TestLinkFilters(BaseApiTestCase):
 
     def test_url_filter(self):
         LinkFactory.create(url="https://google.com")
-        LinkFactory.create(url="https://maykinmedia.nl")
+        LinkFactory.create(url="https://maykin.nl")
 
-        response = self.client.get(self.path, {"url": "https://maykinmedia.nl"})
+        response = self.client.get(self.path, {"url": "https://maykin.nl"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["url"], "https://maykinmedia.nl")
+        self.assertEqual(response.data["results"][0]["url"], "https://maykin.nl")
 
     def test_url_contains_filter(self):
         LinkFactory.create(url="https://google.com")
-        LinkFactory.create(url="https://maykinmedia.nl")
+        LinkFactory.create(url="https://maykin.nl")
 
         response = self.client.get(self.path, {"url__contains": "maykin"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
-        self.assertEqual(response.data["results"][0]["url"], "https://maykinmedia.nl")
+        self.assertEqual(response.data["results"][0]["url"], "https://maykin.nl")
 
     def test_producttype_code_filter(self):
         producttype_uuid = uuid4()

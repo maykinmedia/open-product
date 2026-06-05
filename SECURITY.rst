@@ -11,11 +11,11 @@ deliver timely security updates to the official distribution of Open Product.
 Reporting security issues
 -------------------------
 
-**Short version: please report security issues by emailing security@maykinmedia.nl.**
+**Short version: please report security issues by emailing security@maykin.nl.**
 
 If you discover security issues in Open Product or related projects under the same
 organization, we request you to disclose these in a *responsible* way by e-mailing to
-security@maykinmedia.nl.
+security@maykin.nl.
 
 It is extremely useful if you have a reproducible test case and/or clear steps on how to
 reproduce the vulnerability.

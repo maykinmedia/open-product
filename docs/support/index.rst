@@ -24,7 +24,7 @@ installation for you.
 
 Below is a list of service providers.
 
-* `Maykin Media <https://www.maykinmedia.nl/>`_ (maintainer of Open Product)
+* `Maykin <https://www.maykin.nl/>`_ (maintainer of Open Product)
 
 More to come!
 
@@ -42,4 +42,4 @@ Reporting security issues
 
    security
 
-.. _`Maykin Media`: https://www.maykinmedia.nl/
+.. _`Maykin`: https://www.maykin.nl/

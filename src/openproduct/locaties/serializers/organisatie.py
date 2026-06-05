@@ -10,9 +10,9 @@ from openproduct.locaties.models import Organisatie
             "organisatie response",
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "naam": "Maykin Media",
+                "naam": "Maykin",
                 "code": "org-1234",
-                "email": "info@maykinmedia.nl",
+                "email": "info@maykin.nl",
                 "telefoonnummer": "+310207530523",
                 "straat": "Kingsfortweg",
                 "huisnummer": "151",
@@ -24,9 +24,9 @@ from openproduct.locaties.models import Organisatie
         OpenApiExample(
             "organisatie request",
             value={
-                "naam": "Maykin Media",
+                "naam": "Maykin",
                 "code": "org-1234",
-                "email": "info@maykinmedia.nl",
+                "email": "info@maykin.nl",
                 "telefoonnummer": "+310207530523",
                 "straat": "Kingsfortweg",
                 "huisnummer": "151",

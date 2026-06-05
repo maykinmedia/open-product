@@ -15,9 +15,9 @@ from .organisatie import OrganisatieSerializer
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "organisatie": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                    "naam": "Maykin Media",
+                    "naam": "Maykin",
                     "code": "org-1234",
-                    "email": "info@maykinmedia.nl",
+                    "email": "info@maykin.nl",
                     "telefoonnummer": "+310207530523",
                     "straat": "Kingsfortweg",
                     "huisnummer": "151",

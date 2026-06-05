@@ -2,6 +2,10 @@
 Open Product
 ============
 
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-product/refs/heads/master/.github/assets/open-product-logo.svg
+    :height: 100px
+    :alt: Open Product
+
 :Version: 1.7.1
 :Source: https://github.com/maykinmedia/open-product
 :Keywords: ``products``
@@ -155,7 +159,7 @@ Licensed under the EUPL_
 
 .. _`Nederlandse versie`: README.rst
 
-.. _`Maykin B.V.`: https://www.maykinmedia.nl
+.. _`Maykin B.V.`: https://www.maykin.nl
 
 .. _`EUPL`: LICENSE.md
 

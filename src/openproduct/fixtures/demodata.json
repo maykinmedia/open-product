@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "uuid": "8d06b015-da58-4f57-a6ca-98d3d8d5c588",
-        "naam": "Maykin Media",
+        "naam": "Maykin",
         "email": "",
         "telefoonnummer": "1234",
         "straat": "Kingsfordweg",
@@ -18,8 +18,8 @@
     "pk": 1,
     "fields": {
         "uuid": "c07689b0-f853-484d-bb91-77af81435414",
-        "naam": "Maykin Media",
-        "email": "info@maykinmedia.nl",
+        "naam": "Maykin",
+        "email": "info@maykin.nl",
         "telefoonnummer": "020 753 0",
         "straat": "Kingsfordweg",
         "huisnummer": "151",
@@ -35,7 +35,7 @@
         "uuid": "cf2b1d24-2985-4f88-a2f8-c6c0f8d5481f",
         "organisatie": 1,
         "naam": "Bob de Vries",
-        "email": "bob@maykinmedia.nl",
+        "email": "bob@maykin.nl",
         "telefoonnummer": "020 753 0",
         "rol": "medewerker"
     }

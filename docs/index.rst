@@ -1,3 +1,8 @@
+.. image:: https://raw.githubusercontent.com/maykinmedia/open-product/refs/heads/master/.github/assets/open-product-logo.svg
+    :height: 100px
+    :alt: Open Product
+    :class: no-scaled-link product-logo
+
 Open Product Documentation
 ==========================
 

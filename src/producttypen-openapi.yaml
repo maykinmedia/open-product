@@ -84,9 +84,9 @@ info:
     - DELETE: ``producttypen.delete_producttype``
 
   contact:
-    email: support@maykinmedia.nl
-    name: Maykin Media
-    url: https://www.maykinmedia.nl
+    email: support@maykin.nl
+    name: Maykin
+    url: https://www.maykin.nl
   license:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
@@ -1334,9 +1334,9 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: org-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -1423,9 +1423,9 @@ paths:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: org-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -1505,9 +1505,9 @@ paths:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: org-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -1601,9 +1601,9 @@ paths:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: org-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -1697,9 +1697,9 @@ paths:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     organisatie:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: org-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -3043,8 +3043,8 @@ paths:
                     previous: http://api.example.org/accounts/?page=2
                     results:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
-                      email: info@maykinmedia.nl
+                      naam: Maykin
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -3099,8 +3099,8 @@ paths:
             examples:
               LocatieRequest:
                 value:
-                  naam: Maykin Media
-                  email: info@maykinmedia.nl
+                  naam: Maykin
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3127,8 +3127,8 @@ paths:
                 LocatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
-                    email: info@maykinmedia.nl
+                    naam: Maykin
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3202,8 +3202,8 @@ paths:
                 LocatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
-                    email: info@maykinmedia.nl
+                    naam: Maykin
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3265,8 +3265,8 @@ paths:
             examples:
               LocatieRequest:
                 value:
-                  naam: Maykin Media
-                  email: info@maykinmedia.nl
+                  naam: Maykin
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3293,8 +3293,8 @@ paths:
                 LocatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
-                    email: info@maykinmedia.nl
+                    naam: Maykin
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3356,8 +3356,8 @@ paths:
             examples:
               LocatieRequest:
                 value:
-                  naam: Maykin Media
-                  email: info@maykinmedia.nl
+                  naam: Maykin
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3383,8 +3383,8 @@ paths:
                 LocatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
-                    email: info@maykinmedia.nl
+                    naam: Maykin
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3561,9 +3561,9 @@ paths:
                     previous: http://api.example.org/accounts/?page=2
                     results:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: org-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -3618,9 +3618,9 @@ paths:
             examples:
               OrganisatieRequest:
                 value:
-                  naam: Maykin Media
+                  naam: Maykin
                   code: org-1234
-                  email: info@maykinmedia.nl
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3647,9 +3647,9 @@ paths:
                 OrganisatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
+                    naam: Maykin
                     code: org-1234
-                    email: info@maykinmedia.nl
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3723,9 +3723,9 @@ paths:
                 OrganisatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
+                    naam: Maykin
                     code: org-1234
-                    email: info@maykinmedia.nl
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3787,9 +3787,9 @@ paths:
             examples:
               OrganisatieRequest:
                 value:
-                  naam: Maykin Media
+                  naam: Maykin
                   code: org-1234
-                  email: info@maykinmedia.nl
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3816,9 +3816,9 @@ paths:
                 OrganisatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
+                    naam: Maykin
                     code: org-1234
-                    email: info@maykinmedia.nl
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -3880,9 +3880,9 @@ paths:
             examples:
               OrganisatieRequest:
                 value:
-                  naam: Maykin Media
+                  naam: Maykin
                   code: org-1234
-                  email: info@maykinmedia.nl
+                  email: info@maykin.nl
                   telefoonnummer: '+310207530523'
                   straat: Kingsfortweg
                   huisnummer: '151'
@@ -3908,9 +3908,9 @@ paths:
                 OrganisatieResponse:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    naam: Maykin Media
+                    naam: Maykin
                     code: org-1234
-                    email: info@maykinmedia.nl
+                    email: info@maykin.nl
                     telefoonnummer: '+310207530523'
                     straat: Kingsfortweg
                     huisnummer: '151'
@@ -5160,8 +5160,8 @@ paths:
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       locaties:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
-                        email: info@maykinmedia.nl
+                        naam: Maykin
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -5169,9 +5169,9 @@ paths:
                         stad: Amsterdam
                       organisaties:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: ORG-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -5182,9 +5182,9 @@ paths:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         organisatie:
                           uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                          naam: Maykin Media
+                          naam: Maykin
                           code: ORG-1234
-                          email: info@maykinmedia.nl
+                          email: info@maykin.nl
                           telefoonnummer: '+310207530523'
                           straat: Kingsfortweg
                           huisnummer: '151'
@@ -5381,8 +5381,8 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
-                      email: info@maykinmedia.nl
+                      naam: Maykin
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5390,9 +5390,9 @@ paths:
                       stad: Amsterdam
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: ORG-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5403,9 +5403,9 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: ORG-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -5567,8 +5567,8 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
-                      email: info@maykinmedia.nl
+                      naam: Maykin
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5576,9 +5576,9 @@ paths:
                       stad: Amsterdam
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: ORG-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5589,9 +5589,9 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: ORG-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -5795,8 +5795,8 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
-                      email: info@maykinmedia.nl
+                      naam: Maykin
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5804,9 +5804,9 @@ paths:
                       stad: Amsterdam
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: ORG-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -5817,9 +5817,9 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: ORG-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'
@@ -6024,8 +6024,8 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     locaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
-                      email: info@maykinmedia.nl
+                      naam: Maykin
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -6033,9 +6033,9 @@ paths:
                       stad: Amsterdam
                     organisaties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin Media
+                      naam: Maykin
                       code: ORG-1234
-                      email: info@maykinmedia.nl
+                      email: info@maykin.nl
                       telefoonnummer: '+310207530523'
                       straat: Kingsfortweg
                       huisnummer: '151'
@@ -6046,9 +6046,9 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       organisatie:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin Media
+                        naam: Maykin
                         code: ORG-1234
-                        email: info@maykinmedia.nl
+                        email: info@maykin.nl
                         telefoonnummer: '+310207530523'
                         straat: Kingsfortweg
                         huisnummer: '151'

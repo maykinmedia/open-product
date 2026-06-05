@@ -17,7 +17,7 @@ class CreateInitialSuperuserTests(TestCase):
             "--generate-password",
             "--email-password-reset",
             username="maykin",
-            email="support@maykinmedia.nl",
+            email="support@maykin.nl",
             stdout=StringIO(),
         )
         user = User.objects.get()
@@ -34,7 +34,7 @@ class CreateInitialSuperuserTests(TestCase):
             sent_mail.subject,
             f"Your admin user for {settings.PROJECT_NAME} (example.com)",
         )
-        self.assertEqual(sent_mail.recipients(), ["support@maykinmedia.nl"])
+        self.assertEqual(sent_mail.recipients(), ["support@maykin.nl"])
 
     @override_settings(ALLOWED_HOSTS=[])
     def test_create_initial_superuser_command_allowed_hosts_empty(self):
@@ -43,7 +43,7 @@ class CreateInitialSuperuserTests(TestCase):
             "--generate-password",
             "--email-password-reset",
             username="maykin",
-            email="support@maykinmedia.nl",
+            email="support@maykin.nl",
             stdout=StringIO(),
         )
         user = User.objects.get()
@@ -60,7 +60,7 @@ class CreateInitialSuperuserTests(TestCase):
             sent_mail.subject,
             f"Your admin user for {settings.PROJECT_NAME} (unknown url)",
         )
-        self.assertEqual(sent_mail.recipients(), ["support@maykinmedia.nl"])
+        self.assertEqual(sent_mail.recipients(), ["support@maykin.nl"])
 
     def test_create_from_cli(self):
         call_command(
