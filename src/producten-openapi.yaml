@@ -1640,7 +1640,8 @@ components:
           additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het producttype.
+            uit het producttype. De inhoud kan worden gepubliceerd op overheidsportalen
+            en mag GEEN interne informatie bevatten die niet bestemd is voor de eigenaar.
         aanvraag_zaak_urn:
           type: string
           nullable: true
@@ -1761,7 +1762,8 @@ components:
           additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het producttype.
+            uit het producttype. De inhoud kan worden gepubliceerd op overheidsportalen
+            en mag GEEN interne informatie bevatten die niet bestemd is voor de eigenaar.
         aanvraag_zaak_urn:
           type: string
           nullable: true
@@ -1867,7 +1869,8 @@ components:
           additionalProperties: true
           nullable: true
           description: Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema`
-            uit het producttype.
+            uit het producttype. De inhoud kan worden gepubliceerd op overheidsportalen
+            en mag GEEN interne informatie bevatten die niet bestemd is voor de eigenaar.
         aanvraag_zaak_urn:
           type: string
           nullable: true
