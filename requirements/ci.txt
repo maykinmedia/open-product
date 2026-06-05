@@ -19,6 +19,11 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
+arrow==1.4.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+    #   isoduration
 asgiref==3.8.1
     # via
     #   -c requirements/base.txt
@@ -434,6 +439,10 @@ flower==2.0.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+fqdn==1.5.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 freezegun==1.5.1
     # via -r requirements/test-tools.in
 furl==2.1.3
@@ -485,10 +494,18 @@ iso639-lang==2.6.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   commonground-api-common
+isoduration==20.11.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 isort==5.13.2
     # via pylint
 jinja2==3.1.6
     # via sphinx
+jsonpointer==3.1.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 jsonschema==4.23.0
     # via
     #   -c requirements/base.txt
@@ -738,6 +755,7 @@ python-dateutil==2.9.0.post0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   arrow
     #   celery
     #   django-relativedelta
     #   faker
@@ -805,6 +823,14 @@ requests==2.33.1
     #   zgw-consumers
 requests-mock==1.12.1
     # via -r requirements/test-tools.in
+rfc3339-validator==0.1.4
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
+rfc3986-validator==0.1.1
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 rich==14.0.0
     # via
     #   -c requirements/base.txt
@@ -848,6 +874,7 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
+    #   rfc3339-validator
 snowballstemmer==2.2.0
     # via sphinx
 soupsieve==2.6
@@ -935,9 +962,14 @@ tzdata==2024.2
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
+    #   arrow
     #   celery
     #   django-celery-beat
     #   kombu
+uri-template==1.3.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 uritemplate==4.1.1
     # via
     #   -c requirements/base.txt
@@ -976,6 +1008,10 @@ webauthn==2.3.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
+webcolors==25.10.0
+    # via
+    #   -c requirements/base.txt
+    #   -r requirements/base.txt
 webencodings==0.5.1
     # via
     #   -c requirements/base.txt
