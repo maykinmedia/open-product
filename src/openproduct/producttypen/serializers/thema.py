@@ -78,6 +78,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "producttypen": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "naam": "Parkeervergunning",
                         "code": "129380-C21231",
                         "keywords": ["auto"],
                         "uniforme_product_naam": "parkeervergunning",
@@ -87,6 +88,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                         "publicatie_eind_datum": "2030-09-24",
                         "aanmaak_datum": "2019-08-24T14:15:22Z",
                         "update_datum": "2019-08-24T14:15:22Z",
+                        "taal": "nl",
                     }
                 ],
             },
