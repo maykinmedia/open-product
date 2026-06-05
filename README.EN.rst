@@ -159,7 +159,7 @@ Licensed under the EUPL_
 
 .. _`Nederlandse versie`: README.rst
 
-.. _`Maykin B.V.`: https://www.maykinmedia.nl
+.. _`Maykin B.V.`: https://www.maykin.nl
 
 .. _`EUPL`: LICENSE.md
 

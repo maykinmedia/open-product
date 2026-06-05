@@ -37,7 +37,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             producttype=self.producttype, actief_vanaf=datetime.date(2024, 1, 2)
         )
 
-        DmnConfigFactory.create(tabel_endpoint="https://maykinmedia.nl")
+        DmnConfigFactory.create(tabel_endpoint="https://maykin.nl")
 
         self.path = reverse("prijs-list")
         self.detail_path = reverse("prijs-detail", args=[self.prijs.uuid])
@@ -156,7 +156,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "base",
                 }
@@ -176,7 +176,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": datetime.date(2024, 1, 3),
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                 }
@@ -191,7 +191,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.count(), 1)
         self.assertEqual(
             response.data["prijsregels"][0]["url"],
-            "https://maykinmedia.nl/iqjowijdoanwda",
+            "https://maykin.nl/iqjowijdoanwda",
         )
 
     def test_create_prijs_with_opties_and_regels(self):
@@ -200,7 +200,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                 }
@@ -225,7 +225,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": datetime.date(2024, 1, 3),
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                     "mapping": {"code": "abc", "test": "123"},
@@ -252,7 +252,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": datetime.date(2024, 1, 3),
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                     "mapping": {
@@ -333,7 +333,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "producttype_uuid": self.producttype.uuid,
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                 }
@@ -401,7 +401,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": regel_to_be_updated.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_to_be_updated.beschrijving,
                 }
@@ -415,7 +415,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.count(), 1)
         self.assertEqual(
             response.data["prijsregels"][0]["url"],
-            "https://maykinmedia.nl/iqjowijdoanwda",
+            "https://maykin.nl/iqjowijdoanwda",
         )
         self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
@@ -442,7 +442,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": self.prijs.actief_vanaf,
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
                 }
@@ -457,7 +457,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.count(), 1)
         self.assertEqual(
             response.data["prijsregels"][0]["url"],
-            "https://maykinmedia.nl/iqjowijdoanwda",
+            "https://maykin.nl/iqjowijdoanwda",
         )
 
     def test_update_prijs_with_optie_not_part_of_prijs_returns_error(self):
@@ -494,7 +494,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": regel.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 }
@@ -548,7 +548,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": non_existing_uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
                 }
@@ -608,13 +608,13 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": regel.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
                     "uuid": regel.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
@@ -640,7 +640,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                 }
@@ -706,7 +706,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": regel_to_be_updated.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_to_be_updated.beschrijving,
                 }
@@ -720,7 +720,7 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsRegel.objects.count(), 1)
         self.assertEqual(
             response.data["prijsregels"][0]["url"],
-            "https://maykinmedia.nl/iqjowijdoanwda",
+            "https://maykin.nl/iqjowijdoanwda",
         )
         self.assertEqual(PrijsRegel.objects.get().uuid, regel_to_be_updated.uuid)
 
@@ -750,7 +750,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "actief_vanaf": datetime.date(2024, 1, 4),
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
                 }
@@ -833,25 +833,25 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsregels": [
                 {
                     "uuid": regel.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
                     "uuid": regel.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel.beschrijving,
                 },
                 {
                     "uuid": regel_of_other_prijs.uuid,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": regel_of_other_prijs.beschrijving,
                 },
                 {
                     "uuid": non_existing_regel,
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "test",
                 },
@@ -896,7 +896,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             "prijsopties": [{"bedrag": "74.99", "beschrijving": "spoed"}],
             "prijsregels": [
                 {
-                    "tabel_endpoint": "https://maykinmedia.nl",
+                    "tabel_endpoint": "https://maykin.nl",
                     "dmn_tabel_id": "iqjowijdoanwda",
                     "beschrijving": "spoed",
                 }

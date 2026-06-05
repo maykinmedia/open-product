@@ -178,9 +178,9 @@ PRODUCTTYPEN_API_MAJOR_VERSION = PRODUCTTYPEN_API_VERSION.split(".")[0]
 # SPECTACULAR - OpenAPI schema generation
 #
 
-OPENPRODUCT_API_CONTACT_EMAIL = "support@maykinmedia.nl"
-OPENPRODUCT_API_CONTACT_NAME = "Maykin Media"
-OPENPRODUCT_API_CONTACT_URL = "https://www.maykinmedia.nl"
+OPENPRODUCT_API_CONTACT_EMAIL = "support@maykin.nl"
+OPENPRODUCT_API_CONTACT_NAME = "Maykin"
+OPENPRODUCT_API_CONTACT_URL = "https://www.maykin.nl"
 
 SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
     "SCHEMA_PATH_PREFIX": "/api/v1",

@@ -60,6 +60,6 @@ anyway, in alphabetical order.
 * ``sqlparse==0.5.2`` direct dependency of Django. Given the widespread use of Django,
   this should not pose any problems.
 
-* ``zgw-consumers==0.35.1`` library maintained by Maykin Media.
+* ``zgw-consumers==0.35.1`` library maintained by Maykin.
 
 .. _`requirements`: https://github.com/maykinmedia/open-product/blob/master/requirements/base.txt

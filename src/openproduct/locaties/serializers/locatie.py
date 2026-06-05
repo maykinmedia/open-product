@@ -10,8 +10,8 @@ from openproduct.locaties.models import Locatie
             "locatie response",
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "naam": "Maykin Media",
-                "email": "info@maykinmedia.nl",
+                "naam": "Maykin",
+                "email": "info@maykin.nl",
                 "telefoonnummer": "+310207530523",
                 "straat": "Kingsfortweg",
                 "huisnummer": "151",
@@ -23,8 +23,8 @@ from openproduct.locaties.models import Locatie
         OpenApiExample(
             "locatie request",
             value={
-                "naam": "Maykin Media",
-                "email": "info@maykinmedia.nl",
+                "naam": "Maykin",
+                "email": "info@maykin.nl",
                 "telefoonnummer": "+310207530523",
                 "straat": "Kingsfortweg",
                 "huisnummer": "151",

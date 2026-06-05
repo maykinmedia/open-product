@@ -76,8 +76,8 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "locaties": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "naam": "Maykin Media",
-                        "email": "info@maykinmedia.nl",
+                        "naam": "Maykin",
+                        "email": "info@maykin.nl",
                         "telefoonnummer": "+310207530523",
                         "straat": "Kingsfortweg",
                         "huisnummer": "151",
@@ -88,9 +88,9 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "organisaties": [
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "naam": "Maykin Media",
+                        "naam": "Maykin",
                         "code": "ORG-1234",
-                        "email": "info@maykinmedia.nl",
+                        "email": "info@maykin.nl",
                         "telefoonnummer": "+310207530523",
                         "straat": "Kingsfortweg",
                         "huisnummer": "151",
@@ -104,9 +104,9 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "organisatie": {
                             "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                            "naam": "Maykin Media",
+                            "naam": "Maykin",
                             "code": "ORG-1234",
-                            "email": "info@maykinmedia.nl",
+                            "email": "info@maykin.nl",
                             "telefoonnummer": "+310207530523",
                             "straat": "Kingsfortweg",
                             "huisnummer": "151",
