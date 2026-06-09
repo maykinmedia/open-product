@@ -9,6 +9,8 @@ ape-pie==0.2.0
     #   commonground-api-common
     #   notifications-api-common
     #   zgw-consumers
+arrow==1.4.0
+    # via isoduration
 asgiref==3.8.1
     # via
     #   django
@@ -244,6 +246,8 @@ flower==2.0.1
     # via
     #   -r requirements/base.in
     #   open-api-framework
+fqdn==1.5.1
+    # via jsonschema
 furl==2.1.3
     # via ape-pie
 glom==24.11.0
@@ -257,14 +261,20 @@ grpcio==1.76.0
 humanize==4.11.0
     # via flower
 idna==3.10
-    # via requests
+    # via
+    #   jsonschema
+    #   requests
 importlib-metadata==8.7.0
     # via opentelemetry-api
 inflection==0.5.1
     # via drf-spectacular
 iso639-lang==2.6.0
     # via commonground-api-common
-jsonschema==4.23.0
+isoduration==20.11.0
+    # via jsonschema
+jsonpointer==3.1.1
+    # via jsonschema
+jsonschema==4.26.0
     # via
     #   -r requirements/base.in
     #   drf-spectacular
@@ -272,6 +282,8 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 kombu==5.4.2
     # via celery
+lark==1.3.1
+    # via rfc3987-syntax
 markdown-it-py==3.0.0
     # via rich
 maykin-2fa==1.0.1
@@ -388,6 +400,7 @@ python-crontab==3.2.0
     # via django-celery-beat
 python-dateutil==2.9.0.post0
     # via
+    #   arrow
     #   celery
     #   django-relativedelta
     #   python-crontab
@@ -423,9 +436,15 @@ requests==2.33.1
     #   open-api-framework
     #   opentelemetry-exporter-otlp-proto-http
     #   zgw-consumers
+rfc3339-validator==0.1.4
+    # via jsonschema
+rfc3986-validator==0.1.1
+    # via jsonschema
+rfc3987-syntax==1.1.0
+    # via jsonschema
 rich==14.0.0
     # via django-reversion-compare
-rpds-py==0.21.0
+rpds-py==2026.5.1
     # via
     #   jsonschema
     #   referencing
@@ -444,6 +463,7 @@ six==1.16.0
     #   furl
     #   orderedmultidict
     #   python-dateutil
+    #   rfc3339-validator
 sqlparse==0.5.5
     # via django
 structlog==25.4.0
@@ -474,9 +494,12 @@ typing-inspection==0.4.0
     #   pydantic-settings
 tzdata==2024.2
     # via
+    #   arrow
     #   celery
     #   django-celery-beat
     #   kombu
+uri-template==1.3.0
+    # via jsonschema
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==2.6.3
@@ -495,6 +518,8 @@ wcwidth==0.2.13
     # via prompt-toolkit
 webauthn==2.3.0
     # via django-two-factor-auth
+webcolors==25.10.0
+    # via jsonschema
 webencodings==0.5.1
     # via bleach
 wrapt==1.17.0

@@ -127,6 +127,7 @@ Optional
 * ``SENTRY_DSN``: URL of the sentry project to send error reports to. Default empty, i.e. -> no monitoring set up. Highly recommended to configure this.
 * ``DISABLE_2FA``: Whether or not two factor authentication should be disabled. Defaults to: ``False``.
 * ``OIDC_CREATE_USER``: whether the OIDC authorization will create users if the user is unknown in Open Product. Defaults to: ``True``.
+* ``JSONSCHEMA_USE_FORMAT_CHECKER``: Enable JSON Schema format validation. Defaults to: ``True``.
 
 
 
