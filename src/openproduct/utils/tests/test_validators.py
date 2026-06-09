@@ -2,6 +2,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils.translation import gettext as _
 
+from jsonschema import FormatError
+
+from openproduct.utils.jsonschema_validators import is_valid_color, is_valid_email
 from openproduct.utils.validators import (
     validate_charfield_entry,
     validate_phone_number,
@@ -91,3 +94,39 @@ class ValidatorsTestCase(TestCase):
         self.assertEqual(validate_phone_number("00695959595"), "00695959595")
         self.assertEqual(validate_phone_number("00-69-59-59-59-5"), "00-69-59-59-59-5")
         self.assertEqual(validate_phone_number("00 69 59 59 59 5"), "00 69 59 59 59 5")
+
+
+class JsonSchemaFormatValidatorsTestCase(TestCase):
+    def test_email(self):
+        invalid_emails = [
+            "test",
+            "@missingusername.com",
+            "username@.com",
+            "user@site..com",
+            "user@com",
+            "user@site,com",
+            None,
+            123,
+        ]
+        for email in invalid_emails:
+            self.assertFalse(is_valid_email(email))
+
+        valid_emails = [
+            "user@example.com",
+            "user.name+tag@example.co.uk",
+            "user_name-test@example.com",
+            "user!?name@example.io",
+            "user123@example123.com",
+        ]
+        for email in valid_emails:
+            self.assertTrue(is_valid_email(email))
+
+    def test_color(self):
+        invalid_colors = ["notacolor", "123456", "#12345G"]
+        for color in invalid_colors:
+            with self.assertRaises(FormatError):
+                is_valid_color(color)
+
+        valid_colors = ["red", "#fff", "#FFFFFF"]
+        for color in valid_colors:
+            self.assertTrue(is_valid_color(color))

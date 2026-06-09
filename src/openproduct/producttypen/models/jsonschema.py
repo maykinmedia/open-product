@@ -1,14 +1,17 @@
+from __future__ import annotations
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-import jsonschema  # noqa
 import reversion
-from jsonschema import validate
-from jsonschema.exceptions import (
-    SchemaError,
-    ValidationError as JsonSchemaValidationError,
-)
+import structlog
+from jsonschema.exceptions import SchemaError
+from jsonschema.validators import validator_for
+
+from openproduct.utils.jsonschema_validators import validate_jsonschema
+
+logger = structlog.stdlib.get_logger(__name__)
 
 
 @reversion.register()
@@ -21,8 +24,6 @@ class JsonSchema(models.Model):
         _("schema"), help_text=_("Het schema waartegen gevalideerd kan worden.")
     )
 
-    latest_validator = jsonschema.validators._LATEST_VERSION
-
     class Meta:
         verbose_name = _("Json schema")
         verbose_name_plural = _("Json Schemas")
@@ -31,14 +32,12 @@ class JsonSchema(models.Model):
     def __str__(self):
         return self.naam
 
-    def clean(self):
+    def clean(self) -> None:
+        schema_validator = validator_for(self.schema)
         try:
-            self.latest_validator.check_schema(self.schema)
-        except SchemaError as e:
-            raise ValidationError(e.message)
+            schema_validator.check_schema(self.schema)
+        except SchemaError as exc:
+            raise ValidationError(exc.message)
 
     def validate(self, json: dict) -> None:
-        try:
-            validate(json, self.schema)
-        except JsonSchemaValidationError as e:
-            raise ValidationError(e.message)
+        validate_jsonschema(json, self.schema)
