@@ -6,8 +6,8 @@ from celery.schedules import crontab
 
 os.environ["_USE_STRUCTLOG"] = "True"
 
+from maykin_common.config import DocumentationParams, config
 from open_api_framework.conf.base import *  # noqa: F403
-from open_api_framework.conf.utils import config
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -42,11 +42,11 @@ INSTALLED_APPS += [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME", PROJECT_DIRNAME),
-        "USER": config("DB_USER", PROJECT_DIRNAME),
-        "PASSWORD": config("DB_PASSWORD", PROJECT_DIRNAME),
-        "HOST": config("DB_HOST", "localhost"),
-        "PORT": config("DB_PORT", 5432),
+        "NAME": config("DB_NAME", default=PROJECT_DIRNAME),
+        "USER": config("DB_USER", default=PROJECT_DIRNAME),
+        "PASSWORD": config("DB_PASSWORD", default=PROJECT_DIRNAME),
+        "HOST": config("DB_HOST", default="localhost"),
+        "PORT": config("DB_PORT", default=5432),
     }
 }
 
@@ -69,7 +69,9 @@ OIDC_DRF_AUTH_BACKEND = "openproduct.utils.oidc_backend.OIDCAuthenticationBacken
 OIDC_CREATE_USER = config(
     "OIDC_CREATE_USER",
     default=True,
-    help_text="whether the OIDC authorization will create users if the user is unknown in Open Product.",
+    documentation=DocumentationParams(
+        help_text="whether the OIDC authorization will create users if the user is unknown in Open Product.",
+    ),
 )
 
 #
@@ -210,7 +212,7 @@ SPECTACULAR_SETTINGS = {  # TODO: may need to be expanded.
 
 # Subpath (optional)
 # This environment variable can be configured during deployment.
-SUBPATH = config("SUBPATH", None)
+SUBPATH = config("SUBPATH", default=None)
 if SUBPATH:
     SUBPATH = f"/{SUBPATH.strip('/')}"
 
@@ -243,25 +245,30 @@ FORCE_TRANSLATION_STRINGS = [
 
 REQUIRE_URN_URL_MAPPING = config(
     "REQUIRE_URN_URL_MAPPING",
-    True,
-    group="Urns",
-    help_text="whether an urn requires an url mapping",
+    default=True,
+    documentation=DocumentationParams(
+        help_text="whether an urn requires an url mapping",
+        group="Urns",
+    ),
 )
 REQUIRE_URL_URN_MAPPING = config(
     "REQUIRE_URL_URN_MAPPING",
-    False,
-    group="Urns",
-    help_text="whether an url requires an urn mapping",
+    default=False,
+    documentation=DocumentationParams(
+        help_text="whether an url requires an urn mapping",
+        group="Urns",
+    ),
 )
 
 NOTIFICATIONS_DISABLED = config(
     "NOTIFICATIONS_DISABLED",
     default=True,
-    help_text=(
-        "indicates whether or not notifications should be sent to the Notificaties API "
-        "for operations on the API endpoints."
+    documentation=DocumentationParams(
+        help_text=(
+            "indicates whether or not notifications should be sent to the Notificaties API "
+            "for operations on the API endpoints."
+        ),
     ),
-    auto_display_default=True,
 )
 COMMONGROUND_API_COMMON = {
     "API_EXCEPTION_CAMELIZE": False,

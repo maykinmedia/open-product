@@ -1,9 +1,9 @@
 import os
 
-os.environ.setdefault("DB_USER", os.getenv("DATABASE_USER", "openproduct"))
-os.environ.setdefault("DB_NAME", os.getenv("DATABASE_NAME", "openproduct"))
-os.environ.setdefault("DB_PASSWORD", os.getenv("DATABASE_PASSWORD", ""))
-os.environ.setdefault("DB_HOST", os.getenv("DATABASE_HOST", "db"))
+os.environ.setdefault("DB_USER", os.getenv("DATABASE_USER", default="openproduct"))
+os.environ.setdefault("DB_NAME", os.getenv("DATABASE_NAME", default="openproduct"))
+os.environ.setdefault("DB_PASSWORD", os.getenv("DATABASE_PASSWORD", default=""))
+os.environ.setdefault("DB_HOST", os.getenv("DATABASE_HOST", default="db"))
 os.environ.setdefault("DB_CONN_MAX_AGE", "60")
 
 os.environ.setdefault("ENVIRONMENT", "docker")
