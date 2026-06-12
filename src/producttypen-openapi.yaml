@@ -7268,6 +7268,7 @@ paths:
                       hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                       producttypen:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeervergunning
                         code: 129380-C21231
                         keywords:
                         - auto
@@ -7279,6 +7280,7 @@ paths:
                         publicatie_eind_datum: '2030-09-24'
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
+                        taal: nl
                   summary: thema response
           description: ''
         '400':
@@ -7363,6 +7365,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-C21231
                       keywords:
                       - auto
@@ -7374,6 +7377,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      taal: nl
                   summary: thema response
           description: ''
         '400':
@@ -7450,6 +7454,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-C21231
                       keywords:
                       - auto
@@ -7461,6 +7466,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      taal: nl
                   summary: thema response
           description: ''
         '400':
@@ -7552,6 +7558,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-C21231
                       keywords:
                       - auto
@@ -7563,6 +7570,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      taal: nl
                   summary: thema response
           description: ''
         '400':
@@ -7655,6 +7663,7 @@ paths:
                     hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                     producttypen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-C21231
                       keywords:
                       - auto
@@ -7666,6 +7675,7 @@ paths:
                       publicatie_eind_datum: '2030-09-24'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      taal: nl
                   summary: thema response
           description: ''
         '400':
@@ -8553,6 +8563,10 @@ components:
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
           maxLength: 255
+        naam:
+          type: string
+          description: naam van het producttype.
+          maxLength: 255
         keywords:
           type: array
           items:
@@ -8593,10 +8607,16 @@ components:
           format: date-time
           readOnly: true
           description: De datum waarop het object voor het laatst is gewijzigd.
+        taal:
+          type: string
+          readOnly: true
+          description: De huidige taal van het producttype.
       required:
       - aanmaak_datum
       - code
       - gepubliceerd
+      - naam
+      - taal
       - uniforme_product_naam
       - update_datum
       - uuid
@@ -8608,6 +8628,11 @@ components:
           minLength: 1
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
+          maxLength: 255
+        naam:
+          type: string
+          minLength: 1
+          description: naam van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -8638,6 +8663,7 @@ components:
           description: De datum waarop de publicatie eindigt
       required:
       - code
+      - naam
       - uniforme_product_naam
     NestedThema:
       type: object
