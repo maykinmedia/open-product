@@ -1813,6 +1813,7 @@ paths:
         name: content__icontains
         schema:
           type: string
+        description: De inhoud van het content element
       - name: page
         required: false
         in: query
