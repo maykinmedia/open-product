@@ -111,7 +111,8 @@ class ContentElementSerializer(TranslatableModelSerializer):
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_taal(self, obj):
-        requested_language = self.context["request"].LANGUAGE_CODE
+        request = self.context.get("request")
+        requested_language = getattr(request, "LANGUAGE_CODE", "nl")
         return requested_language if obj.has_translation(requested_language) else "nl"
 
     class Meta:
