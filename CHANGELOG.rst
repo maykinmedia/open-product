@@ -1,6 +1,59 @@
 Changelog
 =========
 
+1.8.0 (19-06-2026)
+------------------
+
+.. note::
+
+  The defaults for several environment variables for the ``django-log-outgoing-requests``
+  configuration have changed (see :ref:`installation_env_config` > Logging)
+
+  * ``LOG_REQUESTS`` is now ``True`` by default, instead of ``False``
+  * ``LOG_OUTGOING_REQUESTS_DB_SAVE_BODY`` is now ``False`` by default, instead of ``True``
+  * ``LOG_OUTGOING_REQUESTS_RESET_DB_SAVE_AFTER`` (previously not configurable) has a default of ``60`` minutes
+
+**New features**
+
+    * [:open-product:`285`] Add content list endpoint to producttypen API
+    * [:open-product:`317`] Add naam to nested producttype in product & catalogi response
+    * [:open-product:`288`] Add ``naam__icontains`` to producttypen endpoint
+    * [:open-product:`280`] Add JSON schema validation based on ``format`` for ``Product.verbruiksobject``
+      and ``Product.dataobject``
+
+.. note::
+
+    The JSON schema format validation is enabled by default, if necessary it can be disabled
+    by setting the environment variable ``JSONSCHEMA_USE_FORMAT_CHECKER`` to ``False``
+
+**Project maintenance**
+
+    * Upgrade dependencies
+
+        * open-api-framework to 0.14.0
+        * urllib3 to 2.7.0
+        * gitpython to 3.1.50
+        * lxml to 6.1.1
+        * idna to 3.18
+        * python-dotenv to 1.2.2
+        * pyjwt to 2.13.0
+        * Django to 5.2.15
+        * tornado to 6.5.7
+        * webob to 1.8.10
+        * django-log-outgoing-requests to 0.9.1
+        * jsonschema to 4.26.0
+        * maykin-common to 0.19.0
+
+    * Upgrade NPM dependencies
+    * Updated pull request template
+    * [:open-api-framework:`218`] Improve github action security
+    * [:open-api-framework:`83`] Use config helper from maykin-common and use refactored envvar docs
+
+**Documentation**
+
+    * [:open-product:`301`] Add helptext to ProductData attribute to indicate all data can be shown on government portals
+    * [:open-api-framework:`217`] Update application and repository branding by applying the new icons and logos.
+
 1.7.1 (29-04-2026)
 ------------------
 
