@@ -63,7 +63,10 @@ class ThemaFilterSet(FilterSet):
 class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = Thema.objects.select_related("hoofd_thema").prefetch_related(
         Prefetch(
-            "producttypen", ProductType.objects.select_related("uniforme_product_naam")
+            "producttypen",
+            ProductType.objects.select_related(
+                "uniforme_product_naam"
+            ).prefetch_related("translations"),
         )
     )
     serializer_class = ThemaSerializer

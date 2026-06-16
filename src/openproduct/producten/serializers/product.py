@@ -8,6 +8,7 @@ from drf_spectacular.utils import (
     extend_schema_serializer,
 )
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
 
 from openproduct.producten.models import Eigenaar, Product
 from openproduct.producten.serializers.document import (
@@ -45,15 +46,32 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
         help_text=_("Geeft aan of het producttype getoond kan worden."),
     )
 
+    naam = serializers.CharField(
+        required=True,
+        max_length=255,
+        help_text=get_help_text("producttypen.ProductTypeTranslation", "naam"),
+    )
+
+    taal = serializers.SerializerMethodField(
+        read_only=True, help_text=_("De huidige taal van het producttype.")
+    )
+
     @extend_schema_field(OpenApiTypes.BOOL)
     def get_gepubliceerd(self, obj):
         return obj.gepubliceerd
+
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_taal(self, obj):
+        request = self.context.get("request")
+        requested_language = getattr(request, "LANGUAGE_CODE", "nl")
+        return requested_language if obj.has_translation(requested_language) else "nl"
 
     class Meta:
         model = ProductType
         fields = (
             "uuid",
             "code",
+            "naam",
             "keywords",
             "uniforme_product_naam",
             "toegestane_statussen",
@@ -63,6 +81,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "aanmaak_datum",
             "update_datum",
             "themas",
+            "taal",
         )
 
 
@@ -80,6 +99,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "update_datum": "2019-08-24T14:15:22Z",
                 "producttype": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                    "naam": "Parkeervergunning",
                     "code": "129380-A21231",
                     "keywords": ["auto"],
                     "uniforme_product_naam": "parkeervergunning",
@@ -100,6 +120,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                             "publicatie_eind_datum": "2030-09-24",
                         }
                     ],
+                    "taal": "nl",
                 },
                 "gepubliceerd": True,
                 "eigenaren": [

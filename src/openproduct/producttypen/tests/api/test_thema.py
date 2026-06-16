@@ -352,6 +352,7 @@ class TestThemaViewSet(BaseApiTestCase):
         expected_data = [
             {
                 "uuid": str(producttype.uuid),
+                "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
                 "gepubliceerd": True,
@@ -361,10 +362,44 @@ class TestThemaViewSet(BaseApiTestCase):
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "taal": "nl",
             }
         ]
 
         self.assertEqual(response.data["producttypen"], expected_data)
+
+    def test_read_producttype_in_other_language(self):
+        producttype = ProductTypeFactory.create()
+        producttype.set_current_language("en")
+        producttype.naam = "producttype EN"
+        producttype.samenvatting = "summary"
+        producttype.save()
+
+        thema = ThemaFactory.create()
+        thema.producttypen.add(producttype)
+
+        response = self.client.get(
+            self.detail_path(thema), headers={"Accept-Language": "en"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["producttypen"][0]["naam"], "producttype EN")
+        self.assertEqual(response.data["producttypen"][0]["taal"], "en")
+
+    def test_read_producttype_in_fallback_language(self):
+        producttype = ProductTypeFactory.create(
+            naam="producttype NL", samenvatting="samenvatting"
+        )
+        thema = ThemaFactory.create()
+        thema.producttypen.add(producttype)
+
+        response = self.client.get(
+            self.detail_path(thema), headers={"Accept-Language": "en"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["producttypen"][0]["naam"], "producttype NL")
+        self.assertEqual(response.data["producttypen"][0]["taal"], "nl")
 
     def test_read_themas(self):
         ThemaFactory.create()

@@ -521,6 +521,7 @@ paths:
                       update_datum: '2019-08-24T14:15:22Z'
                       producttype:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Parkeervergunning
                         code: 129380-A21231
                         keywords:
                         - auto
@@ -540,6 +541,7 @@ paths:
                           hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                           publicatie_start_datum: '2019-09-24'
                           publicatie_eind_datum: '2030-09-24'
+                        taal: nl
                       gepubliceerd: true
                       eigenaren:
                       - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -661,6 +663,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-A21231
                       keywords:
                       - auto
@@ -680,6 +683,7 @@ paths:
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                         publicatie_start_datum: '2019-09-24'
                         publicatie_eind_datum: '2030-09-24'
+                      taal: nl
                     gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -778,6 +782,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-A21231
                       keywords:
                       - auto
@@ -797,6 +802,7 @@ paths:
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                         publicatie_start_datum: '2019-09-24'
                         publicatie_eind_datum: '2030-09-24'
+                      taal: nl
                     gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -925,6 +931,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-A21231
                       keywords:
                       - auto
@@ -944,6 +951,7 @@ paths:
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                         publicatie_start_datum: '2019-09-24'
                         publicatie_eind_datum: '2030-09-24'
+                      taal: nl
                     gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -1071,6 +1079,7 @@ paths:
                     update_datum: '2019-08-24T14:15:22Z'
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      naam: Parkeervergunning
                       code: 129380-A21231
                       keywords:
                       - auto
@@ -1090,6 +1099,7 @@ paths:
                         hoofd_thema: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                         publicatie_start_datum: '2019-09-24'
                         publicatie_eind_datum: '2030-09-24'
+                      taal: nl
                     gepubliceerd: true
                     eigenaren:
                     - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
@@ -1328,6 +1338,10 @@ components:
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
           maxLength: 255
+        naam:
+          type: string
+          description: naam van het producttype.
+          maxLength: 255
         keywords:
           type: array
           items:
@@ -1372,10 +1386,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedThema'
+        taal:
+          type: string
+          readOnly: true
+          description: De huidige taal van het producttype.
       required:
       - aanmaak_datum
       - code
       - gepubliceerd
+      - naam
+      - taal
       - themas
       - uniforme_product_naam
       - update_datum
@@ -1388,6 +1408,11 @@ components:
           minLength: 1
           description: code van het producttype.
           pattern: ^[A-Z0-9-]+$
+          maxLength: 255
+        naam:
+          type: string
+          minLength: 1
+          description: naam van het producttype.
           maxLength: 255
         keywords:
           type: array
@@ -1422,6 +1447,7 @@ components:
             $ref: '#/components/schemas/NestedThemaRequest'
       required:
       - code
+      - naam
       - themas
       - uniforme_product_naam
     NestedTaak:
