@@ -134,7 +134,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
         blank=True,
         null=True,
         help_text=_(
-            "De eigenaar van dit producttype zoals een medewerker uit Open Organisatie (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)"
+            "De eigenaar van dit producttype zoals een medewerker uit Open Organisatie (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)"
         ),
     )
 
