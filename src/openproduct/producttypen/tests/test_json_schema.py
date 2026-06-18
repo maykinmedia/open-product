@@ -72,11 +72,24 @@ class TestJsonSchema(TestCase):
             self.schema.validate({})
 
     def test_clean_with_invalid_schema(self):
-        self.schema.schema = {"type": []}
-        with self.assertRaisesMessage(
-            DjangoValidationError, "[] is not valid under any of the given schemas"
-        ):
-            self.schema.clean()
+        invalid_cases = [
+            ({"type": []}, "[] is not valid under any of the given schemas"),
+            (
+                {"type": "invalid-type"},
+                "'invalid-type' is not valid under any of the given schemas",
+            ),
+            (
+                {"properties": "not-an-object"},
+                "'not-an-object' is not of type 'object'",
+            ),
+            ({"required": "not-an-array"}, "'not-an-array' is not of type 'array'"),
+        ]
+
+        for invalid_schema, expected_reason in invalid_cases:
+            with self.subTest(schema=invalid_schema):
+                self.schema.schema = invalid_schema
+                with self.assertRaisesMessage(DjangoValidationError, expected_reason):
+                    self.schema.clean()
 
     def test_clean_with_valid_schema(self):
         self.schema.clean()

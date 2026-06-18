@@ -278,6 +278,7 @@ COMMONGROUND_API_COMMON = {
 JSONSCHEMA_USE_FORMAT_CHECKER = config(
     "JSONSCHEMA_USE_FORMAT_CHECKER",
     default=True,
-    help_text=("Enable JSON Schema format validation."),
-    auto_display_default=True,
+    documentation=DocumentationParams(
+        help_text=("Enable JSON Schema format validation."),
+    ),
 )
