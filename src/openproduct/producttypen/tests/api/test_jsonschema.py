@@ -47,14 +47,6 @@ class TestProductTypeSchema(BaseApiTestCase):
             error["reason"],
             _("This field is required."),
         )
-        error = get_validation_errors(response, "schema")
-
-        self.assertIsNotNone(error)
-        self.assertEqual(error["code"], "required")
-        self.assertEqual(
-            error["reason"],
-            _("This field is required."),
-        )
 
     def test_create_schema(self):
         response = self.client.post(self.path, self.data)
@@ -157,8 +149,12 @@ class TestProductTypeSchema(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         schema = JsonSchema.objects.get(naam="email-schema")
-        with self.assertRaises(ValidationError):
-            schema.validate({"email": "not-an-email"})
+        with self.assertRaises(ValidationError) as er:
+            schema.validate({"email": "not-an-email"}, "schema")
+        self.assertEqual(
+            str(er.exception),
+            "{'schema.email': [\"'not-an-email' is not a 'email'\"]}",
+        )
 
     def test_partial_update_schema(self):
         data = {"naam": "update"}

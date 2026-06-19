@@ -5,6 +5,8 @@ from django.utils.dateparse import parse_duration
 
 
 def string_to_value(value: str) -> str | float | date | datetime | time | timedelta:
+    if not value or not value.strip():
+        return value
     if is_number(value):
         return float(value)
     elif is_date(value):
@@ -37,8 +39,7 @@ def is_time(value: str) -> bool:
 
 def is_duration(value: str) -> bool:
     try:
-        duration = parse_duration(value)
-        return duration is not None and duration != timedelta(0)
+        return parse_duration(value) is not None
     except (ValueError, TypeError):
         return False
 

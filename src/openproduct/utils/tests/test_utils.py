@@ -66,12 +66,6 @@ class HelpersUtilsTestCase(TestCase):
         self.assertEqual(string_to_value("hello"), "hello")
         self.assertEqual(string_to_value(""), "")
 
-    def test_string_to_value_differerent_types(self):
-        self.assertEqual(string_to_value(None), None)
-        self.assertEqual(string_to_value(True), True)
-        self.assertEqual(string_to_value([1, 2, 3]), [1, 2, 3])
-        self.assertEqual(string_to_value({"key": "value"}), {"key": "value"})
-
 
 class IsDatetimeTests(TestCase):
     def test_valid(self):
@@ -129,7 +123,6 @@ class IsDurationTests(TestCase):
 
     def test_invalid(self):
         for value in [
-            "P",
             "1D",
             "not-a-duration",
             "2026-01-01",

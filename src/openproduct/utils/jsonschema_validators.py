@@ -56,7 +56,9 @@ def is_valid_email(value: str) -> bool:
     return bool(re.match(pattern, str(value)))
 
 
-def validate_jsonschema(instance: JSONObject, schema: JSONObject) -> None:
+def validate_jsonschema(
+    instance: JSONObject, schema: JSONObject, label: str = "instance"
+) -> None:
     """
     Validator for JSONField with appropriate JSON schema.
 
@@ -81,4 +83,9 @@ def validate_jsonschema(instance: JSONObject, schema: JSONObject) -> None:
         validator.validate(instance)
     except JSONValidationError as json_error:
         logger.exception("invalid_jsonschema")
-        raise ValidationError(json_error.message, code="invalid_jsonschema")
+        path_list = [str(err) for err in getattr(json_error, "absolute_path", [])]
+        if label not in path_list:
+            path_list.insert(0, label)
+        path = ".".join(path_list)
+
+        raise ValidationError({path: json_error.message})

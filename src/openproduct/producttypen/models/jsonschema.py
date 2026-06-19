@@ -39,5 +39,5 @@ class JsonSchema(models.Model):
         except SchemaError as exc:
             raise ValidationError(exc.message)
 
-    def validate(self, json: dict) -> None:
-        validate_jsonschema(json, self.schema)
+    def validate(self, json: dict, label: str = "instance") -> None:
+        validate_jsonschema(json, self.schema, label)
