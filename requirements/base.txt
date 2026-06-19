@@ -294,7 +294,7 @@ maykin-2fa==1.0.1
     # via
     #   maykin-common
     #   open-api-framework
-maykin-common==0.19.0
+maykin-common @ git+https://github.com/maykinmedia/django-common.git@a888184bb84b0ce85e354ca04b73023a805e2c9c
     # via
     #   -r requirements/base.in
     #   open-api-framework

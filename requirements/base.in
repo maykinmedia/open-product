@@ -17,4 +17,4 @@ django-timeline-logger
 
 jsonschema[format-nongpl]
 
-maykin-common[axes,mfa,otel]
+git+https://github.com/maykinmedia/django-common.git@fix/oaf-222-custom-user-model-support
