@@ -283,15 +283,37 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "verbruiksobject")
+        error = get_validation_errors(response, "verbruiksobject.naam")
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _(
-                "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
-            ),
+            _("123 is not of type 'string'"),
+        )
+
+    def test_create_product_with_invalid_email_in_verbruiksobject(self):
+        json_schema = JsonSchemaFactory.create(
+            schema={
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {"email": {"type": "string", "format": "email"}},
+                "required": ["email"],
+            },
+        )
+
+        self.producttype.verbruiksobject_schema = json_schema
+        self.producttype.save()
+
+        data = self.data | {"verbruiksobject": {"email": "not-an-email"}}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "verbruiksobject.email")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("'not-an-email' is not a 'email'"),
         )
 
     def test_create_product_with_dataobject(self):
@@ -386,14 +408,32 @@ class TestProduct(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "dataobject")
-
+        error = get_validation_errors(response, "dataobject.naam")
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "invalid")
-        self.assertEqual(
-            error["reason"],
-            "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype.",
+        self.assertEqual(error["reason"], "123 is not of type 'string'")
+
+    def test_create_product_with_invalid_email_dataobject(self):
+        json_schema = JsonSchemaFactory.create(
+            schema={
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {"email": {"type": "string", "format": "email"}},
+                "required": ["email"],
+            },
         )
+
+        self.producttype.dataobject_schema = json_schema
+        self.producttype.save()
+
+        data = self.data | {"dataobject": {"email": "not-an-email"}}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "dataobject.email")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(error["reason"], "'not-an-email' is not a 'email'")
 
     def test_create_product_with_not_allowed_state(self):
         data = self.data | {"status": "actief"}

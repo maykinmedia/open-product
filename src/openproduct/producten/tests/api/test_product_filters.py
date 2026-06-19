@@ -369,8 +369,288 @@ class TestProductFilters(BaseApiTestCase):
                 response = self.client.get(
                     self.path, {"dataobject_attr": f"naam__{op}__abc"}
                 )
-
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_dataobject_attr_number_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"prijs": {"type": "number"}},
+            "required": ["prijs"],
+        }
+
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"prijs": 10.0},
+        )
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"prijs": 20.0},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__exact__10.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["dataobject"]["prijs"], 10.0)
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__gt__10.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["dataobject"]["prijs"], 20.0)
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__gte__10.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__lt__20.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(response.data["results"][0]["dataobject"]["prijs"], 10.0)
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__lte__20.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("in"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "prijs__in__10.0|20.0"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+    def test_dataobject_attr_date_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"datum": {"type": "string", "format": "date"}},
+            "required": ["datum"],
+        }
+
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"datum": "2026-01-01"},
+        )
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"datum": "2026-06-01"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "datum__exact__2026-01-01"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["datum"], "2026-01-01"
+            )
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "datum__gt__2026-01-01"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["datum"], "2026-06-01"
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "datum__gte__2026-01-01"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "datum__lt__2026-06-01"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["datum"], "2026-01-01"
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "datum__lte__2026-06-01"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+    def test_dataobject_attr_datetime_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"startdatetime": {"type": "string", "format": "date-time"}},
+            "required": ["startdatetime"],
+        }
+
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"startdatetime": "2026-01-01T08:00:00"},
+        )
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"startdatetime": "2026-06-01T18:00:00"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path,
+                {"dataobject_attr": "startdatetime__exact__2026-01-01T08:00:00"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__gt__2026-01-01T08:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path,
+                {"dataobject_attr": "startdatetime__gte__2026-01-01T08:00:00"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__lt__2026-06-01T18:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path,
+                {"dataobject_attr": "startdatetime__lte__2026-06-01T18:00:00"},
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+    def test_dataobject_attr_time_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"startdatetime": {"type": "string", "format": "time"}},
+            "required": ["startdatetime"],
+        }
+
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"startdatetime": "08:00:00"},
+        )
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"startdatetime": "18:00:00"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__exact__08:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["startdatetime"], "08:00:00"
+            )
+
+        with self.subTest("gt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__gt__08:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["startdatetime"], "18:00:00"
+            )
+
+        with self.subTest("gte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__gte__08:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("lt"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__lt__18:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["startdatetime"], "08:00:00"
+            )
+
+        with self.subTest("lte"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "startdatetime__lte__18:00:00"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+    def test_dataobject_attr_duration_filters(self):
+        schema = {
+            "type": "object",
+            "properties": {"duration": {"type": "string", "format": "duration"}},
+            "required": ["duration"],
+        }
+
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"duration": "P1D"},
+        )
+        ProductFactory(
+            producttype=ProductTypeFactory.create(
+                dataobject_schema=JsonSchemaFactory(schema=schema)
+            ),
+            dataobject={"duration": "P7D"},
+        )
+
+        with self.subTest("exact"):
+            response = self.client.get(
+                self.path, {"dataobject_attr": "duration__exact__P1D"}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["dataobject"]["duration"], "P1D"
+            )
 
     def test_verbruiksobject_attr_string_filters(self):
         schema = {

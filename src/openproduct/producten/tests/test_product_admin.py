@@ -2,7 +2,6 @@ import datetime
 from unittest.mock import patch
 
 from django.test import TestCase
-from django.utils.translation import gettext_lazy as _
 
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
@@ -160,13 +159,7 @@ class TestProductAdminForm(TestCase):
         form.full_clean()
         self.assertEqual(
             form.errors,
-            {
-                "verbruiksobject": [
-                    _(
-                        "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
-                    )
-                ]
-            },
+            {"verbruiksobject": ["'naam' is a required property"]},
         )
 
     def test_verbruiksobject_without_schema(self):
@@ -255,13 +248,7 @@ class TestProductAdminForm(TestCase):
         form.full_clean()
         self.assertEqual(
             form.errors,
-            {
-                "dataobject": [
-                    _(
-                        "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype."
-                    )
-                ]
-            },
+            {"dataobject": ["'naam' is a required property"]},
         )
 
     def test_dataobject_without_schema(self):

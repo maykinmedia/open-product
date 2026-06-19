@@ -15,6 +15,6 @@ django-celery-beat
 flower
 django-timeline-logger
 
-jsonschema
+jsonschema[format-nongpl]
 
 maykin-common[axes,mfa,otel]

@@ -98,31 +98,10 @@ def validate_product_eind_datum(eind_datum, producttype):
 
 
 def validate_product_verbruiksobject(verbruiksobject, producttype):
-    try:
-        if (
-            verbruiksobject is not None
-            and producttype.verbruiksobject_schema is not None
-        ):
-            producttype.verbruiksobject_schema.validate(verbruiksobject)
-    except ValidationError:
-        raise ValidationError(
-            {
-                "verbruiksobject": _(
-                    "Het verbruiksobject komt niet overeen met het schema gedefinieerd op het producttype."
-                )
-            },
-        )
+    if verbruiksobject is not None and producttype.verbruiksobject_schema is not None:
+        producttype.verbruiksobject_schema.validate(verbruiksobject, "verbruiksobject")
 
 
 def validate_product_dataobject(dataobject, producttype):
-    try:
-        if dataobject is not None and producttype.dataobject_schema is not None:
-            producttype.dataobject_schema.validate(dataobject)
-    except ValidationError:
-        raise ValidationError(
-            {
-                "dataobject": _(
-                    "Het dataobject komt niet overeen met het schema gedefinieerd op het producttype."
-                )
-            },
-        )
+    if dataobject is not None and producttype.dataobject_schema is not None:
+        producttype.dataobject_schema.validate(dataobject, "dataobject")
