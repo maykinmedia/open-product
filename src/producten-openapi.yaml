@@ -105,12 +105,12 @@ paths:
         name: aanvraag_zaak_urn
         schema:
           type: string
-        description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+        description: De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
       - in: query
         name: aanvraag_zaak_urn__contains
         schema:
           type: string
-        description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+        description: De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
       - in: query
         name: dataobject_attr
         schema:
@@ -1671,7 +1671,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          description: De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
           pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
@@ -1793,7 +1793,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          description: De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
           pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
@@ -1900,7 +1900,7 @@ components:
         aanvraag_zaak_urn:
           type: string
           nullable: true
-          description: De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:<component>:<resource>:<identificatie>)
+          description: De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
           pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
         aanvraag_zaak_url:
           type: string
