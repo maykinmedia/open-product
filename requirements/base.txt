@@ -74,7 +74,7 @@ cryptography==46.0.7
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.13
+django==5.2.15
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -264,7 +264,7 @@ grpcio==1.76.0
     # via opentelemetry-exporter-otlp-proto-grpc
 humanize==4.11.0
     # via flower
-idna==3.10
+idna==3.18
     # via
     #   jsonschema
     #   requests
@@ -420,7 +420,7 @@ pygments==2.20.0
     # via
     #   django-log-outgoing-requests
     #   rich
-pyjwt==2.12.1
+pyjwt==2.13.0
     # via
     #   commonground-api-common
     #   mozilla-django-oidc
@@ -439,7 +439,7 @@ python-dateutil==2.9.0.post0
     #   python-crontab
 python-decouple==3.8
     # via maykin-common
-python-dotenv==1.0.1
+python-dotenv==1.2.2
     # via
     #   open-api-framework
     #   pydantic-settings
@@ -503,7 +503,7 @@ structlog==25.4.0
     # via
     #   django-structlog
     #   open-api-framework
-tornado==6.5.5
+tornado==6.5.7
     # via flower
 typing-extensions==4.12.2
     # via
@@ -536,7 +536,7 @@ uri-template==1.3.0
     # via jsonschema
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   elastic-apm
     #   requests
