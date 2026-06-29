@@ -10,8 +10,6 @@ FROM python:3.12-slim-trixie AS backend-build
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         pkg-config \
         build-essential \
-        # only relevant when using editable/github dependencies, which is discouraged
-        # git \
         libpq-dev \
         # required for (log) routing support in uwsgi
         libpcre2-8-0 \
