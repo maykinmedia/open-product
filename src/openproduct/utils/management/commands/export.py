@@ -27,23 +27,23 @@ class Command(BaseCommand):
             type=str,
         )
         parser.add_argument(
-            "--archive_name", help=_("Name of the archive to write data to"), type=str
+            "--archive_name", help="Name of the archive to write data to", type=str
         )
         parser.add_argument(
             "--response",
-            help=_("HttpResponse object to which the output data should be written"),
+            help="HttpResponse object to which the output data should be written",
             type=HttpResponse,
         )
         parser.add_argument(
             "--ids",
-            help=_("IDs of producttypes to be exported"),
+            help="IDs of producttypes to be exported",
             nargs="*",
             default=[],
             type=int,
         )
         parser.add_argument(
             "--exclude",
-            help=_("names of fields to be excluded from the exported data"),
+            help="names of fields to be excluded from the exported data",
             nargs="*",
             default=[],
             type=str,
@@ -52,7 +52,7 @@ class Command(BaseCommand):
             "--format",
             choices=["json", "csv"],
             default="json",
-            help=_("Specify the export format: json or csv (default: json)"),
+            help="Specify the export format: json or csv (default: json)",
         )
 
     def handle(self, *args, **options):
@@ -108,7 +108,7 @@ class Command(BaseCommand):
             if obj.related_name in exclude:
                 continue
 
-            manager = getattr(instance, obj.related_name, None)
+            manager: models.Manager = getattr(instance, obj.related_name)
 
             for related_object in manager.iterator():
                 related_instances.append(
@@ -134,7 +134,7 @@ class Command(BaseCommand):
             if obj.attname in exclude:
                 continue
 
-            manager = getattr(instance, obj.attname, None)
+            manager: models.Manager = getattr(instance, obj.attname)
 
             if self.is_json:
                 instance_data[f"{obj.attname}_ids"] = []
@@ -155,7 +155,7 @@ class Command(BaseCommand):
                 if self.is_json:
                     instance_data[f"{obj.attname}_ids"].append(m2m_object.pk)
                 else:
-                    all_data[table_name].append(
+                    all_data[table_name].append(  # pyright: ignore[reportPossiblyUnboundVariable]
                         {obj._related_name: instance.pk, obj.attname: m2m_object.pk}
                     )
 

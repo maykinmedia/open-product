@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.forms import BaseInlineFormSet
@@ -71,7 +69,7 @@ class AdminAuditLogMixin:
         request,
         object_id,
         form_url="",
-        extra_context: dict[str, Any] | None = None,
+        extra_context: dict[str, object] | None = None,
     ):
         if object_id and request.method == "GET":
             object = self.model.objects.get(pk=object_id)

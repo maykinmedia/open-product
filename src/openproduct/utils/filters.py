@@ -2,6 +2,7 @@ from django import forms
 from django.db import models
 
 import django_filters
+from django_filters import constants
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet as _FilterSet
 
 from openproduct.utils.enums import Operators
@@ -43,13 +44,13 @@ class ManyWidget(forms.Widget):
         if name not in data:
             return []
 
-        return data.getlist(name)
+        return data.getlist(name)  # pyright: ignore[reportAttributeAccessIssue]
 
 
 class ManyCharField(forms.CharField):
     widget = ManyWidget
 
-    def to_python(self, value):
+    def to_python(self, value):  # pyright: ignore[reportIncompatibleMethodOverride]
         if not value:
             return []
 
@@ -74,6 +75,8 @@ class TranslationFilter(django_filters.CharFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        assert isinstance(self.field_name, str)
+
         if "__" in self.field_name:
             field_names = self.field_name.split("__")
             assert len(field_names) == 2
@@ -85,7 +88,7 @@ class TranslationFilter(django_filters.CharFilter):
             self.model_field_name = None
 
     def filter(self, qs, value):
-        if value in django_filters.constants.EMPTY_VALUES:
+        if value in constants.EMPTY_VALUES:
             return qs
 
         lookup = "translations__%s__%s" % (self.field_name, self.lookup_expr)
@@ -115,7 +118,7 @@ def filter_data_attr_value_part(
     match operator:
         case Operators.EXACT.value:
             #  for exact operator try to filter on string and numeric values
-            in_vals = [str_value]
+            in_vals: list = [str_value]
             if real_value != str_value:
                 in_vals.append(real_value)
             queryset = queryset.filter(**{f"{field_name}__{variable}__in": in_vals})

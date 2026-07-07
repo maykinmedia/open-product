@@ -2,4 +2,9 @@
 pythonVersion = "3.12"
 pythonPlatform = "Linux"
 reportUnnecessaryTypeIgnoreComment = "error"
-include = ["src"]
+include = [
+    "src/openproduct/utils"
+]
+exclude = [
+    "src/openproduct/conf/dev.py"
+]

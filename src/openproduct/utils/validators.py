@@ -1,3 +1,5 @@
+from re import Pattern
+
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils.encoding import force_str
@@ -47,13 +49,14 @@ class CustomRegexValidator(RegexValidator):
         """
         Validates that the input matches the regular expression.
         """
+        assert isinstance(self.regex, Pattern)
         if not self.regex.search(force_str(value)):
             message = "{0}: {1}".format(self.message, force_str(value))
             raise ValidationError(message, code=self.code)
 
 
 validate_postal_code = CustomRegexValidator(
-    regex="^[1-9][0-9]{3}\s?[A-Za-z]{2}$",
+    regex=r"^[1-9][0-9]{3}\s?[A-Za-z]{2}$",
     message=_(
         "Invalid postal code. A postal code must consist of 4 numbers followed by two capital letters (e.g. 1234 AB)."
     ),

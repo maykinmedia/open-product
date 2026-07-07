@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import QuerySet
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
@@ -34,6 +35,7 @@ class UUIDRelatedField(serializers.RelatedField):
 
     def to_internal_value(self, data):
         queryset = self.get_queryset()
+        assert isinstance(queryset, QuerySet)
         try:
             return queryset.get(**{"uuid": data})
         except ObjectDoesNotExist:
@@ -41,8 +43,8 @@ class UUIDRelatedField(serializers.RelatedField):
         except (TypeError, ValueError):
             self.fail("invalid")
 
-    def to_representation(self, obj):
-        return getattr(obj, "uuid")
+    def to_representation(self, value):
+        return getattr(value, "uuid")
 
 
 @extend_schema_field({"type": "object", "additionalProperties": True})

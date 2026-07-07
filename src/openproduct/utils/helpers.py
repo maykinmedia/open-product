@@ -4,7 +4,9 @@ from django.db import models
 from django.utils.dateparse import parse_duration
 
 
-def string_to_value(value: str) -> str | float | date | datetime | time | timedelta:
+def string_to_value(
+    value: str,
+) -> str | float | date | datetime | time | timedelta | None:
     if not value or not value.strip():
         return value
     if is_number(value):

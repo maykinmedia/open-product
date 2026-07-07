@@ -17,7 +17,7 @@ from openproduct.celery import app
 
 
 class PeriodicTaskAdmin(_PeriodicTaskAdmin):
-    list_display = _PeriodicTaskAdmin.list_display + ("detail_url",)
+    list_display = _PeriodicTaskAdmin.list_display + ("detail_url",)  # pyright: ignore[reportOperatorIssue]
 
     def get_urls(self):
         urls = super().get_urls()
@@ -74,7 +74,7 @@ def user_model_search_fields_nl(field_names):
             continue
         else:
             search_fields.append(f"user__{field.name}")
-            help_texts.append(str(field.verbose_name))
+            help_texts.append(str(field.verbose_name))  # pyright: ignore[reportAttributeAccessIssue]
 
     if not help_texts:
         search_help_text = ""
