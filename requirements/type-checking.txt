@@ -373,10 +373,15 @@ django-structlog==9.1.1
     #   -r requirements/ci.txt
 django-stubs==6.0.6
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   -r requirements/type-checking.in
     #   djangorestframework-stubs
 django-stubs-ext==6.0.6
-    # via django-stubs
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   django-stubs
 django-timeline-logger==5.0.0
     # via
     #   -c requirements/ci.txt
@@ -427,7 +432,10 @@ djangorestframework-inclusions==1.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
 djangorestframework-stubs==3.17.0
-    # via -r requirements/type-checking.in
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   -r requirements/type-checking.in
 docutils==0.21.2
     # via
     #   -c requirements/ci.txt
@@ -629,11 +637,8 @@ multidict==6.2.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   yarl
-notifications-api-common==0.10.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   commonground-api-common
+notifications-api-common==0.11.0
+    # via commonground-api-common
 open-api-framework==0.14.0
     # via
     #   -c requirements/ci.txt
@@ -1077,6 +1082,7 @@ structlog==25.4.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-structlog
+    #   notifications-api-common
 tblib==3.0.0
     # via
     #   -c requirements/ci.txt
@@ -1093,6 +1099,8 @@ tornado==6.5.7
     #   flower
 types-pyyaml==6.0.12.20260518
     # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
     #   django-stubs
     #   djangorestframework-stubs
 typing-extensions==4.12.2
