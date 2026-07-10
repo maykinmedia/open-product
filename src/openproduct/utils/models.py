@@ -24,5 +24,5 @@ class BasePublishableModel(BaseModel):
         help_text=_("De datum waarop het object voor het laatst is gewijzigd."),
     )
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         abstract = True

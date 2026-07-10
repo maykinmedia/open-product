@@ -5,11 +5,12 @@ import structlog
 from rest_framework import status
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 logger = structlog.stdlib.get_logger(__name__)
 
 
-class TranslatableViewSetMixin:
+class TranslatableViewSetMixin(ModelViewSet):
     _supported_languages = {
         language["code"] for language in settings.PARLER_LANGUAGES[None]
     }

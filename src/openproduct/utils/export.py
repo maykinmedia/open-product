@@ -50,10 +50,10 @@ def export_json(modeladmin, request, queryset):
     return _export(modeladmin, request, queryset, "json")
 
 
-class ExportMixin:
+class ExportMixin(admin.ModelAdmin):
     export_exclude = []
 
-    def response_post_save_change(self, request, obj):
+    def response_post_save_change(self, request, obj) -> HttpResponse:  # pyright: ignore[reportIncompatibleMethodOverride]
         if "_export" not in request.POST:
             return super().response_post_save_change(request, obj)
 

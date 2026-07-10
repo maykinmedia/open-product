@@ -1,5 +1,7 @@
 from sys import stdout
 
+from django.views import View
+
 from drf_spectacular.plumbing import (
     get_lib_doc_excludes as default_get_lib_doc_excludes,
 )
@@ -65,7 +67,7 @@ def get_lib_doc_excludes():
     return default_get_lib_doc_excludes() + [AuditTrailViewSetMixin]
 
 
-class AllowAllOriginsMixin:
+class AllowAllOriginsMixin(View):
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
         response["Access-Control-Allow-Origin"] = "*"

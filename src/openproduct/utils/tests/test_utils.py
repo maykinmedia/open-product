@@ -28,7 +28,6 @@ class HelpersUtilsTestCase(TestCase):
         self.assertIsInstance(result, datetime)
 
         result = string_to_value("2026-01-01T12:34:56")
-        self.assertNotIsInstance(result, date.__class__)
         self.assertIsInstance(result, datetime)
 
     def test_string_to_value_date(self):

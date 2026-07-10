@@ -1,4 +1,4 @@
-from typing import List, Optional, Type
+from typing import List, Type
 
 from django.utils.translation import gettext_lazy as _
 
@@ -29,9 +29,9 @@ ERRORS = {
 
 
 class AutoSchema(_AutoSchema):
-    def get_response_serializers(
+    def get_response_serializers(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
-    ) -> dict[int, Optional[Type[serializers.Serializer]]]:
+    ) -> dict[int, Type[serializers.Serializer] | None]:
         """append error serializers"""
         response_serializers = super().get_response_serializers()
 

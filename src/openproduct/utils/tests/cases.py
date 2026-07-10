@@ -63,4 +63,4 @@ class BaseMigrationTest(TransactionTestCase):
         super().tearDownClass()
 
         # reset to latest migration
-        call_command("migrate", verbosity=0, database=connection._alias)
+        call_command("migrate", verbosity=0, database=connection._alias)  # pyright: ignore[reportAttributeAccessIssue]

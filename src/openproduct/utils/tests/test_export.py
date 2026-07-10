@@ -265,8 +265,8 @@ class TestExport(TestCase):
 
         producttype_by_id = {p["id"]: p for p in result["producttype"]}
 
-        pt_1 = producttype_by_id.get(self.producttype1.id)
-        pt_2 = producttype_by_id.get(self.producttype2.id)
+        pt_1 = producttype_by_id[self.producttype1.id]
+        pt_2 = producttype_by_id[self.producttype2.id]
 
         self.assertCountEqual(
             pt_1["locaties_ids"], [self.locatie1.id, self.locatie2.id]

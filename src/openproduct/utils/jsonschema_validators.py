@@ -19,7 +19,7 @@ logger = structlog.stdlib.get_logger(__name__)
 
 
 @draft202012_format_checker.checks("color")
-def is_valid_color(value: str) -> bool:
+def is_valid_color(value: object) -> bool:
     """
     Checks if the value is a valid CSS3 color:
         - named CSS3 color
@@ -27,6 +27,11 @@ def is_valid_color(value: str) -> bool:
 
     Raises FormatError if invalid.
     """
+    if not isinstance(value, str):
+        raise FormatError(
+            _("'{value}' is not a string and therefore not a valid color")
+        )
+
     try:
         webcolors.name_to_hex(value)
     except ValueError:
@@ -44,7 +49,7 @@ def is_valid_color(value: str) -> bool:
 
 
 @draft202012_format_checker.checks("email")
-def is_valid_email(value: str) -> bool:
+def is_valid_email(value: object) -> bool:
     """
     Check that 'value' is a reasonably valid email address.
 

@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import override_settings
 from django.urls import reverse
 
 import requests
@@ -7,6 +7,7 @@ from maykin_common.vcr import VCRMixin
 from mozilla_django_oidc_db.models import OIDCClient, OIDCProvider
 from mozilla_django_oidc_db.tests.mixins import OIDCMixin
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
+from rest_framework.test import APITestCase
 
 from ...accounts.tests.factories import OIDCClientFactory, UserFactory
 from ...producttypen.tests.factories import ProductTypeFactory
@@ -14,7 +15,7 @@ from ...producttypen.tests.factories import ProductTypeFactory
 User = get_user_model()
 
 
-class TestApiOidcAuthentication(OIDCMixin, VCRMixin, TestCase):
+class TestApiOidcAuthentication(OIDCMixin, VCRMixin, APITestCase):
     """
     Test results are stored in utils.vc_cassettes
 

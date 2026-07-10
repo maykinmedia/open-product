@@ -1,0 +1,10 @@
+[tool.pyright]
+pythonVersion = "3.12"
+pythonPlatform = "Linux"
+reportUnnecessaryTypeIgnoreComment = "error"
+include = [
+    "src/openproduct/utils"
+]
+exclude = [
+    "src/openproduct/conf/dev.py"
+]
