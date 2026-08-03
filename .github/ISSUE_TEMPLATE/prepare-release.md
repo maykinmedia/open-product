@@ -24,3 +24,4 @@ projects: ["maykinmedia/15"]
   - [ ] New setup configuration steps or changes to format
   - [ ] New containers required
   - [ ] ...
+- [ ] Update ``./docker/ci/config.json`` with new release
