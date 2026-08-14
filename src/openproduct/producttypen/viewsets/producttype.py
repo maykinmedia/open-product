@@ -5,6 +5,7 @@ from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
 import structlog
+from drf_spectacular.plumbing import build_choice_description_list
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     OpenApiParameter,
@@ -253,7 +254,24 @@ class Meta:
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.HEADER,
                 description="Optionele taal (`nl, `en`).",
-            )
+            ),
+            OpenApiParameter(
+                name="toegestane_statussen",
+                type={
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [choice[0] for choice in ProductStateChoices.choices],
+                    },
+                },
+                location=OpenApiParameter.QUERY,
+                description="{}\n\n{}".format(
+                    get_help_text("producttypen.ProductType", "toegestane_statussen"),
+                    build_choice_description_list(ProductStateChoices.choices),
+                ),
+                explode=False,
+                style="form",
+            ),
         ],
     ),
     retrieve=extend_schema(
