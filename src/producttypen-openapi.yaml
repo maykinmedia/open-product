@@ -5175,30 +5175,14 @@ paths:
         schema:
           type: array
           items:
-            type: array
-            items:
-              enum:
-              - in_aanvraag
-              - gereed
-              - actief
-              - ingetrokken
-              - geweigerd
-              - verlopen
-              type: string
-              description: |-
-                * `in_aanvraag` - In aanvraag
-                * `gereed` - Gereed
-                * `actief` - Actief
-                * `ingetrokken` - Ingetrokken
-                * `geweigerd` - Geweigerd
-                * `verlopen` - Verlopen
+            type: string
             enum:
-            - actief
-            - gereed
-            - geweigerd
-            - in_aanvraag
-            - ingetrokken
             - initieel
+            - in_aanvraag
+            - gereed
+            - actief
+            - ingetrokken
+            - geweigerd
             - verlopen
         description: |-
           toegestane statussen voor producten van dit type.
