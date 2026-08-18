@@ -186,7 +186,7 @@ class TestProductValidateMethods(TestCase):
 
         with self.assertRaisesMessage(
             ValidationError,
-            _("Status 'Gereed' is niet toegestaan voor het producttype {}.").format(
+            _("Status 'gereed' is niet toegestaan voor het producttype {}.").format(
                 producttype.naam
             ),
         ):
