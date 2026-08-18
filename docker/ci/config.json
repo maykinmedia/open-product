@@ -1,0 +1,19 @@
+{
+    "supportedTags": [
+        {
+            "gitRef": "master",
+            "tag": "latest"
+        },
+        {
+            "gitRef": "1.8.0",
+            "tag": "1.8.0"
+        }
+    ],
+    "dockerOrg": "maykinmedia",
+    "dockerRepo": "open-product",
+    "githubOrg": "maykinmedia",
+    "githubRepo": "open-product",
+    "projectName": "Open Product",
+    "projectDocumentation": "https://open-product.readthedocs.io/en/stable/",
+    "projectDescription": "Open Product is an application where product types and products can be managed in a single place. Other applications like Open Inwoner and Open Formulieren can integrate Open Product using its REST API to for example show producttype information, create products or to get the current price for a producttype."
+}
