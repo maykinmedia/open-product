@@ -1,5 +1,4 @@
--c ci.txt
--r ci.txt
+-r base.txt
 
 django-stubs
 djangorestframework-stubs

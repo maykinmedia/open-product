@@ -26,7 +26,7 @@ attrs==24.2.0
     #   referencing
 billiard==4.2.1
     # via celery
-bleach==6.2.0
+bleach==6.4.0
     # via open-api-framework
 boltons==24.1.0
     # via
@@ -66,7 +66,7 @@ commonground-api-common==2.12.0
     # via open-api-framework
 cron-descriptor==1.4.5
     # via django-celery-beat
-cryptography==46.0.7
+cryptography==50.0.0
     # via
     #   django-simple-certmanager
     #   mozilla-django-oidc
@@ -74,7 +74,7 @@ cryptography==46.0.7
     #   webauthn
 diff-match-patch==20241021
     # via django-reversion-compare
-django==5.2.15
+django==5.2.17
     # via
     #   commonground-api-common
     #   django-admin-index
@@ -304,9 +304,9 @@ mozilla-django-oidc==5.0.2
     # via mozilla-django-oidc-db
 mozilla-django-oidc-db==2.0.1
     # via open-api-framework
-notifications-api-common==0.11.0
+notifications-api-common==0.13.0
     # via commonground-api-common
-open-api-framework==0.14.0
+open-api-framework==0.14.1
     # via -r requirements/base.in
 opentelemetry-api==1.38.0
     # via
@@ -426,7 +426,7 @@ pyjwt==2.13.0
     #   commonground-api-common
     #   mozilla-django-oidc
     #   zgw-consumers
-pyopenssl==26.0.0
+pyopenssl==26.4.0
     # via webauthn
 pypng==0.20220715.0
     # via qrcode
@@ -498,7 +498,7 @@ six==1.16.0
     #   orderedmultidict
     #   python-dateutil
     #   rfc3339-validator
-sqlparse==0.5.5
+sqlparse==0.6.0
     # via django
 structlog==25.4.0
     # via

@@ -21,6 +21,9 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.1.0",
         "microscope-sass": "latest",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
+        "typescript": "latest",
         "wysimark-standalone": "^1.0.0"
     },
     "devDependencies": {
@@ -50,7 +53,7 @@
     },
     "overrides": {
         "@portive/client": {
-            "axios": "1.15.0"
+            "axios": "1.19.0"
         }
     }
 }
