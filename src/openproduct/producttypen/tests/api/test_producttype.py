@@ -269,6 +269,32 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(ProductType.objects.count(), 1)
         self.assertEqual(response.data["toegestane_statussen"], ["gereed"])
 
+    def test_create_producttype_with_non_existent_toegestane_statussen(self):
+        response = self.client.post(
+            self.path, self.data | {"toegestane_statussen": ["in aanvraag"]}
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "toegestane_statussen.")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid_choice")
+        self.assertEqual(
+            error["reason"],
+            _('"in aanvraag" is een ongeldige keuze.'),
+        )
+
+    def test_create_producttype_with_None_toegestane_statussen(self):
+        response = self.client.post(
+            self.path, self.data | {"toegestane_statussen": [None]}
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "toegestane_statussen.")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "null")
+        self.assertEqual(
+            error["reason"],
+            _("Dit veld mag niet leeg zijn."),
+        )
+
     def test_create_producttype_with_duplicate_externe_code_systemen_returns_error(
         self,
     ):

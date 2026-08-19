@@ -97,6 +97,7 @@ linkcheck_ignore = [
     r"http://localhost:\d+,https?://.*\.gemeente.nl",
     r"https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#.*",
     r"https://opentelemetry.io/.*",
+    r"https://sentry.io/",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]

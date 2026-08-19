@@ -157,6 +157,33 @@ class TestProduct(BaseApiTestCase):
         }
         self.assertEqual(response.data, expected_data)
 
+    def test_create_product_without_status(self):
+        self.data.pop("status")
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "status")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Status 'None' is niet toegestaan voor het producttype {}.").format(
+                self.producttype.naam
+            ),
+        )
+
+    def test_create_product_with_non_existent_status(self):
+        response = self.client.post(self.path, self.data | {"status": "in aanvraag"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "status")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid_choice")
+        self.assertEqual(
+            error["reason"],
+            _('"in aanvraag" is een ongeldige keuze.'),
+        )
+
     def test_create_product_with_verbruiksobject(self):
         json_schema = JsonSchemaFactory.create(
             schema={
@@ -446,7 +473,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("Status 'Actief' is niet toegestaan voor het producttype {}.").format(
+            _("Status 'actief' is niet toegestaan voor het producttype {}.").format(
                 self.producttype.naam
             ),
         )
@@ -738,7 +765,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("Status 'Actief' is niet toegestaan voor het producttype {}.").format(
+            _("Status 'actief' is niet toegestaan voor het producttype {}.").format(
                 self.producttype.naam
             ),
         )
@@ -1718,7 +1745,7 @@ class TestProduct(BaseApiTestCase):
                 "field": {"status": "gereed"},
                 "param": "status",
                 "reason": _(
-                    "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                    "Status 'gereed' is niet toegestaan voor het producttype {}."
                 ).format(new_producttype.naam),
             },
             {
@@ -1774,7 +1801,7 @@ class TestProduct(BaseApiTestCase):
                 "field": {"status": "gereed"},
                 "param": "status",
                 "reason": _(
-                    "Status 'Gereed' is niet toegestaan voor het producttype {}."
+                    "Status 'gereed' is niet toegestaan voor het producttype {}."
                 ).format(producttype.naam),
             },
             {

@@ -53,7 +53,7 @@ def validate_product_status(status, producttype):
                 "status": _(
                     "Status '{}' is niet toegestaan voor het producttype {}."
                 ).format(
-                    ProductStateChoices(status).label,
+                    status,
                     producttype.naam,
                 )
             }
