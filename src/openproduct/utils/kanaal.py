@@ -38,5 +38,5 @@ class Kanaal(_Kanaal):
         kenmerken = {}
         for kenmerk in self.kenmerken:
             value = data.get(kenmerk, glom(obj, kenmerk, default=""))
-            kenmerken[kenmerk] = value
+            kenmerken[kenmerk] = str(value)
         return kenmerken

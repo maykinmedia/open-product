@@ -190,6 +190,10 @@
                 "timelinelogproxy"
             ],
             [
+                "notifications_api_common",
+                "failednotification"
+            ],
+            [
                 "log_outgoing_requests",
                 "outgoingrequestslog"
             ],

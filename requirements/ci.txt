@@ -136,7 +136,7 @@ click-repl==0.3.0
     #   -r requirements/base.txt
     #   -r requirements/type-checking.txt
     #   celery
-commonground-api-common==2.12.0
+commonground-api-common==2.14.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -1132,6 +1132,7 @@ structlog==25.4.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   -r requirements/type-checking.txt
+    #   commonground-api-common
     #   django-structlog
     #   notifications-api-common
 tblib==3.0.0

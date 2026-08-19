@@ -89,7 +89,7 @@ click-repl==0.3.0
     # via
     #   -r requirements/base.txt
     #   celery
-commonground-api-common==2.12.0
+commonground-api-common==2.14.0
     # via -r requirements/base.txt
 cron-descriptor==1.4.5
     # via
@@ -696,6 +696,7 @@ sqlparse==0.6.0
 structlog==25.4.0
     # via
     #   -r requirements/base.txt
+    #   commonground-api-common
     #   django-structlog
     #   notifications-api-common
 tornado==6.5.7

@@ -270,6 +270,23 @@ NOTIFICATIONS_DISABLED = config(
         ),
     ),
 )
+
+LOG_NOTIFICATIONS_IN_DB = config(
+    "LOG_NOTIFICATIONS_IN_DB",
+    default=True,
+    documentation=DocumentationParams(
+        help_text="Indicates whether or not failed notifications/cloud events should be saved to the database"
+    ),
+)
+
+NOTIFICATION_NUMBER_OF_DAYS_RETAINED = config(
+    "NOTIFICATION_NUMBER_OF_DAYS_RETAINED",
+    default=60,
+    documentation=DocumentationParams(
+        help_text="the number of days for which you wish to keep failed notifications/cloud events in the database"
+    ),
+)
+
 COMMONGROUND_API_COMMON = {
     "API_EXCEPTION_CAMELIZE": False,
 }

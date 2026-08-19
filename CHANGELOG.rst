@@ -2,8 +2,15 @@ Changelog
 =========
 
 
-1.9.0 (19-08-2026)
+1.9.0 (28-08-2026)
 ------------------
+
+.. note::
+
+  The environment variable used to configure the uWSGI port in the Docker
+  entrypoint has been renamed from ``UWSGI_PORT`` to ``OPENPRODUCT_PORT``
+  (see :ref:`installation_env_config`). Deployments that override the uWSGI
+  port need to update their configuration accordingly.
 
 **Bugfixes**
 
@@ -15,6 +22,7 @@ Changelog
 
         * open-api-framework to 0.14.1
         * notifications-api-common to 0.13.0
+        * commonground-api-common to 2.14.0
         * gitpython to 3.1.59
         * kombu to 5.6.2
         * cryptography to 50.0.0
@@ -27,11 +35,15 @@ Changelog
     * Upgrade NPM dependencies
     * Upgrade actions
     * [:open-api-framework:`222`] Use ``PreventPrivilegeEscalationMixin`` in UserAdmin to fix warning messages
-    * Add stale issue workflow
+    * Configure ``actions/stale`` to automatically close stale issues and PRs.
     * Add dependabot to keep actions up to date
-    * Rename UWSGI_PORT to OPENPRODUCT_PORT
+    * Rename the environment variable from ``UWSGI_PORT`` to ``OPENPRODUCT_PORT``.
     * [:open-product:`327`]  Add type checking
     * [:open-api-workflows:`60`] Fix oas lint by replacing spectral with vacuum
+
+**Documentation**
+
+    * [:open-api-workflows:`64`] Add action to generate and update Docker Hub description
 
 1.8.0 (19-06-2026)
 ------------------

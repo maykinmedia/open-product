@@ -4,7 +4,9 @@ from django.test import override_settings
 from django.urls import reverse
 
 from freezegun import freeze_time
-from notifications_api_common.models import NotificationsConfig
+from notifications_api_common.models import (
+    NotificationsConfig,
+)
 from rest_framework import status
 from zgw_consumers.constants import APITypes
 from zgw_consumers.models import Service
@@ -16,7 +18,7 @@ from openproduct.utils.tests.cases import BaseApiTestCase
 
 
 @freeze_time("2024-2-2T00:00:00Z")
-@override_settings(NOTIFICATIONS_DISABLED=False)
+@override_settings(NOTIFICATIONS_DISABLED=False, LOG_NOTIFICATIONS_IN_DB=False)
 class SendNotifTestCase(BaseApiTestCase):
     is_superuser = True
 
@@ -83,7 +85,7 @@ class SendNotifTestCase(BaseApiTestCase):
             },
         }
 
-        mock_task.assert_called_with(expected_data)
+        mock_task.assert_called_with(expected_data, None)
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_update_object(self, mock_task):
@@ -109,7 +111,7 @@ class SendNotifTestCase(BaseApiTestCase):
             },
         }
 
-        mock_task.assert_called_with(expected_data)
+        mock_task.assert_called_with(expected_data, None)
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_partial_update_object(self, mock_task):
@@ -135,7 +137,7 @@ class SendNotifTestCase(BaseApiTestCase):
             },
         }
 
-        mock_task.assert_called_with(expected_data)
+        mock_task.assert_called_with(expected_data, None)
 
     @patch("notifications_api_common.viewsets.send_notification.delay")
     def test_send_notif_delete_object(self, mock_task):
@@ -158,4 +160,4 @@ class SendNotifTestCase(BaseApiTestCase):
             },
         }
 
-        mock_task.assert_called_with(expected_data)
+        mock_task.assert_called_with(expected_data, None)
