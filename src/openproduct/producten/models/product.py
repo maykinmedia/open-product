@@ -130,6 +130,17 @@ class Product(BasePublishableModel):
         verbose_name_plural = _("Producten")
         ordering = ("-id",)
 
+    @property
+    def zaak_uuid(self) -> str:
+        # This is enforced by the serializer/admin validation
+        assert self.aanvraag_zaak_url or self.aanvraag_zaak_urn, (
+            "A product must have an aanvraag_zaak"
+        )
+        if self.aanvraag_zaak_url:
+            return self.aanvraag_zaak_url.rstrip("/").split("/")[-1]
+        else:
+            return self.aanvraag_zaak_urn.split("uuid:")[1]
+
     def clean(self):
         validate_product_dates(self.start_datum, self.eind_datum)
 
