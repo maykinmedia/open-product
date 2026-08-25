@@ -24,8 +24,8 @@ Available environment variables
 Urns
 ----
 
-* ``REQUIRE_URN_URL_MAPPING``: whether an urn requires an url mapping. Defaults to: ``True``.
-* ``REQUIRE_URL_URN_MAPPING``: whether an url requires an urn mapping. Defaults to: ``False``.
+* ``REQUIRE_URN_URL_MAPPING``: whether a urn requires a url mapping. Defaults to: ``True``.
+* ``REQUIRE_URL_URN_MAPPING``: whether a url requires a urn mapping. Defaults to: ``False``.
 
 CloudEvents
 -----------
