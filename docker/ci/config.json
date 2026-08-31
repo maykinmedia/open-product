@@ -5,8 +5,8 @@
             "tag": "latest"
         },
         {
-            "gitRef": "1.8.0",
-            "tag": "1.8.0"
+            "gitRef": "1.9.0",
+            "tag": "1.9.0"
         }
     ],
     "dockerOrg": "maykinmedia",

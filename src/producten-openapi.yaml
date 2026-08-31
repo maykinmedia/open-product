@@ -40,7 +40,7 @@ info:
     **Kenmerken**
 
     * `producttype.uuid`: uuid van het producttype
-    * `producttype.uniforme_product_naam`: Uniforme product naam gedefinieerd door de overheid.
+    * `producttype.uniformeProductNaam`: Uniforme product naam gedefinieerd door de overheid.
     * `producttype.code`: code van het producttype.
 
     **Resources en acties**
