@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.conf import settings
 from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.urls import reverse
@@ -9,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 import django_filters
 import structlog
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.cloudevents import process_cloudevent
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.viewsets import ModelViewSet
@@ -34,7 +32,10 @@ from openproduct.utils.filters import (
 from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
-from ..cloudevents import ZAAK_GEKOPPELD, ZAAK_ONTKOPPELD
+from ..cloudevents import (
+    send_zaak_gekoppeld_cloudevent,
+    send_zaak_ontkoppeld_cloudevent,
+)
 from ..metrics import (
     product_create_counter,
     product_delete_counter,
@@ -64,16 +65,6 @@ Meerdere filters kunnen worden toegevoegd door `dataobject_attr` meerdere keren 
 Bijvoorbeeld: `dataobject_attr=kenteken__exact__AA-111-B&objectdata_attr=zone__exact__B`
 """
 ).format(display_choice_values_for_help_text(Operators))
-
-
-def _get_zaak_uri(product: Product):
-    if product.aanvraag_zaak_url:
-        return product.aanvraag_zaak_url
-    else:
-        # TODO: Open Zaak cannot handle urns that end with 'uuid' and have arbitrary namespaces,
-        #  so we reconstruct into the standardized urn:uuid namespace. Question: should OZ be able
-        #  to handle this?
-        return f"urn:uuid:{product.zaak_uuid}"
 
 
 class ProductFilterSet(FilterSet):
@@ -281,21 +272,10 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         )
         product_create_counter.add(1)
 
-        if settings.ENABLE_CLOUD_EVENTS:
-            transaction.on_commit(
-                lambda: process_cloudevent(
-                    event_type=ZAAK_GEKOPPELD,
-                    subject=product.zaak_uuid,
-                    data={
-                        "zaak": _get_zaak_uri(product),
-                        "linkTo": self.request.build_absolute_uri(
-                            reverse("product-detail", args=[product.uuid])
-                        ),
-                        "label": str(product),
-                        "linkObjectType": "product",
-                    },
-                )
-            )
+        link_to = self.request.build_absolute_uri(
+            reverse("product-detail", args=[product.uuid])
+        )
+        send_zaak_gekoppeld_cloudevent(product, link_to)
 
     @transaction.atomic
     def perform_update(self, serializer: ProductSerializer):
@@ -310,41 +290,16 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         )
         product_update_counter.add(1)
 
-        if not settings.ENABLE_CLOUD_EVENTS:
-            return
-
         old_zaak_uuid = old_product.zaak_uuid
         new_zaak_uuid = new_product.zaak_uuid
+        link_to = self.request.build_absolute_uri(
+            reverse("product-detail", args=[new_product.uuid])
+        )
         if old_zaak_uuid != new_zaak_uuid:
             # If the UUIDs do not match, we first need to delete the existing link,
             # and then create a new one.
-            link_to = self.request.build_absolute_uri(
-                reverse("product-detail", args=[new_product.uuid])
-            )
-
-            transaction.on_commit(
-                lambda: process_cloudevent(
-                    event_type=ZAAK_ONTKOPPELD,
-                    subject=old_zaak_uuid,
-                    data={
-                        "zaak": _get_zaak_uri(old_product),
-                        "linkTo": link_to,
-                        # label and linkObjectType are not used for unlinking
-                    },
-                )
-            )
-            transaction.on_commit(
-                lambda: process_cloudevent(
-                    event_type=ZAAK_GEKOPPELD,
-                    subject=new_zaak_uuid,
-                    data={
-                        "zaak": _get_zaak_uri(new_product),
-                        "linkTo": link_to,
-                        "label": str(new_product),
-                        "linkObjectType": "product",
-                    },
-                )
-            )
+            send_zaak_ontkoppeld_cloudevent(old_product, link_to)
+            send_zaak_gekoppeld_cloudevent(new_product, link_to)
 
     @transaction.atomic
     def perform_destroy(self, instance: Product):
@@ -356,17 +311,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         )
         product_delete_counter.add(1)
 
-        if settings.ENABLE_CLOUD_EVENTS:
-            transaction.on_commit(
-                lambda: process_cloudevent(
-                    event_type=ZAAK_ONTKOPPELD,
-                    subject=instance.zaak_uuid,
-                    data={
-                        "zaak": _get_zaak_uri(instance),
-                        "linkTo": self.request.build_absolute_uri(
-                            reverse("product-detail", args=[instance.uuid])
-                        ),
-                        # label and linkObjectType are not used for unlinking
-                    },
-                )
-            )
+        link_to = self.request.build_absolute_uri(
+            reverse("product-detail", args=[instance.uuid])
+        )
+        send_zaak_ontkoppeld_cloudevent(instance, link_to)

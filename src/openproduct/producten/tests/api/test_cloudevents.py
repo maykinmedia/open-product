@@ -146,7 +146,9 @@ class TestProductCloudEvents(BaseApiTestCase):
 
     @override_settings(ENABLE_CLOUD_EVENTS=False)
     def test_delete_no_cloudevent(self, mock_send_cloudevent):
-        product = ProductFactory.create()
+        product = ProductFactory.create(
+            aanvraag_zaak_url="https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1"
+        )
 
         with self.captureOnCommitCallbacks(execute=True):
             response = self.client.delete(
