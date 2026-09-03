@@ -7,6 +7,7 @@ from .models import Product
 
 ZAAK_GEKOPPELD = "nl.overheid.zaken.zaak-gekoppeld"
 ZAAK_ONTKOPPELD = "nl.overheid.zaken.zaak-ontkoppeld"
+ZAAKOBJECT_EINDDATUM_BIJGEWERKT = "nl.overheid.zaken.zaakobject-einddatum-bijgewerkt"
 
 
 def _get_zaak_uri(product: Product):
@@ -62,5 +63,24 @@ def send_zaak_ontkoppeld_cloudevent(product: Product, link_to: str):
                 "linkTo": link_to,
                 # label and linkObjectType are not used for unlinking
             },
+        )
+    )
+
+
+def send_einddatum_bijgewerkt_cloudevent(product: Product):
+    """
+    Send a PRODUCT_EINDDATUM_BIJGEWERKT cloudevent with transaction handling
+    (only runs on commit).
+
+    :param product: Relevant product.
+    """
+    if not settings.ENABLE_CLOUD_EVENTS:
+        return
+
+    transaction.on_commit(
+        lambda: process_cloudevent(
+            event_type=ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            subject=product.zaak_uuid,
+            data={"zaak": _get_zaak_uri(product)},
         )
     )

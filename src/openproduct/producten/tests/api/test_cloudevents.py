@@ -7,6 +7,7 @@ from django.urls import reverse
 from freezegun import freeze_time
 from rest_framework import status
 
+from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     ProductTypeFactory,
     ThemaFactory,
@@ -14,7 +15,11 @@ from openproduct.producttypen.tests.factories import (
 from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseApiTestCase
 
-from ...cloudevents import ZAAK_GEKOPPELD, ZAAK_ONTKOPPELD
+from ...cloudevents import (
+    ZAAK_GEKOPPELD,
+    ZAAK_ONTKOPPELD,
+    ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+)
 from ...models import Product
 from ..factories import ProductFactory
 
@@ -96,7 +101,26 @@ class TestProductCloudEvents(BaseApiTestCase):
                 "linkObjectType": "product",
             },
         }
-        mock_send_cloudevent.assert_called_once_with(expected_payload, None)
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
+        )
+
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "urn:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[1][0], (expected_payload, None)
+        )
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_create_with_zaak_url(self, mock_send_cloudevent):
@@ -142,7 +166,26 @@ class TestProductCloudEvents(BaseApiTestCase):
                 "linkObjectType": "product",
             },
         }
-        mock_send_cloudevent.assert_called_once_with(expected_payload, None)
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
+        )
+
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[1][0], (expected_payload, None)
+        )
 
     @override_settings(ENABLE_CLOUD_EVENTS=False)
     def test_delete_no_cloudevent(self, mock_send_cloudevent):
@@ -184,7 +227,26 @@ class TestProductCloudEvents(BaseApiTestCase):
                 "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
             },
         }
-        mock_send_cloudevent.assert_called_once_with(expected_payload, None)
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
+        )
+
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "urn:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[1][0], (expected_payload, None)
+        )
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
     def test_delete_with_zaak_url(self, mock_send_cloudevent):
@@ -212,7 +274,26 @@ class TestProductCloudEvents(BaseApiTestCase):
                 "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
             },
         }
-        mock_send_cloudevent.assert_called_once_with(expected_payload, None)
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
+        )
+
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[1][0], (expected_payload, None)
+        )
 
     @override_settings(ENABLE_CLOUD_EVENTS=False)
     def test_update_no_cloudevent(self, mock_send_cloudevent):
@@ -237,10 +318,17 @@ class TestProductCloudEvents(BaseApiTestCase):
         mock_send_cloudevent.assert_not_called()
 
     @override_settings(ENABLE_CLOUD_EVENTS=True)
-    def test_update_without_change_in_zaak_url(self, mock_send_cloudevent):
+    def test_update_without_change_in_zaak_url_and_eind_datum(
+        self, mock_send_cloudevent
+    ):
         product = ProductFactory.create(
             naam="Test product",
             aanvraag_zaak_url="https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            eind_datum=datetime.date(2026, 9, 3),
+            producttype__toegestane_statussen=[
+                ProductStateChoices.GEREED,
+                ProductStateChoices.VERLOPEN,
+            ],
         )
 
         data = {
@@ -249,6 +337,7 @@ class TestProductCloudEvents(BaseApiTestCase):
             "status": "initieel",
             "eigenaren": [{"kvk_nummer": "12345678"}],
             "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "eind_datum": "2026-09-03",
         }
 
         with self.captureOnCommitCallbacks(execute=True):
@@ -281,39 +370,84 @@ class TestProductCloudEvents(BaseApiTestCase):
             )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            mock_send_cloudevent.call_args_list[0][0][0],
-            {
-                "id": MOCK_CLOUDEVENT_ID,
-                "source": "test",
-                "specversion": "1.0",
-                "type": ZAAK_ONTKOPPELD,
-                "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
-                "time": "2026-08-24T11:27:00Z",
-                "dataref": None,
-                "datacontenttype": "application/json",
-                "data": {
-                    "zaak": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
-                    "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
-                },
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAK_ONTKOPPELD,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+                "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
             },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
         )
-        self.assertEqual(
-            mock_send_cloudevent.call_args_list[1][0][0],
-            {
-                "id": MOCK_CLOUDEVENT_ID,
-                "source": "test",
-                "specversion": "1.0",
-                "type": ZAAK_GEKOPPELD,
-                "subject": "7f543f2c-0352-4179-89f0-105c303787d3",
-                "time": "2026-08-24T11:27:00Z",
-                "dataref": None,
-                "datacontenttype": "application/json",
-                "data": {
-                    "zaak": "https://maykin.ztc.com/api/v1/zaken/7f543f2c-0352-4179-89f0-105c303787d3",
-                    "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
-                    "label": "Vergunning instantie.",
-                    "linkObjectType": "product",
-                },
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAK_GEKOPPELD,
+            "subject": "7f543f2c-0352-4179-89f0-105c303787d3",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "https://maykin.ztc.com/api/v1/zaken/7f543f2c-0352-4179-89f0-105c303787d3",
+                "linkTo": f"http://testserver/producten/api/v1/producten/{product.uuid}",
+                "label": "Vergunning instantie.",
+                "linkObjectType": "product",
             },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[1][0], (expected_payload, None)
+        )
+
+    @override_settings(ENABLE_CLOUD_EVENTS=True)
+    def test_update_with_change_in_eind_datum(self, mock_send_cloudevent):
+        product = ProductFactory.create(
+            naam="Test product",
+            aanvraag_zaak_url="https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            eind_datum=datetime.date(2026, 9, 3),
+            producttype__naam="Vergunning",
+            producttype__toegestane_statussen=[
+                ProductStateChoices.GEREED,
+                ProductStateChoices.VERLOPEN,
+            ],
+        )
+
+        data = {
+            "naam": "Some changed name",
+            "producttype_uuid": product.producttype.uuid,
+            "status": "initieel",
+            "eigenaren": [{"kvk_nummer": "12345678"}],
+            "aanvraag_zaak_url": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "eind_datum": "2026-09-05",
+        }
+
+        with self.captureOnCommitCallbacks(execute=True):
+            response = self.client.put(
+                reverse("product-detail", args=[product.uuid]), data=data
+            )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        expected_payload = {
+            "id": MOCK_CLOUDEVENT_ID,
+            "source": "test",
+            "specversion": "1.0",
+            "type": ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            "subject": "d42613cd-ee22-4455-808c-c19c7b8442a1",
+            "time": "2026-08-24T11:27:00Z",
+            "dataref": None,
+            "datacontenttype": "application/json",
+            "data": {
+                "zaak": "https://maykin.ztc.com/api/v1/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+            },
+        }
+        self.assertEqual(
+            mock_send_cloudevent.call_args_list[0][0], (expected_payload, None)
         )

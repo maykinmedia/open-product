@@ -33,6 +33,7 @@ from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
 from ..cloudevents import (
+    send_einddatum_bijgewerkt_cloudevent,
     send_zaak_gekoppeld_cloudevent,
     send_zaak_ontkoppeld_cloudevent,
 )
@@ -276,6 +277,8 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             reverse("product-detail", args=[product.uuid])
         )
         send_zaak_gekoppeld_cloudevent(product, link_to)
+        # TODO-1071: is this necessary? Perhaps only when "eind_datum" is not None?
+        send_einddatum_bijgewerkt_cloudevent(product)
 
     @transaction.atomic
     def perform_update(self, serializer: ProductSerializer):
@@ -301,6 +304,14 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             send_zaak_ontkoppeld_cloudevent(old_product, link_to)
             send_zaak_gekoppeld_cloudevent(new_product, link_to)
 
+        old_end_date = old_product.eind_datum
+        new_end_date = new_product.eind_datum
+        if old_end_date != new_end_date:
+            # TODO-1071: what about race conditions with creating the new zaakobject?
+            #  Is it possible the new zaak object will not exist yet, and the zaakobject
+            #  bijgewerkt event is already received and processed.
+            send_einddatum_bijgewerkt_cloudevent(new_product)
+
     @transaction.atomic
     def perform_destroy(self, instance: Product):
         super().perform_destroy(instance)
@@ -315,3 +326,4 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
             reverse("product-detail", args=[instance.uuid])
         )
         send_zaak_ontkoppeld_cloudevent(instance, link_to)
+        send_einddatum_bijgewerkt_cloudevent(instance)
