@@ -9,13 +9,14 @@ CloudEvents
     Het is nog niet aanbevolen om dit in productie te gebruiken.
 
 `CloudEvents <https://cloudevents.io/>`_ is een specificatie voor het op een gemeenschappelijke manier
-beschrijven van data. Open Product ondersteunt het versturen van events voor het koppelen en ontkoppelen
-van zaken, via de Notificaties-API:
+beschrijven van data. Open Product ondersteunt het versturen van events via de Notificaties-API:
 
 * ``nl.overheid.zaken.zaak-gekoppeld``: wordt verstuurd wanneer een product wordt aangemaakt en wanneer
   de gekoppelde zaak van een product (``aanvraag_zaak``) wordt aangepast.
 * ``nl-overheid-zaken.zaak-ontkoppeld``: wordt verstuurd wanneer een product wordt verwijderd en wanneer
   de gekoppelde zaak van een product (``aanvraag_zaak``) wordt aangepast.
+* ``nl-overheid-zaken.zaakobject-einddatum-bijgewerkt``: wordt verstuurd wanneer een product wordt
+  aangemaakt en verwijderd, en wanneer de einddatum van een product wordt aangepast.
 
 Configuratie
 ------------
@@ -70,5 +71,22 @@ Voorbeeld van een ``nl.overheid.zaken.zaak-ontkoppeld``-event:
         }
     }
 
-Merk op dat in beide gevallen het ``subject``-veld de UUID van de Zaak bevat. Voor het ontkoppelen van zaken zijn
+Voorbeeld van een ``nl.overheid.zaken.zaakobject-einddatum-bijgewerkt``-event:
+
+.. code-block:: json
+
+    {
+        "specversion": "1.0",
+        "type": "nl.overheid.zaken.zaakobject-einddatum-bijgewerkt",
+        "source": "urn:nld:oin:000919673854:openproduct",
+        "subject": "2cb84d34-74a6-4515-bd12-6d50f45d45b5",
+        "id": "06b597b2-d65c-46d5-8655-dd6bd7e2e5f9",
+        "time": "2026-08-25T10:00:00Z",
+        "datacontenttype": "application/json",
+        "data": {
+            "zaak": "https//open-zaak.local.nl/api/v1/zaken/2cb84d34-74a6-4515-bd12-6d50f45d45b5",
+        }
+    }
+
+Merk op dat in alle gevallen het ``subject``-veld de UUID van de Zaak bevat. Voor het ontkoppelen van zaken zijn
 een ``label`` en ``linkObjectType`` niet nodig in de data.
