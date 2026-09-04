@@ -359,6 +359,26 @@ NOTIFICATION_NUMBER_OF_DAYS_RETAINED = config(
     ),
 )
 
+ENABLE_CLOUD_EVENTS = config(
+    "ENABLE_CLOUD_EVENTS",
+    default=False,
+    documentation=DocumentationParams(
+        help_text=(
+            "**EXPERIMENTAL**: indicates whether CloudEvents should be sent to the "
+            "configured Notificaties API endpoint for specific operations via the API."
+        ),
+    ),
+)
+NOTIFICATIONS_SOURCE = config(
+    "NOTIFICATIONS_SOURCE",
+    default="",
+    documentation=DocumentationParams(
+        help_text=(
+            "**EXPERIMENTAL**: the identifier of the application to use as the source in "
+            "notifications and CloudEvents."
+        )
+    ),
+)
 COMMONGROUND_API_COMMON = {
     "API_EXCEPTION_CAMELIZE": False,
 }

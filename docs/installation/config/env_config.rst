@@ -24,9 +24,18 @@ Available environment variables
 Urns
 ----
 
-* ``REQUIRE_URN_URL_MAPPING``: whether an urn requires an url mapping. Defaults to: ``True``.
-* ``REQUIRE_URL_URN_MAPPING``: whether an url requires an urn mapping. Defaults to: ``False``.
+* ``REQUIRE_URN_URL_MAPPING``: whether a urn requires a url mapping. Defaults to: ``True``.
+* ``REQUIRE_URL_URN_MAPPING``: whether a url requires a urn mapping. Defaults to: ``False``.
 
+CloudEvents
+-----------
+
+* ``ENABLE_CLOUD_EVENTS``: **EXPERIMENTAL**: indicates whether CloudEvents should be sent to the
+  configured Notificaties API endpoint for specific operations via the API. Defaults to ``False``.
+* ``NOTIFICATIONS_SOURCE``: **EXPERIMENTAL**: the identifier of this application to use as a source
+  in notifications and CloudEvents. Defaults to an empty string.
+
+For more information on how to enable CloudEvents, see :ref:`cloudevents_docs`.
 
 Initial superuser creation (Docker only)
 ----------------------------------------
