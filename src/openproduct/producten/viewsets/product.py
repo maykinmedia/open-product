@@ -33,9 +33,9 @@ from openproduct.utils.helpers import display_choice_values_for_help_text
 from openproduct.utils.validators import validate_data_attr
 
 from ..cloudevents import (
-    send_einddatum_bijgewerkt_cloudevent,
     send_zaak_gekoppeld_cloudevent,
     send_zaak_ontkoppeld_cloudevent,
+    send_zaakobject_bijgewerkt_cloudevent,
 )
 from ..metrics import (
     product_create_counter,
@@ -291,19 +291,24 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
         )
         product_update_counter.add(1)
 
-        old_zaak_uuid = old_product.zaak_uuid
-        new_zaak_uuid = new_product.zaak_uuid
         link_to = self.request.build_absolute_uri(
             reverse("product-detail", args=[new_product.uuid])
         )
-        if old_zaak_uuid != new_zaak_uuid:
+        if old_product.zaak_uuid != new_product.zaak_uuid:
             # If the UUIDs do not match, we first need to delete the existing link,
             # and then create a new one.
             send_zaak_ontkoppeld_cloudevent(old_product, link_to)
             send_zaak_gekoppeld_cloudevent(new_product, link_to)
 
-        if old_product.eind_datum != new_product.eind_datum:
-            send_einddatum_bijgewerkt_cloudevent(new_product)
+        changed_fields = [
+            field.name
+            for field in new_product._meta.get_fields()
+            if getattr(old_product, field.name) != getattr(new_product, field.name)
+        ]
+        # update_datum is always updated under the hood, so make sure to not send the
+        # event if it is the only updated field.
+        if changed_fields and changed_fields != ["update_datum"]:
+            send_zaakobject_bijgewerkt_cloudevent(new_product, link_to, changed_fields)
 
     @transaction.atomic
     def perform_destroy(self, instance: Product):

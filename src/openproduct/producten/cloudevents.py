@@ -1,3 +1,5 @@
+from typing import Collection
+
 from django.conf import settings
 from django.db import transaction
 
@@ -7,7 +9,7 @@ from .models import Product
 
 ZAAK_GEKOPPELD = "nl.overheid.zaken.zaak-gekoppeld"
 ZAAK_ONTKOPPELD = "nl.overheid.zaken.zaak-ontkoppeld"
-ZAAKOBJECT_EINDDATUM_BIJGEWERKT = "nl.overheid.zaken.zaakobject-einddatum-bijgewerkt"
+ZAAKOBJECT_BIJGEWERKT = "nl.overheid.zaken.zaakobject-bijgewerkt"
 
 
 def _get_zaak_uri(product: Product):
@@ -67,20 +69,28 @@ def send_zaak_ontkoppeld_cloudevent(product: Product, link_to: str):
     )
 
 
-def send_einddatum_bijgewerkt_cloudevent(product: Product):
+def send_zaakobject_bijgewerkt_cloudevent(
+    product: Product, link_to: str, changed_fields: Collection[str]
+):
     """
-    Send a PRODUCT_EINDDATUM_BIJGEWERKT cloudevent with transaction handling
+    Send a ZAAKOBJECT_BIJGEWERKT cloudevent with transaction handling
     (only runs on commit).
 
     :param product: Relevant product.
+    :param link_to: Full URL to the product.
+    :param changed_fields: Collection of changed fields.
     """
     if not settings.ENABLE_CLOUD_EVENTS:
         return
 
     transaction.on_commit(
         lambda: process_cloudevent(
-            event_type=ZAAKOBJECT_EINDDATUM_BIJGEWERKT,
+            event_type=ZAAKOBJECT_BIJGEWERKT,
             subject=product.zaak_uuid,
-            data={"zaak": _get_zaak_uri(product)},
+            data={
+                "zaak": _get_zaak_uri(product),
+                "linkTo": link_to,
+                "fields": list(changed_fields),
+            },
         )
     )
