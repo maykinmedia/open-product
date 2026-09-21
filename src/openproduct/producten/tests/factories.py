@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 import factory
 
 from ...producttypen.tests.factories import ProductTypeFactory
@@ -10,6 +12,11 @@ class ProductFactory(factory.django.DjangoModelFactory):
     prijs = factory.fuzzy.FuzzyDecimal(1, 10)
     frequentie = factory.fuzzy.FuzzyChoice(
         [x[0] for x in PrijsFrequentieChoices.choices]
+    )
+    aanvraag_zaak_urn = factory.Maybe(
+        "aanvraag_zaak_url",
+        yes_declaration=None,
+        no_declaration=f"urn:nld:maykin:openzaak:ztc:zaak:uuid:{uuid4()}",
     )
 
     class Meta:
