@@ -145,6 +145,7 @@ class ProductTypeAdmin(
         "publicatie_eind_datum",
         "samenvatting",
         "themas",
+        "facetten",
         "verbruiksobject_schema",
         "dataobject_schema",
         "keywords",
@@ -161,6 +162,7 @@ class ProductTypeAdmin(
             .get_queryset(request)
             .select_related("uniforme_product_naam")
             .prefetch_related("themas")
+            .prefetch_related("facetten")
         )
 
     @admin.display(description="thema's")
