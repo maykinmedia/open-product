@@ -1,25 +1,27 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.urls import reverse
+from django.http import JsonResponse
+from django.urls import path, reverse
 from django.utils.translation import gettext as _
 
 from ordered_model.admin import OrderedInlineModelAdminMixin
 from parler.forms import TranslatableModelForm
 from reversion_compare.admin import CompareVersionAdmin
 
+from openproduct.logging.admin_tools import AdminAuditLogMixin
 from openproduct.utils.admin import TranslatableAdmin
 from openproduct.utils.export import ExportMixin, export_csv, export_json
 
-from ...logging.admin_tools import AdminAuditLogMixin
 from ...utils.widgets import WysimarkWidget
-from ..models import ProductType, Thema
+from ..models import FacetWaarde, ProductType, Thema
 from ..models.producttype import ProductTypeTranslation
 from ..models.producttypepermission import PermissionModes
 from . import ActieInline
 from .bestand import BestandInline
 from .content import ContentElementInline
 from .externe_code import ExterneCodeInline
+from .facet import FacetInline
 from .filters import GepubliceerdFilter
 from .link import LinkInline
 from .parameter import ParameterInline
@@ -124,6 +126,7 @@ class ProductTypeAdmin(
         BestandInline,
         LinkInline,
         ContentElementInline,
+        FacetInline,
         ExterneCodeInline,
         ParameterInline,
         ActieInline,
@@ -145,7 +148,6 @@ class ProductTypeAdmin(
         "publicatie_eind_datum",
         "samenvatting",
         "themas",
-        "facetten",
         "verbruiksobject_schema",
         "dataobject_schema",
         "keywords",
@@ -164,6 +166,29 @@ class ProductTypeAdmin(
             .prefetch_related("themas")
             .prefetch_related("facetten")
         )
+
+    def get_urls(self):
+        custom = [
+            path(
+                "facet-waarden/",
+                self.admin_site.admin_view(self.facet_waarden_view),
+                name="{app_label}_{model_name}_facet_waarden".format(
+                    app_label=ProductType._meta.app_label,
+                    model_name=ProductType._meta.model_name,
+                ),
+            ),
+        ]
+        return custom + super().get_urls()
+
+    def facet_waarden_view(self, request):
+        facet_type_id = request.GET.get("facet_type", "")
+        warden_list = []
+        if facet_type_id.isdigit():
+            warden_list = [
+                {"id": w.pk, "name": str(w)}
+                for w in FacetWaarde.objects.filter(facet_type_id=facet_type_id)
+            ]
+        return JsonResponse(warden_list, safe=False)
 
     @admin.display(description="thema's")
     def display_themas(self, obj):
