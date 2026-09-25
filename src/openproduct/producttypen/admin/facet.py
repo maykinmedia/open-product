@@ -1,10 +1,52 @@
+from django import forms
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from reversion_compare.admin import CompareVersionAdmin
 
 from openproduct.logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 
 from ..models.facets import FacetType, FacetWaarde
+from ..models.producttype import ProductType
+
+ProductTypeFacet = ProductType.facetten.through
+
+
+class ProductTypeFacetForm(forms.ModelForm):
+    facet_type = forms.ModelChoiceField(
+        queryset=FacetType.objects.all(), label=_("facettype")
+    )
+
+    class Meta:
+        model = ProductTypeFacet
+        fields = ("facet_type", "facetwaarde")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance.pk:
+            self.initial["facet_type"] = self.instance.facetwaarde.facet_type_id
+
+        if self.is_bound:
+            facet_type_id = self.data.get(self.add_prefix("facet_type"))
+        else:
+            facet_type_id = self.initial.get("facet_type")
+
+        self.fields["facetwaarde"].queryset = (
+            FacetWaarde.objects.filter(facet_type_id=facet_type_id)
+            if str(facet_type_id or "").isdigit()
+            else FacetWaarde.objects.none()
+        )
+
+
+class FacetInline(admin.TabularInline):
+    model = ProductTypeFacet
+    form = ProductTypeFacetForm
+    formset = AuditLogInlineformset
+    extra = 1
+
+    class Media:
+        js = ("admin/js/admin/facet_inline.js",)
 
 
 class FacetWaardeInline(admin.TabularInline):
