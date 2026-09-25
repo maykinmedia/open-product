@@ -288,3 +288,56 @@ class TestProductAdminForm(TestCase):
         form = ProductAdminForm(data=data, instance=product)
         form.full_clean()
         self.assertEqual(form.errors, {})
+
+    def test_subtype(self):
+        producttype = ProductTypeFactory.create()
+
+        data = {
+            "producttype": producttype.id,
+            "status": "initieel",
+            "aanvraag_zaak_urn": "urn:nld:urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        }
+
+        with self.subTest("no pt.subtypen no p.subtype"):
+            form = ProductAdminForm(data=data)
+            form.full_clean()
+            self.assertEqual(form.errors, {})
+
+        with self.subTest("no pt.subtypen with p.subtype"):
+            form = ProductAdminForm(data=data | {"subtype": "spoed paspoort"})
+            form.full_clean()
+            self.assertEqual(
+                form.errors,
+                {
+                    "subtype": [
+                        "Subtype is verplicht en alleen toegestaan als het producttype subtypen heeft."
+                    ]
+                },
+            )
+
+        with self.subTest("with pt.subtypen no p.subtype"):
+            producttype.subtypen = ["spoed"]
+            producttype.save()
+            form = ProductAdminForm(data=data)
+            form.full_clean()
+            self.assertEqual(
+                form.errors,
+                {
+                    "subtype": [
+                        "Subtype is verplicht en alleen toegestaan als het producttype subtypen heeft."
+                    ]
+                },
+            )
+
+        with self.subTest("with pt.subtypen with correct p.subtype"):
+            form = ProductAdminForm(data=data | {"subtype": "spoed"})
+            form.full_clean()
+            self.assertEqual(form.errors, {})
+
+        with self.subTest("with pt.subtypen with incorrect p.subtype"):
+            form = ProductAdminForm(data=data | {"subtype": "blabla"})
+            form.full_clean()
+            self.assertEqual(
+                form.errors,
+                {"subtype": ["subtype is niet gedefinieerd op het producttype"]},
+            )

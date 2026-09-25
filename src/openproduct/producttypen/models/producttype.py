@@ -96,6 +96,14 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("Lijst van keywords waarop kan worden gezocht."),
     )
 
+    subtypen = ArrayField(
+        models.CharField(max_length=255, blank=True),
+        verbose_name=_("Subtypen"),
+        default=list,
+        blank=True,
+        help_text=_("Subtypen van het producttype"),
+    )
+
     uniforme_product_naam = models.ForeignKey(
         UniformeProductNaam,
         verbose_name=_("Uniforme Product naam"),

@@ -150,6 +150,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
@@ -523,6 +524,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "verbruiksobject_schema": {
                 "naam": "test",
@@ -756,6 +758,26 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     },
                 )
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_producttype_with_duplicate_keywords(self):
+        response = self.client.post(self.path, self.data | {"keywords": ["a", "a"]})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        keywords_error = get_validation_errors(response, "keywords")
+        self.assertIsNotNone(keywords_error)
+        self.assertEqual(keywords_error["code"], "invalid")
+        self.assertEqual(
+            keywords_error["reason"], _("Geen dubbele waarden toegestaan.")
+        )
+
+    def test_create_producttype_with_duplicate_subtypen(self):
+        response = self.client.post(self.path, self.data | {"subtypen": ["a", "a"]})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        subtypen_error = get_validation_errors(response, "subtypen")
+        self.assertIsNotNone(subtypen_error)
+        self.assertEqual(subtypen_error["code"], "invalid")
+        self.assertEqual(
+            subtypen_error["reason"], _("Geen dubbele waarden toegestaan.")
+        )
 
     def test_update_minimal_producttype(self):
         producttype = ProductTypeFactory.create()
@@ -1635,6 +1657,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype1.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype1.uniforme_product_naam.naam,
+                "subtypen": [],
                 "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
@@ -1678,6 +1701,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype2.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype2.uniforme_product_naam.naam,
+                "subtypen": [],
                 "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
@@ -1732,6 +1756,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
