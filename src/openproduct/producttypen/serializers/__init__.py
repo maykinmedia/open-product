@@ -1,5 +1,6 @@
 from .bestand import BestandSerializer
 from .externe_code import ExterneCodeSerializer
+from .facets import BaseFacetWaardeSerializer, FacetTypeSerializer
 from .jsonschema import JsonSchemaSerializer
 from .link import LinkSerializer
 from .parameter import ParameterSerializer
@@ -8,14 +9,16 @@ from .producttype import ProductTypeActuelePrijsSerializer, ProductTypeSerialize
 from .thema import ThemaSerializer
 
 __all__ = [
-    "LinkSerializer",
     "BestandSerializer",
-    "ThemaSerializer",
-    "PrijsSerializer",
-    "PrijsOptieSerializer",
-    "ProductTypeSerializer",
-    "ProductTypeActuelePrijsSerializer",
     "ExterneCodeSerializer",
-    "ParameterSerializer",
+    "FacetTypeSerializer",
+    "BaseFacetWaardeSerializer",
     "JsonSchemaSerializer",
+    "LinkSerializer",
+    "ParameterSerializer",
+    "PrijsOptieSerializer",
+    "PrijsSerializer",
+    "ProductTypeActuelePrijsSerializer",
+    "ProductTypeSerializer",
+    "ThemaSerializer",
 ]

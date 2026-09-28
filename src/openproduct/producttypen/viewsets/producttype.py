@@ -218,6 +218,7 @@ class ProductTypeFilterSet(FilterSet):
             "contacten__uuid": ["exact"],
             "locaties__uuid": ["exact"],
             "organisaties__uuid": ["exact"],
+            "facetten__uuid": ["exact"],
             "organisaties__code": ["exact"],
             "themas__uuid": ["exact"],
         }
