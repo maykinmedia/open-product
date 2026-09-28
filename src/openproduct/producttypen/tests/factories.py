@@ -7,6 +7,8 @@ from ..models import (
     ContentElement,
     ContentLabel,
     ExterneCode,
+    FacetType,
+    FacetWaarde,
     JsonSchema,
     Link,
     Parameter,
@@ -194,3 +196,28 @@ class ActieFactory(factory.django.DjangoModelFactory):
 class ProductTypePermissionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ProductTypePermission
+
+
+class FacetTypeFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: f"facettype {n}")
+    omschrijving = factory.Faker("sentence")
+
+    class Meta:
+        model = FacetType
+
+    @factory.post_generation
+    def waarden(self, create, total, **kwargs):
+        if not create or not total:
+            return
+
+        if total:
+            FacetWaardeFactory.create_batch(total, facet_type=self, **kwargs)
+
+
+class FacetWaardeFactory(factory.django.DjangoModelFactory):
+    facet_type = factory.SubFactory(FacetTypeFactory)
+    naam = factory.Sequence(lambda n: f"facetwaarde {n}")
+    omschrijving = factory.Faker("sentence")
+
+    class Meta:
+        model = FacetWaarde

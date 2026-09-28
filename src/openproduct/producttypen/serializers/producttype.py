@@ -17,6 +17,7 @@ from openproduct.locaties.serializers import (
     LocatieSerializer,
     OrganisatieSerializer,
 )
+from openproduct.producttypen.models import FacetWaarde
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
@@ -26,6 +27,7 @@ from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
 from .externe_code import ExterneCodeSerializer, NestedExterneCodeSerializer
+from .facets import ProductTypenFacettenSerializer
 from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
@@ -98,6 +100,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "stad": "Amsterdam",
                     }
                 ],
+                "facetten": [{}],  # TODO
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contacten": [
                     {
@@ -216,6 +219,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
                 "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
+                "facetten_uuids": ["49bd9f8e-239e-49f8-a65d-e1daacad1a72"],
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
                 "publicatie_start_datum": "2019-09-24",
@@ -269,6 +273,15 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         write_only=True,
         queryset=Thema.objects.all(),
         source="themas",
+    )
+
+    facetten = ProductTypenFacettenSerializer(many=True, read_only=True)
+    facetten_uuids = UUIDRelatedField(
+        many=True,
+        write_only=True,
+        queryset=FacetWaarde.objects.all(),
+        default=[],
+        source="facetten",
     )
 
     locaties = LocatieSerializer(many=True, read_only=True)
@@ -428,6 +441,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "locatie_uuids",
             "organisaties",
             "organisatie_uuids",
+            "facetten",
+            "facetten_uuids",
             "eigenaar",
             "contacten",
             "contact_uuids",
@@ -459,7 +474,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         ]
         validators = [
             DuplicateIdValidator(
-                ["thema_uuids", "locatie_uuids", "organisatie_uuids", "contacten_uuids"]
+                [
+                    "thema_uuids",
+                    "locatie_uuids",
+                    "organisatie_uuids",
+                    "contacten_uuids",
+                    "facetten_uuids",
+                ]
             ),
             PublicatieDateValidator(),
             DoelgroepUplValidator(),
