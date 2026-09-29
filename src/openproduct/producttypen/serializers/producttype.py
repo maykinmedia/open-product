@@ -538,6 +538,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     @transaction.atomic()
     def update(self, instance, validated_data):
         themas = validated_data.pop("themas", None)
+        facetten = validated_data.pop("facetten", None)
         locaties = validated_data.pop("locaties", None)
         organisaties = validated_data.pop("organisaties", None)
         contacten = validated_data.pop("contacten", None)
@@ -552,6 +553,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
         if themas:  # Er is minimaal één thema vereist
             instance.themas.set(themas)
+        if facetten is not None:
+            instance.facetten.set(facetten)
         if locaties is not None:
             instance.locaties.set(locaties)
         if organisaties is not None:
