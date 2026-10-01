@@ -537,6 +537,11 @@ googleapis-common-protos==1.72.0
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
+greenlet==3.5.6
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   playwright
 grpcio==1.76.0
     # via
     #   -c requirements/ci.txt
@@ -819,6 +824,10 @@ platformdirs==4.3.6
     #   -r requirements/ci.txt
     #   pylint
     #   virtualenv
+playwright==1.63.0
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
 pre-commit==4.2.0
     # via -r requirements/dev.in
 prometheus-client==0.21.0
@@ -871,6 +880,11 @@ pydantic-settings==2.9.1
     #   -r requirements/ci.txt
     #   bump-my-version
     #   django-setup-configuration
+pyee==13.0.1
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   playwright
 pygments==2.20.0
     # via
     #   -c requirements/ci.txt
@@ -1172,6 +1186,7 @@ typing-extensions==4.12.2
     #   psycopg
     #   pydantic
     #   pydantic-core
+    #   pyee
     #   pyopenssl
     #   qrcode
     #   rich-click

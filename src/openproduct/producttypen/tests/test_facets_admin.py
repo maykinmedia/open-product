@@ -1,9 +1,14 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from openproduct.accounts.tests.factories import UserFactory
+from maykin_2fa.test import disable_admin_mfa
+from playwright.sync_api import expect
 
+from openproduct.accounts.tests.factories import UserFactory
+from openproduct.utils.tests.e2e import DEFAULT_PASSWORD, E2ETestCase
+
+from ...producttypen.tests.factories import ProductTypeFactory
 from ..models import FacetType, FacetWaarde
 from .factories import FacetTypeFactory, FacetWaardeFactory
 
@@ -133,7 +138,6 @@ class TestFacetTypeAdmin(TestCase):
             "waarden-0-id": str(waarde.pk),
             "waarden-0-facet_type": str(facet_type.pk),
             "waarden-0-naam": "burgers",
-            # actief omitted -> False
         }
 
         url = reverse("admin:producttypen_facettype_change", args=[facet_type.pk])
@@ -161,3 +165,268 @@ class TestFacetTypeAdmin(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(FacetWaarde.objects.exists())
+
+
+@tag("playwright")
+@disable_admin_mfa()
+class TestProductTypeFacettenAdmin(E2ETestCase):
+    def setUp(self):
+        super().setUp()
+        self.user = UserFactory.create(superuser=True, password=DEFAULT_PASSWORD)
+        self.producttype = ProductTypeFactory.create(themas=1)
+        self.url = self.live_reverse(
+            "admin:producttypen_producttype_change", args=[self.producttype.pk]
+        )
+
+    def _row(self, page, index):
+        return (
+            page.locator(f"#id_ProductType_facetten-{index}-facet_type"),
+            page.locator(f"#id_ProductType_facetten-{index}-facetwaarde"),
+        )
+
+    def _real_options(self, select):
+        return select.locator("option:not([value=''])")
+
+    def _option_values(self, select):
+        return select.locator("option:not([value=''])").evaluate_all(
+            "opts => opts.map(o => o.value)"
+        )
+
+    def _save(self, page):
+        page.click("input[name=_save]")
+
+    def test_add_valid_facetwaarde(self):
+        facet_type_obj = FacetTypeFactory.create(waarden=1)
+        FacetTypeFactory.create(waarden=3)
+        facet_waarde_obj = facet_type_obj.waarden.first()
+
+        page = self.new_page(self.user)
+        page.goto(self.url)
+
+        facet_type, facet_waarde = self._row(page, 0)
+        facet_type.select_option(str(facet_type_obj.pk))
+        expected = [
+            str(pk) for pk in facet_type_obj.waarden.values_list("pk", flat=True)
+        ]
+        expect(self._real_options(facet_waarde)).to_have_count(len(expected))
+        facet_waarde.select_option(str(facet_waarde_obj.pk))
+
+        self.assertCountEqual(self._option_values(facet_waarde), expected)
+
+        self._save(page)
+        self.assertEqual(list(self.producttype.facetten.all()), [facet_waarde_obj])
+
+    def test_changing_facet_type_updates_facetwaarde_options(self):
+        facet_type_a = FacetTypeFactory.create(waarden=1)
+        facet_type_b = FacetTypeFactory.create(waarden=3)
+        facet_waarde_a = facet_type_a.waarden.first()
+
+        page = self.new_page(self.user)
+        page.goto(self.url)
+
+        facet_type, facet_waarde = self._row(page, 0)
+        # first select
+        facet_type.select_option(str(facet_type_a.pk))
+        expect(
+            facet_waarde.locator(f"option[value='{facet_waarde_a.pk}']")
+        ).to_be_attached()
+        facet_waarde.select_option(str(facet_waarde_a.pk))
+
+        # second select
+        facet_type.select_option(str(facet_type_b.pk))
+
+        expect(self._real_options(facet_waarde)).to_have_count(3)
+        expect(
+            facet_waarde.locator(f"option[value='{facet_waarde_a.pk}']")
+        ).to_have_count(0)
+
+        expect(facet_waarde).not_to_have_value(str(facet_waarde_a.pk))
+
+    def test_no_facet_type_selected_has_no_facetwaarde_options(self):
+        FacetTypeFactory.create(waarden=3)
+
+        page = self.new_page(self.user)
+        page.goto(self.url)
+
+        facet_type, facet_waarde = self._row(page, 0)
+        expect(self._real_options(facet_waarde)).to_have_count(0)
+
+    def test_facetwaarde_of_other_type_invalid(self):
+        facet_type_obj_1 = FacetTypeFactory.create(waarden=1)
+        facet_type_obj_2 = FacetTypeFactory.create(waarden=1)
+        facet_waarde = facet_type_obj_2.waarden.first()
+
+        page = self.new_page(self.user)
+        page.goto(self.url)
+
+        facet_type, facet_waarde = self._row(page, 0)
+        facet_type.select_option(str(facet_type_obj_1.pk))
+        expect(self._real_options(facet_waarde)).to_have_count(1)
+
+        self._save(page)
+
+        expect(page.locator(".errornote")).to_be_visible()
+        self.assertFalse(self.producttype.facetten.exists())
+
+    def test_validate_verplichte_facetten(self):
+        facet_type_obj_1 = FacetTypeFactory.create(waarden=1, verplicht=True)
+        facet_type_obj_2 = FacetTypeFactory.create(waarden=1, verplicht=False)
+
+        facet_waarde_obj = facet_type_obj_1.waarden.first()
+
+        page = self.new_page(self.user)
+        page.goto(self.url)
+
+        # select only for facet_type_obj_1
+        facet_type, facet_waarde = self._row(page, 0)
+        facet_type.select_option(str(facet_type_obj_1.pk))
+        facet_waarde.select_option(str(facet_waarde_obj.pk))
+
+        self._save(page)
+        self.assertEqual(list(self.producttype.facetten.all()), [facet_waarde_obj])
+
+        facet_type_obj_2.verplicht = True
+        facet_type_obj_2.save()
+
+        # just save producttype
+        page = self.new_page(self.user)
+        page.goto(self.url)
+        self._save(page)
+        expect(page.locator(".errornote")).to_be_visible()
+
+        expect(
+            page.locator("#ProductType_facetten-group .errorlist.nonform")
+        ).to_contain_text("Verplichte facettypes ontbreken: facettype 1.")
+
+        # select only for facet_type_obj_2
+        facet_type, facet_waarde = self._row(page, 1)
+        facet_waarde_obj = facet_type_obj_2.waarden.first()
+        facet_type.select_option(str(facet_type_obj_2.pk))
+        facet_waarde.select_option(str(facet_waarde_obj.pk))
+
+        self._save(page)
+        self.assertEqual(self.producttype.facetten.count(), 2)
+
+    def test_validate_meervoudig_facetten(self):
+        with self.subTest("multiple == True"):
+            facet_type_obj = FacetTypeFactory.create(
+                waarden=2, meervoudig_toegestaan=True
+            )
+
+            facet_waarde_1 = facet_type_obj.waarden.all()[0]
+            facet_waarde_2 = facet_type_obj.waarden.all()[1]
+
+            page = self.new_page(self.user)
+            page.goto(self.url)
+
+            # select only for facet_type_obj
+            facet_type, facet_waarde = self._row(page, 0)
+            facet_type.select_option(str(facet_type_obj.pk))
+            facet_waarde.select_option(str(facet_waarde_1.pk))
+
+            page.get_by_role(
+                "button", name="Nog een Producttype-facetwaarde-relatie toevoegen"
+            ).click()
+
+            facet_type, facet_waarde = self._row(page, 1)
+            facet_type.select_option(str(facet_type_obj.pk))
+            facet_waarde.select_option(str(facet_waarde_2.pk))
+
+            self._save(page)
+
+            self.assertEqual(self.producttype.facetten.count(), 2)
+
+        with self.subTest("multiple == False"):
+            facet_type_obj = FacetTypeFactory.create(
+                waarden=2, meervoudig_toegestaan=False
+            )
+
+            facet_waarde_1 = facet_type_obj.waarden.all()[0]
+            facet_waarde_2 = facet_type_obj.waarden.all()[1]
+
+            page = self.new_page(self.user)
+            page.goto(self.url)
+
+            # select only for facet_type_obj
+            facet_type, facet_waarde = self._row(page, 2)
+            facet_type.select_option(str(facet_type_obj.pk))
+            facet_waarde.select_option(str(facet_waarde_1.pk))
+
+            page.get_by_role(
+                "button", name="Nog een Producttype-facetwaarde-relatie toevoegen"
+            ).click()
+
+            facet_type, facet_waarde = self._row(page, 3)
+            facet_type.select_option(str(facet_type_obj.pk))
+            facet_waarde.select_option(str(facet_waarde_2.pk))
+
+            self._save(page)
+
+            expect(
+                page.locator("#ProductType_facetten-group .errorlist.nonform")
+            ).to_contain_text(
+                "Facettype 'facettype 1' staat maar één waarde toe, gekregen: facetwaarde 2, facetwaarde 3.",
+            )
+
+            self.assertEqual(self.producttype.facetten.count(), 2)
+
+            # reload the page and select only one
+            page = self.new_page(self.user)
+            page.goto(self.url)
+
+            facet_type, facet_waarde = self._row(page, 2)
+            facet_type.select_option(str(facet_type_obj.pk))
+            facet_waarde.select_option(str(facet_waarde_1.pk))
+
+            self._save(page)
+            # total for the same producttype ==  3
+            self.assertEqual(self.producttype.facetten.count(), 3)
+
+    def test_check_meervoudig_facettype(self):
+        # facet_type_obj.meervoudig_toegestaan == True
+        # producttype has multiple facetten
+
+        facet_type_obj = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=True)
+        self.producttype.facetten.add(*facet_type_obj.waarden.all())
+
+        page = self.new_page(self.user)
+        page.goto(
+            self.live_reverse(
+                "admin:producttypen_facettype_change", args=[facet_type_obj.pk]
+            )
+        )
+
+        checkbox = page.locator("#id_meervoudig_toegestaan")
+        expect(checkbox).to_be_checked()
+        checkbox.uncheck()
+
+        self._save(page)
+
+        expect(page.locator(".errornote")).to_be_visible()
+        expect(page.locator(".field-meervoudig_toegestaan .errorlist")).to_contain_text(
+            "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facet."
+        )
+        facet_type_obj.refresh_from_db()
+        self.assertTrue(facet_type_obj.meervoudig_toegestaan)
+
+        # producttype has only one facet
+        facet_type_obj = FacetTypeFactory.create(waarden=1, meervoudig_toegestaan=True)
+        self.producttype.facetten.add(*facet_type_obj.waarden.all())
+
+        page = self.new_page(self.user)
+        page.goto(
+            self.live_reverse(
+                "admin:producttypen_facettype_change", args=[facet_type_obj.pk]
+            )
+        )
+
+        checkbox = page.locator("#id_meervoudig_toegestaan")
+        expect(checkbox).to_be_checked()
+        checkbox.uncheck()
+
+        self._save(page)
+
+        expect(page.locator(".messagelist .success")).to_be_visible()
+        expect(page.locator(".errornote")).to_have_count(0)
+        facet_type_obj.refresh_from_db()
+        self.assertFalse(facet_type_obj.meervoudig_toegestaan)
