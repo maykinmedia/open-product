@@ -2,7 +2,7 @@ import datetime
 from uuid import uuid4
 
 from django.contrib.contenttypes.models import ContentType
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
@@ -2297,3 +2297,24 @@ class TestProductUrns(BaseApiTestCase):
 
         response = self.client.post(self.path, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @tag("gh-368")
+    @override_settings(REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False)
+    def test_patch_with_empty_url(self):
+        product = ProductFactory.create(aanvraag_zaak_url="")
+
+        path = reverse("product-detail", args=[product.uuid])
+        response = self.client.patch(path, {"prijs": "100"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    @tag("gh-368")
+    @override_settings(REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False)
+    def test_patch_with_empty_urn(self):
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="",
+            aanvraag_zaak_url="https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+        path = reverse("product-detail", args=[product.uuid])
+        response = self.client.patch(path, {"prijs": "100"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

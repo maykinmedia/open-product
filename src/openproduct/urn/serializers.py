@@ -66,10 +66,6 @@ class UrnMappingMixin:
         # both
         else:
             if not urn_mapping and not url_mapping:
-                # if settings.REQUIRE_URN_URL_MAPPING or settings.REQUIRE_URL_URN_MAPPING:
-                #     raise serializers.ValidationError(
-                #         {field: _("de url en/of urn hebben geen mapping")}
-                #     )
                 UrnMappingConfig.objects.create(urn=urn, url=url)
             elif urn_mapping and url_mapping:
                 if urn_mapping != url_mapping:
@@ -94,6 +90,6 @@ class UrnMappingMixin:
 
         value = attrs.get(field) or getattr(self.instance, field, None)
 
-        if value is None:
+        if not value:
             return None, None
         return value.rsplit(sep, 1)
