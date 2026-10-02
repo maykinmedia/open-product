@@ -5,6 +5,8 @@ from django.db.models import QuerySet
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
+from drf_spectacular.extensions import OpenApiSerializerFieldExtension
+from drf_spectacular.plumbing import append_meta
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -47,8 +49,24 @@ class UUIDRelatedField(serializers.RelatedField):
         return getattr(value, "uuid")
 
 
-@extend_schema_field({"type": "object", "additionalProperties": True})
 class JSONObjectField(serializers.JSONField):
     """
     serializers.JSONField does not have a type by default and will show `any` in api spec.
     """
+
+
+class JSONObjectFieldExtension(OpenApiSerializerFieldExtension):
+    """
+    Used instead of `extend_schema_field`, because that takes precedence over all field
+    extensions, which would make more specific (higher priority) extensions impossible.
+    """
+
+    target_class = JSONObjectField
+    priority = 0
+
+    def map_serializer_field(self, auto_schema, direction):
+        # extensions bypass the field meta (nullable, readOnly, etc.), so add it here
+        return append_meta(
+            {"type": "object", "additionalProperties": True},
+            auto_schema._get_serializer_field_meta(self.target, direction),
+        )
