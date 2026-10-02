@@ -387,11 +387,14 @@ class ProductTypeViewSet(
         "actuele_prijzen",
         summary="Alle ACTUELE PRIJZEN opvragen.",
         description="Geeft de huidige prijzen van alle PRODUCTTYPEN terug.",
+        responses=ProductTypeActuelePrijsSerializer(many=True),
     )
     @action(
         detail=False,
         serializer_class=ProductTypeActuelePrijsSerializer,
         url_path="actuele-prijzen",
+        pagination_class=None,
+        filter_backends=[],
     )
     def actuele_prijzen(self, request):
         producttypen = self.get_queryset().all()
