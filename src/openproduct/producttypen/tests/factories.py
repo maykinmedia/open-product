@@ -38,7 +38,7 @@ class UniformeProductNaamFactory(factory.django.DjangoModelFactory):
 
 
 class ProductTypeFactory(factory.django.DjangoModelFactory):
-    code = factory.Sequence(lambda n: f"producttype code {n}")
+    code = factory.Sequence(lambda n: f"PRODTYPE{n}")
     uniforme_product_naam = factory.SubFactory(UniformeProductNaamFactory)
     doelgroep = DoelgroepChoices.BURGERS
 
@@ -56,6 +56,14 @@ class ProductTypeFactory(factory.django.DjangoModelFactory):
         self.set_current_language("nl")
         self.samenvatting = extracted or fake.sentence()
         self.save()
+
+    @factory.post_generation
+    def themas(self, create, total, **kwargs):
+        if not create or not total:
+            return
+
+        themas = ThemaFactory.create_batch(total, **kwargs)
+        self.themas.add(*themas)
 
 
 class ThemaFactory(factory.django.DjangoModelFactory):
