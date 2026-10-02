@@ -8,7 +8,7 @@ from vng_api_common.tests import get_validation_errors
 from openproduct.producttypen.models import Actie, ProductType
 from openproduct.utils.tests.cases import BaseApiTestCase
 
-from ...models.enums import ActieTypeChoices, ActieMethodChoices
+from ...models.enums import ActieMethodChoices, ActieTypeChoices
 from ..factories import ActieFactory, ProductTypeFactory
 
 
@@ -249,13 +249,15 @@ class TestProductTypeActie(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "model_errors")
+        error = get_validation_errors(response, "direct_url")
 
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("Een actie moet een url of een dmn tabel hebben."),
+            _(
+                "Direct url is alleen toegestaan (en verplicht) bij een 'api' of `formulier` actie"
+            ),
         )
 
     def test_create_api_actie_without_method(self):

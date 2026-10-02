@@ -9,11 +9,11 @@ import jsonschema
 from jsonschema._format import draft202012_format_checker
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 
+from openproduct.producttypen.schemas import API_SCHEMA, DMN_SCHEMA, FORM_SCHEMA
 from openproduct.utils.validators import CustomRegexValidator
 
 from .dmn_config import DmnConfig
 from .enums import ActieTypeChoices, DoelgroepChoices
-from openproduct.producttypen.schemas import API_SCHEMA, DMN_SCHEMA, FORM_SCHEMA
 
 
 def check_meervoudig_facettype(facet_type):

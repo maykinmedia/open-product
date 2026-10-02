@@ -3,10 +3,12 @@
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+import json
 
 # -- Path setup --------------------------------------------------------------
 import os
 import sys
+from pathlib import Path
 
 # import django
 
@@ -23,6 +25,7 @@ import django
 
 from openproduct.setup import setup_env  # noqa isort:skip
 
+from openproduct.producttypen.schemas import API_SCHEMA, DMN_SCHEMA, FORM_SCHEMA
 
 setup_env()
 django.setup()
@@ -129,3 +132,17 @@ intersphinx_mapping = {
         None,
     ),
 }
+
+out = Path(__file__).parent / "_generated"
+out.mkdir(exist_ok=True)
+(out / "dmn_schema.json").write_text(
+    json.dumps(DMN_SCHEMA, indent=4, ensure_ascii=False)
+)
+
+(out / "api_schema.json").write_text(
+    json.dumps(API_SCHEMA, indent=4, ensure_ascii=False)
+)
+
+(out / "form_schema.json").write_text(
+    json.dumps(FORM_SCHEMA, indent=4, ensure_ascii=False)
+)
