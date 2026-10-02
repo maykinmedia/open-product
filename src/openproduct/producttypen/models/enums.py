@@ -20,3 +20,14 @@ class DoelgroepChoices(models.TextChoices):
         "bedrijven_en_instellingen",
         _("Bedrijven en instellingen"),
     )
+
+
+class ActieTypeChoices(models.TextChoices):
+    DMN = "dmn", _("DMN")
+    API = "api", _("**EXPERIMENTEEL** API")
+    FORMULIER = "formulier", _("Formulier")
+
+
+class ActieMethodChoices(models.TextChoices):
+    POST = "post", _("Post")
+    GET = "get", _("Get")

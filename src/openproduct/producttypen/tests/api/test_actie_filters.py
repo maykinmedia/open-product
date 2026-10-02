@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 
 from rest_framework import status
 
+from openproduct.producttypen.models.enums import ActieMethodChoices, ActieTypeChoices
 from openproduct.producttypen.tests.factories import ActieFactory, DmnConfigFactory
 from openproduct.utils.tests.cases import BaseApiTestCase
 
@@ -58,10 +59,12 @@ class TestActieFilters(BaseApiTestCase):
         ActieFactory.create(
             direct_url="https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
             dmn_config=None,
+            type=ActieTypeChoices.FORMULIER,
         )
         ActieFactory.create(
             direct_url="https://gemeente.a.forms/a4dcf122-e224-48f9-8c09-79e5bbb10154",
             dmn_config=None,
+            type=ActieTypeChoices.FORMULIER,
         )
 
         response = self.client.get(
@@ -206,3 +209,49 @@ class TestActieFilters(BaseApiTestCase):
             self.assertEqual(
                 response.data["results"][0]["producttype_uuid"], producttype_uuid
             )
+
+    def test_type_filter(self):
+        ActieFactory.create(
+            direct_url="https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            type=ActieTypeChoices.API,
+        )
+        ActieFactory.create(
+            direct_url="https://gemeente.a.forms/a4dcf122-e224-48f9-8c09-79e5bbb10154",
+            type=ActieTypeChoices.FORMULIER,
+        )
+
+        response = self.client.get(
+            self.path,
+            {"type": "api"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            response.data["results"][0]["url"],
+            "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+        )
+
+    def test_method_filter(self):
+        ActieFactory.create(
+            direct_url="https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            type=ActieTypeChoices.API,
+            method=ActieMethodChoices.GET,
+        )
+        ActieFactory.create(
+            direct_url="https://gemeente.a.api/a4dcf122-e224-48f9-8c09-79e5bbb10154",
+            type=ActieTypeChoices.API,
+            method=ActieMethodChoices.POST,
+        )
+
+        response = self.client.get(
+            self.path,
+            {"method": "get"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(
+            response.data["results"][0]["url"],
+            "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+        )

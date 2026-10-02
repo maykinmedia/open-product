@@ -24,7 +24,7 @@ from ..models import (
     ZaakType,
 )
 from ..models.dmn_config import DmnConfig
-from ..models.enums import DoelgroepChoices
+from ..models.enums import ActieTypeChoices, DoelgroepChoices
 
 fake = Faker()
 
@@ -196,6 +196,7 @@ class ActieFactory(factory.django.DjangoModelFactory):
     naam = factory.Sequence(lambda n: f"actie {n}")
     dmn_config = factory.SubFactory(DmnConfigFactory)
     dmn_tabel_id = factory.Faker("word")
+    type = ActieTypeChoices.DMN
 
     class Meta:
         model = Actie

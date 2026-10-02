@@ -7,8 +7,14 @@ import reversion
 from openproduct.utils.models import BaseModel
 
 from .dmn_config import DmnConfig
+from .enums import ActieMethodChoices, ActieTypeChoices
 from .producttype import ProductType
-from .validators import validate_actie_url_xor_dmn, validate_dmn_mapping
+from .validators import (
+    validate_actie_direct_url,
+    validate_actie_dmn,
+    validate_actie_mapping,
+    validate_actie_method,
+)
 
 
 @reversion.register(follow=("producttype",))
@@ -25,6 +31,21 @@ class Actie(BaseModel):
         on_delete=models.CASCADE,
         help_text=_("Het producttype waarbij deze actie hoort."),
         related_name="acties",
+    )
+
+    type = models.CharField(
+        verbose_name=_("type"),
+        max_length=40,
+        choices=ActieTypeChoices.choices,
+        help_text=_("het type waarde de actie."),
+    )
+
+    method = models.CharField(
+        verbose_name=_("method"),
+        max_length=40,
+        choices=ActieMethodChoices.choices,
+        help_text=_("de method de api actie."),
+        blank=True,
     )
 
     direct_url = models.URLField(
@@ -54,24 +75,28 @@ class Actie(BaseModel):
         _("mapping"),
         null=True,
         blank=True,
-        help_text=_("De mapping tussen de velden in Open Product & DMN variabele."),
+        help_text=_("De mapping van de velden die nodig is zijn de actie."),
         encoder=DjangoJSONEncoder,
-        validators=[validate_dmn_mapping],
     )
 
     @property
     def url(self):
-        return (
-            f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
-            if self.dmn_config and self.dmn_tabel_id
-            else self.direct_url
-        )
+        match self.type:
+            case ActieTypeChoices.DMN:
+                return (
+                    f"{self.dmn_config.tabel_endpoint.rstrip('/')}/{self.dmn_tabel_id}"
+                )
+            case _:
+                return self.direct_url
 
     def __str__(self):
         return f"{self.naam} {self.url}"
 
     def clean(self):
-        validate_actie_url_xor_dmn(self.direct_url, self.dmn_config, self.dmn_tabel_id)
+        validate_actie_mapping(self.mapping, self.type)
+        validate_actie_direct_url(self.direct_url, self.type)
+        validate_actie_method(self.method, self.type)
+        validate_actie_dmn(self.dmn_config, self.dmn_tabel_id, self.type)
 
     class Meta:
         verbose_name = _("actie")
