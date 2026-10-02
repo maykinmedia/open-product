@@ -5391,6 +5391,8 @@ paths:
                       code: PT-12345
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - spoed
                       keywords:
                       - auto
                       interne_opmerkingen: interne opmerkingen...
@@ -5461,6 +5463,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -5612,6 +5616,8 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -5798,6 +5804,8 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -5875,6 +5883,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6026,6 +6036,8 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6105,6 +6117,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6255,6 +6269,8 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -9586,6 +9602,12 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          description: Subtypen van het producttype
         keywords:
           type: array
           items:
@@ -9921,6 +9943,12 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          description: Subtypen van het producttype
         keywords:
           type: array
           items:
@@ -10099,6 +10127,12 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          description: Subtypen van het producttype
         keywords:
           type: array
           items:

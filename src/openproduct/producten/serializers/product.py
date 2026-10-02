@@ -21,6 +21,7 @@ from openproduct.producten.serializers.validators import (
     DataObjectValidator,
     DateValidator,
     StatusValidator,
+    SubTypeValidator,
     VerbruiksObjectValidator,
 )
 from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
@@ -75,6 +76,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "keywords",
             "uniforme_product_naam",
             "toegestane_statussen",
+            "subtypen",
             "gepubliceerd",
             "publicatie_start_datum",
             "publicatie_eind_datum",
@@ -97,6 +99,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "eind_datum": "2026-12-01",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
                 "update_datum": "2019-08-24T14:15:22Z",
+                "subtype": "spoed",
                 "producttype": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                     "naam": "Parkeervergunning",
@@ -164,6 +167,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "subtype": "spoed",
                 "gepubliceerd": False,
                 "eigenaren": [
                     {"bsn": "111222333"},
@@ -220,6 +224,7 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
             "aanmaak_datum",
             "update_datum",
             "producttype",
+            "subtype",
             "producttype_uuid",
             "gepubliceerd",
             "eigenaren",
@@ -239,6 +244,7 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
             StatusValidator(),
             VerbruiksObjectValidator(),
             DataObjectValidator(),
+            SubTypeValidator(),
             NestedObjectsValidator("eigenaren", Eigenaar),
         ]
 
