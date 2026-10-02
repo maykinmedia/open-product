@@ -173,6 +173,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "publicatie_start_datum": None,
             "publicatie_eind_datum": None,
             "keywords": [],
+            "facetten": [],
             "themas": [
                 {
                     "uuid": str(thema.uuid),
@@ -613,6 +614,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "publicatie_start_datum": None,
             "publicatie_eind_datum": None,
             "keywords": [],
+            "facetten": [],
             "themas": [
                 {
                     "uuid": str(thema.uuid),
@@ -1658,6 +1660,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "aanmaak_datum": producttype1.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype1.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "facetten": [],
                 "themas": [
                     {
                         "uuid": str(self.thema.uuid),
@@ -1701,6 +1704,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "aanmaak_datum": producttype2.aanmaak_datum.astimezone().isoformat(),
                 "update_datum": producttype2.update_datum.astimezone().isoformat(),
                 "keywords": [],
+                "facetten": [],
                 "themas": [
                     {
                         "uuid": str(self.thema.uuid),
@@ -1755,6 +1759,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "zaaktypen": [],
             "verzoektypen": [],
             "processen": [],
+            "facetten": [],
             "themas": [
                 {
                     "uuid": str(self.thema.uuid),

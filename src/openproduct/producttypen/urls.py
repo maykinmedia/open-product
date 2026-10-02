@@ -10,6 +10,7 @@ from openproduct.producttypen.viewsets import (
     BestandViewSet,
     ContentElementViewSet,
     ContentLabelViewSet,
+    FacetTypeViewSet,
     JsonSchemaViewSet,
     LinkViewSet,
     PrijsViewSet,
@@ -33,6 +34,7 @@ ProductTypenRouter.register("schemas", JsonSchemaViewSet, basename="schema")
 
 ProductTypenRouter.register("content", ContentElementViewSet, basename="content")
 ProductTypenRouter.register("acties", ActieViewSet, basename="actie")
+ProductTypenRouter.register("facettypen", FacetTypeViewSet, basename="facet_type")
 
 ProductTypenRouter.register(
     "contentlabels", ContentLabelViewSet, basename="contentlabel"

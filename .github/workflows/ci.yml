@@ -19,6 +19,8 @@ env:
   DJANGO_SETTINGS_MODULE: openproduct.conf.ci
   DB_PASSWORD: ''
   DB_USER: postgres
+  SECRET_KEY: dummy
+  CELERY_BROKER_URL: 'redis://localhost:6379/0'
 
 jobs:
   # determine changed files to decide if certain jobs can be skipped or not
@@ -77,12 +79,18 @@ jobs:
           python-version: '3.12'
           setup-node: true
 
-      - name: Run tests
+      - name: Run Django tests (without Playwright)
         run: |
           python src/manage.py collectstatic --noinput --link
-          coverage run src/manage.py test src
-        env:
-          SECRET_KEY: dummy
+          coverage run src/manage.py test src --exclude-tag=playwright
+
+      - name: Install Playwright browsers
+        if: ${{ matrix.postgres == '17' && matrix.postgis == '3.5' && matrix.use_pooling == false }}
+        run: playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        if: ${{ matrix.postgres == '17' && matrix.postgis == '3.5' && matrix.use_pooling == false }}
+        run: coverage run -a src/manage.py test src --tag=playwright
 
       - name: Publish coverage report
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0

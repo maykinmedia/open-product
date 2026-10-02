@@ -7,6 +7,8 @@ from ..models import (
     ContentElement,
     ContentLabel,
     ExterneCode,
+    FacetType,
+    FacetWaarde,
     JsonSchema,
     Link,
     Parameter,
@@ -36,7 +38,7 @@ class UniformeProductNaamFactory(factory.django.DjangoModelFactory):
 
 
 class ProductTypeFactory(factory.django.DjangoModelFactory):
-    code = factory.Sequence(lambda n: f"producttype code {n}")
+    code = factory.Sequence(lambda n: f"PRODTYPE{n}")
     uniforme_product_naam = factory.SubFactory(UniformeProductNaamFactory)
     doelgroep = DoelgroepChoices.BURGERS
 
@@ -54,6 +56,14 @@ class ProductTypeFactory(factory.django.DjangoModelFactory):
         self.set_current_language("nl")
         self.samenvatting = extracted or fake.sentence()
         self.save()
+
+    @factory.post_generation
+    def themas(self, create, total, **kwargs):
+        if not create or not total:
+            return
+
+        themas = ThemaFactory.create_batch(total, **kwargs)
+        self.themas.add(*themas)
 
 
 class ThemaFactory(factory.django.DjangoModelFactory):
@@ -194,3 +204,28 @@ class ActieFactory(factory.django.DjangoModelFactory):
 class ProductTypePermissionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ProductTypePermission
+
+
+class FacetTypeFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: f"facettype {n}")
+    omschrijving = factory.Faker("sentence")
+
+    class Meta:
+        model = FacetType
+
+    @factory.post_generation
+    def waarden(self, create, total, **kwargs):
+        if not create or not total:
+            return
+
+        if total:
+            FacetWaardeFactory.create_batch(total, facet_type=self, **kwargs)
+
+
+class FacetWaardeFactory(factory.django.DjangoModelFactory):
+    facet_type = factory.SubFactory(FacetTypeFactory)
+    naam = factory.Sequence(lambda n: f"facetwaarde {n}")
+    omschrijving = factory.Faker("sentence")
+
+    class Meta:
+        model = FacetWaarde

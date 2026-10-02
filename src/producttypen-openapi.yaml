@@ -2622,6 +2622,168 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailError'
           description: ''
+  /facettypen:
+    get:
+      operationId: facettypen_list
+      description: Deze lijst kan gefilterd worden met query-string parameters.
+      summary: Alle facetten opvragen.
+      parameters:
+      - in: query
+        name: facetteerbaar
+        schema:
+          type: boolean
+      - in: query
+        name: meervoudig_toegestaan
+        schema:
+          type: boolean
+      - in: query
+        name: naam__iexact
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
+          maximum: 500).'
+        schema:
+          type: integer
+      - in: query
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: verplicht
+        schema:
+          type: boolean
+      - in: query
+        name: waarden__uuid
+        schema:
+          type: string
+          format: uuid
+        description: Facettypes met een facetwaarde met deze uuid
+      tags:
+      - facettypen
+      security:
+      - OpenID: []
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFacetTypeList'
+          description: ''
+        '400':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequestExample:
+                  value:
+                    veld_a:
+                    - Dit veld is vereist.
+                    veld_b:
+                    - ‘<uuid>’ is geen geldige UUID.
+                  summary: Bad request example
+                  description: Errors worden per veld teruggegeven. Hieronder volgt
+                    een voorbeeld.
+          description: Validation error
+        '403':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailError'
+          description: ''
+  /facettypen/{uuid}:
+    get:
+      operationId: facettypen_retrieve
+      description: Add support for audit trails to the :class:`rest_framework.mixins.RetrieveModelMixin`.
+      summary: Een specifieke facet opvragen.
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - facettypen
+      security:
+      - OpenID: []
+      - tokenAuth: []
+      responses:
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacetType'
+          description: ''
+        '400':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequestExample:
+                  value:
+                    veld_a:
+                    - Dit veld is vereist.
+                    veld_b:
+                    - ‘<uuid>’ is geen geldige UUID.
+                  summary: Bad request example
+                  description: Errors worden per veld teruggegeven. Hieronder volgt
+                    een voorbeeld.
+          description: Validation error
+        '403':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailError'
+          description: ''
   /links:
     get:
       operationId: links_list
@@ -5001,6 +5163,11 @@ paths:
           type: string
         description: Producttype codes uit externe omgevingen. [naam:code]
       - in: query
+        name: facetten__uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: gepubliceerd
         schema:
           type: boolean
@@ -5310,6 +5477,18 @@ paths:
                         huisnummer: '151'
                         postcode: 1043 GR
                         stad: Amsterdam
+                      facetten:
+                      - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
+                        naam: facetwaarde 1
+                        omschrijving: facetwaarde omschrijving
+                        actief: true
+                        facet_type:
+                          uuid: 27e7277f-226d-4345-b61e-e3a96d1b891a
+                          naam: facettype 1
+                          omschrijving: facet_type omschrijving
+                          facetteerbaar: false
+                          meervoudig_toegestaan: false
+                          verplicht: false
                       eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                       contacten:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -5451,6 +5630,8 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  facetten_uuids:
+                  - 49bd9f8e-239e-49f8-a65d-e1daacad1a72
                   eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
@@ -5531,6 +5712,18 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    facetten:
+                    - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
+                      naam: facetwaarde 1
+                      omschrijving: facetwaarde omschrijving
+                      actief: true
+                      facet_type:
+                        uuid: 27e7277f-226d-4345-b61e-e3a96d1b891a
+                        naam: facettype 1
+                        omschrijving: facet_type omschrijving
+                        facetteerbaar: false
+                        meervoudig_toegestaan: false
+                        verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -5717,6 +5910,18 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    facetten:
+                    - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
+                      naam: facetwaarde 1
+                      omschrijving: facetwaarde omschrijving
+                      actief: true
+                      facet_type:
+                        uuid: 27e7277f-226d-4345-b61e-e3a96d1b891a
+                        naam: facettype 1
+                        omschrijving: facet_type omschrijving
+                        facetteerbaar: false
+                        meervoudig_toegestaan: false
+                        verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -5865,6 +6070,8 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  facetten_uuids:
+                  - 49bd9f8e-239e-49f8-a65d-e1daacad1a72
                   eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
@@ -5945,6 +6152,18 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    facetten:
+                    - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
+                      naam: facetwaarde 1
+                      omschrijving: facetwaarde omschrijving
+                      actief: true
+                      facet_type:
+                        uuid: 27e7277f-226d-4345-b61e-e3a96d1b891a
+                        naam: facettype 1
+                        omschrijving: facet_type omschrijving
+                        facetteerbaar: false
+                        meervoudig_toegestaan: false
+                        verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -6095,6 +6314,8 @@ paths:
                   - 235de068-a9c5-4eda-b61d-92fd7f09e9dc
                   organisatie_uuids:
                   - 2c2694f1-f948-4960-8312-d51c3a0e540f
+                  facetten_uuids:
+                  - 49bd9f8e-239e-49f8-a65d-e1daacad1a72
                   eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                   contact_uuids:
                   - 6863d699-460d-4c1e-9297-16812d75d8ca
@@ -6174,6 +6395,18 @@ paths:
                       huisnummer: '151'
                       postcode: 1043 GR
                       stad: Amsterdam
+                    facetten:
+                    - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
+                      naam: facetwaarde 1
+                      omschrijving: facetwaarde omschrijving
+                      actief: true
+                      facet_type:
+                        uuid: 27e7277f-226d-4345-b61e-e3a96d1b891a
+                        naam: facettype 1
+                        omschrijving: facet_type omschrijving
+                        facetteerbaar: false
+                        meervoudig_toegestaan: false
+                        verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -8066,6 +8299,71 @@ components:
       required:
       - naam
       - producttype_uuid
+    BaseFacetType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        naam:
+          type: string
+          description: Naam van het facet
+          maxLength: 255
+        omschrijving:
+          type: string
+          description: Omschrijving van facet
+        facetteerbaar:
+          type: boolean
+          description: Kun je er op filteren, flexibiliteit!
+        meervoudig_toegestaan:
+          type: boolean
+          description: Kan facet meerdere keren voorkomen op producttype, bv doelgroepen
+        verplicht:
+          type: boolean
+          description: Verplicht voor producttype
+      required:
+      - naam
+      - uuid
+    BaseFacetTypeRequest:
+      type: object
+      properties:
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het facet
+          maxLength: 255
+        omschrijving:
+          type: string
+          description: Omschrijving van facet
+        facetteerbaar:
+          type: boolean
+          description: Kun je er op filteren, flexibiliteit!
+        meervoudig_toegestaan:
+          type: boolean
+          description: Kan facet meerdere keren voorkomen op producttype, bv doelgroepen
+        verplicht:
+          type: boolean
+          description: Verplicht voor producttype
+      required:
+      - naam
+    BaseFacetWaarde:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        naam:
+          type: string
+          maxLength: 255
+        omschrijving:
+          type: string
+        actief:
+          type: boolean
+      required:
+      - naam
+      - uuid
     Bestand:
       type: object
       properties:
@@ -8291,6 +8589,38 @@ components:
       required:
       - veld_a
       - veld_b
+    FacetType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        naam:
+          type: string
+          description: Naam van het facet
+          maxLength: 255
+        omschrijving:
+          type: string
+          description: Omschrijving van facet
+        facetteerbaar:
+          type: boolean
+          description: Kun je er op filteren, flexibiliteit!
+        meervoudig_toegestaan:
+          type: boolean
+          description: Kan facet meerdere keren voorkomen op producttype, bv doelgroepen
+        verplicht:
+          type: boolean
+          description: Verplicht voor producttype
+        facetten_waarden:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseFacetWaarde'
+          readOnly: true
+      required:
+      - facetten_waarden
+      - naam
+      - uuid
     JsonSchema:
       type: object
       properties:
@@ -9094,6 +9424,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContentLabel'
+    PaginatedFacetTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacetType'
     PaginatedJsonSchemaList:
       type: object
       required:
@@ -9521,6 +9874,13 @@ components:
             format: uuid
           writeOnly: true
           default: []
+        facetten_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          default: []
         eigenaar:
           type: string
           nullable: true
@@ -9823,6 +10183,11 @@ components:
           items:
             $ref: '#/components/schemas/Organisatie'
           readOnly: true
+        facetten:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTypenFacetten'
+          readOnly: true
         eigenaar:
           type: string
           nullable: true
@@ -9950,6 +10315,7 @@ components:
       - contacten
       - dataobject_schema
       - doelgroep
+      - facetten
       - gepubliceerd
       - links
       - locaties
@@ -10028,6 +10394,13 @@ components:
           writeOnly: true
           default: []
         organisatie_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          writeOnly: true
+          default: []
+        facetten_uuids:
           type: array
           items:
             type: string
@@ -10159,6 +10532,42 @@ components:
       required:
       - naam
       - samenvatting
+    ProductTypenFacetten:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        naam:
+          type: string
+          maxLength: 255
+        omschrijving:
+          type: string
+        actief:
+          type: boolean
+        facet_type:
+          $ref: '#/components/schemas/BaseFacetType'
+      required:
+      - facet_type
+      - naam
+      - uuid
+    ProductTypenFacettenRequest:
+      type: object
+      properties:
+        naam:
+          type: string
+          minLength: 1
+          maxLength: 255
+        omschrijving:
+          type: string
+        actief:
+          type: boolean
+        facet_type:
+          $ref: '#/components/schemas/BaseFacetTypeRequest'
+      required:
+      - facet_type
+      - naam
     Thema:
       type: object
       properties:
