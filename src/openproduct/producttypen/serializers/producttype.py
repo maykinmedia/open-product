@@ -17,12 +17,15 @@ from openproduct.locaties.serializers import (
     LocatieSerializer,
     OrganisatieSerializer,
 )
-from openproduct.producttypen.models import FacetWaarde
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
-from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models import FacetWaarde, JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models.validators import (
+    validate_meervoudig_facetten,
+    validate_verplichte_facetten,
+)
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
@@ -100,7 +103,22 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "stad": "Amsterdam",
                     }
                 ],
-                "facetten": [{}],  # TODO
+                "facetten": [
+                    {
+                        "uuid": "66e6e258-ef5f-4859-a774-89ad2756c9ad",
+                        "naam": "facetwaarde 1",
+                        "omschrijving": "facetwaarde omschrijving",
+                        "actief": True,
+                        "facet_type": {
+                            "uuid": "27e7277f-226d-4345-b61e-e3a96d1b891a",
+                            "naam": "facettype 1",
+                            "omschrijving": "facet_type omschrijving",
+                            "facetteerbaar": False,
+                            "meervoudig_toegestaan": False,
+                            "verplicht": False,
+                        },
+                    }
+                ],
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contacten": [
                     {
@@ -490,6 +508,11 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if len(themas) == 0:
             raise serializers.ValidationError(_("Er is minimaal één thema vereist."))
         return themas
+
+    def validate_facetten_uuids(self, facetten: list[FacetWaarde]) -> list[FacetWaarde]:
+        validate_meervoudig_facetten(facetten)
+        validate_verplichte_facetten(facetten)
+        return facetten
 
     @transaction.atomic()
     def create(self, validated_data):

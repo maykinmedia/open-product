@@ -1,5 +1,5 @@
 import os
-from typing import Any, Literal  # noqa
+from typing import Any, Literal, cast  # noqa
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings, tag
@@ -11,6 +11,7 @@ from playwright.sync_api import (
     BrowserType,
     Page,
     Playwright,
+    StorageState,
     TimeoutError as PlaywrightTimeoutError,
     sync_playwright,
 )
@@ -18,7 +19,7 @@ from playwright.sync_api import (
 type SupportedBrowser = Literal["chromium", "firefox", "webkit"]
 
 HEADLESS = "NO_E2E_HEADLESS" not in os.environ
-BROWSER: SupportedBrowser = os.getenv("E2E_DRIVER", default="chromium")
+BROWSER = cast(SupportedBrowser, os.getenv("E2E_DRIVER", default="chromium"))
 BROWSER_PERMISSIONS: dict[SupportedBrowser, list[str]] = {
     "chromium": ["clipboard-read", "clipboard-write"],
 }
@@ -66,7 +67,7 @@ class E2ETestCase(StaticLiveServerTestCase):
             kwargs["permissions"] = permissions
         return kwargs
 
-    def get_user_login_state(self, user, password=DEFAULT_PASSWORD) -> dict:
+    def get_user_login_state(self, user, password=DEFAULT_PASSWORD) -> StorageState:
         context = self.browser.new_context(**self._context_kwargs())
         try:
             page = context.new_page()

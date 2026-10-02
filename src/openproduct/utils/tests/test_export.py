@@ -185,6 +185,7 @@ class TestExport(TestCase):
                     "locaties_ids": [self.locatie1.id, self.locatie2.id],
                     "organisaties_ids": [self.organisatie1.id, self.organisatie2.id],
                     "themas_ids": [],
+                    "facetten_ids": [],
                     "uniforme_product_naam_id": self.upn.id,
                 }
             ],
