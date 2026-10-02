@@ -8,6 +8,10 @@ from openproduct.logging.admin_tools import AdminAuditLogMixin, AuditLogInlinefo
 
 from ..models.facets import FacetType, FacetWaarde
 from ..models.producttype import ProductType
+from ..models.validators import (
+    validate_meervoudig_facetten,
+    validate_verplichte_facetten,
+)
 
 ProductTypeFacet = ProductType.facetten.through
 
@@ -39,10 +43,27 @@ class ProductTypeFacetForm(forms.ModelForm):
         )
 
 
+class FacetInlineFormSet(AuditLogInlineformset):
+    def clean(self):
+        super().clean()
+
+        facetwaarden = []
+        for form in self.forms:
+            if self._should_delete_form(form):
+                continue
+
+            facetwaarde = form.cleaned_data.get("facetwaarde")
+            if facetwaarde:
+                facetwaarden.append(facetwaarde)
+
+        validate_meervoudig_facetten(facetwaarden)
+        validate_verplichte_facetten(facetwaarden)
+
+
 class FacetInline(admin.TabularInline):
     model = ProductTypeFacet
     form = ProductTypeFacetForm
-    formset = AuditLogInlineformset
+    formset = FacetInlineFormSet
     extra = 1
 
     class Media:

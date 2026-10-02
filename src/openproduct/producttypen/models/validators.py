@@ -1,4 +1,7 @@
+from collections import defaultdict
+
 from django.core.exceptions import ValidationError
+from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
 import jsonschema
@@ -7,6 +10,73 @@ from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 from openproduct.utils.validators import CustomRegexValidator
 
 from .enums import DoelgroepChoices
+
+
+def check_meervoudig_facettype(facet_type):
+    """
+    Prevent disabling ``meervoudig_toegestaan`` while product
+    types still have multiple values of this facettype.
+    """
+
+    from openproduct.producttypen.models import ProductType
+
+    if not facet_type.pk or facet_type.meervoudig_toegestaan:
+        return
+
+    if (
+        ProductType.objects.filter(facetten__facet_type=facet_type)
+        .annotate(total=Count("facetten"))
+        .filter(total__gt=1)
+        .exists()
+    ):
+        raise ValidationError(
+            {
+                "meervoudig_toegestaan": _(
+                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facet."
+                )
+            }
+        )
+
+
+def validate_verplichte_facetten(facet_waarden):
+    """
+    Ensure all mandatory (``verplicht``) facettypes are present in ``facet_waarden``.
+    """
+
+    from openproduct.producttypen.models import FacetType
+
+    facet_types_ids = {waarde.facet_type_id for waarde in facet_waarden}
+    missing = FacetType.objects.filter(verplicht=True).exclude(pk__in=facet_types_ids)
+    if missing.exists():
+        raise ValidationError(
+            _("Verplichte facettypes ontbreken: %(namen)s.")
+            % {"namen": ", ".join(missing.values_list("naam", flat=True))}
+        )
+
+
+def validate_meervoudig_facetten(facet_waarden):
+    """
+    Ensure single-value facettypes have at most one value in ``facet_waarden``.
+    """
+
+    dict_type = defaultdict(list)
+    for waarde in facet_waarden:
+        dict_type[waarde.facet_type].append(waarde)
+
+    errors = [
+        ValidationError(
+            _("Facettype '%(type)s' staat maar één waarde toe, gekregen: %(waarden)s."),
+            code="facet_meervoudig_niet_toegestaan",
+            params={
+                "type": facet_type.naam,
+                "waarden": ", ".join(w.naam for w in waarden),
+            },
+        )
+        for facet_type, waarden in dict_type.items()
+        if not facet_type.meervoudig_toegestaan and len(waarden) > 1
+    ]
+    if errors:
+        raise ValidationError(errors)
 
 
 def validate_prijs_optie_xor_regel(optie_count: int, regel_count: int):

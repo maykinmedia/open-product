@@ -57,6 +57,14 @@ class ProductTypeFactory(factory.django.DjangoModelFactory):
         self.samenvatting = extracted or fake.sentence()
         self.save()
 
+    @factory.post_generation
+    def themas(self, create, total, **kwargs):
+        if not create or not total:
+            return
+
+        themas = ThemaFactory.create_batch(total, **kwargs)
+        self.themas.add(*themas)
+
 
 class ThemaFactory(factory.django.DjangoModelFactory):
     naam = factory.Sequence(lambda n: f"thema {n}")

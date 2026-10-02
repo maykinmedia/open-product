@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from openproduct.producttypen.models.validators import check_meervoudig_facettype
 from openproduct.utils.models import BaseModel
 
 
@@ -40,6 +41,10 @@ class FacetType(BaseModel):
 
     def __str__(self):
         return self.naam
+
+    def clean(self):
+        super().clean()
+        check_meervoudig_facettype(self)
 
 
 class FacetWaarde(BaseModel):
