@@ -171,52 +171,7 @@ custom_settings = {
 - Via `producttypen/actuele-prijzen` en `producttypen/<uuid>/actuele-prijs` kunnen de huidige prijzen worden opgehaald.
 
 ### prijs regel mapping
-- Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
-    ```json
-    {
-        "type": "object",
-        "definitions": {
-            "classType": {
-                "type": "string",
-                "enum": [
-                    "String",
-                    "Integer",
-                    "Double",
-                    "Boolean",
-                    "Date",
-                    "Long",
-                ],
-            }
-        },
-        "properties": {
-            "static": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["name", "classType", "value"],
-                    "properties": {
-                        "name": {"type": "string"},
-                        "value": {"type": "string"},
-                        "classType": {"$ref": "#/definitions/classType"},
-                    },
-                    "additionalProperties": False,
-                },
-            }
-        },
-        "additionalProperties": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "required": ["name", "classType", "regex"],
-                "properties": {
-                    "name": {"type": "string"},
-                    "regex": {"type": "string"},
-                    "classType": {"$ref": "#/definitions/classType"},
-                },
-                "additionalProperties": False,
-            },
-    }
-    ```
+- Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het dmn schema (zie request body schema).
 """,
         },
         {
@@ -294,57 +249,19 @@ identifier van de tabel in de DMN omgeving.
 ## Opvragen en bewerken van ACTIES.
 
 ### Opmerkingen
-- Een producttype actie is een link naar een DMN tabel uit een externe applicatie.
-- Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
-- Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
+- Een producttype actie kan 3 verschillende typen hebben.
+- DMN actie
+    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
+    - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
 identifier van de tabel in de DMN omgeving.
-- In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
-- Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
-    ```json
-    {
-        "type": "object",
-        "definitions": {
-            "classType": {
-                "type": "string",
-                "enum": [
-                    "String",
-                    "Integer",
-                    "Double",
-                    "Boolean",
-                    "Date",
-                    "Long",
-                ],
-            }
-        },
-        "properties": {
-            "static": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["name", "classType", "value"],
-                    "properties": {
-                        "name": {"type": "string"},
-                        "value": {"type": "string"},
-                        "classType": {"$ref": "#/definitions/classType"},
-                    },
-                    "additionalProperties": False,
-                },
-            }
-        },
-        "additionalProperties": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "required": ["name", "classType", "regex"],
-                "properties": {
-                    "name": {"type": "string"},
-                    "regex": {"type": "string"},
-                    "classType": {"$ref": "#/definitions/classType"},
-                },
-                "additionalProperties": False,
-            },
-    }
-    ```
+    - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
+- Formulier actie
+    - ipv de dmn velden wordt direct_url gebruikt voor de formulier url.
+
+- Api actie (experimenteel)
+    - naast de direct_url is method ook verplicht.
+
+- Met het veld `mapping` kan worden aangegeven welke velden moet worden meegegeven aan de actie. De mapping wordt gevalideerd tegen het DMN, API of Formulier schema op basis van het actie type.
 """,
         },
         {"name": "locaties", "description": "## Opvragen en bewerken van LOCATIES."},
