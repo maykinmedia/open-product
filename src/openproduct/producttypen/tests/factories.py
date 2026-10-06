@@ -36,7 +36,7 @@ class UniformeProductNaamFactory(factory.django.DjangoModelFactory):
 
 
 class ProductTypeFactory(factory.django.DjangoModelFactory):
-    code = factory.Sequence(lambda n: f"producttype code {n}")
+    code = factory.Sequence(lambda n: f"PRODUCTTYPE{n}")
     uniforme_product_naam = factory.SubFactory(UniformeProductNaamFactory)
     doelgroep = DoelgroepChoices.BURGERS
 

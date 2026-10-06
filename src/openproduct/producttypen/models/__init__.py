@@ -2,6 +2,7 @@ from .actie import Actie
 from .bestand import Bestand
 from .content import ContentElement, ContentElementTranslation, ContentLabel
 from .externe_code import ExterneCode
+from .facets import FacetType, FacetWaarde
 from .jsonschema import JsonSchema
 from .link import Link
 from .parameter import Parameter
@@ -15,24 +16,26 @@ from .verzoektype import VerzoekType
 from .zaaktype import ZaakType
 
 __all__ = [
-    "UniformeProductNaam",
-    "Thema",
+    "Actie",
+    "Bestand",
+    "ContentElement",
+    "ContentElementTranslation",
+    "ContentLabel",
+    "ExterneCode",
+    "FacetType",
+    "FacetWaarde",
+    "JsonSchema",
     "Link",
+    "Parameter",
     "Prijs",
     "PrijsOptie",
     "PrijsRegel",
-    "ProductType",
-    "ProductTypeTranslation",
-    "Bestand",
-    "ExterneCode",
-    "Parameter",
-    "ContentElement",
-    "ContentLabel",
-    "ContentElementTranslation",
-    "JsonSchema",
-    "Actie",
     "Proces",
-    "ZaakType",
-    "VerzoekType",
+    "ProductType",
     "ProductTypePermission",
+    "ProductTypeTranslation",
+    "Thema",
+    "UniformeProductNaam",
+    "VerzoekType",
+    "ZaakType",
 ]
