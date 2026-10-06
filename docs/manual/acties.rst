@@ -117,4 +117,4 @@ De mapping van een API actie wordt gevalideerd tegen het volgende json schema:
    :language: json
 
 
-.. warning:: Open Product kan de acties niet zelf uitvoeren. Dit betekend dat wijzigingen aan de acties goed moeten worden bijgehouden in Open Producten. Mocht de verwachte post data wijzigen moet de mapping in Open Product dus ook worden gewijzigd.
+.. warning:: Open Product kan de acties niet zelf uitvoeren. Dit betekend dat wijzigingen aan de acties goed moeten worden bijgehouden in Open Producten. Mocht de verwachte request data wijzigen moet de mapping in Open Product dus ook worden gewijzigd.

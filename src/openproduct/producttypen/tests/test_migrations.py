@@ -2,7 +2,10 @@ from django.db.migrations.exceptions import IrreversibleError
 from django.test import override_settings
 
 from openproduct.producttypen.models import Proces, VerzoekType, ZaakType
-from openproduct.producttypen.models.enums import DoelgroepChoices
+from openproduct.producttypen.models.enums import (
+    ActieTypeChoices,
+    DoelgroepChoices,
+)
 from openproduct.urn.models import UrnMappingConfig
 from openproduct.utils.tests.cases import BaseMigrationTest
 
@@ -259,4 +262,61 @@ class TestUrnPrefixMigration(BaseMigrationTest):
         self.assertEqual(
             self.document.urn,
             "urn:nld:maykin:openzaak:drc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+
+
+class TestSetActieTypeMigration(BaseMigrationTest):
+    app = "producttypen"
+    migrate_to = "0023_set_type_for_existing_acties"
+    migrate_from = "0021_alter_producttype_eigenaar"
+
+    def setUp(self):
+        super().setUp()
+
+        _UniformeProductNaam = self.old_app_state.get_model(
+            "producttypen", "UniformeProductNaam"
+        )
+        _ProductType = self.old_app_state.get_model("producttypen", "ProductType")
+        _DmnConfig = self.old_app_state.get_model("producttypen", "DmnConfig")
+        _Actie = self.old_app_state.get_model("producttypen", "Actie")
+
+        upn = _UniformeProductNaam.objects.create(
+            naam="upn 0",
+        )
+
+        producttype = _ProductType.objects.create(
+            code="producttype code 0",
+            uniforme_product_naam=upn,
+            doelgroep=DoelgroepChoices.BURGERS,
+        )
+
+        dmn_config = _DmnConfig.objects.create(
+            naam="dmn",
+            tabel_endpoint="https://dmn.maykin.nl/tabellen",
+        )
+
+        self.dmn_actie = _Actie.objects.create(
+            naam="dmn actie",
+            producttype=producttype,
+            dmn_config=dmn_config,
+            dmn_tabel_id="tabel-1",
+        )
+
+        self.formulier_actie = _Actie.objects.create(
+            naam="formulier actie",
+            producttype=producttype,
+            direct_url="https://formulier.maykin.nl/formulier",
+        )
+
+    def test_migration(self):
+        self._perform_migration()
+
+        Actie = self.apps.get_model("producttypen", "Actie")
+
+        self.assertEqual(
+            Actie.objects.get(pk=self.dmn_actie.pk).type, ActieTypeChoices.DMN
+        )
+        self.assertEqual(
+            Actie.objects.get(pk=self.formulier_actie.pk).type,
+            ActieTypeChoices.FORMULIER,
         )
