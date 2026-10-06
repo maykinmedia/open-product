@@ -2,7 +2,7 @@ from .actie import ActieInline
 from .bestand import BestandAdmin
 from .content import ContentElementTranslationAdmin, ContentLabelAdmin
 from .dmn_config import DmnConfigAdmin
-from .facet import FacetTypeAdmin
+from .facets import FacetTypeAdmin
 from .jsonschema import JsonSchemaAdmin
 from .link import LinkAdmin
 from .prijs import PrijsAdmin

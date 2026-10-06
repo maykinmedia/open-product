@@ -1,3 +1,5 @@
+import uuid
+
 from django.urls import reverse_lazy
 
 from rest_framework import status
@@ -128,6 +130,113 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             ],
         )
 
+    def test_filter(self):
+        facet_type = FacetTypeFactory.create(
+            naam="test_a",
+            facetteerbaar=True,
+            meervoudig_toegestaan=True,
+            verplicht=True,
+            waarden=1,
+        )
+        FacetTypeFactory.create(
+            naam="test_b",
+            facetteerbaar=True,
+            meervoudig_toegestaan=True,
+            verplicht=False,
+        )
+        FacetTypeFactory.create(
+            naam="test_c",
+            facetteerbaar=False,
+            meervoudig_toegestaan=True,
+            verplicht=False,
+        )
+
+        with self.subTest("facetteerbaar"):
+            response = self.client.get(self.list_url, {"facetteerbaar": True})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 2)
+
+        with self.subTest("meervoudig_toegestaan"):
+            response = self.client.get(self.list_url, {"meervoudig_toegestaan": True})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 3)
+
+        with self.subTest("verplicht"):
+            response = self.client.get(self.list_url, {"verplicht": True})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+
+        with self.subTest("uuid"):
+            response = self.client.get(self.list_url, {"uuid": str(facet_type.uuid)})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+            self.assertEqual(
+                response.json()["results"][0]["uuid"], str(facet_type.uuid)
+            )
+            # random uuid
+            response = self.client.get(self.list_url, {"uuid": str(uuid.uuid4())})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 0)
+
+        with self.subTest("naam__iexact"):
+            response = self.client.get(self.list_url, {"naam__iexact": "test_a"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+            self.assertEqual(
+                response.json()["results"][0]["uuid"], str(facet_type.uuid)
+            )
+            # random name
+            response = self.client.get(self.list_url, {"naam__iexact": "test_test"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 0)
+
+        with self.subTest("waarden__uuid"):
+            response = self.client.get(
+                self.list_url, {"waarden__uuid": str(facet_type.waarden.first().uuid)}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+            self.assertEqual(
+                response.json()["results"][0]["uuid"], str(facet_type.uuid)
+            )
+
+
+class TestProductTypeFacettenViewSet(BaseApiTestCase):
+    is_superuser = True
+    list_url = reverse_lazy("facet_type-list")
+
+    def test_read_producttype_with_facetten(self):
+        facet_type = FacetTypeFactory.create(waarden=3)
+        facet_waarde = facet_type.waarden.first()
+        producttype = ProductTypeFactory.create()
+        producttype.facetten.add(facet_waarde.pk)
+        producttype.save()
+
+        detail_url = reverse_lazy("producttype-detail", args=[producttype.uuid])
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json()["facetten"],
+            [
+                {
+                    "uuid": str(facet_waarde.uuid),
+                    "naam": facet_waarde.naam,
+                    "omschrijving": facet_waarde.omschrijving,
+                    "actief": facet_waarde.actief,
+                    "facet_type": {
+                        "uuid": str(facet_type.uuid),
+                        "naam": facet_type.naam,
+                        "omschrijving": facet_type.omschrijving,
+                        "facetteerbaar": facet_type.facetteerbaar,
+                        "meervoudig_toegestaan": facet_type.meervoudig_toegestaan,
+                        "verplicht": facet_type.verplicht,
+                    },
+                }
+            ],
+        )
+
     def test_create_producttype_with_facetten(self):
         list_url = reverse_lazy("producttype-list")
         response = self.client.get(list_url)
@@ -243,6 +352,8 @@ class TestFacetTypeViewSet(BaseApiTestCase):
                 ],
             )
 
+        facet_type.meervoudig_toegestaan = True
+        facet_type.save()
         with self.subTest("multiple values"):
             # PATCH
             data["facetten_uuids"] = [
@@ -251,3 +362,87 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.json()["facetten"]), 3)
+
+    def test_validate_verplicht_facetten(self):
+        facet_type = FacetTypeFactory.create(waarden=2, verplicht=False)
+
+        producttype = ProductTypeFactory.create()
+
+        detail_url = reverse_lazy("producttype-detail", args=[producttype.uuid])
+        data = {}
+
+        with self.subTest("not required"):
+            data["facetten_uuids"] = []
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["facetten"], [])
+
+        with self.subTest("one value"):
+            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["facetten"]), 1)
+
+        # create new one
+        facet_type = FacetTypeFactory.create(waarden=2, verplicht=True)
+
+        with self.subTest("empty patch"):
+            data["facetten_uuids"] = []
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "facetten_uuids")
+            self.assertEqual(
+                error,
+                {
+                    "name": "facetten_uuids",
+                    "code": "invalid",
+                    "reason": f"Verplichte facettypes ontbreken: {facet_type.naam}.",
+                },
+            )
+
+        with self.subTest("one value"):
+            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["facetten"]), 1)
+
+    def test_validate_meervoudig_facetten(self):
+        facet_type = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=False)
+
+        producttype = ProductTypeFactory.create()
+
+        detail_url = reverse_lazy("producttype-detail", args=[producttype.uuid])
+        data = {}
+
+        with self.subTest("one value"):
+            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["facetten"]), 1)
+
+        with self.subTest("multiple values"):
+            data["facetten_uuids"] = [
+                facet_waarde.uuid for facet_waarde in facet_type.waarden.all()
+            ]
+            response = self.client.patch(detail_url, data)
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "facetten_uuids")
+            self.assertEqual(
+                error,
+                {
+                    "name": "facetten_uuids",
+                    "code": "invalid",
+                    "reason": f"Facettype '{facet_type.naam}' staat maar één waarde toe, gekregen: {', '.join(w.naam for w in facet_type.waarden.all())}.",
+                },
+            )
+
+        # now allow multiple values
+        facet_type.meervoudig_toegestaan = True
+        facet_type.save()
+
+        data["facetten_uuids"] = [
+            facet_waarde.uuid for facet_waarde in facet_type.waarden.all()
+        ]
+        response = self.client.patch(detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()["facetten"]), 2)

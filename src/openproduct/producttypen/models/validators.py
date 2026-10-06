@@ -66,7 +66,6 @@ def validate_meervoudig_facetten(facet_waarden):
     errors = [
         ValidationError(
             _("Facettype '%(type)s' staat maar één waarde toe, gekregen: %(waarden)s."),
-            code="facet_meervoudig_niet_toegestaan",
             params={
                 "type": facet_type.naam,
                 "waarden": ", ".join(w.naam for w in waarden),

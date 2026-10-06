@@ -1,6 +1,6 @@
 from .bestand import BestandSerializer
 from .externe_code import ExterneCodeSerializer
-from .facets import BaseFacetWaardeSerializer, FacetTypeSerializer
+from .facets import FacetTypeSerializer
 from .jsonschema import JsonSchemaSerializer
 from .link import LinkSerializer
 from .parameter import ParameterSerializer
@@ -12,7 +12,6 @@ __all__ = [
     "BestandSerializer",
     "ExterneCodeSerializer",
     "FacetTypeSerializer",
-    "BaseFacetWaardeSerializer",
     "JsonSchemaSerializer",
     "LinkSerializer",
     "ParameterSerializer",

@@ -6,6 +6,10 @@ from maykin_2fa.test import disable_admin_mfa
 from playwright.sync_api import expect
 
 from openproduct.accounts.tests.factories import UserFactory
+from openproduct.producttypen.admin.facets import (
+    ProductTypeFacet,
+    ProductTypeFacetForm,
+)
 from openproduct.utils.tests.e2e import DEFAULT_PASSWORD, E2ETestCase
 
 from ...producttypen.tests.factories import ProductTypeFactory
@@ -13,11 +17,13 @@ from ..models import FacetType, FacetWaarde
 from .factories import FacetTypeFactory, FacetWaardeFactory
 
 
+@disable_admin_mfa()
 class TestFacetTypeAdmin(TestCase):
     add_url = reverse("admin:producttypen_facettype_add")
     changelist_url = reverse("admin:producttypen_facettype_changelist")
 
     def setUp(self):
+        super().setUp()
         self.user = UserFactory.create(superuser=True)
         self.client.force_login(self.user)
 
@@ -166,6 +172,80 @@ class TestFacetTypeAdmin(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertFalse(FacetWaarde.objects.exists())
 
+    def test_producttype_facetten_json(self):
+        url = reverse("admin:producttypen_producttype_facet_waarden")
+
+        with self.subTest("empty"):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+            self.assertFalse(FacetWaarde.objects.exists())
+
+        with self.subTest("one facet_type"):
+            facet_type = FacetTypeFactory.create(waarden=1)
+            response = self.client.get(url, {"facet_type": facet_type.pk})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json()), 1)
+            facet_waarde = facet_type.waarden.first()
+            self.assertEqual(
+                response.json(), [{"id": facet_waarde.pk, "name": str(facet_waarde)}]
+            )
+
+        with self.subTest("two facet_types"):
+            facet_type_2 = FacetTypeFactory.create(waarden=5)
+            response = self.client.get(url, {"facet_type": facet_type_2.pk})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json()), 5)
+
+        with self.subTest("invalid facet_type"):
+            response = self.client.get(url, {"facet_type": 999999})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        with self.subTest("requires login"):
+            self.client.logout()
+            response = self.client.get(url, {"facet_type": 1})
+            self.assertEqual(response.status_code, 302)
+            self.assertIn(reverse("admin:login"), response["Location"])
+
+        with self.subTest("requires is_staff"):
+            self.client.force_login(UserFactory.create(is_staff=False))
+            response = self.client.get(url, {"facet_type": 1})
+            self.assertEqual(response.status_code, 302)
+
+
+class ProductTypeFacetFormTests(TestCase):
+    prefix = "facetten-0"
+
+    def test_unbound_and_bound_formset(self):
+        FacetWaardeFactory.create_batch(2)
+        form = ProductTypeFacetForm(prefix=self.prefix)
+        self.assertFalse(form.fields["facetwaarde"].queryset.exists())
+
+        with self.subTest("unbound"):
+            facet_type = FacetTypeFactory.create(waarden=1)
+
+            producttype = ProductTypeFactory.create()
+            producttype.facetten.add(facet_type.waarden.first())
+            producttype.save()
+
+            instance = ProductTypeFacet.objects.get(producttype=producttype)
+            form = ProductTypeFacetForm(prefix=self.prefix, instance=instance)
+
+            self.assertEqual(form.initial["facet_type"], facet_type.pk)
+
+        with self.subTest("bound"):
+            facet_type = FacetTypeFactory.create()
+            waarde = FacetWaardeFactory.create(facet_type=facet_type)
+            FacetWaardeFactory.create(facet_type=FacetTypeFactory.create())
+
+            data = {
+                "facetten-0-facet_type": facet_type.pk,
+                "facetten-0-facetwaarde": "",
+            }
+            form = ProductTypeFacetForm(data=data, prefix=self.prefix)
+            self.assertEqual(list(form.fields["facetwaarde"].queryset), [waarde])
+
 
 @tag("playwright")
 @disable_admin_mfa()
@@ -296,7 +376,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
         expect(
             page.locator("#ProductType_facetten-group .errorlist.nonform")
-        ).to_contain_text("Verplichte facettypes ontbreken: facettype 1.")
+        ).to_contain_text(f"Verplichte facettypes ontbreken: {facet_type_obj_2.naam}.")
 
         # select only for facet_type_obj_2
         facet_type, facet_waarde = self._row(page, 1)
@@ -365,7 +445,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
             expect(
                 page.locator("#ProductType_facetten-group .errorlist.nonform")
             ).to_contain_text(
-                "Facettype 'facettype 1' staat maar één waarde toe, gekregen: facetwaarde 2, facetwaarde 3.",
+                f"Facettype '{facet_type_obj.naam}' staat maar één waarde toe, gekregen: {', '.join(w.naam for w in facet_type_obj.waarden.all())}.",
             )
 
             self.assertEqual(self.producttype.facetten.count(), 2)

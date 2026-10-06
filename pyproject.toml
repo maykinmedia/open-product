@@ -159,3 +159,11 @@ line-ending = "lf"
 "logging".msg = "Use `structlog.stdlib.get_logger(__name__)` instead of the stdlib logging module."
 "typing.cast".msg = "Casting is an anti-pattern, use `assert isinstance(...)` instead, or suppress the error."
 "typing.Any".msg = "Any is an anti-pattern, use a real type instead, or if that's not possible, use 'object'."
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+    "*/test_*.py",
+    "src/objects/tests/playwright.py",
+]

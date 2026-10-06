@@ -21,7 +21,7 @@ from . import ActieInline
 from .bestand import BestandInline
 from .content import ContentElementInline
 from .externe_code import ExterneCodeInline
-from .facet import FacetInline
+from .facets import FacetInline
 from .filters import GepubliceerdFilter
 from .link import LinkInline
 from .parameter import ParameterInline

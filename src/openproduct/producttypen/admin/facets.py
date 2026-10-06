@@ -46,7 +46,6 @@ class ProductTypeFacetForm(forms.ModelForm):
 class FacetInlineFormSet(AuditLogInlineformset):
     def clean(self):
         super().clean()
-
         facetwaarden = []
         for form in self.forms:
             if self._should_delete_form(form):
