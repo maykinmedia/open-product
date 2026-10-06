@@ -75,7 +75,7 @@ class Actie(BaseModel):
         _("mapping"),
         null=True,
         blank=True,
-        help_text=_("De mapping van de velden die nodig is zijn de actie."),
+        help_text=_("De mapping van de velden die nodig zijn de actie."),
         encoder=DjangoJSONEncoder,
     )
 
