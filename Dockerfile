@@ -27,7 +27,7 @@ RUN pip install -r requirements/production.txt
 
 
 # Stage 2 - Install frontend deps and build assets
-FROM node:24-trixie-slim AS frontend-build
+FROM node:26-trixie-slim AS frontend-build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
@@ -36,10 +36,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # copy configuration/build files
-COPY ./*.json ./*.js /app/
+COPY ./*.json /app/
 
 # install WITH dev tooling
-RUN npm ci
+RUN npm ci --legacy-peer-deps
+
+COPY ./*.js /app/
 
 # copy source code
 COPY ./src /app/src
