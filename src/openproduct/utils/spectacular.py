@@ -17,6 +17,7 @@ from drf_spectacular.views import (
 from rest_framework import serializers
 
 from .fields import JSONObjectField
+from .typing import JSONObject, JSONValue
 
 
 def custom_postprocessing_hook(result, generator, request, public):
@@ -90,23 +91,30 @@ class SpectacularJSONAPIView(AllowAllOriginsMixin, _SpectacularJSONAPIView):
     """Spectacular JSON API view with Access-Control-Allow-Origin set to allow all"""
 
 
-def to_openapi_schema(schema: dict) -> dict:
+def to_openapi_schema(schema: JSONObject) -> JSONObject:
     """Inline #/$defs refs and drop $-keywords ($schema, $defs, ...)."""
     defs = schema.get("$defs", {})
+    assert isinstance(defs, dict)
 
-    def convert(node):
+    def convert(node: JSONValue) -> JSONValue:
         if isinstance(node, list):
             return [convert(item) for item in node]
-        if not isinstance(node, dict):
-            return node
-        if "$ref" in node:
-            return convert(defs[node["$ref"].removeprefix("#/$defs/")])
+        if isinstance(node, dict):
+            return convert_object(node)
+        return node
+
+    def convert_object(node: JSONObject) -> JSONObject:
+        ref = node.get("$ref")
+        if isinstance(ref, str):
+            target = defs[ref.removeprefix("#/$defs/")]
+            assert isinstance(target, dict)
+            return convert_object(target)
         return {k: convert(v) for k, v in node.items() if not k.startswith("$")}
 
-    return convert(schema)
+    return convert_object(schema)
 
 
-def register(auto_schema, name: str, schema: dict) -> dict:
+def register(auto_schema, name: str, schema: JSONObject) -> dict:
     """Register `schema` as components/schemas/<name> and return a $ref to it."""
     component = ResolvedComponent(
         name=name,
