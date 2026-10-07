@@ -529,13 +529,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
         instance = super().update(instance, validated_data)
 
-        if themas:
+        if themas:  # Er is minimaal één thema vereist
             instance.themas.set(themas)
-        if locaties:
+        if locaties is not None:
             instance.locaties.set(locaties)
-        if organisaties:
+        if organisaties is not None:
             instance.organisaties.set(organisaties)
-        if contacten:
+        if contacten is not None:
             instance.contacten.set(contacten)
 
         if externe_codes is not None:
