@@ -1,14 +1,16 @@
 {
-    "name": "openproduct",
+    "name": "Open Product",
     "version": "1.8.0",
     "description": "open-product project",
-    "main": "src/openproduct/static/bundles/openproduct-js.js",
+    "type": "module",
+    "main": "src/openproduct/static/bundles/index.js",
     "directories": {
         "doc": "docs"
     },
     "scripts": {
-        "build": "npm run bundle && npm run collect",
-        "bundle": "webpack",
+        "build": "node build.js",
+        "test": "echo 'no tests defined' && exit 1",
+        "watch": "node build.js --watch",
         "collect": "cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js src/openproduct/static/wysimark/wysimark.js && cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js.map src/openproduct/static/wysimark/index.cjs.js.map"
     },
     "repository": {
@@ -27,29 +29,9 @@
         "wysimark-standalone": "^1.0.0"
     },
     "devDependencies": {
-        "@babel/core": "latest",
-        "@babel/polyfill": "latest",
-        "@babel/preset-env": "latest",
-        "@babel/runtime": "latest",
-        "autoprefixer": "latest",
-        "babel-loader": "latest",
-        "chai": "latest",
-        "css-loader": "latest",
-        "cssnano": "latest",
-        "mini-css-extract-plugin": "latest",
-        "mocha": "latest",
-        "postcss-loader": "latest",
-        "postcss-selector-lint": "latest",
-        "sass": "latest",
-        "sass-loader": "latest",
-        "simulant": "latest",
-        "sinon": "latest",
-        "url-loader": "latest",
-        "webpack": "latest",
-        "webpack-cli": "latest",
-        "webpack-dev-server": "latest",
-        "webpack-stream": "latest",
-        "yargs": "latest"
+        "esbuild": "latest",
+        "esbuild-sass-plugin": "latest",
+        "sass-embedded": "latest"
     },
     "overrides": {
         "@portive/client": {
