@@ -863,6 +863,72 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # contact org is added in ProductType clean
         self.assertEqual(ProductType.objects.get().organisaties.count(), 1)
 
+    def test_update_producttype_clearing_relations(self):
+        # Sending an empty list in PUT must remove the existing relation
+        for field, relation, factory in (
+            ("locatie_uuids", "locaties", LocatieFactory),
+            ("organisatie_uuids", "organisaties", OrganisatieFactory),
+            ("contact_uuids", "contacten", ContactFactory),
+        ):
+            with self.subTest(field=field):
+                producttype = ProductTypeFactory.create()
+                getattr(producttype, relation).add(factory.create())
+                data = self.data | {"code": producttype.pk, field: []}
+
+                response = self.client.put(self.detail_path(producttype), data)
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data[relation], [])
+                self.assertFalse(getattr(producttype, relation).exists())
+
+    def test_partial_update_producttype_clearing_relations(self):
+        # Sending an empty list in PATCH must remove the existing relation
+        for field, relation, factory in (
+            ("locatie_uuids", "locaties", LocatieFactory),
+            ("organisatie_uuids", "organisaties", OrganisatieFactory),
+            ("contact_uuids", "contacten", ContactFactory),
+        ):
+            with self.subTest(field=field):
+                producttype = ProductTypeFactory.create()
+                getattr(producttype, relation).add(factory.create())
+
+                response = self.client.patch(self.detail_path(producttype), {field: []})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data[relation], [])
+                self.assertFalse(getattr(producttype, relation).exists())
+
+    def test_patch_producttype_name_keeps_existing_relations(self):
+        """
+        Updating only the name must keep all existing relations, since their
+        fields are omitted from the PATCH request
+        """
+        producttype = ProductTypeFactory.create()
+        for relation, factory in (
+            ("themas", ThemaFactory),
+            ("locaties", LocatieFactory),
+            ("organisaties", OrganisatieFactory),
+            ("contacten", ContactFactory),
+        ):
+            getattr(producttype, relation).set([factory.create()])
+        producttype.add_contact_organisaties()
+        relations = {
+            relation: set(getattr(producttype, relation).values_list("pk", flat=True))
+            for relation in ("themas", "locaties", "organisaties", "contacten")
+        }
+
+        response = self.client.patch(self.detail_path(producttype), {"naam": "updated"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check that each relation contains the same related record id before PATCH request
+        for relation, pks in relations.items():
+            with self.subTest(relation=relation):
+                self.assertEqual(
+                    set(getattr(producttype, relation).values_list("pk", flat=True)),
+                    pks,
+                )
+
     def test_update_producttype_with_duplicate_uuids_returns_error(self):
         producttype = ProductTypeFactory.create()
         thema = ThemaFactory.create()
