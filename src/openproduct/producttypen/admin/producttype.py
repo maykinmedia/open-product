@@ -19,11 +19,13 @@ from ..models.producttype import ProductTypeTranslation
 from ..models.producttypepermission import PermissionModes
 from . import ActieInline
 from .bestand import BestandInline
+from .contact import ProductTypeContactInline
 from .content import ContentElementInline
 from .externe_code import ExterneCodeInline
 from .facets import FacetInline
 from .filters import GepubliceerdFilter
 from .link import LinkInline
+from .organisatie import ProductTypeOrganisatieInline
 from .parameter import ParameterInline
 from .proces import ProcesInline
 from .verzoektype import VerzoekTypeInline
@@ -109,8 +111,6 @@ class ProductTypeAdmin(
     list_filter = ("themas", GepubliceerdFilter)
     date_hierarchy = "aanmaak_datum"
     autocomplete_fields = (
-        "organisaties",
-        "contacten",
         "locaties",
         "uniforme_product_naam",
         "verbruiksobject_schema",
@@ -133,6 +133,8 @@ class ProductTypeAdmin(
         ProcesInline,
         ZaakTypeInline,
         VerzoekTypeInline,
+        ProductTypeOrganisatieInline,
+        ProductTypeContactInline,
     )
 
     readonly_fields = ("uuid",)
@@ -152,10 +154,8 @@ class ProductTypeAdmin(
         "dataobject_schema",
         "keywords",
         "interne_opmerkingen",
-        "organisaties",
         "eigenaar",
         "locaties",
-        "contacten",
     )
 
     def get_queryset(self, request):
