@@ -31,10 +31,10 @@ DMN_SCHEMA = {
         "type": "array",
         "items": {
             "type": "object",
-            "required": ["name", "classType", "regex"],
+            "required": ["name", "classType", "path"],
             "properties": {
                 "name": {"type": "string"},
-                "regex": {"$ref": "#/$defs/jsonPathString"},
+                "path": {"$ref": "#/$defs/jsonPathString"},
                 "classType": {"$ref": "#/$defs/classType"},
             },
             "additionalProperties": False,

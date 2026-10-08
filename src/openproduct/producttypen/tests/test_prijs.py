@@ -71,7 +71,7 @@ class TestPrijsRegel(TestCase):
             prijs=self.prijs,
             mapping={
                 "product": [
-                    {"name": "status", "classType": "String", "regex": "$.status"}
+                    {"name": "status", "classType": "String", "path": "$.status"}
                 ]
             },
         )

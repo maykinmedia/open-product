@@ -91,7 +91,7 @@ class TestProductTypeActie(BaseApiTestCase):
 
     def test_create_dmn_actie_with_valid_mapping(self):
         mapping = {
-            "product": [{"name": "status", "classType": "String", "regex": "$.status"}],
+            "product": [{"name": "status", "classType": "String", "path": "$.status"}],
             "static": [{"name": "code", "classType": "String", "value": "abc"}],
         }
         data = self.data | {"mapping": mapping}
@@ -110,7 +110,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "method": ActieMethodChoices.POST,
             "mapping": {
                 "product": [
-                    {"name": "status", "classType": "String", "regex": "$.status"}
+                    {"name": "status", "classType": "String", "path": "$.status"}
                 ]
             },
         }
@@ -154,7 +154,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "type": ActieTypeChoices.FORMULIER,
             "mapping": {
                 "product": [
-                    {"name": "status", "classType": "String", "regex": "$.status"}
+                    {"name": "status", "classType": "String", "path": "$.status"}
                 ]
             },
         }

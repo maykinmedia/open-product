@@ -63,17 +63,17 @@ from openproduct.utils.fields import UUIDRelatedField
                     "product": [
                         {
                             "name": "pid",
-                            "regex": "$.uuid",
+                            "path": "$.uuid",
                             "classType": "String",
                         },
                         {
                             "name": "geldigheideinddatum",
-                            "regex": "$.eindDatum",
+                            "path": "$.eindDatum",
                             "classType": "String",
                         },
                         {
                             "name": "aantaluren",
-                            "regex": "$.verbruiksobject.uren",
+                            "path": "$.verbruiksobject.uren",
                             "classType": "String",
                         },
                     ],
@@ -131,17 +131,17 @@ from openproduct.utils.fields import UUIDRelatedField
                     "product": [
                         {
                             "name": "pid",
-                            "regex": "$.uuid",
+                            "path": "$.uuid",
                             "classType": "String",
                         },
                         {
                             "name": "geldigheideinddatum",
-                            "regex": "$.eindDatum",
+                            "path": "$.eindDatum",
                             "classType": "String",
                         },
                         {
                             "name": "aantaluren",
-                            "regex": "$.verbruiksobject.uren",
+                            "path": "$.verbruiksobject.uren",
                             "classType": "String",
                         },
                     ],

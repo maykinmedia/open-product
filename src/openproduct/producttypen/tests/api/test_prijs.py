@@ -260,7 +260,7 @@ class TestProductTypePrijs(BaseApiTestCase):
                             {
                                 "name": "status",
                                 "classType": "String",
-                                "regex": "$.status",
+                                "path": "$.status",
                             }
                         ]
                     },
@@ -276,7 +276,7 @@ class TestProductTypePrijs(BaseApiTestCase):
             response.data["prijsregels"][0]["mapping"],
             {
                 "product": [
-                    {"name": "status", "classType": "String", "regex": "$.status"}
+                    {"name": "status", "classType": "String", "path": "$.status"}
                 ]
             },
         )
