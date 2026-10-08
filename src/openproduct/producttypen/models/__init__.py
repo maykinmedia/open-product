@@ -1,10 +1,12 @@
 from .actie import Actie
 from .bestand import Bestand
+from .contact import ProductTypeContact
 from .content import ContentElement, ContentElementTranslation, ContentLabel
 from .externe_code import ExterneCode
 from .facets import FacetType, FacetWaarde, ProductTypeFacet
 from .jsonschema import JsonSchema
 from .link import Link
+from .organisatie import ProductTypeOrganisatie
 from .parameter import Parameter
 from .prijs import Prijs, PrijsOptie, PrijsRegel
 from .proces import Proces
@@ -39,4 +41,8 @@ __all__ = [
     "UniformeProductNaam",
     "VerzoekType",
     "ZaakType",
+    "VerzoekType",
+    "ProductTypePermission",
+    "ProductTypeOrganisatie",
+    "ProductTypeContact",
 ]
