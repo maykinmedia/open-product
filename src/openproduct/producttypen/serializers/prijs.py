@@ -92,17 +92,17 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                             "product": [
                                 {
                                     "name": "pid",
-                                    "regex": "$.uuid",
+                                    "path": "$.uuid",
                                     "classType": "String",
                                 },
                                 {
                                     "name": "geldigheideinddatum",
-                                    "regex": "$.eindDatum",
+                                    "path": "$.eindDatum",
                                     "classType": "String",
                                 },
                                 {
                                     "name": "aantaluren",
-                                    "regex": "$.verbruiksobject.uren",
+                                    "path": "$.verbruiksobject.uren",
                                     "classType": "String",
                                 },
                             ],
@@ -146,17 +146,17 @@ class PrijsRegelSerializer(serializers.ModelSerializer):
                             "product": [
                                 {
                                     "name": "pid",
-                                    "regex": "$.uuid",
+                                    "path": "$.uuid",
                                     "classType": "String",
                                 },
                                 {
                                     "name": "geldigheideinddatum",
-                                    "regex": "$.eindDatum",
+                                    "path": "$.eindDatum",
                                     "classType": "String",
                                 },
                                 {
                                     "name": "aantaluren",
-                                    "regex": "$.verbruiksobject.uren",
+                                    "path": "$.verbruiksobject.uren",
                                     "classType": "String",
                                 },
                             ],

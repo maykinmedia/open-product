@@ -171,7 +171,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                             "product": [
                                 {
                                     "name": "pid",
-                                    "regex": "$.uuid",
+                                    "path": "$.uuid",
                                     "classType": "String",
                                 }
                             ],

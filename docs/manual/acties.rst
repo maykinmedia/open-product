@@ -31,28 +31,28 @@ Een DMN actie kan als volgt via de API worden aangemaakt:
             "product": [
                 {
                     "name": "pid",
-                    "regex": "$.uuid",
-                    "classType": "String",
+                    "path": "$.uuid",
+                    "classType": "String"
                 },
                 {
                     "name": "geldigheideinddatum",
-                    "regex": "$.eindDatum",
-                    "classType": "String",
+                    "path": "$.eindDatum",
+                    "classType": "String"
                 },
                 {
                     "name": "aantaluren",
-                    "regex": "$.verbruiksobject.uren",
-                    "classType": "String",
-                },
+                    "path": "$.verbruiksobject.uren",
+                    "classType": "String"
+                }
             ],
             "static": [
                 {
                     "name": "formulieren",
                     "classType": "String",
-                    "value": "https://openformulieren-gemeente-a.nl",
+                    "value": "https://openformulieren-gemeente-a.nl"
                 }
-            ],
-        },
+            ]
+        }
     }
 
 De DMN url wordt hierdoor ``https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a``
@@ -72,13 +72,15 @@ Een formulier actie kan als volgt via de API worden aangemaakt:
         "naam": "Parkeervergunning opzegging",
         "type": "formulier",
         "direct_url": "https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
-        "variabelen": {
-            "product": {
-                "pid": "$.uuid",
-                "geldigheideinddatum": "$.eindDatum",
-                "aantaluren": "$.verbruiksobject.uren",
+        "mapping": {
+            "variabelen": {
+                "product": {
+                    "pid": "$.uuid",
+                    "geldigheideinddatum": "$.eindDatum",
+                    "aantaluren": "$.verbruiksobject.uren"
+                }
             }
-        },
+        }
     }
 
 De mapping van een Formulier actie wordt gevalideerd tegen het volgende json schema:
@@ -104,11 +106,11 @@ een api actie gebruikt als enige ook het veld ``method`` om aan te geven of het 
                 "product": {
                     "pid": "$.uuid",
                     "geldigheideinddatum": "$.eindDatum",
-                    "aantaluren": "$.verbruiksobject.uren",
+                    "aantaluren": "$.verbruiksobject.uren"
                 }
             },
-            "static": {"formulieren": "https://openformulieren-gemeente-a.nl"},
-        },
+            "static": {"formulieren": "https://openformulieren-gemeente-a.nl"}
+        }
     }
 
 De mapping van een API actie wordt gevalideerd tegen het volgende json schema:
