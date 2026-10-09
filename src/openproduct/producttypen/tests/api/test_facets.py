@@ -143,12 +143,14 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             facetteerbaar=True,
             meervoudig_toegestaan=True,
             verplicht=False,
+            waarden=1,
         )
         FacetTypeFactory.create(
             naam="test_c",
             facetteerbaar=False,
             meervoudig_toegestaan=True,
             verplicht=False,
+            waarden=1,
         )
 
         with self.subTest("facetteerbaar"):
@@ -194,6 +196,27 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             response = self.client.get(
                 self.list_url, {"waarden__uuid": str(facet_type.waarden.first().uuid)}
             )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+            self.assertEqual(
+                response.json()["results"][0]["uuid"], str(facet_type.uuid)
+            )
+
+        with self.subTest("waarden__naam"):
+            response = self.client.get(
+                self.list_url, {"waarden__naam": str(facet_type.waarden.first().naam)}
+            )
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(response.json()["results"]), 1)
+            self.assertEqual(
+                response.json()["results"][0]["naam"], str(facet_type.naam)
+            )
+
+        with self.subTest("waarden__actief"):
+            waarden = facet_type.waarden.first()
+            waarden.actief = False
+            waarden.save()
+            response = self.client.get(self.list_url, {"waarden__actief": False})
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.json()["results"]), 1)
             self.assertEqual(

@@ -14,6 +14,16 @@ class FacetTypeFilterSet(filters.FilterSet):
         field_name="waarden__uuid",
         help_text=_("Facettypes met een facetwaarde met deze uuid"),
     )
+    waarden__naam = filters.CharFilter(
+        field_name="waarden__naam",
+        help_text=_("Filter facettypes op basis van de naam van een facetwaarde."),
+    )
+    waarden__actief = filters.BooleanFilter(
+        field_name="waarden__actief",
+        help_text=_(
+            "Filter facettypes op basis van de actieve status van een facetwaarde."
+        ),
+    )
 
     class Meta:
         model = FacetType

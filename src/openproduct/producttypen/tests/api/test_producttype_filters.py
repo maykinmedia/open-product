@@ -17,6 +17,7 @@ from openproduct.producttypen.tests.factories import (
     ContentElementFactory,
     ContentLabelFactory,
     ExterneCodeFactory,
+    FacetTypeFactory,
     JsonSchemaFactory,
     ParameterFactory,
     ProcesFactory,
@@ -1119,3 +1120,61 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn("burgers", response.data["results"][0]["doelgroep"])
+
+    def test_facetten_filter(self):
+        facet_type_a = FacetTypeFactory.create(waarden=1)
+        facet_type_b = FacetTypeFactory.create(waarden=2)
+
+        waarde_a = facet_type_b.waarden.first()
+        waarde_b = facet_type_b.waarden.last()
+        waarde_c = facet_type_a.waarden.first()
+
+        waarde_a.naam = "test"
+        waarde_b.naam = "test"
+
+        waarde_a.save()
+        waarde_b.save()
+
+        producttype_a = ProductTypeFactory.create()
+        producttype_a.facetten.set(facet_type_a.waarden.all())
+        producttype_b = ProductTypeFactory.create()
+        producttype_b.facetten.set(facet_type_b.waarden.all())
+
+        with self.subTest("facetten__uuid"):
+            response = self.client.get(
+                self.path, {"facetten__uuid": str(facet_type_a.waarden.first().uuid)}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(
+                response.data["results"][0]["facetten"][0]["uuid"],
+                str(facet_type_a.waarden.first().uuid),
+            )
+            self.assertEqual(
+                response.data["results"][0]["uuid"], str(producttype_a.uuid)
+            )
+
+        with self.subTest("facetten__uuid__in"):
+            response = self.client.get(
+                self.path,
+                {
+                    "facetten__uuid__in": ",".join(
+                        str(uuid)
+                        for uuid in (waarde_a.uuid, waarde_b.uuid, waarde_c.uuid)
+                    ),
+                },
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data["count"], 2)
+
+        with self.subTest("facetten__naam"):
+            response = self.client.get(self.path, {"facetten__naam": "test"})
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            # two waarden, but one producttype
+            self.assertEqual(response.data["count"], 1)
+            self.assertEqual(len(response.data["results"][0]["facetten"]), 2)
+            self.assertEqual(
+                response.data["results"][0]["uuid"], str(producttype_b.uuid)
+            )

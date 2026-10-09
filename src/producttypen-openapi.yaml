@@ -2663,6 +2663,16 @@ paths:
         schema:
           type: boolean
       - in: query
+        name: waarden__actief
+        schema:
+          type: boolean
+        description: Filter facettypes op basis van de actieve status van een facetwaarde.
+      - in: query
+        name: waarden__naam
+        schema:
+          type: string
+        description: Filter facettypes op basis van de naam van een facetwaarde.
+      - in: query
         name: waarden__uuid
         schema:
           type: string
@@ -5163,10 +5173,25 @@ paths:
           type: string
         description: Producttype codes uit externe omgevingen. [naam:code]
       - in: query
+        name: facetten__naam
+        schema:
+          type: string
+        description: Naam van het facet waarop gefilterd kan worden.
+      - in: query
         name: facetten__uuid
         schema:
           type: string
           format: uuid
+      - in: query
+        name: facetten__uuid__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Lijst van UUID's van facetten waarop gefilterd kan worden.
+        explode: false
+        style: form
       - in: query
         name: gepubliceerd
         schema:
