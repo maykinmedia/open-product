@@ -153,12 +153,15 @@ custom_settings = {
 ## Opvragen en bewerken van PRODUCTTYPEN.
 
 ### Opmerkingen
-- Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids`, `locatie_uuids`, `organisatie_uuids`, `contact__uuids` & `facetwaarden_uuids` een lijst met uuids worden meegegeven.
+- Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids`, `locatie_uuids` & `facetwaarden_uuids` een lijst met uuids worden meegegeven.
     - `thema_uuids` moet minimaal 1 uuid bevatten.
     - `facetwaarden_uuids` moet een waarde bevatten van elk facettype dat `verplicht` is.
     - `facetwaarden_uuids` mag maar één waarde per facettype bevatten tenzij `meervoudig_toegestaan` van het facettype aan staat.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
+- Bij `organisaties` & `contacten` wordt een lijst met objecten meegegeven met een `organisatie_uuid` of `contact_uuid` en optioneel een `rol`.
+    - Bij een PUT of PATCH request wordt de bestaande lijst overschreven als het veld wordt meegegeven.
+    - De organisatie van een contact wordt automatisch (zonder rol) aan het producttype toegevoegd.
 - Bij het veld `uniforme_product_naam` gaat het om de naam uit de Uniforme productnamenlijst (UPL).
 - Bij de velden `verbruiksobject_schema_naam` en `dataobject_schema_naam` gaat het om de naam van een JSONSCHEMA.
 - De velden `externe_codes`, `parameters`, `zaaktypen`, `verzoektypen` en `processen` worden samen met het producttype genest aangemaakt of gewijzigd.
