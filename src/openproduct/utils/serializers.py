@@ -33,6 +33,20 @@ def clean_duplicate_uuids_in_list(values: list, field: str, errors):
         errors[field] = errors_messages
 
 
+def validate_unique_related(values: list[dict], key: str) -> list[dict]:
+    seen = set()
+    errors = []
+    for idx, value in enumerate(values):
+        uuid = value[key].uuid
+        if uuid in seen:
+            errors.append(_("Dubbel uuid: {} op index {}.").format(uuid, idx))
+        seen.add(uuid)
+
+    if errors:
+        raise serializers.ValidationError(errors)
+    return values
+
+
 def model_to_dict_with_related_ids(model: BaseModel) -> dict:
     """Creates a dict from a model and appends UUID fields with '_id'"""
     model_dict = model_to_dict(model)

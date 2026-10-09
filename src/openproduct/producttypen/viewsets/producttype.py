@@ -18,7 +18,6 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from vng_api_common.utils import get_help_text
 
-from openproduct.locaties.models import Contact
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
     Actie,
@@ -26,6 +25,8 @@ from openproduct.producttypen.models import (
     Prijs,
     PrijsRegel,
     ProductType,
+    ProductTypeContact,
+    ProductTypeOrganisatie,
     Thema,
 )
 from openproduct.producttypen.models.enums import ProductStateChoices
@@ -307,7 +308,7 @@ class Meta:
     ),
     partial_update=extend_schema(
         summary="Werk een PRODUCTTYPE deels bij.",
-        description="Als thema_uuids, locatie_uuids, organisatie_uuids of contact_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als thema_uuids, locatie_uuids, organisaties of contacten in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een PRODUCTTYPE.",
@@ -320,9 +321,15 @@ class ProductTypeViewSet(
         "verbruiksobject_schema", "dataobject_schema", "uniforme_product_naam"
     ).prefetch_related(
         Prefetch("themas", queryset=Thema.objects.select_related("hoofd_thema")),
-        Prefetch("contacten", queryset=Contact.objects.select_related("organisatie")),
+        Prefetch(
+            "producttype_contacten",
+            queryset=ProductTypeContact.objects.select_related("contact__organisatie"),
+        ),
         "locaties",
-        "organisaties",
+        Prefetch(
+            "producttype_organisaties",
+            queryset=ProductTypeOrganisatie.objects.select_related("organisatie"),
+        ),
         "translations",
         Prefetch("acties", queryset=Actie.objects.select_related("dmn_config")),
         "bestanden",
