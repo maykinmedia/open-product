@@ -18,14 +18,20 @@ from openproduct.utils.fields import UUIDRelatedField
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "actie response (formulier)",
+            "actie response (formulier) zonder mapping",
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "type": "formulier",
                 "url": "https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
-                "mapping": None,
+                "mapping": {
+                    "variabelen": {
+                        "product": {
+                            "pid": "$.uuid",
+                        }
+                    },
+                },
             },
             response_only=True,
         ),
@@ -46,7 +52,6 @@ from openproduct.utils.fields import UUIDRelatedField
                             "aantaluren": "$.verbruiksobject.uren",
                         }
                     },
-                    "static": {"formulieren": "https://openformulieren-gemeente-a.nl"},
                 },
             },
             response_only=True,
@@ -89,12 +94,19 @@ from openproduct.utils.fields import UUIDRelatedField
             response_only=True,
         ),
         OpenApiExample(
-            "actie request (formulier)",
+            "actie request (formulier) zonder mapping",
             value={
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
                 "type": "formulier",
                 "direct_url": "https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                "mapping": {
+                    "variabelen": {
+                        "product": {
+                            "pid": "$.uuid",
+                        }
+                    },
+                },
             },
             request_only=True,
         ),
@@ -114,7 +126,6 @@ from openproduct.utils.fields import UUIDRelatedField
                             "aantaluren": "$.verbruiksobject.uren",
                         }
                     },
-                    "static": {"formulieren": "https://openformulieren-gemeente-a.nl"},
                 },
             },
             request_only=True,

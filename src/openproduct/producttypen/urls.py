@@ -230,7 +230,7 @@ identifier van de tabel in de DMN omgeving.
 
 ### Opmerkingen
 - Jsonschema's zijn JSON objecten die worden gebruikt om andere JSON te valideren ([zie jsonschema](https://json-schema.org))
-- In Open producten worden jsonschemas gebruikt voor verbruiksobjecten & dataobjecten.
+- In Open product worden jsonschemas gebruikt voor verbruiksobjecten & dataobjecten.
 """,
         },
         {"name": "links", "description": "## Opvragen en bewerken van LINKS."},
@@ -256,10 +256,10 @@ identifier van de tabel in de DMN omgeving.
 identifier van de tabel in de DMN omgeving.
     - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
 - Formulier actie
-    - ipv de dmn velden wordt direct_url gebruikt voor de formulier url.
+    - in plaats van de dmn velden wordt direct_url gebruikt voor de formulier url.
 
 - Api actie (experimenteel)
-    - naast de direct_url is method ook verplicht.
+    - Naast de direct_url is method ook verplicht.
 
 - Met het veld `mapping` kan worden aangegeven welke velden moet worden meegegeven aan de actie. De mapping wordt gevalideerd tegen het DMN, API of Formulier schema op basis van het actie type.
 """,
