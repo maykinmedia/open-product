@@ -21,6 +21,7 @@ from openproduct.locaties.serializers import (
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
+from ...utils.validators import validate_unique_array
 from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
@@ -203,6 +204,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "update_datum": "2019-08-24T14:15:22Z",
                 "code": "PT-12345",
                 "toegestane_statussen": ["gereed"],
+                "subtypen": ["spoed"],
                 "keywords": ["auto"],
                 "interne_opmerkingen": "interne opmerkingen...",
             },
@@ -223,6 +225,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "naam": "Aanleunwoning",
                 "code": "PT-12345",
                 "toegestane_statussen": ["gereed", "actief"],
+                "subtypen": ["spoed"],
                 "interne_opmerkingen": "interne opmerkingen...",
                 "samenvatting": "korte samenvatting...",
                 "keywords": ["wonen"],
@@ -451,6 +454,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "update_datum",
             "code",
             "toegestane_statussen",
+            "subtypen",
             "keywords",
             "interne_opmerkingen",
             "zaaktypen",
@@ -469,6 +473,14 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if len(themas) == 0:
             raise serializers.ValidationError(_("Er is minimaal één thema vereist."))
         return themas
+
+    def validate_keywords(self, keywords: list[dict]) -> list[dict]:
+        validate_unique_array(keywords)
+        return keywords
+
+    def validate_subtypen(self, subtypen: list[dict]) -> list[dict]:
+        validate_unique_array(subtypen)
+        return subtypen
 
     @transaction.atomic()
     def create(self, validated_data):

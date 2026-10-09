@@ -104,6 +104,11 @@ def validate_data_attr(value: list):
         validate_data_attr_value_part(value_part, code)
 
 
+def validate_unique_array(value: list):
+    if len(value) != len(set(value)):
+        raise ValidationError(_("Geen dubbele waarden toegestaan."))
+
+
 class ManyRegexValidator(RegexValidator):
     def __call__(self, values):
         for value in values:

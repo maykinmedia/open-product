@@ -109,6 +109,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -134,6 +135,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "toegestane_statussen": ["gereed"],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
@@ -212,6 +214,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -237,6 +240,7 @@ class TestProduct(BaseApiTestCase):
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",
                 "publicatie_eind_datum": None,
@@ -367,6 +371,7 @@ class TestProduct(BaseApiTestCase):
             "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
             "naam": "",
+            "subtype": "",
             "status": product.status,
             "verbruiksobject": None,
             "dataobject": {"naam": "Test"},
@@ -396,6 +401,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",
                 "publicatie_eind_datum": None,
@@ -484,6 +490,67 @@ class TestProduct(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
+
+    def test_create_product_with_subtype_not_on_producttype(self):
+        data = self.data | {"subtype": "spoed"}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _(
+                "Subtype is verplicht en alleen toegestaan als het producttype subtypen heeft."
+            ),
+        )
+
+    def test_create_product_without_subtype_when_producttype_has_subtypen(self):
+        self.producttype.subtypen = ["spoed"]
+        self.producttype.save()
+
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _(
+                "Subtype is verplicht en alleen toegestaan als het producttype subtypen heeft."
+            ),
+        )
+
+    def test_create_product_with_invalid_subtype(self):
+        self.producttype.subtypen = ["spoed"]
+        self.producttype.save()
+
+        data = self.data | {"subtype": "blabla"}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("subtype is niet gedefinieerd op het producttype"),
+        )
+
+    def test_create_product_with_allowed_subtype(self):
+        self.producttype.subtypen = ["spoed"]
+        self.producttype.save()
+
+        data = self.data | {"subtype": "spoed"}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["subtype"], "spoed")
 
     def test_create_product_with_eigenaren(self):
         data = self.data | {
@@ -1464,6 +1531,7 @@ class TestProduct(BaseApiTestCase):
                 "dataobject": None,
                 "gepubliceerd": False,
                 "naam": "",
+                "subtype": "",
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product1.prijs),
@@ -1489,6 +1557,7 @@ class TestProduct(BaseApiTestCase):
                     "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
+                    "subtypen": [],
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
                     "publicatie_start_datum": "2024-01-01",
@@ -1518,6 +1587,7 @@ class TestProduct(BaseApiTestCase):
                 "dataobject": None,
                 "gepubliceerd": False,
                 "naam": "",
+                "subtype": "",
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product2.prijs),
@@ -1543,6 +1613,7 @@ class TestProduct(BaseApiTestCase):
                     "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
+                    "subtypen": [],
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
                     "publicatie_start_datum": "2024-01-01",
@@ -1592,6 +1663,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": "",
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -1617,6 +1689,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "toegestane_statussen": ["gereed"],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",
