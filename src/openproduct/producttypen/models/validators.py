@@ -1,15 +1,19 @@
 from collections import defaultdict
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
 import jsonschema
+from jsonschema._format import draft202012_format_checker
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 
+from openproduct.producttypen.schemas import API_SCHEMA, DMN_SCHEMA, FORM_SCHEMA
 from openproduct.utils.validators import CustomRegexValidator
 
-from .enums import DoelgroepChoices
+from .dmn_config import DmnConfig
+from .enums import ActieTypeChoices, DoelgroepChoices
 
 
 def check_meervoudig_facettype(facet_type):
@@ -128,55 +132,29 @@ def check_for_circular_reference(thema, hoofd_thema):
 
 
 def validate_dmn_mapping(mapping):
-    schema = {
-        "type": "object",
-        "definitions": {
-            "classType": {
-                "type": "string",
-                "enum": [
-                    "String",
-                    "Integer",
-                    "Double",
-                    "Boolean",
-                    "Date",
-                    "Long",
-                ],
-            }
-        },
-        "properties": {
-            "static": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["name", "classType", "value"],
-                    "properties": {
-                        "name": {"type": "string"},
-                        "value": {"type": "string"},
-                        "classType": {"$ref": "#/definitions/classType"},
-                    },
-                    "additionalProperties": False,
-                },
-            }
-        },
-        "additionalProperties": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "required": ["name", "classType", "regex"],
-                "properties": {
-                    "name": {"type": "string"},
-                    "regex": {"type": "string"},
-                    "classType": {"$ref": "#/definitions/classType"},
-                },
-                "additionalProperties": False,
-            },
-        },
-    }
+    "model dmn schema validator"
     try:
-        jsonschema.validate(mapping, schema)
+        validate_schema(mapping, DMN_SCHEMA)
+    except ValidationError as exc:
+        raise ValidationError(exc.messages)
+
+
+def validate_schema(mapping, schema):
+    try:
+        jsonschema.validate(
+            mapping,
+            schema,
+            format_checker=draft202012_format_checker
+            if settings.JSONSCHEMA_USE_FORMAT_CHECKER
+            else None,
+        )
     except JsonSchemaValidationError:
         raise ValidationError(
-            _("De mapping komt niet overeen met het schema. (zie API spec)")
+            {
+                "mapping": _(
+                    "De mapping komt niet overeen met het schema. (zie API spec)"
+                )
+            }
         )
 
 
@@ -228,16 +206,50 @@ def validate_exactly_one_producttype_or_thema(*, producttype, thema):
         raise ValidationError(_("Geef een producttype of thema op."))
 
 
-def validate_actie_url_xor_dmn(url, dmn_config, dmn_tabel_id):
-    dmn = dmn_config and dmn_tabel_id
+def validate_actie_mapping(mapping: dict | None, type: str):
+    """mapping is validated by schema based on actie type"""
+    if not mapping:
+        return
+    match type:
+        case ActieTypeChoices.API:
+            validate_schema(mapping, API_SCHEMA)
+        case ActieTypeChoices.DMN:
+            validate_schema(mapping, DMN_SCHEMA)
+        case ActieTypeChoices.FORMULIER:
+            validate_schema(mapping, FORM_SCHEMA)
 
-    if url and dmn:
-        raise ValidationError(_("Een actie moet een url of een dmn tabel hebben."))
 
-    if not url:
-        if not (dmn_config or dmn_tabel_id):
-            raise ValidationError(_("Een actie moet een url of een dmn tabel hebben."))
-        if not dmn:
-            raise ValidationError(
-                _("Een actie dmn bestaat uit een dmn_config en dmn_tabel_id.")
-            )
+def validate_actie_method(method: str, type: str):
+    """method is required when type is API. Otherwise the field should be empty."""
+    if (type == ActieTypeChoices.API) != bool(method):
+        raise ValidationError(
+            {
+                "method": _(
+                    "Method is alleen toegestaan (en verplicht) bij een 'api' actie"
+                )
+            }
+        )
+
+
+def validate_actie_dmn(dmn_config: DmnConfig, dmn_tabel_id: str, type: str):
+    """dmn fields are required when type is DMN. Otherwise the fields should be empty."""
+    if (type == ActieTypeChoices.DMN) != bool(dmn_config and dmn_tabel_id):
+        raise ValidationError(
+            {
+                "dmn_config": _(
+                    "Dmn velden zijn alleen toegestaan (en verplicht) bij een 'dmn' actie"
+                )
+            }
+        )
+
+
+def validate_actie_direct_url(url: str, type: str):
+    """direct url is required when type is API or FORMULIER. Otherwise the field should be empty."""
+    if (type in (ActieTypeChoices.API, ActieTypeChoices.FORMULIER)) != bool(url):
+        raise ValidationError(
+            {
+                "direct_url": _(
+                    "Direct url is alleen toegestaan (en verplicht) bij een 'api' of `formulier` actie"
+                )
+            }
+        )

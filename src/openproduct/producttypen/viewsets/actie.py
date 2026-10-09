@@ -40,6 +40,8 @@ class ActieFilterSet(FilterSet):
             "dmn_config__naam": ["exact"],
             "dmn_config__tabel_endpoint": ["exact"],
             "direct_url": ["exact"],
+            "type": ["exact"],
+            "method": ["exact"],
         }
 
 

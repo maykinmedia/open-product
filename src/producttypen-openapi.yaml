@@ -118,6 +118,19 @@ paths:
           type: string
         description: id van de dmn tabel binnen de dmn instantie.
       - in: query
+        name: method
+        schema:
+          type: string
+          title: Methode
+          enum:
+          - get
+          - post
+        description: |-
+          De method van de api actie.
+
+          * `post` - Post
+          * `get` - Get
+      - in: query
         name: naam
         schema:
           type: string
@@ -161,6 +174,20 @@ paths:
           type: string
           format: uuid
       - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - api
+          - dmn
+          - formulier
+        description: |-
+          Het type van de actie.
+
+          * `dmn` - DMN
+          * `api` - **EXPERIMENTEEL** API
+          * `formulier` - Formulier
+      - in: query
         name: uniforme_product_naam
         schema:
           type: string
@@ -183,7 +210,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedActieList'
               examples:
-                ActieResponse(url):
+                ActieResponse(formulier)ZonderMapping:
                   value:
                     count: 123
                     next: http://api.example.org/accounts/?page=4
@@ -192,9 +219,32 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Parkeervergunning opzegging
+                      type: formulier
                       url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                      mapping: null
-                  summary: actie response (url)
+                      mapping:
+                        variabelen:
+                          product:
+                            pid: $.uuid
+                  summary: actie response (formulier) zonder mapping
+                ActieResponse(api):
+                  value:
+                    count: 123
+                    next: http://api.example.org/accounts/?page=4
+                    previous: http://api.example.org/accounts/?page=2
+                    results:
+                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                      naam: Parkeervergunning opzegging
+                      type: api
+                      method: post
+                      url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping:
+                        variabelen:
+                          product:
+                            pid: $.uuid
+                            geldigheideinddatum: $.eindDatum
+                            aantaluren: $.verbruiksobject.uren
+                  summary: actie response (api)
                 ActieResponse(dmn):
                   value:
                     count: 123
@@ -204,17 +254,18 @@ paths:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                       naam: Parkeervergunning opzegging
+                      type: dmn
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                       mapping:
                         product:
                         - name: pid
-                          regex: $.uuid
+                          path: $.uuid
                           classType: String
                         - name: geldigheideinddatum
-                          regex: $.eindDatum
+                          path: $.eindDatum
                           classType: String
                         - name: aantaluren
-                          regex: $.verbruiksobject.uren
+                          path: $.verbruiksobject.uren
                           classType: String
                         static:
                         - name: formulieren
@@ -267,28 +318,48 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest(url):
+              ActieRequest(formulier)ZonderMapping:
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: formulier
                   direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                summary: actie request (url)
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                summary: actie request (formulier) zonder mapping
+              ActieRequest(api):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  type: api
+                  method: post
+                  direct_url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                        geldigheideinddatum: $.eindDatum
+                        aantaluren: $.verbruiksobject.uren
+                summary: actie request (api)
               ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: dmn
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   mapping:
                     product:
                     - name: pid
-                      regex: $.uuid
+                      path: $.uuid
                       classType: String
                     - name: geldigheideinddatum
-                      regex: $.eindDatum
+                      path: $.eindDatum
                       classType: String
                     - name: aantaluren
-                      regex: $.verbruiksobject.uren
+                      path: $.verbruiksobject.uren
                       classType: String
                     static:
                     - name: formulieren
@@ -312,30 +383,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(url):
+                ActieResponse(formulier)ZonderMapping:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: formulier
                     url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: null
-                  summary: actie response (url)
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                  summary: actie response (formulier) zonder mapping
+                ActieResponse(api):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    type: api
+                    method: post
+                    url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                          geldigheideinddatum: $.eindDatum
+                          aantaluren: $.verbruiksobject.uren
+                  summary: actie response (api)
                 ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: dmn
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -406,30 +497,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(url):
+                ActieResponse(formulier)ZonderMapping:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: formulier
                     url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: null
-                  summary: actie response (url)
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                  summary: actie response (formulier) zonder mapping
+                ActieResponse(api):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    type: api
+                    method: post
+                    url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                          geldigheideinddatum: $.eindDatum
+                          aantaluren: $.verbruiksobject.uren
+                  summary: actie response (api)
                 ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: dmn
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -489,28 +600,48 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest(url):
+              ActieRequest(formulier)ZonderMapping:
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: formulier
                   direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                summary: actie request (url)
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                summary: actie request (formulier) zonder mapping
+              ActieRequest(api):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  type: api
+                  method: post
+                  direct_url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                        geldigheideinddatum: $.eindDatum
+                        aantaluren: $.verbruiksobject.uren
+                summary: actie request (api)
               ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: dmn
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   mapping:
                     product:
                     - name: pid
-                      regex: $.uuid
+                      path: $.uuid
                       classType: String
                     - name: geldigheideinddatum
-                      regex: $.eindDatum
+                      path: $.eindDatum
                       classType: String
                     - name: aantaluren
-                      regex: $.verbruiksobject.uren
+                      path: $.verbruiksobject.uren
                       classType: String
                     static:
                     - name: formulieren
@@ -534,30 +665,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(url):
+                ActieResponse(formulier)ZonderMapping:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: formulier
                     url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: null
-                  summary: actie response (url)
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                  summary: actie response (formulier) zonder mapping
+                ActieResponse(api):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    type: api
+                    method: post
+                    url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                          geldigheideinddatum: $.eindDatum
+                          aantaluren: $.verbruiksobject.uren
+                  summary: actie response (api)
                 ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: dmn
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -617,28 +768,48 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedActieRequest'
             examples:
-              ActieRequest(url):
+              ActieRequest(formulier)ZonderMapping:
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: formulier
                   direct_url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                summary: actie request (url)
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                summary: actie request (formulier) zonder mapping
+              ActieRequest(api):
+                value:
+                  producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  naam: Parkeervergunning opzegging
+                  type: api
+                  method: post
+                  direct_url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                  mapping:
+                    variabelen:
+                      product:
+                        pid: $.uuid
+                        geldigheideinddatum: $.eindDatum
+                        aantaluren: $.verbruiksobject.uren
+                summary: actie request (api)
               ActieRequest(dmn):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
+                  type: dmn
                   tabel_endpoint: https://gemeente-a-flowable/dmn-repository/decision-tables
                   dmn_tabel_id: 46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                   mapping:
                     product:
                     - name: pid
-                      regex: $.uuid
+                      path: $.uuid
                       classType: String
                     - name: geldigheideinddatum
-                      regex: $.eindDatum
+                      path: $.eindDatum
                       classType: String
                     - name: aantaluren
-                      regex: $.verbruiksobject.uren
+                      path: $.verbruiksobject.uren
                       classType: String
                     static:
                     - name: formulieren
@@ -661,30 +832,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(url):
+                ActieResponse(formulier)ZonderMapping:
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: formulier
                     url: https://gemeente-a-forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
-                    mapping: null
-                  summary: actie response (url)
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                  summary: actie response (formulier) zonder mapping
+                ActieResponse(api):
+                  value:
+                    uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                    naam: Parkeervergunning opzegging
+                    type: api
+                    method: post
+                    url: https://gemeente-a-api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                    mapping:
+                      variabelen:
+                        product:
+                          pid: $.uuid
+                          geldigheideinddatum: $.eindDatum
+                          aantaluren: $.verbruiksobject.uren
+                  summary: actie response (api)
                 ActieResponse(dmn):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                     naam: Parkeervergunning opzegging
+                    type: dmn
                     url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -4470,13 +4661,13 @@ paths:
                         mapping:
                           product:
                           - name: pid
-                            regex: $.uuid
+                            path: $.uuid
                             classType: String
                           - name: geldigheideinddatum
-                            regex: $.eindDatum
+                            path: $.eindDatum
                             classType: String
                           - name: aantaluren
-                            regex: $.verbruiksobject.uren
+                            path: $.verbruiksobject.uren
                             classType: String
                           static:
                           - name: formulieren
@@ -4551,13 +4742,13 @@ paths:
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -4606,13 +4797,13 @@ paths:
                       mapping:
                         product:
                         - name: pid
-                          regex: $.uuid
+                          path: $.uuid
                           classType: String
                         - name: geldigheideinddatum
-                          regex: $.eindDatum
+                          path: $.eindDatum
                           classType: String
                         - name: aantaluren
-                          regex: $.verbruiksobject.uren
+                          path: $.verbruiksobject.uren
                           classType: String
                         static:
                         - name: formulieren
@@ -4705,13 +4896,13 @@ paths:
                       mapping:
                         product:
                         - name: pid
-                          regex: $.uuid
+                          path: $.uuid
                           classType: String
                         - name: geldigheideinddatum
-                          regex: $.eindDatum
+                          path: $.eindDatum
                           classType: String
                         - name: aantaluren
-                          regex: $.verbruiksobject.uren
+                          path: $.verbruiksobject.uren
                           classType: String
                         static:
                         - name: formulieren
@@ -4793,13 +4984,13 @@ paths:
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -4848,13 +5039,13 @@ paths:
                       mapping:
                         product:
                         - name: pid
-                          regex: $.uuid
+                          path: $.uuid
                           classType: String
                         - name: geldigheideinddatum
-                          regex: $.eindDatum
+                          path: $.eindDatum
                           classType: String
                         - name: aantaluren
-                          regex: $.verbruiksobject.uren
+                          path: $.verbruiksobject.uren
                           classType: String
                         static:
                         - name: formulieren
@@ -4936,13 +5127,13 @@ paths:
                     mapping:
                       product:
                       - name: pid
-                        regex: $.uuid
+                        path: $.uuid
                         classType: String
                       - name: geldigheideinddatum
-                        regex: $.eindDatum
+                        path: $.eindDatum
                         classType: String
                       - name: aantaluren
-                        regex: $.verbruiksobject.uren
+                        path: $.verbruiksobject.uren
                         classType: String
                       static:
                       - name: formulieren
@@ -4990,13 +5181,13 @@ paths:
                       mapping:
                         product:
                         - name: pid
-                          regex: $.uuid
+                          path: $.uuid
                           classType: String
                         - name: geldigheideinddatum
-                          regex: $.eindDatum
+                          path: $.eindDatum
                           classType: String
                         - name: aantaluren
-                          regex: $.verbruiksobject.uren
+                          path: $.verbruiksobject.uren
                           classType: String
                         static:
                         - name: formulieren
@@ -5545,7 +5736,18 @@ paths:
                       acties:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeervergunning opzegging
+                        type: dmn
+                        method: ''
                         url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                        mapping:
+                          product:
+                          - name: pid
+                            path: $.uuid
+                            classType: String
+                          static:
+                          - name: formulieren
+                            classType: String
+                            value: https://openformulieren-gemeente-a.nl
                       bestanden:
                       - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                         bestand: https://gemeente.open-product.nl/media/test.txt
@@ -5780,7 +5982,18 @@ paths:
                     acties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
+                      type: dmn
+                      method: ''
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping:
+                        product:
+                        - name: pid
+                          path: $.uuid
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     bestanden:
                     - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
@@ -5978,7 +6191,18 @@ paths:
                     acties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
+                      type: dmn
+                      method: ''
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping:
+                        product:
+                        - name: pid
+                          path: $.uuid
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     bestanden:
                     - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
@@ -6220,7 +6444,18 @@ paths:
                     acties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
+                      type: dmn
+                      method: ''
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping:
+                        product:
+                        - name: pid
+                          path: $.uuid
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     bestanden:
                     - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
@@ -6463,7 +6698,18 @@ paths:
                     acties:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning opzegging
+                      type: dmn
+                      method: ''
                       url: https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a
+                      mapping:
+                        product:
+                        - name: pid
+                          path: $.uuid
+                          classType: String
+                        static:
+                        - name: formulieren
+                          classType: String
+                          value: https://openformulieren-gemeente-a.nl
                     bestanden:
                     - uuid: da0df49a-cd71-4e24-9bae-5be8b01f2c36
                       bestand: https://gemeente.open-product.nl/media/test.txt
@@ -7002,41 +7248,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductTypeActuelePrijs'
-          description: ''
-        '400':
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                BadRequestExample:
-                  value:
-                    veld_a:
-                    - Dit veld is vereist.
-                    veld_b:
-                    - ‘<uuid>’ is geen geldige UUID.
-                  summary: Bad request example
-                  description: Errors worden per veld teruggegeven. Hieronder volgt
-                    een voorbeeld.
-          description: Validation error
-        '403':
-          headers:
-            API-version:
-              schema:
-                type: string
-              description: 'Geeft een specifieke API-versie aan in de context van
-                een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailError'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductTypeActuelePrijs'
           description: ''
   /schemas:
     get:
@@ -8265,6 +8479,15 @@ components:
           type: string
           format: uuid
           readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Het type van de actie.
+
+            * `dmn` - DMN
+            * `api` - **EXPERIMENTEEL** API
+            * `formulier` - Formulier
         naam:
           type: string
           description: naam van de actie.
@@ -8278,18 +8501,40 @@ components:
           type: string
           format: uuid
         mapping:
-          type: object
-          additionalProperties: true
+          oneOf:
+          - $ref: '#/components/schemas/DmnMapping'
+          - $ref: '#/components/schemas/ApiOrFormMapping'
+          description: De mapping van de velden die nodig zijn voor de actie.
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele.
+          type: object
+        method:
+          title: Methode
+          description: |-
+            De method van de api actie.
+
+            * `post` - Post
+            * `get` - Get
+          oneOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
       required:
       - naam
       - producttype_uuid
+      - type
       - url
       - uuid
     ActieRequest:
       type: object
       properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Het type van de actie.
+
+            * `dmn` - DMN
+            * `api` - **EXPERIMENTEEL** API
+            * `formulier` - Formulier
         naam:
           type: string
           minLength: 1
@@ -8317,13 +8562,51 @@ components:
           type: string
           format: uuid
         mapping:
-          type: object
-          additionalProperties: true
+          oneOf:
+          - $ref: '#/components/schemas/DmnMapping'
+          - $ref: '#/components/schemas/ApiOrFormMapping'
+          description: De mapping van de velden die nodig zijn voor de actie.
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele.
+          type: object
+        method:
+          title: Methode
+          description: |-
+            De method van de api actie.
+
+            * `post` - Post
+            * `get` - Get
+          oneOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
       required:
       - naam
       - producttype_uuid
+      - type
+    ApiOrFormMapping:
+      type: object
+      properties:
+        variabelen:
+          type: object
+          description: Mapping of category name to a set of variable-name -> JSONPath
+            mappings
+          additionalProperties:
+            type: object
+            description: Mapping of variable name (dot notation) to a JSONPath expression
+            additionalProperties:
+              type: string
+              description: A JSONPath expression, must start with $.
+              pattern: ^\$\..+
+            minProperties: 1
+          minProperties: 1
+        static:
+          type: object
+          description: Flat mapping of static key/value string pairs
+          additionalProperties:
+            type: string
+          minProperties: 1
+      required:
+      - variabelen
+      additionalProperties: false
     BaseFacetType:
       type: object
       properties:
@@ -8421,6 +8704,9 @@ components:
       required:
       - bestand
       - producttype_uuid
+    BlankEnum:
+      enum:
+      - ''
     Contact:
       type: object
       properties:
@@ -8591,6 +8877,57 @@ components:
           type: string
       required:
       - detail
+    DmnMapping:
+      type: object
+      properties:
+        static:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - classType
+            - value
+            properties:
+              name:
+                type: string
+              value:
+                type: string
+              classType:
+                type: string
+                enum:
+                - String
+                - Integer
+                - Double
+                - Boolean
+                - Date
+                - Long
+            additionalProperties: false
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          required:
+          - name
+          - classType
+          - path
+          properties:
+            name:
+              type: string
+            path:
+              type: string
+              description: A JSONPath expression, must start with $.
+              pattern: ^\$\..+
+            classType:
+              type: string
+              enum:
+              - String
+              - Integer
+              - Double
+              - Boolean
+              - Date
+              - Long
+          additionalProperties: false
     DoelgroepEnum:
       enum:
       - burgers
@@ -8786,6 +9123,14 @@ components:
           maxLength: 255
       required:
       - naam
+    MethodEnum:
+      enum:
+      - post
+      - get
+      type: string
+      description: |-
+        * `post` - Post
+        * `get` - Get
     NestedActie:
       type: object
       properties:
@@ -8797,18 +9142,40 @@ components:
           type: string
           description: naam van de actie.
           maxLength: 255
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Het type van de actie.
+
+            * `dmn` - DMN
+            * `api` - **EXPERIMENTEEL** API
+            * `formulier` - Formulier
+        method:
+          title: Methode
+          description: |-
+            De method van de api actie.
+
+            * `post` - Post
+            * `get` - Get
+          oneOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         url:
           type: string
           format: uri
           readOnly: true
           description: De url naar de dmn tabel.
         mapping:
-          type: object
-          additionalProperties: true
+          oneOf:
+          - $ref: '#/components/schemas/DmnMapping'
+          - $ref: '#/components/schemas/ApiOrFormMapping'
+          description: De mapping van de velden die nodig zijn voor de actie.
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele.
+          type: object
       required:
       - naam
+      - type
       - url
       - uuid
     NestedActieRequest:
@@ -8819,13 +9186,35 @@ components:
           minLength: 1
           description: naam van de actie.
           maxLength: 255
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Het type van de actie.
+
+            * `dmn` - DMN
+            * `api` - **EXPERIMENTEEL** API
+            * `formulier` - Formulier
+        method:
+          title: Methode
+          description: |-
+            De method van de api actie.
+
+            * `post` - Post
+            * `get` - Get
+          oneOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         mapping:
-          type: object
-          additionalProperties: true
+          oneOf:
+          - $ref: '#/components/schemas/DmnMapping'
+          - $ref: '#/components/schemas/ApiOrFormMapping'
+          description: De mapping van de velden die nodig zijn voor de actie.
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele.
+          type: object
       required:
       - naam
+      - type
     NestedBestand:
       type: object
       properties:
@@ -9663,6 +10052,15 @@ components:
     PatchedActieRequest:
       type: object
       properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            Het type van de actie.
+
+            * `dmn` - DMN
+            * `api` - **EXPERIMENTEEL** API
+            * `formulier` - Formulier
         naam:
           type: string
           minLength: 1
@@ -9690,10 +10088,22 @@ components:
           type: string
           format: uuid
         mapping:
-          type: object
-          additionalProperties: true
+          oneOf:
+          - $ref: '#/components/schemas/DmnMapping'
+          - $ref: '#/components/schemas/ApiOrFormMapping'
+          description: De mapping van de velden die nodig zijn voor de actie.
           nullable: true
-          description: De mapping tussen de velden in Open Product & DMN variabele.
+          type: object
+        method:
+          title: Methode
+          description: |-
+            De method van de api actie.
+
+            * `post` - Post
+            * `get` - Get
+          oneOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          - $ref: '#/components/schemas/BlankEnum'
     PatchedBestandRequest:
       type: object
       properties:
@@ -10114,10 +10524,11 @@ components:
           description: Korte beschrijving van de prijs regel.
           maxLength: 255
         mapping:
-          type: object
-          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/DmnMapping'
           nullable: true
           description: De mapping tussen de velden in Open Product & DMN variabele
+          type: object
       required:
       - beschrijving
       - url
@@ -10145,10 +10556,11 @@ components:
           description: tabel endpoint van een bestaande dmn config.
           writeOnly: true
         mapping:
-          type: object
-          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/DmnMapping'
           nullable: true
           description: De mapping tussen de velden in Open Product & DMN variabele
+          type: object
       required:
       - beschrijving
       - dmn_tabel_id
@@ -10689,6 +11101,16 @@ components:
         * `ingetrokken` - Ingetrokken
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
+    TypeEnum:
+      enum:
+      - dmn
+      - api
+      - formulier
+      type: string
+      description: |-
+        * `dmn` - DMN
+        * `api` - **EXPERIMENTEEL** API
+        * `formulier` - Formulier
   securitySchemes:
     OpenID:
       type: openIdConnect
@@ -10741,52 +11163,7 @@ tags:
     - Via `producttypen/actuele-prijzen` en `producttypen/<uuid>/actuele-prijs` kunnen de huidige prijzen worden opgehaald.
 
     ### prijs regel mapping
-    - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
-        ```json
-        {
-            "type": "object",
-            "definitions": {
-                "classType": {
-                    "type": "string",
-                    "enum": [
-                        "String",
-                        "Integer",
-                        "Double",
-                        "Boolean",
-                        "Date",
-                        "Long",
-                    ],
-                }
-            },
-            "properties": {
-                "static": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": ["name", "classType", "value"],
-                        "properties": {
-                            "name": {"type": "string"},
-                            "value": {"type": "string"},
-                            "classType": {"$ref": "#/definitions/classType"},
-                        },
-                        "additionalProperties": False,
-                    },
-                }
-            },
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["name", "classType", "regex"],
-                    "properties": {
-                        "name": {"type": "string"},
-                        "regex": {"type": "string"},
-                        "classType": {"$ref": "#/definitions/classType"},
-                    },
-                    "additionalProperties": False,
-                },
-        }
-        ```
+    - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het dmn schema (zie request body schema).
 - name: content
   description: |2
 
@@ -10837,7 +11214,7 @@ tags:
 
     ### Opmerkingen
     - Jsonschema's zijn JSON objecten die worden gebruikt om andere JSON te valideren ([zie jsonschema](https://json-schema.org))
-    - In Open producten worden jsonschemas gebruikt voor verbruiksobjecten & dataobjecten.
+    - In Open product worden jsonschemas gebruikt voor verbruiksobjecten & dataobjecten.
 - name: links
   description: '## Opvragen en bewerken van LINKS.'
 - name: bestanden
@@ -10853,57 +11230,19 @@ tags:
     ## Opvragen en bewerken van ACTIES.
 
     ### Opmerkingen
-    - Een producttype actie is een link naar een DMN tabel uit een externe applicatie.
-    - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
-    - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
+    - Een producttype actie kan 3 verschillende typen hebben.
+    - DMN actie
+        - Via de Open Product beheeromgeving kunnen de urls van verschillende DMN applicaties worden toegevoegd als een DMNCONFIG object.
+        - Bij het aanmaken of wijzigen van een actie refereert `tabel_endpoint` naar de url van een aangemaakte DMNCONFIG, `dmn_tabel_id` is de
     identifier van de tabel in de DMN omgeving.
-    - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
-    - Met het veld `mapping` kan worden aangegeven welke velden nodig zijn voor de DMN tabel. De mapping wordt gevalideerd tegen het volgende json schema:
-        ```json
-        {
-            "type": "object",
-            "definitions": {
-                "classType": {
-                    "type": "string",
-                    "enum": [
-                        "String",
-                        "Integer",
-                        "Double",
-                        "Boolean",
-                        "Date",
-                        "Long",
-                    ],
-                }
-            },
-            "properties": {
-                "static": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": ["name", "classType", "value"],
-                        "properties": {
-                            "name": {"type": "string"},
-                            "value": {"type": "string"},
-                            "classType": {"$ref": "#/definitions/classType"},
-                        },
-                        "additionalProperties": False,
-                    },
-                }
-            },
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "required": ["name", "classType", "regex"],
-                    "properties": {
-                        "name": {"type": "string"},
-                        "regex": {"type": "string"},
-                        "classType": {"$ref": "#/definitions/classType"},
-                    },
-                    "additionalProperties": False,
-                },
-        }
-        ```
+        - In de response zijn de velden `tabel_endpoint` en `dmn_tabel_id` samengevoegd tot `url`.
+    - Formulier actie
+        - in plaats van de dmn velden wordt direct_url gebruikt voor de formulier url.
+
+    - Api actie (experimenteel)
+        - Naast de direct_url is method ook verplicht.
+
+    - Met het veld `mapping` kan worden aangegeven welke velden moet worden meegegeven aan de actie. De mapping wordt gevalideerd tegen het DMN, API of Formulier schema op basis van het actie type.
 - name: locaties
   description: '## Opvragen en bewerken van LOCATIES.'
 - name: organisaties

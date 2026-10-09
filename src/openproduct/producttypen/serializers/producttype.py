@@ -164,7 +164,25 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                     {
                         "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                         "naam": "Parkeervergunning opzegging",
+                        "type": "dmn",
+                        "method": "",
                         "url": "https://gemeente-a-flowable/dmn-repository/decision-tables/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                        "mapping": {
+                            "product": [
+                                {
+                                    "name": "pid",
+                                    "path": "$.uuid",
+                                    "classType": "String",
+                                }
+                            ],
+                            "static": [
+                                {
+                                    "name": "formulieren",
+                                    "classType": "String",
+                                    "value": "https://openformulieren-gemeente-a.nl",
+                                }
+                            ],
+                        },
                     },
                 ],
                 "bestanden": [

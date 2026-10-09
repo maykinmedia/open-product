@@ -6,7 +6,10 @@ from rest_framework import serializers
 from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     check_for_circular_reference,
-    validate_actie_url_xor_dmn,
+    validate_actie_direct_url,
+    validate_actie_dmn,
+    validate_actie_mapping,
+    validate_actie_method,
     validate_exactly_one_producttype_or_thema,
     validate_prijs_optie_xor_regel,
     validate_publicatie_dates,
@@ -117,10 +120,13 @@ class ContentElementProducttypeThemaValidator:
         )
 
 
-class ActieUrlValidator:
+class ActieValidator:
     requires_context = True
 
     def __call__(self, value, serializer):
+        mapping = get_from_serializer_data_or_instance("mapping", value, serializer)
+        method = get_from_serializer_data_or_instance("method", value, serializer)
+        type = get_from_serializer_data_or_instance("type", value, serializer)
         direct_url = get_from_serializer_data_or_instance(
             "direct_url", value, serializer
         )
@@ -132,6 +138,9 @@ class ActieUrlValidator:
         )
 
         try:
-            validate_actie_url_xor_dmn(direct_url, dmn_config, dmn_tabel_id)
+            validate_actie_mapping(mapping, type)
+            validate_actie_direct_url(direct_url, type)
+            validate_actie_method(method, type)
+            validate_actie_dmn(dmn_config, dmn_tabel_id, type)
         except ValidationError as e:
-            raise serializers.ValidationError(e.message)
+            raise serializers.ValidationError(e.message_dict)
