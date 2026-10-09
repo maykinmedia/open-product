@@ -267,8 +267,8 @@ class TestUrnPrefixMigration(BaseMigrationTest):
 
 class TestSetActieTypeMigration(BaseMigrationTest):
     app = "producttypen"
-    migrate_to = "0023_set_type_for_existing_acties"
-    migrate_from = "0021_alter_producttype_eigenaar"
+    migrate_to = "0024_set_type_for_existing_acties"
+    migrate_from = "0022_facettype_facetwaarde_producttype_facetten"
 
     def setUp(self):
         super().setUp()

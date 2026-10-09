@@ -14,7 +14,7 @@ def set_type_for_existing_acties(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producttypen', '0022_actie_method_actie_type_alter_actie_mapping'),
+        ('producttypen', '0023_actie_method_actie_type_alter_actie_mapping'),
     ]
 
     operations = [
