@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producttypen', '0021_alter_producttype_eigenaar'),
+        ('producttypen', '0022_facettype_facetwaarde_producttype_facetten'),
     ]
 
     operations = [
