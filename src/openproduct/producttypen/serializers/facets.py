@@ -37,10 +37,8 @@ class ProductTypenFacettenSerializer(BaseFacetWaardeSerializer):
 
 
 class FacetTypeSerializer(BaseFacetTypeSerializer):
-    facetten_waarden = BaseFacetWaardeSerializer(
-        many=True, read_only=True, source="waarden"
-    )
-    facetten_waarden_uuids = UUIDRelatedField(
+    waarden = BaseFacetWaardeSerializer(many=True, read_only=True)
+    waarden_uuids = UUIDRelatedField(
         many=True,
         write_only=True,
         queryset=FacetWaarde.objects.all(),
@@ -50,6 +48,6 @@ class FacetTypeSerializer(BaseFacetTypeSerializer):
 
     class Meta(BaseFacetTypeSerializer.Meta):
         fields = BaseFacetTypeSerializer.Meta.fields + [
-            "facetten_waarden",
-            "facetten_waarden_uuids",
+            "waarden",
+            "waarden_uuids",
         ]

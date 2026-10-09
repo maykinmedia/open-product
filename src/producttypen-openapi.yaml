@@ -8641,15 +8641,15 @@ components:
         verplicht:
           type: boolean
           description: Geeft aan of het facet verplicht is voor producttype
-        facetten_waarden:
+        waarden:
           type: array
           items:
             $ref: '#/components/schemas/BaseFacetWaarde'
           readOnly: true
       required:
-      - facetten_waarden
       - naam
       - uuid
+      - waarden
     JsonSchema:
       type: object
       properties:

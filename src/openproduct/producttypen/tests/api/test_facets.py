@@ -58,7 +58,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
                         "facetteerbaar": facet_type.facetteerbaar,
                         "meervoudig_toegestaan": facet_type.meervoudig_toegestaan,
                         "verplicht": facet_type.verplicht,
-                        "facetten_waarden": [],
+                        "waarden": [],
                     }
                 ],
             },
@@ -87,7 +87,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
                 "facetteerbaar": facet_type.facetteerbaar,
                 "meervoudig_toegestaan": facet_type.meervoudig_toegestaan,
                 "verplicht": facet_type.verplicht,
-                "facetten_waarden": [
+                "waarden": [
                     {
                         "uuid": str(facet_type.waarden.first().uuid),
                         "naam": facet_type.waarden.first().naam,
