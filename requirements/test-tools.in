@@ -25,3 +25,6 @@ sphinxcontrib-htmlhelp
 sphinxcontrib-qthelp
 sphinxcontrib-serializinghtml
 sphinx-tabs
+
+# user interface testing
+playwright

@@ -21,11 +21,16 @@ from openproduct.locaties.serializers import (
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
-from ..models import JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models import FacetWaarde, JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models.validators import (
+    validate_meervoudig_facetten,
+    validate_verplichte_facetten,
+)
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
 from .externe_code import ExterneCodeSerializer, NestedExterneCodeSerializer
+from .facets import ProductTypenFacettenSerializer
 from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
@@ -96,6 +101,22 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                         "huisnummer": "151",
                         "postcode": "1043 GR",
                         "stad": "Amsterdam",
+                    }
+                ],
+                "facetten": [
+                    {
+                        "uuid": "66e6e258-ef5f-4859-a774-89ad2756c9ad",
+                        "naam": "facetwaarde 1",
+                        "omschrijving": "facetwaarde omschrijving",
+                        "actief": True,
+                        "facet_type": {
+                            "uuid": "27e7277f-226d-4345-b61e-e3a96d1b891a",
+                            "naam": "facettype 1",
+                            "omschrijving": "facet_type omschrijving",
+                            "facetteerbaar": False,
+                            "meervoudig_toegestaan": False,
+                            "verplicht": False,
+                        },
                     }
                 ],
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -216,6 +237,7 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
                 "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
+                "facetten_uuids": ["49bd9f8e-239e-49f8-a65d-e1daacad1a72"],
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
                 "publicatie_start_datum": "2019-09-24",
@@ -269,6 +291,15 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         write_only=True,
         queryset=Thema.objects.all(),
         source="themas",
+    )
+
+    facetten = ProductTypenFacettenSerializer(many=True, read_only=True)
+    facetten_uuids = UUIDRelatedField(
+        many=True,
+        write_only=True,
+        queryset=FacetWaarde.objects.all(),
+        default=[],
+        source="facetten",
     )
 
     locaties = LocatieSerializer(many=True, read_only=True)
@@ -428,6 +459,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "locatie_uuids",
             "organisaties",
             "organisatie_uuids",
+            "facetten",
+            "facetten_uuids",
             "eigenaar",
             "contacten",
             "contact_uuids",
@@ -459,7 +492,13 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         ]
         validators = [
             DuplicateIdValidator(
-                ["thema_uuids", "locatie_uuids", "organisatie_uuids", "contacten_uuids"]
+                [
+                    "thema_uuids",
+                    "locatie_uuids",
+                    "organisatie_uuids",
+                    "contacten_uuids",
+                    "facetten_uuids",
+                ]
             ),
             PublicatieDateValidator(),
             DoelgroepUplValidator(),
@@ -469,6 +508,11 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if len(themas) == 0:
             raise serializers.ValidationError(_("Er is minimaal één thema vereist."))
         return themas
+
+    def validate_facetten_uuids(self, facetten: list[FacetWaarde]) -> list[FacetWaarde]:
+        validate_meervoudig_facetten(facetten)
+        validate_verplichte_facetten(facetten)
+        return facetten
 
     @transaction.atomic()
     def create(self, validated_data):
@@ -517,6 +561,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     @transaction.atomic()
     def update(self, instance, validated_data):
         themas = validated_data.pop("themas", None)
+        facetten = validated_data.pop("facetten", None)
         locaties = validated_data.pop("locaties", None)
         organisaties = validated_data.pop("organisaties", None)
         contacten = validated_data.pop("contacten", None)
@@ -531,6 +576,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
         if themas:  # Er is minimaal één thema vereist
             instance.themas.set(themas)
+        if facetten is not None:
+            instance.facetten.set(facetten)
         if locaties is not None:
             instance.locaties.set(locaties)
         if organisaties is not None:

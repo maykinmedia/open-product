@@ -199,6 +199,19 @@ class ProductTypeFilterSet(FilterSet):
         help_text=_("Lijst van organisatie uuids waarop kan worden gezocht."),
     )
 
+    facetten__uuid__in = UUIDFInFilter(
+        field_name="facetten__uuid",
+        distinct=True,
+        help_text=_("Lijst van UUID's van facetten waarop gefilterd kan worden."),
+    )
+
+    facetten__naam = django_filters.CharFilter(
+        field_name="facetten__naam",
+        lookup_expr="exact",
+        distinct=True,
+        help_text=_("Naam van het facet waarop gefilterd kan worden."),
+    )
+
     class Meta:
         model = ProductType
         fields = {
@@ -218,6 +231,7 @@ class ProductTypeFilterSet(FilterSet):
             "contacten__uuid": ["exact"],
             "locaties__uuid": ["exact"],
             "organisaties__uuid": ["exact"],
+            "facetten__uuid": ["exact"],
             "organisaties__code": ["exact"],
             "themas__uuid": ["exact"],
         }
