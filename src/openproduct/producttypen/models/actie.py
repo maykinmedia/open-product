@@ -37,14 +37,14 @@ class Actie(BaseModel):
         verbose_name=_("type"),
         max_length=40,
         choices=ActieTypeChoices.choices,
-        help_text=_("het type waarde de actie."),
+        help_text=_("Het type van de actie."),
     )
 
     method = models.CharField(
         verbose_name=_("method"),
         max_length=40,
         choices=ActieMethodChoices.choices,
-        help_text=_("de method de api actie."),
+        help_text=_("De method van de api actie."),
         blank=True,
     )
 
@@ -75,7 +75,7 @@ class Actie(BaseModel):
         _("mapping"),
         null=True,
         blank=True,
-        help_text=_("De mapping van de velden die nodig zijn de actie."),
+        help_text=_("De mapping van de velden die nodig zijn voor de actie."),
         encoder=DjangoJSONEncoder,
     )
 
