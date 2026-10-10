@@ -53,6 +53,12 @@ zgw_consumers:
     user_id: open-product
     secret: open-product-secret
 
+  - identifier: referentielijsten-api
+    label: Referentielijsten API
+    api_root: http://referentielijsten-web.local:8000/api/v1/
+    api_type: orc
+    auth_type: no_auth
+
 notifications_config_enable: true
 notifications_config:
   notifications_api_service_identifier: open-notificaties
@@ -77,3 +83,10 @@ dmn_config:
 
   - tabel_endpoint: https://new.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/
     naam: new repository
+
+
+referentielijsten_config_enable: true
+referentielijsten_config:
+  enabled: true
+  referentielijsten_api_service_identifier: referentielijsten-api
+  kanalen_tabel_code: KANAAL
