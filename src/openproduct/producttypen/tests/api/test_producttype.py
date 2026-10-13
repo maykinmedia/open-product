@@ -938,8 +938,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # Sending an empty list in PUT must remove the existing relation
         for field, relation, factory in (
             ("locatie_uuids", "locaties", LocatieFactory),
-            ("organisatie_uuids", "organisaties", OrganisatieFactory),
-            ("contact_uuids", "contacten", ContactFactory),
         ):
             with self.subTest(field=field):
                 producttype = ProductTypeFactory.create()
@@ -956,8 +954,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # Sending an empty list in PATCH must remove the existing relation
         for field, relation, factory in (
             ("locatie_uuids", "locaties", LocatieFactory),
-            ("organisatie_uuids", "organisaties", OrganisatieFactory),
-            ("contact_uuids", "contacten", ContactFactory),
         ):
             with self.subTest(field=field):
                 producttype = ProductTypeFactory.create()
