@@ -5493,15 +5493,17 @@ paths:
                         postcode: 1043 GR
                         stad: Amsterdam
                       organisaties:
-                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin
-                        code: ORG-1234
-                        email: info@maykin.nl
-                        telefoonnummer: '+310207530523'
-                        straat: Kingsfortweg
-                        huisnummer: '151'
-                        postcode: 1043 GR
-                        stad: Amsterdam
+                      - rol: leverancier
+                        organisatie:
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Maykin
+                          code: ORG-1234
+                          email: info@maykin.nl
+                          telefoonnummer: '+310207530523'
+                          straat: Kingsfortweg
+                          huisnummer: '151'
+                          postcode: 1043 GR
+                          stad: Amsterdam
                       facetten:
                       - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
                         naam: facetwaarde 1
@@ -5516,21 +5518,23 @@ paths:
                           verplicht: false
                       eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                       contacten:
-                      - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        organisatie:
+                      - rol: relatiemanager
+                        contact:
                           uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                          naam: Maykin
-                          code: ORG-1234
-                          email: info@maykin.nl
-                          telefoonnummer: '+310207530523'
-                          straat: Kingsfortweg
-                          huisnummer: '151'
-                          postcode: 1043 GR
-                          stad: Amsterdam
-                        naam: Bob de Vries
-                        email: bob@example.com
-                        telefoonnummer: '0611223344'
-                        rol: medewerker
+                          organisatie:
+                            uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                            naam: Maykin
+                            code: ORG-1234
+                            email: info@maykin.nl
+                            telefoonnummer: '+310207530523'
+                            straat: Kingsfortweg
+                            huisnummer: '151'
+                            postcode: 1043 GR
+                            stad: Amsterdam
+                          naam: Bob de Vries
+                          email: bob@example.com
+                          telefoonnummer: '0611223344'
+                          rol: medewerker
                       prijzen:
                       - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         prijsopties:
@@ -5728,15 +5732,17 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin
-                      code: ORG-1234
-                      email: info@maykin.nl
-                      telefoonnummer: '+310207530523'
-                      straat: Kingsfortweg
-                      huisnummer: '151'
-                      postcode: 1043 GR
-                      stad: Amsterdam
+                    - rol: leverancier
+                      organisatie:
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Maykin
+                        code: ORG-1234
+                        email: info@maykin.nl
+                        telefoonnummer: '+310207530523'
+                        straat: Kingsfortweg
+                        huisnummer: '151'
+                        postcode: 1043 GR
+                        stad: Amsterdam
                     facetten:
                     - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
                       naam: facetwaarde 1
@@ -5751,21 +5757,23 @@ paths:
                         verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      organisatie:
+                    - rol: relatiemanager
+                      contact:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin
-                        code: ORG-1234
-                        email: info@maykin.nl
-                        telefoonnummer: '+310207530523'
-                        straat: Kingsfortweg
-                        huisnummer: '151'
-                        postcode: 1043 GR
-                        stad: Amsterdam
-                      naam: Bob de Vries
-                      email: bob@example.com
-                      telefoonnummer: '0611223344'
-                      rol: medewerker
+                        organisatie:
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Maykin
+                          code: ORG-1234
+                          email: info@maykin.nl
+                          telefoonnummer: '+310207530523'
+                          straat: Kingsfortweg
+                          huisnummer: '151'
+                          postcode: 1043 GR
+                          stad: Amsterdam
+                        naam: Bob de Vries
+                        email: bob@example.com
+                        telefoonnummer: '0611223344'
+                        rol: medewerker
                     prijzen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
@@ -5926,15 +5934,17 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin
-                      code: ORG-1234
-                      email: info@maykin.nl
-                      telefoonnummer: '+310207530523'
-                      straat: Kingsfortweg
-                      huisnummer: '151'
-                      postcode: 1043 GR
-                      stad: Amsterdam
+                    - rol: leverancier
+                      organisatie:
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Maykin
+                        code: ORG-1234
+                        email: info@maykin.nl
+                        telefoonnummer: '+310207530523'
+                        straat: Kingsfortweg
+                        huisnummer: '151'
+                        postcode: 1043 GR
+                        stad: Amsterdam
                     facetten:
                     - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
                       naam: facetwaarde 1
@@ -5949,21 +5959,23 @@ paths:
                         verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      organisatie:
+                    - rol: relatiemanager
+                      contact:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin
-                        code: ORG-1234
-                        email: info@maykin.nl
-                        telefoonnummer: '+310207530523'
-                        straat: Kingsfortweg
-                        huisnummer: '151'
-                        postcode: 1043 GR
-                        stad: Amsterdam
-                      naam: Bob de Vries
-                      email: bob@example.com
-                      telefoonnummer: '0611223344'
-                      rol: medewerker
+                        organisatie:
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Maykin
+                          code: ORG-1234
+                          email: info@maykin.nl
+                          telefoonnummer: '+310207530523'
+                          straat: Kingsfortweg
+                          huisnummer: '151'
+                          postcode: 1043 GR
+                          stad: Amsterdam
+                        naam: Bob de Vries
+                        email: bob@example.com
+                        telefoonnummer: '0611223344'
+                        rol: medewerker
                     prijzen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
@@ -6168,15 +6180,17 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin
-                      code: ORG-1234
-                      email: info@maykin.nl
-                      telefoonnummer: '+310207530523'
-                      straat: Kingsfortweg
-                      huisnummer: '151'
-                      postcode: 1043 GR
-                      stad: Amsterdam
+                    - rol: leverancier
+                      organisatie:
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Maykin
+                        code: ORG-1234
+                        email: info@maykin.nl
+                        telefoonnummer: '+310207530523'
+                        straat: Kingsfortweg
+                        huisnummer: '151'
+                        postcode: 1043 GR
+                        stad: Amsterdam
                     facetten:
                     - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
                       naam: facetwaarde 1
@@ -6191,21 +6205,23 @@ paths:
                         verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      organisatie:
+                    - rol: relatiemanager
+                      contact:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin
-                        code: ORG-1234
-                        email: info@maykin.nl
-                        telefoonnummer: '+310207530523'
-                        straat: Kingsfortweg
-                        huisnummer: '151'
-                        postcode: 1043 GR
-                        stad: Amsterdam
-                      naam: Bob de Vries
-                      email: bob@example.com
-                      telefoonnummer: '0611223344'
-                      rol: medewerker
+                        organisatie:
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Maykin
+                          code: ORG-1234
+                          email: info@maykin.nl
+                          telefoonnummer: '+310207530523'
+                          straat: Kingsfortweg
+                          huisnummer: '151'
+                          postcode: 1043 GR
+                          stad: Amsterdam
+                        naam: Bob de Vries
+                        email: bob@example.com
+                        telefoonnummer: '0611223344'
+                        rol: medewerker
                     prijzen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
@@ -6311,8 +6327,8 @@ paths:
           description: ''
     patch:
       operationId: producttypen_partial_update
-      description: Als thema_uuids, locatie_uuids, organisatie_uuids of contact_uuids
-        in een patch request wordt meegegeven wordt deze lijst geheel overschreven.
+      description: Als thema_uuids, locatie_uuids, organisaties of contacten in een
+        patch request wordt meegegeven wordt deze lijst geheel overschreven.
       summary: Werk een PRODUCTTYPE deels bij.
       parameters:
       - in: path
@@ -6411,15 +6427,17 @@ paths:
                       postcode: 1043 GR
                       stad: Amsterdam
                     organisaties:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      naam: Maykin
-                      code: ORG-1234
-                      email: info@maykin.nl
-                      telefoonnummer: '+310207530523'
-                      straat: Kingsfortweg
-                      huisnummer: '151'
-                      postcode: 1043 GR
-                      stad: Amsterdam
+                    - rol: leverancier
+                      organisatie:
+                        uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                        naam: Maykin
+                        code: ORG-1234
+                        email: info@maykin.nl
+                        telefoonnummer: '+310207530523'
+                        straat: Kingsfortweg
+                        huisnummer: '151'
+                        postcode: 1043 GR
+                        stad: Amsterdam
                     facetten:
                     - uuid: 66e6e258-ef5f-4859-a774-89ad2756c9ad
                       naam: facetwaarde 1
@@ -6434,21 +6452,23 @@ paths:
                         verplicht: false
                     eigenaar: urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08
                     contacten:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      organisatie:
+                    - rol: relatiemanager
+                      contact:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                        naam: Maykin
-                        code: ORG-1234
-                        email: info@maykin.nl
-                        telefoonnummer: '+310207530523'
-                        straat: Kingsfortweg
-                        huisnummer: '151'
-                        postcode: 1043 GR
-                        stad: Amsterdam
-                      naam: Bob de Vries
-                      email: bob@example.com
-                      telefoonnummer: '0611223344'
-                      rol: medewerker
+                        organisatie:
+                          uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                          naam: Maykin
+                          code: ORG-1234
+                          email: info@maykin.nl
+                          telefoonnummer: '+310207530523'
+                          straat: Kingsfortweg
+                          huisnummer: '151'
+                          postcode: 1043 GR
+                          stad: Amsterdam
+                        naam: Bob de Vries
+                        email: bob@example.com
+                        telefoonnummer: '0611223344'
+                        rol: medewerker
                     prijzen:
                     - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       prijsopties:
@@ -8421,6 +8441,9 @@ components:
       required:
       - bestand
       - producttype_uuid
+    BlankEnum:
+      enum:
+      - ''
     Contact:
       type: object
       properties:
@@ -9112,6 +9135,93 @@ components:
       - uniforme_product_naam
       - update_datum
       - uuid
+    NestedProductTypeContact:
+      type: object
+      properties:
+        rol:
+          description: |-
+            De rol van het contact binnen het producttype.
+
+            * `relatiemanager` - Relatiemanager
+            * `contractmanager` - Contractmanager
+            * `interncontact` - Interncontact
+          oneOf:
+          - $ref: '#/components/schemas/NestedProductTypeContactRolEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        contact:
+          allOf:
+          - $ref: '#/components/schemas/Contact'
+          readOnly: true
+      required:
+      - contact
+    NestedProductTypeContactRequest:
+      type: object
+      properties:
+        rol:
+          description: |-
+            De rol van het contact binnen het producttype.
+
+            * `relatiemanager` - Relatiemanager
+            * `contractmanager` - Contractmanager
+            * `interncontact` - Interncontact
+          oneOf:
+          - $ref: '#/components/schemas/NestedProductTypeContactRolEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        contact_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+      required:
+      - contact_uuid
+    NestedProductTypeContactRolEnum:
+      enum:
+      - relatiemanager
+      - contractmanager
+      - interncontact
+      type: string
+      description: |-
+        * `relatiemanager` - Relatiemanager
+        * `contractmanager` - Contractmanager
+        * `interncontact` - Interncontact
+    NestedProductTypeOrganisatie:
+      type: object
+      properties:
+        rol:
+          description: |-
+            De rol van de organisatie binnen het producttype.
+
+            * `leverancier` - Leverancier
+          oneOf:
+          - $ref: '#/components/schemas/NestedProductTypeOrganisatieRolEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        organisatie:
+          allOf:
+          - $ref: '#/components/schemas/Organisatie'
+          readOnly: true
+      required:
+      - organisatie
+    NestedProductTypeOrganisatieRequest:
+      type: object
+      properties:
+        rol:
+          description: |-
+            De rol van de organisatie binnen het producttype.
+
+            * `leverancier` - Leverancier
+          oneOf:
+          - $ref: '#/components/schemas/NestedProductTypeOrganisatieRolEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        organisatie_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+      required:
+      - organisatie_uuid
+    NestedProductTypeOrganisatieRolEnum:
+      enum:
+      - leverancier
+      type: string
+      description: '* `leverancier` - Leverancier'
     NestedProductTypeRequest:
       type: object
       properties:
@@ -9896,13 +10006,11 @@ components:
             format: uuid
           writeOnly: true
           default: []
-        organisatie_uuids:
+        organisaties:
           type: array
           items:
-            type: string
-            format: uuid
-          writeOnly: true
-          default: []
+            $ref: '#/components/schemas/NestedProductTypeOrganisatieRequest'
+          description: organisaties die dit het product aanbieden.
         facetten_uuids:
           type: array
           items:
@@ -9916,13 +10024,11 @@ components:
           description: De eigenaar van dit producttype zoals een medewerker uit Open
             Organisatie (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
           pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
-        contact_uuids:
+        contacten:
           type: array
           items:
-            type: string
-            format: uuid
-          writeOnly: true
-          default: []
+            $ref: '#/components/schemas/NestedProductTypeContactRequest'
+          description: De contacten verantwoordelijk voor het producttype.
         naam:
           type: string
           minLength: 1
@@ -10210,8 +10316,8 @@ components:
         organisaties:
           type: array
           items:
-            $ref: '#/components/schemas/Organisatie'
-          readOnly: true
+            $ref: '#/components/schemas/NestedProductTypeOrganisatie'
+          description: organisaties die dit het product aanbieden.
         facetten:
           type: array
           items:
@@ -10226,8 +10332,8 @@ components:
         contacten:
           type: array
           items:
-            $ref: '#/components/schemas/Contact'
-          readOnly: true
+            $ref: '#/components/schemas/NestedProductTypeContact'
+          description: De contacten verantwoordelijk voor het producttype.
         prijzen:
           type: array
           items:
@@ -10341,7 +10447,6 @@ components:
       - acties
       - bestanden
       - code
-      - contacten
       - dataobject_schema
       - doelgroep
       - facetten
@@ -10349,7 +10454,6 @@ components:
       - links
       - locaties
       - naam
-      - organisaties
       - prijzen
       - samenvatting
       - taal
@@ -10422,13 +10526,11 @@ components:
             format: uuid
           writeOnly: true
           default: []
-        organisatie_uuids:
+        organisaties:
           type: array
           items:
-            type: string
-            format: uuid
-          writeOnly: true
-          default: []
+            $ref: '#/components/schemas/NestedProductTypeOrganisatieRequest'
+          description: organisaties die dit het product aanbieden.
         facetten_uuids:
           type: array
           items:
@@ -10442,13 +10544,11 @@ components:
           description: De eigenaar van dit producttype zoals een medewerker uit Open
             Organisatie (`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)
           pattern: ^urn:[A-Za-z0-9](?:[A-Za-z0-9]|-){0,30}[A-Za-z0-9]:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/)*(?:\?\+(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:\?=(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?(?:#(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])(?:(?:[A-Za-z0-9]|[-._~]|%[0-9A-Fa-f][0-9A-Fa-f]|[!$&'()*+,;=]|[:@])|/|\?)*)?$
-        contact_uuids:
+        contacten:
           type: array
           items:
-            type: string
-            format: uuid
-          writeOnly: true
-          default: []
+            $ref: '#/components/schemas/NestedProductTypeContactRequest'
+          description: De contacten verantwoordelijk voor het producttype.
         naam:
           type: string
           minLength: 1
@@ -10718,10 +10818,13 @@ tags:
     ## Opvragen en bewerken van PRODUCTTYPEN.
 
     ### Opmerkingen
-    - Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids`, `locatie_uuids`, `organisatie_uuids` & `contact__uuids` een lijst met uuids worden meegegeven.
+    - Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids` & `locatie_uuids` een lijst met uuids worden meegegeven.
         - `thema_uuids` moet minimaal 1 uuid bevatten.
         - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
         - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
+    - Bij `organisaties` & `contacten` wordt een lijst met objecten meegegeven met een `organisatie_uuid` of `contact_uuid` en optioneel een `rol`.
+        - Bij een PUT of PATCH request wordt de bestaande lijst overschreven als het veld wordt meegegeven.
+        - De organisatie van een contact wordt automatisch (zonder rol) aan het producttype toegevoegd.
     - Bij het veld `uniforme_product_naam` gaat het om de naam uit de Uniforme productnamenlijst (UPL).
     - Bij de velden `verbruiksobject_schema_naam` en `dataobject_schema_naam` gaat het om de naam van een JSONSCHEMA.
     - De velden `externe_codes`, `parameters`, `zaaktypen`, `verzoektypen` en `processen` worden samen met het producttype genest aangemaakt of gewijzigd.

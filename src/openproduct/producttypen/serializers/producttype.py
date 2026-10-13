@@ -471,7 +471,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "locaties",
             "locatie_uuids",
             "organisaties",
-            "organisatie_uuids",
             "facetten",
             "facetten_uuids",
             "eigenaar",
