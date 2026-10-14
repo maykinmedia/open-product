@@ -60,6 +60,22 @@ def validate_product_status(status, producttype):
         )
 
 
+def validate_product_subtype(subtype, producttype):
+    if producttype.subtypen.exists() != bool(subtype):
+        raise ValidationError(
+            {
+                "subtype": _(
+                    "Subtype is alleen toegestaan (en verplicht) als het producttype subtypen heeft."
+                )
+            }
+        )
+
+    if subtype and not producttype.subtypen.filter(uuid=subtype.uuid).exists():
+        raise ValidationError(
+            {"subtype": _("subtype is niet gedefinieerd op het producttype")}
+        )
+
+
 def validate_product_dates(start_datum, eind_datum):
     if start_datum and eind_datum and (start_datum >= eind_datum):
         raise ValidationError(
