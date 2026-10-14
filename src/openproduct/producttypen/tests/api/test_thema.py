@@ -448,13 +448,11 @@ class TestThemaViewSet(BaseApiTestCase):
         response = self.client.delete(self.detail_path(thema))
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "producttypen")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "producttypen": [
-                    "Producttype T moet aan een minimaal één thema zijn gelinkt."
-                ]
-            },
+            error["reason"],
+            "Producttype T moet aan een minimaal één thema zijn gelinkt.",
         )
 
     def test_delete_thema_when_linked_producttype_has_other_themas(self):
@@ -475,13 +473,11 @@ class TestThemaViewSet(BaseApiTestCase):
 
         response = self.client.delete(self.detail_path(thema))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "sub_themas")
+        self.assertEqual(error["code"], "invalid")
         self.assertEqual(
-            response.data,
-            {
-                "sub_themas": [
-                    "Dit thema kan niet worden verwijderd omdat er gerelateerde sub_themas zijn."
-                ]
-            },
+            error["reason"],
+            "Dit thema kan niet worden verwijderd omdat er gerelateerde sub_themas zijn.",
         )
 
     def test_thema_cannot_reference_itself(self):
