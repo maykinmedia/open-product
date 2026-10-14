@@ -36,7 +36,7 @@ class FacetType(BaseModel):
 
     class Meta:
         verbose_name = _("facettype")
-        verbose_name_plural = _("facettypes")
+        verbose_name_plural = _("facettypen")
         ordering = ("naam",)
 
     def __str__(self):
@@ -75,3 +75,28 @@ class FacetWaarde(BaseModel):
 
     def __str__(self):
         return f"{self.facet_type.naam}: {self.naam}"
+
+
+class ProductTypeFacet(models.Model):
+    producttype = models.ForeignKey(
+        "producttypen.ProductType",
+        on_delete=models.CASCADE,
+        related_name="ProductType_facetten+",
+        verbose_name=_("producttype"),
+    )
+    facetwaarde = models.ForeignKey(
+        FacetWaarde,
+        on_delete=models.CASCADE,
+        related_name="ProductType_facetten+",
+        verbose_name=_("facetwaarde"),
+    )
+
+    class Meta:
+        db_table = "producttypen_producttype_facetten"
+        verbose_name = _("facet")
+        verbose_name_plural = _("facetten")
+        ordering = ("facetwaarde__facet_type__naam", "facetwaarde__naam")
+        unique_together = ("producttype", "facetwaarde")
+
+    def __str__(self):
+        return str(self.facetwaarde)

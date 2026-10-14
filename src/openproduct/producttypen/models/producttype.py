@@ -14,7 +14,7 @@ from openproduct.utils.fields import ChoiceArrayField
 from openproduct.utils.models import BasePublishableModel
 
 from .enums import DoelgroepChoices, ProductStateChoices
-from .facets import FacetWaarde
+from .facets import FacetWaarde, ProductTypeFacet
 from .jsonschema import JsonSchema
 from .thema import Thema
 from .upn import UniformeProductNaam
@@ -134,6 +134,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
         FacetWaarde,
         verbose_name=_("facetten"),
         blank=True,
+        through=ProductTypeFacet,
         related_name="producttypen",
         help_text=_("facetten producttypen"),
     )

@@ -6,14 +6,11 @@ from reversion_compare.admin import CompareVersionAdmin
 
 from openproduct.logging.admin_tools import AdminAuditLogMixin, AuditLogInlineformset
 
-from ..models.facets import FacetType, FacetWaarde
-from ..models.producttype import ProductType
+from ..models.facets import FacetType, FacetWaarde, ProductTypeFacet
 from ..models.validators import (
     validate_meervoudig_facetten,
     validate_verplichte_facetten,
 )
-
-ProductTypeFacet = ProductType.facetten.through
 
 
 class ProductTypeFacetForm(forms.ModelForm):

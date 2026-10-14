@@ -404,9 +404,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
             facet_type.select_option(str(facet_type_obj.pk))
             facet_waarde.select_option(str(facet_waarde_1.pk))
 
-            page.get_by_role(
-                "button", name="Nog een Producttype-facetwaarde-relatie toevoegen"
-            ).click()
+            page.get_by_role("button", name="Nog een Facet toevoegen").click()
 
             facet_type, facet_waarde = self._row(page, 1)
             facet_type.select_option(str(facet_type_obj.pk))
@@ -432,9 +430,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
             facet_type.select_option(str(facet_type_obj.pk))
             facet_waarde.select_option(str(facet_waarde_1.pk))
 
-            page.get_by_role(
-                "button", name="Nog een Producttype-facetwaarde-relatie toevoegen"
-            ).click()
+            page.get_by_role("button", name="Nog een Facet toevoegen").click()
 
             facet_type, facet_waarde = self._row(page, 3)
             facet_type.select_option(str(facet_type_obj.pk))
