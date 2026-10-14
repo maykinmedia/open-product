@@ -215,7 +215,7 @@ class TestExport(TestCase):
             ],
             "producttypeorganisatie": [
                 {
-                    "id": through.id,
+                    "id": through.id,  # type: ignore
                     "producttype_id": self.producttype1.id,
                     "organisatie_id": through.organisatie.id,
                 }
@@ -225,7 +225,7 @@ class TestExport(TestCase):
             ],
             "producttypecontact": [
                 {
-                    "id": through.id,
+                    "id": through.id,  # type: ignore
                     "producttype_id": self.producttype1.id,
                     "contact_id": through.contact.id,
                 }
