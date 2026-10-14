@@ -18,10 +18,17 @@ from openproduct.locaties.serializers import (
     OrganisatieSerializer,
 )
 
-from ...utils.drf_validators import DuplicateIdValidator
+from ...utils.drf_validators import DuplicateIdValidator, NestedObjectsValidator
 from ...utils.fields import UUIDRelatedField
 from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
-from ..models import FacetWaarde, JsonSchema, ProductType, Thema, UniformeProductNaam
+from ..models import (
+    FacetWaarde,
+    JsonSchema,
+    ProductType,
+    SubType,
+    Thema,
+    UniformeProductNaam,
+)
 from ..models.validators import (
     validate_meervoudig_facetten,
     validate_verplichte_facetten,
@@ -35,6 +42,7 @@ from .link import NestedLinkSerializer
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
 from .proces import NestedProcesSerializer, ProcesSerializer
+from .subtype import SubTypeSerializer
 from .validators import DoelgroepUplValidator, PublicatieDateValidator
 from .verzoektype import NestedVerzoekTypeSerializer, VerzoekTypeSerializer
 from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
@@ -224,6 +232,12 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "update_datum": "2019-08-24T14:15:22Z",
                 "code": "PT-12345",
                 "toegestane_statussen": ["gereed"],
+                "subtypen": [
+                    {
+                        "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                        "naam": "spoed",
+                    }
+                ],
                 "keywords": ["auto"],
                 "interne_opmerkingen": "interne opmerkingen...",
             },
@@ -245,6 +259,11 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "naam": "Aanleunwoning",
                 "code": "PT-12345",
                 "toegestane_statussen": ["gereed", "actief"],
+                "subtypen": [
+                    {
+                        "naam": "spoed",
+                    }
+                ],
                 "interne_opmerkingen": "interne opmerkingen...",
                 "samenvatting": "korte samenvatting...",
                 "keywords": ["wonen"],
@@ -384,6 +403,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     externe_codes = NestedExterneCodeSerializer(many=True, required=False)
     parameters = NestedParameterSerializer(many=True, required=False)
+    subtypen = SubTypeSerializer(many=True, required=False)
     zaaktypen = NestedZaakTypeSerializer(many=True, required=False)
     verzoektypen = NestedVerzoekTypeSerializer(many=True, required=False)
     processen = NestedProcesSerializer(many=True, required=False)
@@ -484,6 +504,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "update_datum",
             "code",
             "toegestane_statussen",
+            "subtypen",
             "keywords",
             "interne_opmerkingen",
             "zaaktypen",
@@ -502,6 +523,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ),
             PublicatieDateValidator(),
             DoelgroepUplValidator(),
+            NestedObjectsValidator("subtypen", SubType),
         ]
 
     def validate_thema_uuids(self, themas: list[Thema]) -> list[Thema]:
@@ -518,11 +540,16 @@ class ProductTypeSerializer(TranslatableModelSerializer):
     def create(self, validated_data):
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
+        subtypen = validated_data.pop("subtypen", [])
         zaaktypen = validated_data.pop("zaaktypen", [])
         verzoektypen = validated_data.pop("verzoektypen", [])
         processen = validated_data.pop("processen", [])
 
         producttype = super().create(validated_data)
+
+        for subtype in subtypen:
+            subtype.pop("uuid", None)
+            SubTypeSerializer().create(subtype | {"producttype": producttype})
 
         set_nested_serializer(
             [
@@ -568,6 +595,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
         externe_codes = validated_data.pop("externe_codes", None)
         parameters = validated_data.pop("parameters", None)
+        subtypen = validated_data.pop("subtypen", None)
         zaaktypen = validated_data.pop("zaaktypen", None)
         verzoektypen = validated_data.pop("verzoektypen", None)
         processen = validated_data.pop("processen", None)
@@ -584,6 +612,26 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.organisaties.set(organisaties)
         if contacten is not None:
             instance.contacten.set(contacten)
+
+        if subtypen is not None:
+            current_subtypen_uuids = set(
+                instance.subtypen.values_list("uuid", flat=True)
+            )
+            seen_subtypen_uuids = set()
+
+            for subtype in subtypen:
+                subtype_uuid = subtype.pop("uuid", None)
+                if subtype_uuid is None:
+                    SubTypeSerializer().create(subtype | {"producttype": instance})
+
+                else:
+                    existing_subtype = SubType.objects.get(uuid=subtype_uuid)
+                    SubTypeSerializer().update(existing_subtype, subtype)
+                    seen_subtypen_uuids.add(subtype_uuid)
+
+            instance.subtypen.filter(
+                uuid__in=(current_subtypen_uuids - seen_subtypen_uuids)
+            ).delete()
 
         if externe_codes is not None:
             instance.externe_codes.all().delete()

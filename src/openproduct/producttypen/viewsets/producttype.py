@@ -1,6 +1,8 @@
 from datetime import date
 
+from django.db import transaction
 from django.db.models import Prefetch, Q
+from django.db.models.deletion import ProtectedError
 from django.utils.translation import activate, gettext_lazy as _
 
 import django_filters
@@ -12,6 +14,7 @@ from drf_spectacular.utils import (
     extend_schema,
     extend_schema_view,
 )
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -359,6 +362,37 @@ class ProductTypeViewSet(
         if self.action in ["create", "update", "partial_update"]:
             activate("nl")
         return super().initial(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            return super().update(request, *args, **kwargs)
+        except ProtectedError:
+            return Response(
+                data={
+                    "subtypen": [
+                        _(
+                            "Een subtype kan niet worden verwijderd omdat er gerelateerde producten zijn."
+                        )
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            with transaction.atomic():
+                return super().destroy(request, *args, **kwargs)
+        except ProtectedError:
+            return Response(
+                data={
+                    "producten": [
+                        _(
+                            "Dit producttype kan niet worden verwijderd omdat er gerelateerde producten zijn."
+                        )
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @extend_schema(
         summary="De vertaling van een producttype aanpassen.",
