@@ -40,7 +40,7 @@ def check_meervoudig_facettype(facet_type):
 
 def validate_verplichte_facetten(facet_waarden):
     """
-    Ensure all mandatory (``verplicht``) facettypes are present in ``facet_waarden``.
+    Ensure all mandatory (``verplicht``) facettypen are present in ``facet_waarden``.
     """
 
     from openproduct.producttypen.models import FacetType
@@ -49,14 +49,14 @@ def validate_verplichte_facetten(facet_waarden):
     missing = FacetType.objects.filter(verplicht=True).exclude(pk__in=facet_types_ids)
     if missing.exists():
         raise ValidationError(
-            _("Verplichte facettypes ontbreken: %(namen)s.")
+            _("Verplichte facettypen ontbreken: %(namen)s.")
             % {"namen": ", ".join(missing.values_list("naam", flat=True))}
         )
 
 
 def validate_meervoudig_facetten(facet_waarden):
     """
-    Ensure single-value facettypes have at most one value in ``facet_waarden``.
+    Ensure single-value facettypen have at most one value in ``facet_waarden``.
     """
 
     dict_type = defaultdict(list)

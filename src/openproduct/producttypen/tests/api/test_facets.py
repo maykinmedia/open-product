@@ -419,7 +419,7 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
                 {
                     "name": "facetten_uuids",
                     "code": "invalid",
-                    "reason": f"Verplichte facettypes ontbreken: {facet_type.naam}.",
+                    "reason": f"Verplichte facettypen ontbreken: {facet_type.naam}.",
                 },
             )
 

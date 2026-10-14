@@ -376,7 +376,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
         expect(
             page.locator("#ProductType_facetten-group .errorlist.nonform")
-        ).to_contain_text(f"Verplichte facettypes ontbreken: {facet_type_obj_2.naam}.")
+        ).to_contain_text(f"Verplichte facettypen ontbreken: {facet_type_obj_2.naam}.")
 
         # select only for facet_type_obj_2
         facet_type, facet_waarde = self._row(page, 1)
