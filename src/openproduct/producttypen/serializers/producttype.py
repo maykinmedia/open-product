@@ -11,17 +11,23 @@ from parler_rest.serializers import TranslatableModelSerializer
 from rest_framework import serializers
 from vng_api_common.utils import get_help_text
 
-from openproduct.locaties.models import Contact, Locatie, Organisatie
-from openproduct.locaties.serializers import (
-    ContactSerializer,
-    LocatieSerializer,
-    OrganisatieSerializer,
-)
+from openproduct.locaties.models import Locatie
+from openproduct.locaties.serializers import LocatieSerializer
 
 from ...utils.drf_validators import DuplicateIdValidator
 from ...utils.fields import UUIDRelatedField
-from ...utils.serializers import set_nested_serializer, validate_key_value_model_keys
-from ..models import FacetWaarde, JsonSchema, ProductType, Thema, UniformeProductNaam
+from ...utils.serializers import (
+    set_nested_serializer,
+    validate_key_value_model_keys,
+    validate_unique_related,
+)
+from ..models import (
+    FacetWaarde,
+    JsonSchema,
+    ProductType,
+    Thema,
+    UniformeProductNaam,
+)
 from ..models.validators import (
     validate_meervoudig_facetten,
     validate_verplichte_facetten,
@@ -29,9 +35,14 @@ from ..models.validators import (
 from . import JsonSchemaSerializer
 from .actie import NestedActieSerializer
 from .bestand import NestedBestandSerializer
+from .contact import NestedProductTypeContactSerializer, ProductTypeContactSerializer
 from .externe_code import ExterneCodeSerializer, NestedExterneCodeSerializer
 from .facets import ProductTypenFacettenSerializer
 from .link import NestedLinkSerializer
+from .organisatie import (
+    NestedProductTypeOrganisatieSerializer,
+    ProductTypeOrganisatieSerializer,
+)
 from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
 from .proces import NestedProcesSerializer, ProcesSerializer
@@ -92,15 +103,18 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 ],
                 "organisaties": [
                     {
-                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "naam": "Maykin",
-                        "code": "ORG-1234",
-                        "email": "info@maykin.nl",
-                        "telefoonnummer": "+310207530523",
-                        "straat": "Kingsfortweg",
-                        "huisnummer": "151",
-                        "postcode": "1043 GR",
-                        "stad": "Amsterdam",
+                        "rol": "leverancier",
+                        "organisatie": {
+                            "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                            "naam": "Maykin",
+                            "code": "ORG-1234",
+                            "email": "info@maykin.nl",
+                            "telefoonnummer": "+310207530523",
+                            "straat": "Kingsfortweg",
+                            "huisnummer": "151",
+                            "postcode": "1043 GR",
+                            "stad": "Amsterdam",
+                        },
                     }
                 ],
                 "facetten": [
@@ -122,22 +136,25 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "contacten": [
                     {
-                        "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "organisatie": {
+                        "rol": "relatiemanager",
+                        "contact": {
                             "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                            "naam": "Maykin",
-                            "code": "ORG-1234",
-                            "email": "info@maykin.nl",
-                            "telefoonnummer": "+310207530523",
-                            "straat": "Kingsfortweg",
-                            "huisnummer": "151",
-                            "postcode": "1043 GR",
-                            "stad": "Amsterdam",
+                            "organisatie": {
+                                "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                                "naam": "Maykin",
+                                "code": "ORG-1234",
+                                "email": "info@maykin.nl",
+                                "telefoonnummer": "+310207530523",
+                                "straat": "Kingsfortweg",
+                                "huisnummer": "151",
+                                "postcode": "1043 GR",
+                                "stad": "Amsterdam",
+                            },
+                            "naam": "Bob de Vries",
+                            "email": "bob@example.com",
+                            "telefoonnummer": "0611223344",
+                            "rol": "medewerker",
                         },
-                        "naam": "Bob de Vries",
-                        "email": "bob@example.com",
-                        "telefoonnummer": "0611223344",
-                        "rol": "medewerker",
                     }
                 ],
                 "prijzen": [
@@ -311,22 +328,18 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         source="locaties",
     )
 
-    organisaties = OrganisatieSerializer(many=True, read_only=True)
-    organisatie_uuids = UUIDRelatedField(
+    organisaties = NestedProductTypeOrganisatieSerializer(
         many=True,
-        write_only=True,
-        queryset=Organisatie.objects.all(),
-        default=[],
-        source="organisaties",
+        required=False,
+        source="producttype_organisaties",
+        help_text=get_help_text("producttypen.ProductType", "organisaties"),
     )
 
-    contacten = ContactSerializer(many=True, read_only=True)
-    contact_uuids = UUIDRelatedField(
+    contacten = NestedProductTypeContactSerializer(
         many=True,
-        write_only=True,
-        queryset=Contact.objects.all(),
-        default=[],
-        source="contacten",
+        required=False,
+        source="producttype_contacten",
+        help_text=get_help_text("producttypen.ProductType", "contacten"),
     )
 
     prijzen = NestedPrijsSerializer(many=True, read_only=True)
@@ -458,12 +471,10 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             "locaties",
             "locatie_uuids",
             "organisaties",
-            "organisatie_uuids",
             "facetten",
             "facetten_uuids",
             "eigenaar",
             "contacten",
-            "contact_uuids",
             "prijzen",
             "links",
             "acties",
@@ -509,6 +520,12 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             raise serializers.ValidationError(_("Er is minimaal één thema vereist."))
         return themas
 
+    def validate_organisaties(self, organisaties: list[dict]) -> list[dict]:
+        return validate_unique_related(organisaties, "organisatie")
+
+    def validate_contacten(self, contacten: list[dict]) -> list[dict]:
+        return validate_unique_related(contacten, "contact")
+
     def validate_facetten_uuids(self, facetten: list[FacetWaarde]) -> list[FacetWaarde]:
         validate_meervoudig_facetten(facetten)
         validate_verplichte_facetten(facetten)
@@ -516,6 +533,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     @transaction.atomic()
     def create(self, validated_data):
+        organisaties = validated_data.pop("producttype_organisaties", [])
+        contacten = validated_data.pop("producttype_contacten", [])
         externe_codes = validated_data.pop("externe_codes", [])
         parameters = validated_data.pop("parameters", [])
         zaaktypen = validated_data.pop("zaaktypen", [])
@@ -555,6 +574,30 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ProcesSerializer,
         )
 
+        set_nested_serializer(
+            [
+                {
+                    "producttype": producttype.pk,
+                    "organisatie_uuid": organisatie["organisatie"].uuid,
+                    "rol": organisatie.get("rol", ""),
+                }
+                for organisatie in organisaties
+            ],
+            ProductTypeOrganisatieSerializer,
+        )
+
+        set_nested_serializer(
+            [
+                {
+                    "producttype": producttype.pk,
+                    "contact_uuid": contact["contact"].uuid,
+                    "rol": contact.get("rol", ""),
+                }
+                for contact in contacten
+            ],
+            ProductTypeContactSerializer,
+        )
+
         producttype.add_contact_organisaties()
         return producttype
 
@@ -563,8 +606,8 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         themas = validated_data.pop("themas", None)
         facetten = validated_data.pop("facetten", None)
         locaties = validated_data.pop("locaties", None)
-        organisaties = validated_data.pop("organisaties", None)
-        contacten = validated_data.pop("contacten", None)
+        organisaties = validated_data.pop("producttype_organisaties", None)
+        contacten = validated_data.pop("producttype_contacten", None)
 
         externe_codes = validated_data.pop("externe_codes", None)
         parameters = validated_data.pop("parameters", None)
@@ -580,10 +623,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.facetten.set(facetten)
         if locaties is not None:
             instance.locaties.set(locaties)
-        if organisaties is not None:
-            instance.organisaties.set(organisaties)
-        if contacten is not None:
-            instance.contacten.set(contacten)
 
         if externe_codes is not None:
             instance.externe_codes.all().delete()
@@ -624,6 +663,34 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             set_nested_serializer(
                 [proces | {"producttype": instance.pk} for proces in processen],
                 ProcesSerializer,
+            )
+
+        if organisaties is not None:
+            instance.producttype_organisaties.all().delete()
+            set_nested_serializer(
+                [
+                    {
+                        "producttype": instance.pk,
+                        "organisatie_uuid": organisatie["organisatie"].uuid,
+                        "rol": organisatie.get("rol", ""),
+                    }
+                    for organisatie in organisaties
+                ],
+                ProductTypeOrganisatieSerializer,
+            )
+
+        if contacten is not None:
+            instance.producttype_contacten.all().delete()
+            set_nested_serializer(
+                [
+                    {
+                        "producttype": instance.pk,
+                        "contact_uuid": contact["contact"].uuid,
+                        "rol": contact.get("rol", ""),
+                    }
+                    for contact in contacten
+                ],
+                ProductTypeContactSerializer,
             )
 
         instance.add_contact_organisaties()

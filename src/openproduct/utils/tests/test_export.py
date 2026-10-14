@@ -12,6 +12,14 @@ from openproduct.locaties.tests.factories import (
     LocatieFactory,
     OrganisatieFactory,
 )
+from openproduct.producttypen.models import (
+    ProductTypeContact,
+    ProductTypeOrganisatie,
+)
+from openproduct.producttypen.models.enums import (
+    ContactRolChoices,
+    OrganisatieRolChoices,
+)
 from openproduct.producttypen.tests.factories import (
     LinkFactory,
     ParameterFactory,
@@ -48,8 +56,13 @@ class TestExport(TestCase):
 
         self.producttype1 = ProductTypeFactory.create(uniforme_product_naam=self.upn)
         self.producttype1.locaties.add(self.locatie1)
-        self.producttype1.organisaties.add(self.organisatie1)
-        self.producttype1.contacten.add(self.contact1)
+        self.producttype1.organisaties.add(
+            self.organisatie1,
+            through_defaults={"rol": OrganisatieRolChoices.LEVERANCIER},
+        )
+        self.producttype1.contacten.add(
+            self.contact1, through_defaults={"rol": ContactRolChoices.RELATIEMANAGER}
+        )
 
         self.producttype1.locaties.add(self.locatie2)
         self.producttype1.organisaties.add(self.organisatie2)
@@ -200,6 +213,26 @@ class TestExport(TestCase):
                     "id": self.upn.id,
                 }
             ],
+            "producttypeorganisatie": [
+                {
+                    "id": through.id,  # type: ignore
+                    "producttype_id": self.producttype1.id,
+                    "organisatie_id": through.organisatie.id,
+                }
+                for through in ProductTypeOrganisatie.objects.filter(
+                    producttype=self.producttype1
+                )
+            ],
+            "producttypecontact": [
+                {
+                    "id": through.id,  # type: ignore
+                    "producttype_id": self.producttype1.id,
+                    "contact_id": through.contact.id,
+                }
+                for through in ProductTypeContact.objects.filter(
+                    producttype=self.producttype1
+                )
+            ],
         }
 
         result = mock_create_zip.call_args.args[1]
@@ -303,5 +336,7 @@ class TestExport(TestCase):
                     "parameter.json",
                     "prijs.json",
                     "prijsoptie.json",
+                    "producttypeorganisatie.json",
+                    "producttypecontact.json",
                 ],
             )

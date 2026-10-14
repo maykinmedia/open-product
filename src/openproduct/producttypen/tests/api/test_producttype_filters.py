@@ -898,7 +898,8 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn(
-                str(uuid), response.data["results"][0]["contacten"][0]["uuid"]
+                str(uuid),
+                response.data["results"][0]["contacten"][0]["contact"]["uuid"],
             )
 
         with self.subTest("in"):
@@ -932,14 +933,18 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
-            self.assertIn("test", response.data["results"][0]["contacten"][0]["naam"])
+            self.assertIn(
+                "test", response.data["results"][0]["contacten"][0]["contact"]["naam"]
+            )
 
         with self.subTest("partial"):
             response = self.client.get(self.path, {"contacten__naam__contains": "te"})
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
-            self.assertIn("test", response.data["results"][0]["contacten"][0]["naam"])
+            self.assertIn(
+                "test", response.data["results"][0]["contacten"][0]["contact"]["naam"]
+            )
 
         with self.subTest("distinct"):
             producttype.contacten.add(ContactFactory.create(naam="test"))
@@ -948,7 +953,9 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
-            self.assertIn("test", response.data["results"][0]["contacten"][0]["naam"])
+            self.assertIn(
+                "test", response.data["results"][0]["contacten"][0]["contact"]["naam"]
+            )
 
     def test_locatie_uuid_filter(self):
         uuid = uuid4()
@@ -1032,7 +1039,8 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn(
-                str(uuid), response.data["results"][0]["organisaties"][0]["uuid"]
+                str(uuid),
+                response.data["results"][0]["organisaties"][0]["organisatie"]["uuid"],
             )
 
         with self.subTest("in"):
@@ -1069,7 +1077,8 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn(
-                "test", response.data["results"][0]["organisaties"][0]["naam"]
+                "test",
+                response.data["results"][0]["organisaties"][0]["organisatie"]["naam"],
             )
 
         with self.subTest("partial"):
@@ -1080,7 +1089,8 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn(
-                "test", response.data["results"][0]["organisaties"][0]["naam"]
+                "test",
+                response.data["results"][0]["organisaties"][0]["organisatie"]["naam"],
             )
 
         with self.subTest("distinct"):
@@ -1093,7 +1103,8 @@ class TestProductTypeFilters(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertIn(
-                "test", response.data["results"][0]["organisaties"][0]["naam"]
+                "test",
+                response.data["results"][0]["organisaties"][0]["organisatie"]["naam"],
             )
 
     def test_organisatie_code_filter(self):
@@ -1108,7 +1119,10 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
-            self.assertIn("ABC", response.data["results"][0]["organisaties"][0]["code"])
+            self.assertIn(
+                "ABC",
+                response.data["results"][0]["organisaties"][0]["organisatie"]["code"],
+            )
 
     def test_doelgroep_filter(self):
         ProductTypeFactory.create(doelgroep=DoelgroepChoices.BURGERS)

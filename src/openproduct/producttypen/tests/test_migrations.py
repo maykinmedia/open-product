@@ -260,3 +260,68 @@ class TestUrnPrefixMigration(BaseMigrationTest):
             self.document.urn,
             "urn:nld:maykin:openzaak:drc:document:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
         )
+
+
+class TestProductTypeOrganisatieContactThroughMigration(BaseMigrationTest):
+    app = "producttypen"
+    migrate_from = "0022_facettype_facetwaarde_producttype_facetten"
+    migrate_to = "0023_producttypecontact_producttypeorganisatie"
+
+    def setUp(self):
+        super().setUp()
+
+        _UniformeProductNaam = self.old_app_state.get_model(
+            "producttypen", "UniformeProductNaam"
+        )
+        _ProductType = self.old_app_state.get_model("producttypen", "ProductType")
+        _Organisatie = self.old_app_state.get_model("locaties", "Organisatie")
+        _Contact = self.old_app_state.get_model("locaties", "Contact")
+
+        upn = _UniformeProductNaam.objects.create(naam="upn 0")
+
+        self.producttype = _ProductType.objects.create(
+            code="producttype code 0",
+            uniforme_product_naam=upn,
+            doelgroep=DoelgroepChoices.BURGERS,
+        )
+
+        self.organisatie1 = _Organisatie.objects.create(naam="org 1", code="org-1")
+        self.organisatie2 = _Organisatie.objects.create(naam="org 2", code="org-2")
+        self.contact1 = _Contact.objects.create(
+            naam="contact 1", organisatie=self.organisatie1
+        )
+        self.contact2 = _Contact.objects.create(naam="contact 2")
+
+        self.producttype.organisaties.add(self.organisatie1, self.organisatie2)
+        self.producttype.contacten.add(self.contact1, self.contact2)
+
+    def test_migration(self):
+        self._perform_migration()
+
+        ProductTypeOrganisatie = self.apps.get_model(
+            "producttypen", "ProductTypeOrganisatie"
+        )
+        ProductTypeContact = self.apps.get_model("producttypen", "ProductTypeContact")
+
+        self.assertEqual(
+            set(
+                ProductTypeOrganisatie.objects.values_list(
+                    "producttype_id", "organisatie_id", "rol"
+                )
+            ),
+            {
+                (self.producttype.id, self.organisatie1.id, ""),
+                (self.producttype.id, self.organisatie2.id, ""),
+            },
+        )
+        self.assertEqual(
+            set(
+                ProductTypeContact.objects.values_list(
+                    "producttype_id", "contact_id", "rol"
+                )
+            ),
+            {
+                (self.producttype.id, self.contact1.id, ""),
+                (self.producttype.id, self.contact2.id, ""),
+            },
+        )

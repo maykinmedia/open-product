@@ -20,3 +20,13 @@ class DoelgroepChoices(models.TextChoices):
         "bedrijven_en_instellingen",
         _("Bedrijven en instellingen"),
     )
+
+
+class OrganisatieRolChoices(models.TextChoices):
+    LEVERANCIER = "leverancier", _("Leverancier")
+
+
+class ContactRolChoices(models.TextChoices):
+    RELATIEMANAGER = "relatiemanager", _("Relatiemanager")
+    CONTRACTMANAGER = "contractmanager", _("Contractmanager")
+    INTERNCONTACT = "interncontact", _("Interncontact")

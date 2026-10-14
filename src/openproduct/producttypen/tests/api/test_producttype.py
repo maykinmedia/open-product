@@ -24,10 +24,15 @@ from openproduct.producttypen.models import (
     Parameter,
     Proces,
     ProductType,
+    ProductTypeOrganisatie,
     VerzoekType,
     ZaakType,
 )
-from openproduct.producttypen.models.enums import DoelgroepChoices
+from openproduct.producttypen.models.enums import (
+    ContactRolChoices,
+    DoelgroepChoices,
+    OrganisatieRolChoices,
+)
 from openproduct.producttypen.tests.factories import (
     BestandFactory,
     ContentElementFactory,
@@ -235,27 +240,58 @@ class TestProducttypeViewSet(BaseApiTestCase):
     def test_create_producttype_with_organisatie(self):
         organisatie = OrganisatieFactory.create()
 
-        data = self.data | {"organisatie_uuids": [organisatie.uuid]}
+        data = self.data | {
+            "organisaties": [
+                {
+                    "organisatie_uuid": organisatie.uuid,
+                    "rol": OrganisatieRolChoices.LEVERANCIER,
+                }
+            ]
+        }
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ProductType.objects.count(), 1)
         self.assertEqual(
-            list(ProductType.objects.values_list("organisaties__naam", flat=True)),
-            [organisatie.naam],
+            list(
+                ProductType.objects.values_list(
+                    "producttype_organisaties__organisatie__naam",
+                    "producttype_organisaties__rol",
+                )
+            ),
+            [(organisatie.naam, OrganisatieRolChoices.LEVERANCIER)],
+        )
+        self.assertEqual(
+            response.data["organisaties"][0]["organisatie"]["uuid"],
+            str(organisatie.uuid),
+        )
+        self.assertEqual(
+            response.data["organisaties"][0]["rol"], OrganisatieRolChoices.LEVERANCIER
         )
 
     def test_create_producttype_with_contact(self):
         contact = ContactFactory.create()
 
-        data = self.data | {"contact_uuids": [contact.uuid]}
+        data = self.data | {
+            "contacten": [
+                {
+                    "contact_uuid": contact.uuid,
+                    "rol": ContactRolChoices.RELATIEMANAGER,
+                }
+            ]
+        }
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ProductType.objects.count(), 1)
         self.assertEqual(
-            list(ProductType.objects.values_list("contacten__naam", flat=True)),
-            [contact.naam],
+            list(
+                ProductType.objects.values_list(
+                    "producttype_contacten__contact__naam",
+                    "producttype_contacten__rol",
+                )
+            ),
+            [(contact.naam, ContactRolChoices.RELATIEMANAGER)],
         )
 
         # contact org is added in ProductType clean
@@ -501,8 +537,18 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         data = self.data | {
             "locatie_uuids": [locatie.uuid],
-            "organisatie_uuids": [organisatie.uuid],
-            "contact_uuids": [contact.uuid],
+            "organisaties": [
+                {
+                    "organisatie_uuid": organisatie.uuid,
+                    "rol": OrganisatieRolChoices.LEVERANCIER,
+                }
+            ],
+            "contacten": [
+                {
+                    "contact_uuid": contact.uuid,
+                    "rol": ContactRolChoices.RELATIEMANAGER,
+                }
+            ],
             "externe_codes": [{"naam": "ISO", "code": "123"}],
             "parameters": [{"naam": "doelgroep", "waarde": "inwoners"}],
             "verbruiksobject_schema_naam": schema.naam,
@@ -560,36 +606,21 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ],
             "organisaties": [
                 {
-                    "uuid": str(contact.organisatie.uuid),
-                    "code": str(contact.organisatie.code),
-                    "naam": contact.organisatie.naam,
-                    "email": contact.organisatie.email,
-                    "telefoonnummer": contact.organisatie.telefoonnummer,
-                    "straat": contact.organisatie.straat,
-                    "huisnummer": contact.organisatie.huisnummer,
-                    "postcode": contact.organisatie.postcode,
-                    "stad": contact.organisatie.stad,
+                    "rol": OrganisatieRolChoices.LEVERANCIER,
+                    "organisatie": {
+                        "uuid": str(organisatie.uuid),
+                        "code": str(organisatie.code),
+                        "naam": organisatie.naam,
+                        "email": organisatie.email,
+                        "telefoonnummer": organisatie.telefoonnummer,
+                        "straat": organisatie.straat,
+                        "huisnummer": organisatie.huisnummer,
+                        "postcode": organisatie.postcode,
+                        "stad": organisatie.stad,
+                    },
                 },
                 {
-                    "uuid": str(organisatie.uuid),
-                    "code": str(organisatie.code),
-                    "naam": organisatie.naam,
-                    "email": organisatie.email,
-                    "telefoonnummer": organisatie.telefoonnummer,
-                    "straat": organisatie.straat,
-                    "huisnummer": organisatie.huisnummer,
-                    "postcode": organisatie.postcode,
-                    "stad": organisatie.stad,
-                },
-            ],
-            "eigenaar": None,
-            "contacten": [
-                {
-                    "uuid": str(contact.uuid),
-                    "naam": contact.naam,
-                    "email": contact.email,
-                    "telefoonnummer": contact.telefoonnummer,
-                    "rol": contact.rol,
+                    "rol": "",
                     "organisatie": {
                         "uuid": str(contact.organisatie.uuid),
                         "code": str(contact.organisatie.code),
@@ -600,6 +631,30 @@ class TestProducttypeViewSet(BaseApiTestCase):
                         "huisnummer": contact.organisatie.huisnummer,
                         "postcode": contact.organisatie.postcode,
                         "stad": contact.organisatie.stad,
+                    },
+                },
+            ],
+            "eigenaar": None,
+            "contacten": [
+                {
+                    "rol": ContactRolChoices.RELATIEMANAGER,
+                    "contact": {
+                        "uuid": str(contact.uuid),
+                        "naam": contact.naam,
+                        "email": contact.email,
+                        "telefoonnummer": contact.telefoonnummer,
+                        "rol": contact.rol,
+                        "organisatie": {
+                            "uuid": str(contact.organisatie.uuid),
+                            "code": str(contact.organisatie.code),
+                            "naam": contact.organisatie.naam,
+                            "email": contact.organisatie.email,
+                            "telefoonnummer": contact.organisatie.telefoonnummer,
+                            "straat": contact.organisatie.straat,
+                            "huisnummer": contact.organisatie.huisnummer,
+                            "postcode": contact.organisatie.postcode,
+                            "stad": contact.organisatie.stad,
+                        },
                     },
                 }
             ],
@@ -838,7 +893,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         organisatie = OrganisatieFactory.create()
 
-        data = self.data | {"organisatie_uuids": [organisatie.uuid]}
+        data = self.data | {"organisaties": [{"organisatie_uuid": organisatie.uuid}]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -852,7 +907,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
         contact = ContactFactory.create()
 
-        data = self.data | {"contact_uuids": [contact.uuid]}
+        data = self.data | {"contacten": [{"contact_uuid": contact.uuid}]}
         response = self.client.put(self.detail_path(producttype), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -869,8 +924,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # Sending an empty list in PUT must remove the existing relation
         for field, relation, factory in (
             ("locatie_uuids", "locaties", LocatieFactory),
-            ("organisatie_uuids", "organisaties", OrganisatieFactory),
-            ("contact_uuids", "contacten", ContactFactory),
         ):
             with self.subTest(field=field):
                 producttype = ProductTypeFactory.create()
@@ -887,8 +940,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
         # Sending an empty list in PATCH must remove the existing relation
         for field, relation, factory in (
             ("locatie_uuids", "locaties", LocatieFactory),
-            ("organisatie_uuids", "organisaties", OrganisatieFactory),
-            ("contact_uuids", "contacten", ContactFactory),
         ):
             with self.subTest(field=field):
                 producttype = ProductTypeFactory.create()
@@ -930,6 +981,58 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     set(getattr(producttype, relation).values_list("pk", flat=True)),
                     pks,
                 )
+
+    def test_update_producttype_with_duplicate_organisaties_and_contacten_returns_error(
+        self,
+    ):
+        producttype = ProductTypeFactory.create()
+        organisatie = OrganisatieFactory.create()
+        contact = ContactFactory.create()
+
+        data = self.data | {
+            "organisaties": [
+                {"organisatie_uuid": organisatie.uuid},
+                {
+                    "organisatie_uuid": organisatie.uuid,
+                    "rol": OrganisatieRolChoices.LEVERANCIER,
+                },
+            ],
+            "contacten": [
+                {"contact_uuid": contact.uuid},
+                {"contact_uuid": contact.uuid},
+            ],
+        }
+        response = self.client.put(self.detail_path(producttype), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        organisatie_error = get_validation_errors(response, "organisaties")
+        self.assertIsNotNone(organisatie_error)
+        self.assertEqual(
+            organisatie_error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(organisatie.uuid),
+        )
+
+        contact_error = get_validation_errors(response, "contacten")
+        self.assertIsNotNone(contact_error)
+        self.assertEqual(
+            contact_error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(contact.uuid),
+        )
+
+    def test_update_producttype_with_invalid_rol_returns_error(self):
+        producttype = ProductTypeFactory.create()
+        organisatie = OrganisatieFactory.create()
+
+        data = self.data | {
+            "organisaties": [
+                {"organisatie_uuid": organisatie.uuid, "rol": "relatiemanager"}
+            ]
+        }
+        response = self.client.put(self.detail_path(producttype), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIsNotNone(get_validation_errors(response, "organisaties.0.rol"))
 
     def test_update_producttype_with_duplicate_uuids_returns_error(self):
         producttype = ProductTypeFactory.create()
@@ -1309,6 +1412,42 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             error["reason"],
             _("Dubbel uuid: {} op index 1.").format(thema.uuid),
+        )
+
+    def test_partial_update_producttype_replacing_organisaties(self):
+        producttype = ProductTypeFactory.create()
+        old_organisatie = OrganisatieFactory.create()
+        producttype.organisaties.add(old_organisatie)
+        organisatie = OrganisatieFactory.create()
+
+        data = {
+            "organisaties": [
+                {
+                    "organisatie_uuid": organisatie.uuid,
+                }
+            ]
+        }
+        response = self.client.patch(self.detail_path(producttype), data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            list(ProductTypeOrganisatie.objects.values_list("organisatie", "rol")),
+            [(organisatie.id, "")],
+        )
+
+    def test_partial_update_producttype_existing_organisaties_are_kept(self):
+        producttype = ProductTypeFactory.create()
+        organisatie = OrganisatieFactory.create()
+        producttype.organisaties.add(
+            organisatie, through_defaults={"rol": OrganisatieRolChoices.LEVERANCIER}
+        )
+
+        response = self.client.patch(self.detail_path(producttype), {"naam": "abc"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            list(ProductTypeOrganisatie.objects.values_list("organisatie", "rol")),
+            [(organisatie.id, OrganisatieRolChoices.LEVERANCIER)],
         )
 
     def test_partial_update_producttype_removing_thema(self):
