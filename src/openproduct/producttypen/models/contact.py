@@ -10,8 +10,6 @@ from .enums import ContactRolChoices
 
 @reversion.register()
 class ProductTypeContact(models.Model):
-    id = models.AutoField(primary_key=True)
-
     producttype = models.ForeignKey(
         "producttypen.ProductType",
         verbose_name=_("producttype"),
