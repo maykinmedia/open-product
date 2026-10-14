@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.urls import path
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
@@ -18,7 +20,7 @@ from openproduct.producten.models.validators import (
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.models.producttype import ProductType
 
-from ...producttypen.models import ProductTypePermission
+from ...producttypen.models import ProductTypePermission, SubType
 from ...producttypen.models.producttypepermission import PermissionModes
 from ...urn.validators import validate_urn_or_url
 from .document import DocumentInline
@@ -64,6 +66,18 @@ class ProductAdminForm(forms.ModelForm):
             ),
             widget=forms.Select,
         )
+
+        if "subtype" in self.fields:
+            if self.is_bound:
+                producttype_id = self.data.get(self.add_prefix("producttype"))
+            else:
+                producttype_id = self.initial.get("producttype")
+
+            self.fields["subtype"].queryset = (
+                SubType.objects.filter(producttype_id=producttype_id)
+                if str(producttype_id or "").isdigit()
+                else SubType.objects.none()
+            )
 
     def clean(self):
         """
@@ -131,6 +145,35 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     form = ProductAdminForm
     inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
     list_select_related = ("producttype",)
+
+    class Media:
+        js = (
+            "admin/js/jquery.init.js",
+            "admin/js/admin/product_subtype.js",
+        )
+
+    def get_urls(self):
+        custom = [
+            path(
+                "subtypen/",
+                self.admin_site.admin_view(self.subtypen_view),
+                name="{app_label}_{model_name}_subtypen".format(
+                    app_label=Product._meta.app_label,
+                    model_name=Product._meta.model_name,
+                ),
+            ),
+        ]
+        return custom + super().get_urls()
+
+    def subtypen_view(self, request):
+        producttype_id = request.GET.get("producttype", "")
+        subtypen_list = []
+        if producttype_id.isdigit():
+            subtypen_list = [
+                {"id": subtype.pk, "name": subtype.naam}
+                for subtype in SubType.objects.filter(producttype_id=producttype_id)
+            ]
+        return JsonResponse(subtypen_list, safe=False)
 
     @admin.display(description="Producttype")
     def producttype_name(self, obj):

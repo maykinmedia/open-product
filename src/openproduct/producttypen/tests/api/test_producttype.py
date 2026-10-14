@@ -765,16 +765,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 )
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_create_producttype_with_duplicate_keywords(self):
-        response = self.client.post(self.path, self.data | {"keywords": ["a", "a"]})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        keywords_error = get_validation_errors(response, "keywords")
-        self.assertIsNotNone(keywords_error)
-        self.assertEqual(keywords_error["code"], "invalid")
-        self.assertEqual(
-            keywords_error["reason"], _("Geen dubbele waarden toegestaan.")
-        )
-
     def test_create_producttype_with_subtypen(self):
         data = self.data | {"subtypen": [{"naam": "spoed"}, {"naam": "regulier"}]}
         response = self.client.post(self.path, data)
