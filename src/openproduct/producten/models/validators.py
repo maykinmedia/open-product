@@ -60,20 +60,34 @@ def validate_product_status(status, producttype):
         )
 
 
-def validate_product_subtype(subtype, producttype):
-    if producttype.subtypen.exists() != bool(subtype):
+def validate_product_subtype(subtype, producttype, required: bool):
+    """
+    ``required`` should be False for existing products that did not have a subtype and keep their producttype,
+    so products created before subtypen were added to the producttype remain valid.
+    """
+    if required and not subtype and producttype.subtypen.exists():
         raise ValidationError(
-            {
-                "subtype": _(
-                    "Subtype is alleen toegestaan (en verplicht) als het producttype subtypen heeft."
-                )
-            }
+            {"subtype": _("Subtype is verplicht als het producttype subtypen heeft.")}
         )
 
-    if subtype and not producttype.subtypen.filter(uuid=subtype.uuid).exists():
+    if subtype and subtype.producttype_id != producttype.pk:
         raise ValidationError(
             {"subtype": _("subtype is niet gedefinieerd op het producttype")}
         )
+
+
+def is_product_subtype_required(original, producttype) -> bool:
+    """
+    A subtype is required for new products, products that change producttype and products that already have a
+    subtype (it can't be removed).
+
+    ``original`` is the product as stored in the database, None for new products.
+    """
+    return (
+        original is None
+        or original.producttype_id != producttype.pk
+        or original.subtype_id is not None
+    )
 
 
 def validate_product_dates(start_datum, eind_datum):

@@ -43,6 +43,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
     )
 
     themas = NestedThemaSerializer(many=True)
+    subtypen = SubTypeSerializer(many=True, read_only=True)
 
     gepubliceerd = serializers.SerializerMethodField(
         help_text=_("Geeft aan of het producttype getoond kan worden."),
@@ -100,7 +101,10 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "eind_datum": "2026-12-01",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
                 "update_datum": "2019-08-24T14:15:22Z",
-                "subtype": "spoed",
+                "subtype": {
+                    "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                    "naam": "spoed",
+                },
                 "producttype": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                     "naam": "Parkeervergunning",
@@ -108,6 +112,12 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                     "keywords": ["auto"],
                     "uniforme_product_naam": "parkeervergunning",
                     "toegestane_statussen": ["gereed"],
+                    "subtypen": [
+                        {
+                            "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                            "naam": "spoed",
+                        }
+                    ],
                     "gepubliceerd": True,
                     "aanmaak_datum": "2019-08-24T14:15:22Z",
                     "update_datum": "2019-08-24T14:15:22Z",
@@ -168,7 +178,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
-                "subtype": "spoed",
+                "subtype_uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
                 "gepubliceerd": False,
                 "eigenaren": [
                     {"bsn": "111222333"},
@@ -214,6 +224,10 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         queryset=SubType.objects.all(),
         source="subtype",
         required=False,
+        allow_null=True,
+        help_text=_(
+            "Het subtype van het product. Dit moet een van de subtypen van het producttype zijn. Wanneer het producttype subtypen heeft is het subtype verplicht bij het aanmaken van een product en kan een eenmaal gezet niet worden leeggemaakt."
+        ),
     )
 
     eigenaren = EigenaarSerializer(many=True)

@@ -6267,6 +6267,7 @@ paths:
                   - actief
                   subtypen:
                   - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6747,6 +6748,7 @@ paths:
                   - actief
                   subtypen:
                   - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -7013,6 +7015,7 @@ paths:
                   - actief
                   subtypen:
                   - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:

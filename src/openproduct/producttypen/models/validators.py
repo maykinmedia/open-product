@@ -134,6 +134,42 @@ def validate_meervoudige_facetten(facet_waarden):
         raise ValidationError(errors)
 
 
+def validate_subtypen(namen: list[str | None]):
+    """
+    Ensure subtype names are unique (subtype names are stored in lowercase).
+    """
+
+    errors = []
+    seen = set()
+    for idx, naam in enumerate(namen):
+        if naam is None:
+            continue
+
+        if naam.lower() in seen:
+            errors.append(_("Dubbele naam: {} op index {}.").format(naam, idx))
+        seen.add(naam.lower())
+
+    if errors:
+        raise ValidationError(errors)
+
+
+def check_subtypen_delete(producttype, kept_uuids: set):
+    """
+    Prevent deleting subtypen that are used by products.
+    """
+
+    if (
+        producttype.subtypen.exclude(uuid__in=kept_uuids)
+        .filter(producten__isnull=False)
+        .exists()
+    ):
+        raise ValidationError(
+            _(
+                "Een subtype kan niet worden verwijderd omdat er gerelateerde producten zijn."
+            )
+        )
+
+
 def validate_prijs_optie_xor_regel(optie_count: int, regel_count: int):
     if optie_count and regel_count:
         raise ValidationError(_("Een prijs kan niet zowel opties als regels hebben."))

@@ -7,6 +7,7 @@ from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     check_for_circular_reference,
     check_meervoudig_facettype,
+    check_subtypen_delete,
     check_verplicht_facettype,
     check_verplichte_facetwaarden_delete,
     validate_actie_direct_url,
@@ -16,6 +17,7 @@ from ..models.validators import (
     validate_exactly_one_producttype_or_thema,
     validate_prijs_optie_xor_regel,
     validate_publicatie_dates,
+    validate_subtypen,
     validate_thema_gepubliceerd_state,
     validate_uniforme_product_naam_constraint,
 )
@@ -94,6 +96,25 @@ class FacetWaardenDeleteValidator:
             check_verplichte_facetwaarden_delete(facet_type, removed, verplicht)
         except ValidationError as e:
             raise serializers.ValidationError({"waarden": e.messages})
+
+
+class SubTypenValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        if "subtypen" not in value:
+            return
+
+        subtypen = value["subtypen"]
+        try:
+            validate_subtypen([subtype.get("naam") for subtype in subtypen])
+            if serializer.instance:
+                check_subtypen_delete(
+                    serializer.instance,
+                    {subtype["uuid"] for subtype in subtypen if "uuid" in subtype},
+                )
+        except ValidationError as e:
+            raise serializers.ValidationError({"subtypen": e.messages})
 
 
 class PrijsOptieRegelValidator:

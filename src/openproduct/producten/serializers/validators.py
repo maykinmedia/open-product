@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework.serializers import Serializer
 
 from openproduct.producten.models.validators import (
+    is_product_subtype_required,
     validate_eigenaar_identifier,
     validate_eigenaar_vestingsnummer_only_with_kvk,
     validate_product_dataobject,
@@ -150,7 +151,8 @@ class SubTypeValidator:
         producttype = get_from_serializer_data_or_instance(
             "producttype", value, serializer
         )
+        required = is_product_subtype_required(serializer.instance, producttype)
         try:
-            validate_product_subtype(subtype, producttype)
+            validate_product_subtype(subtype, producttype, required)
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)

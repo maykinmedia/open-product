@@ -48,7 +48,11 @@ from .parameter import NestedParameterSerializer, ParameterSerializer
 from .prijs import NestedPrijsSerializer
 from .proces import NestedProcesSerializer, ProcesSerializer
 from .subtype import SubTypeSerializer
-from .validators import DoelgroepUplValidator, PublicatieDateValidator
+from .validators import (
+    DoelgroepUplValidator,
+    PublicatieDateValidator,
+    SubTypenValidator,
+)
 from .verzoektype import NestedVerzoekTypeSerializer, VerzoekTypeSerializer
 from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 
@@ -301,7 +305,10 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "subtypen": [
                     {
                         "naam": "spoed",
-                    }
+                    },
+                    {
+                        "naam": "regulier",
+                    },
                 ],
                 "interne_opmerkingen": "interne opmerkingen...",
                 "samenvatting": "korte samenvatting...",
@@ -555,6 +562,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             PublicatieDateValidator(),
             DoelgroepUplValidator(),
             NestedObjectsValidator("subtypen", SubType),
+            SubTypenValidator(),
         ]
 
     def validate_thema_uuids(self, themas: list[Thema]) -> list[Thema]:
@@ -674,24 +682,17 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             instance.locaties.set(locaties)
 
         if subtypen is not None:
-            current_subtypen_uuids = set(
-                instance.subtypen.values_list("uuid", flat=True)
-            )
-            seen_subtypen_uuids = set()
+            kept_uuids = {subtype["uuid"] for subtype in subtypen if "uuid" in subtype}
+            instance.subtypen.exclude(uuid__in=kept_uuids).delete()
 
             for subtype in subtypen:
                 subtype_uuid = subtype.pop("uuid", None)
                 if subtype_uuid is None:
                     SubTypeSerializer().create(subtype | {"producttype": instance})
-
                 else:
-                    existing_subtype = SubType.objects.get(uuid=subtype_uuid)
-                    SubTypeSerializer().update(existing_subtype, subtype)
-                    seen_subtypen_uuids.add(subtype_uuid)
-
-            instance.subtypen.filter(
-                uuid__in=(current_subtypen_uuids - seen_subtypen_uuids)
-            ).delete()
+                    SubTypeSerializer().update(
+                        instance.subtypen.get(uuid=subtype_uuid), subtype
+                    )
 
         if externe_codes is not None:
             instance.externe_codes.all().delete()

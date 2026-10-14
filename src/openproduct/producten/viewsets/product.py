@@ -244,7 +244,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
                 ).values("producttype")
             )
 
-        return qs.prefetch_related(
+        return qs.select_related("subtype").prefetch_related(
             "eigenaren",
             "documenten",
             "taken",
@@ -255,6 +255,7 @@ class ProductViewSet(AuditTrailViewSetMixin, NotificationViewSetMixin, ModelView
                     "uniforme_product_naam"
                 ).prefetch_related(
                     "translations",
+                    "subtypen",
                     Prefetch(
                         "themas", queryset=Thema.objects.select_related("hoofd_thema")
                     ),

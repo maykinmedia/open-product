@@ -351,6 +351,7 @@ class ProductTypeViewSet(
         Prefetch("acties", queryset=Actie.objects.select_related("dmn_config")),
         "bestanden",
         "externe_codes",
+        "subtypen",
         Prefetch(
             "prijzen",
             queryset=Prijs.objects.prefetch_related(
@@ -378,21 +379,6 @@ class ProductTypeViewSet(
         if self.action in ["create", "update", "partial_update"]:
             activate("nl")
         return super().initial(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        try:
-            return super().update(request, *args, **kwargs)
-        except ProtectedError:
-            return Response(
-                data={
-                    "subtypen": [
-                        _(
-                            "Een subtype kan niet worden verwijderd omdat er gerelateerde producten zijn."
-                        )
-                    ]
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
     def destroy(self, request, *args, **kwargs):
         try:

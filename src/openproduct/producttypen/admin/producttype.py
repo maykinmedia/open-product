@@ -28,6 +28,7 @@ from .link import LinkInline
 from .organisatie import ProductTypeOrganisatieInline
 from .parameter import ParameterInline
 from .proces import ProcesInline
+from .subtype import SubTypeInline
 from .verzoektype import VerzoekTypeInline
 from .zaaktype import ZaakTypeInline
 
@@ -125,6 +126,7 @@ class ProductTypeAdmin(
         ExterneCodeInline,
         ParameterInline,
         ActieInline,
+        SubTypeInline,
         ProcesInline,
         ZaakTypeInline,
         VerzoekTypeInline,
