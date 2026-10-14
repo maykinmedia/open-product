@@ -6188,6 +6188,9 @@ paths:
                       code: PT-12345
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       keywords:
                       - auto
                       interne_opmerkingen: interne opmerkingen...
@@ -6262,6 +6265,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6440,6 +6445,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6653,6 +6661,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6734,6 +6745,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6912,6 +6925,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6995,6 +7011,8 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -7172,6 +7190,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -10958,6 +10979,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubTypeRequest'
         keywords:
           type: array
           items:
@@ -11302,6 +11327,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubType'
         keywords:
           type: array
           items:
@@ -11484,6 +11513,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubTypeRequest'
         keywords:
           type: array
           items:
@@ -11581,6 +11614,31 @@ components:
           $ref: '#/components/schemas/BaseFacetTypeRequest'
       required:
       - facet_type
+      - naam
+    SubType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
+    SubTypeRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
       - naam
     Thema:
       type: object
