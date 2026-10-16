@@ -6,6 +6,9 @@ from rest_framework import serializers
 from ...utils.serializers import get_from_serializer_data_or_instance
 from ..models.validators import (
     check_for_circular_reference,
+    check_meervoudig_facettype,
+    check_verplicht_facettype,
+    check_verplichte_facetwaarden_delete,
     validate_actie_url_xor_dmn,
     validate_exactly_one_producttype_or_thema,
     validate_prijs_optie_xor_regel,
@@ -46,6 +49,48 @@ class ThemaReferenceValidator:
             check_for_circular_reference(thema, hoofd_thema)
         except ValidationError as e:
             raise serializers.ValidationError({"hoofd_thema": e.message})
+
+
+class FacetTypeMeervoudigValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        meervoudig_toegestaan = get_from_serializer_data_or_instance(
+            "meervoudig_toegestaan", value, serializer
+        )
+        try:
+            check_meervoudig_facettype(serializer.instance, meervoudig_toegestaan)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+
+class FacetTypeVerplichtValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        verplicht = get_from_serializer_data_or_instance("verplicht", value, serializer)
+        try:
+            check_verplicht_facettype(serializer.instance, verplicht)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+
+class FacetWaardenDeleteValidator:
+    requires_context = True
+
+    def __call__(self, value, serializer):
+        facet_type = serializer.instance
+        if not facet_type or "waarden" not in value:
+            return
+
+        kept_uuids = {waarde["uuid"] for waarde in value["waarden"] if "uuid" in waarde}
+        removed = list(facet_type.waarden.exclude(uuid__in=kept_uuids))
+        verplicht = get_from_serializer_data_or_instance("verplicht", value, serializer)
+
+        try:
+            check_verplichte_facetwaarden_delete(facet_type, removed, verplicht)
+        except ValidationError as e:
+            raise serializers.ValidationError({"waarden": e.messages})
 
 
 class PrijsOptieRegelValidator:
