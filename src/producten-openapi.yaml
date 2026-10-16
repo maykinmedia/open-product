@@ -519,6 +519,7 @@ paths:
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      subtype: spoed
                       producttype:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeervergunning
@@ -617,6 +618,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype: spoed
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -661,6 +663,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -780,6 +783,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -885,6 +889,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype: spoed
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -929,6 +934,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -1034,6 +1040,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype: spoed
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -1077,6 +1084,7 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -1356,6 +1364,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            type: integer
         gepubliceerd:
           type: boolean
           readOnly: true
@@ -1395,6 +1407,7 @@ components:
       - code
       - gepubliceerd
       - naam
+      - subtypen
       - taal
       - themas
       - uniforme_product_naam
@@ -1429,6 +1442,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            type: integer
         publicatie_start_datum:
           type: string
           format: date
@@ -1448,6 +1465,7 @@ components:
       required:
       - code
       - naam
+      - subtypen
       - themas
       - uniforme_product_naam
     NestedTaak:
@@ -1606,6 +1624,10 @@ components:
           type: string
           format: uuid
           writeOnly: true
+        subtype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1728,6 +1750,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedProductType'
           readOnly: true
+        subtype:
+          allOf:
+          - $ref: '#/components/schemas/SubType'
+          readOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1805,6 +1831,7 @@ components:
       - aanmaak_datum
       - eigenaren
       - producttype
+      - subtype
       - update_datum
       - url
       - uuid
@@ -1832,6 +1859,10 @@ components:
             de eind_datum wordt ingevuld moet de status VERLOPEN op het producttype
             zijn toegestaan.
         producttype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+        subtype_uuid:
           type: string
           format: uuid
           writeOnly: true
@@ -1929,6 +1960,31 @@ components:
         * `ingetrokken` - Ingetrokken
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
+    SubType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
+    SubTypeRequest:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
     ToegestaneStatussenEnum:
       enum:
       - in_aanvraag

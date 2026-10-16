@@ -1,4 +1,10 @@
+from django.db import transaction
+from django.db.models.deletion import ProtectedError
+from django.utils.translation import gettext_lazy as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from openproduct.logging.api_tools import AuditTrailViewSetMixin
@@ -38,3 +44,19 @@ class JsonSchemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     queryset = JsonSchema.objects.all()
     serializer_class = JsonSchemaSerializer
     filterset_class = JsonSchemaFilterSet
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            with transaction.atomic():
+                return super().destroy(request, *args, **kwargs)
+        except ProtectedError:
+            return Response(
+                data={
+                    "producttypen": [
+                        _(
+                            "Dit schema kan niet worden verwijderd omdat het wordt gebruikt door producttypen."
+                        )
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )

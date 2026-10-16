@@ -9,8 +9,11 @@ from django.utils.translation import gettext_lazy as _
 import reversion
 
 from openproduct.logging.logevent import audit_automation_update
-from openproduct.producten.models.validators import validate_product_dates
-from openproduct.producttypen.models import ProductType
+from openproduct.producten.models.validators import (
+    validate_product_dates,
+    validate_product_subtype,
+)
+from openproduct.producttypen.models import ProductType, SubType
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.urn.fields import UrlField, UrnField
 from openproduct.utils.models import BasePublishableModel
@@ -37,6 +40,19 @@ class Product(BasePublishableModel):
         help_text=_("Het type van dit product"),
         related_name="producten",
     )
+
+    subtype = models.ForeignKey(
+        SubType,
+        verbose_name=_("subtype"),
+        on_delete=models.PROTECT,
+        help_text=_(
+            "het subtype is alleen toegestaan (en verplicht) wanneer producttypen subtypen heeft gedefinieerd. Het product subtypen moet een van de producttypen subtypen zijn"
+        ),
+        related_name="producten",
+        blank=True,
+        null=True,
+    )
+
     naam = models.CharField(
         _("naam"),
         max_length=255,
@@ -143,6 +159,7 @@ class Product(BasePublishableModel):
 
     def clean(self):
         validate_product_dates(self.start_datum, self.eind_datum)
+        validate_product_subtype(self.subtype, self.producttype)
 
     def save(self, *args, **kwargs):
         if self.check_start_datum():

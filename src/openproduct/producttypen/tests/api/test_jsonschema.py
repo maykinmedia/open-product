@@ -8,7 +8,10 @@ from rest_framework.test import APIClient
 from vng_api_common.tests import get_validation_errors
 
 from openproduct.producttypen.models import JsonSchema
-from openproduct.producttypen.tests.factories import JsonSchemaFactory
+from openproduct.producttypen.tests.factories import (
+    JsonSchemaFactory,
+    ProductTypeFactory,
+)
 from openproduct.utils.tests.cases import BaseApiTestCase
 
 
@@ -198,3 +201,24 @@ class TestProductTypeSchema(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(JsonSchema.objects.count(), 0)
+
+    def test_delete_schema_used_by_producttype(self):
+        for field in ("verbruiksobject_schema", "dataobject_schema"):
+            with self.subTest(field):
+                producttype = ProductTypeFactory.create(**{field: self.schema})
+
+                response = self.client.delete(self.detail_path)
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(
+                    response.data,
+                    {
+                        "producttypen": [
+                            _(
+                                "Dit schema kan niet worden verwijderd omdat het wordt gebruikt door producttypen."
+                            )
+                        ]
+                    },
+                )
+                self.assertEqual(JsonSchema.objects.count(), 1)
+                producttype.delete()
