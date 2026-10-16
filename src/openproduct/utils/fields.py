@@ -47,8 +47,11 @@ class UUIDRelatedField(serializers.RelatedField):
         return getattr(value, "uuid")
 
 
-@extend_schema_field({"type": "object", "additionalProperties": True})
 class JSONObjectField(serializers.JSONField):
     """
-    serializers.JSONField does not have a type by default and will show `any` in api spec.
+    JSONField that is documented as `type: object` in the api spec instead of `any`.
+
+    Used for all model JSONFields in ModelSerializers (see `UtilsConfig.ready`). The
+    schema comes from `JSONObjectFieldExtension` in `openproduct.utils.spectacular`;
+    subclass `SerializerJSONFieldExtension` there to give a specific field its own schema.
     """

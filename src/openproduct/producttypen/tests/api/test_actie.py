@@ -8,6 +8,7 @@ from vng_api_common.tests import get_validation_errors
 from openproduct.producttypen.models import Actie, ProductType
 from openproduct.utils.tests.cases import BaseApiTestCase
 
+from ...models.enums import ActieMethodChoices, ActieTypeChoices
 from ..factories import ActieFactory, ProductTypeFactory
 
 
@@ -23,6 +24,7 @@ class TestProductTypeActie(BaseApiTestCase):
             "tabel_endpoint": "https://gemeente-a-flowable/dmn-repository/decision-tables",
             "dmn_tabel_id": "46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
             "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.DMN,
         }
         self.actie = ActieFactory.create(
             producttype=self.producttype,
@@ -65,12 +67,14 @@ class TestProductTypeActie(BaseApiTestCase):
                 "producttype_uuid": self.data["producttype_uuid"],
                 "url": f"{self.data['tabel_endpoint']}/{self.data['dmn_tabel_id']}",
                 "mapping": None,
+                "type": ActieTypeChoices.DMN,
+                "method": "",
             },
         )
 
-    def test_create_actie_with_invalid_mapping(self):
+    def test_create_dmn_actie_with_invalid_mapping(self):
         data = self.data | {
-            "mapping": {"code": "abc", "test": "123"},
+            "mapping": {"variabelen": {"product": {"status": "$.status"}}},
         }
 
         response = self.client.post(self.path, data)
@@ -85,36 +89,112 @@ class TestProductTypeActie(BaseApiTestCase):
             _("De mapping komt niet overeen met het schema. (zie API spec)"),
         )
 
-    def test_create_actie_with_valid_mapping(self):
-        data = self.data | {
+    def test_create_dmn_actie_with_valid_mapping(self):
+        mapping = {
+            "product": [{"name": "status", "classType": "String", "path": "$.status"}],
+            "static": [{"name": "code", "classType": "String", "value": "abc"}],
+        }
+        data = self.data | {"mapping": mapping}
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["mapping"], mapping)
+
+    def test_create_api_actie_with_invalid_mapping(self):
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.API,
+            "method": ActieMethodChoices.POST,
             "mapping": {
                 "product": [
-                    {
-                        "name": "status",
-                        "classType": "String",
-                        "regex": "$.status",
-                    }
+                    {"name": "status", "classType": "String", "path": "$.status"}
                 ]
-            }
+            },
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "mapping")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("De mapping komt niet overeen met het schema. (zie API spec)"),
+        )
+
+    def test_create_api_actie_with_valid_mapping(self):
+        mapping = {
+            "variabelen": {"product": {"status": "$.status"}},
+            "static": {"code": "abc"},
+        }
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.API,
+            "method": ActieMethodChoices.POST,
+            "mapping": mapping,
         }
 
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.data["mapping"],
-            {
-                "product": [
-                    {"name": "status", "classType": "String", "regex": "$.status"}
-                ]
-            },
-        )
+        self.assertEqual(response.data["mapping"], mapping)
 
-    def test_create_actie_with_url(self):
+    def test_create_form_actie_with_invalid_mapping(self):
         data = {
             "naam": "test actie",
             "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
             "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.FORMULIER,
+            "mapping": {
+                "product": [
+                    {"name": "status", "classType": "String", "path": "$.status"}
+                ]
+            },
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "mapping")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("De mapping komt niet overeen met het schema. (zie API spec)"),
+        )
+
+    def test_create_form_actie_with_valid_mapping(self):
+        mapping = {
+            "variabelen": {"product": {"status": "$.status"}},
+            "static": {"code": "abc"},
+        }
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.FORMULIER,
+            "mapping": mapping,
+        }
+
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["mapping"], mapping)
+
+    def test_create_form_actie(self):
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.FORMULIER,
         }
         response = self.client.post(self.path, data)
 
@@ -130,6 +210,35 @@ class TestProductTypeActie(BaseApiTestCase):
                 "producttype_uuid": data["producttype_uuid"],
                 "url": "https://gemeente.a.forms/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
                 "mapping": None,
+                "type": ActieTypeChoices.FORMULIER,
+                "method": "",
+            },
+        )
+
+    def test_create_api_actie(self):
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.API,
+            "method": ActieMethodChoices.GET,
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Actie.objects.count(), 2)
+
+        response.data.pop("uuid")
+
+        self.assertEqual(
+            response.data,
+            {
+                "naam": data["naam"],
+                "producttype_uuid": data["producttype_uuid"],
+                "url": "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+                "mapping": None,
+                "type": ActieTypeChoices.API,
+                "method": "get",
             },
         )
 
@@ -140,13 +249,34 @@ class TestProductTypeActie(BaseApiTestCase):
         response = self.client.post(self.path, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "model_errors")
+        error = get_validation_errors(response, "direct_url")
 
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("Een actie moet een url of een dmn tabel hebben."),
+            _(
+                "Direct url is alleen toegestaan (en verplicht) bij een 'api' of `formulier` actie"
+            ),
+        )
+
+    def test_create_api_actie_without_method(self):
+        data = {
+            "naam": "test actie",
+            "direct_url": "https://gemeente.a.api/46aa6b3a-c0a1-11e6-bc93-6ab56fad108a",
+            "producttype_uuid": self.producttype.uuid,
+            "type": ActieTypeChoices.API,
+        }
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "method")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Method is alleen toegestaan (en verplicht) bij een 'api' actie"),
         )
 
     def test_update_actie(self):
@@ -178,6 +308,8 @@ class TestProductTypeActie(BaseApiTestCase):
                 "url": self.actie.url,
                 "producttype_uuid": self.producttype.uuid,
                 "mapping": self.actie.mapping,
+                "type": ActieTypeChoices.DMN,
+                "method": "",
             },
             {
                 "uuid": str(actie.uuid),
@@ -185,6 +317,8 @@ class TestProductTypeActie(BaseApiTestCase):
                 "url": actie.url,
                 "producttype_uuid": self.producttype.uuid,
                 "mapping": self.actie.mapping,
+                "type": ActieTypeChoices.DMN,
+                "method": "",
             },
         ]
         self.assertCountEqual(response.data["results"], expected_data)
@@ -200,6 +334,8 @@ class TestProductTypeActie(BaseApiTestCase):
             "url": self.actie.url,
             "producttype_uuid": self.producttype.uuid,
             "mapping": self.actie.mapping,
+            "type": ActieTypeChoices.DMN,
+            "method": "",
         }
         self.assertEqual(response.data, expected_data)
 

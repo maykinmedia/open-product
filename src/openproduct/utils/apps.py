@@ -12,3 +12,6 @@ class UtilsConfig(AppConfig):
     def ready(self):
         field_mapping = ModelSerializer.serializer_field_mapping
         field_mapping[models.JSONField] = JSONObjectField
+
+        # register the drf-spectacular extensions
+        from . import spectacular  # noqa
