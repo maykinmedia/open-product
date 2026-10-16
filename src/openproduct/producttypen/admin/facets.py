@@ -38,7 +38,9 @@ class ProductTypeFacetForm(forms.ModelForm):
             facet_type_id = self.initial.get("facet_type")
 
         self.fields["facetwaarde"].queryset = (
-            FacetWaarde.objects.filter(facet_type_id=facet_type_id)
+            FacetWaarde.objects.filter(facet_type_id=facet_type_id).select_related(
+                "facet_type"
+            )
             if str(facet_type_id or "").isdigit()
             else FacetWaarde.objects.none()
         )
@@ -69,6 +71,13 @@ class FacetInline(admin.TabularInline):
     class Media:
         js = ("admin/js/admin/facet_inline.js",)
 
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("producttype", "facetwaarde__facet_type")
+        )
+
 
 class FacetWaardeInline(admin.TabularInline):
     formset = AuditLogInlineformset
@@ -76,6 +85,9 @@ class FacetWaardeInline(admin.TabularInline):
     extra = 1
     can_delete = False  # inline delete has no confirmation page
     show_change_link = True
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("facet_type")
 
 
 @admin.register(FacetType)
@@ -94,6 +106,7 @@ class FacetTypeAdmin(AdminAuditLogMixin, CompareVersionAdmin):
 @admin.register(FacetWaarde)
 class FacetWaardeAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     actions = []
+    list_select_related = ("facet_type",)
 
     def delete_view(self, request, object_id, extra_context=None):
         obj = self.get_object(request, unquote(object_id))

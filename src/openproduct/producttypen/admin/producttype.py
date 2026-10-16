@@ -58,12 +58,7 @@ class ProductTypeTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return False
 
     def get_queryset(self, request):
-        return (
-            super()
-            .get_queryset(request)
-            .select_related("master")
-            .prefetch_related("master__themas")
-        )
+        return super().get_queryset(request).select_related("master")
 
 
 class ProductTypeAdminForm(TranslatableModelForm):
@@ -163,8 +158,7 @@ class ProductTypeAdmin(
             super()
             .get_queryset(request)
             .select_related("uniforme_product_naam")
-            .prefetch_related("themas")
-            .prefetch_related("facetwaarden")
+            .prefetch_related("themas", "translations")
         )
 
     def get_urls(self):
@@ -186,7 +180,9 @@ class ProductTypeAdmin(
         if facet_type_id.isdigit():
             warden_list = [
                 {"id": w.pk, "name": str(w)}
-                for w in FacetWaarde.objects.filter(facet_type_id=facet_type_id)
+                for w in FacetWaarde.objects.filter(
+                    facet_type_id=facet_type_id
+                ).select_related("facet_type")
             ]
         return JsonResponse(warden_list, safe=False)
 

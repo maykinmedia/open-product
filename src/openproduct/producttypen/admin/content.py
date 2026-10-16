@@ -53,11 +53,7 @@ class ContentElementTranslationAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return (
             super()
             .get_queryset(request)
-            .select_related("master")
-            .prefetch_related(
-                "master__producttype",
-                "master__labels",
-            )
+            .select_related("master__producttype", "master__thema")
         )
 
 
@@ -105,4 +101,9 @@ class ContentElementInline(OrderedInlineMixin, TranslatableStackedInline):
     ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related("translations", "labels")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("producttype", "thema")
+            .prefetch_related("translations", "labels")
+        )

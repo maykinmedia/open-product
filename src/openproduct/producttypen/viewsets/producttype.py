@@ -23,6 +23,7 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
     Actie,
     ContentElement,
+    FacetWaarde,
     Prijs,
     PrijsRegel,
     ProductType,
@@ -263,10 +264,9 @@ class ContentFilterSet(FilterSet):
         help_text=get_help_text("producttypen.ContentElement", "labels"),
     )
 
-
-class Meta:
-    model = ContentElement
-    fields = ("label", "exclude_labels")
+    class Meta:
+        model = ContentElement
+        fields = ("labels", "exclude_labels")
 
 
 @extend_schema_view(
@@ -335,12 +335,12 @@ class ProductTypeViewSet(
         "locaties",
         "organisaties",
         "translations",
+        Prefetch(
+            "facetwaarden",
+            queryset=FacetWaarde.objects.select_related("facet_type"),
+        ),
         Prefetch("acties", queryset=Actie.objects.select_related("dmn_config")),
         "bestanden",
-        Prefetch(
-            "content_elementen",
-            queryset=ContentElement.objects.prefetch_related("translations"),
-        ),
         "externe_codes",
         Prefetch(
             "prijzen",
@@ -357,7 +357,6 @@ class ProductTypeViewSet(
         "processen",
         "verzoektypen",
         "zaaktypen",
-        "translations",
     )
     serializer_class = ProductTypeSerializer
     lookup_field = "uuid"
@@ -477,7 +476,9 @@ class ProductTypeViewSet(
     def content(self, request, uuid=None):
         producttype = self.get_object()
 
-        queryset = producttype.content_elementen
+        queryset = producttype.content_elementen.prefetch_related(
+            "translations", "labels"
+        )
 
         # Apply filtering
         filterset = ContentFilterSet(request.GET, queryset=queryset)
