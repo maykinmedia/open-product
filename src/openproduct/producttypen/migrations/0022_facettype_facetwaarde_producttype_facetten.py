@@ -43,6 +43,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'facetwaarde',
                 'verbose_name_plural': 'facetwaarden',
                 'ordering': ('naam',),
+                'unique_together': {('facet_type', 'naam')},
             },
         ),
         migrations.CreateModel(

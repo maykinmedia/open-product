@@ -56,7 +56,7 @@ class FacetType(BaseModel):
 class FacetWaarde(BaseModel):
     facet_type = models.ForeignKey(
         FacetType,
-        on_delete=models.CASCADE,  # TODO check?
+        on_delete=models.CASCADE,
         related_name="waarden",
         verbose_name=_("facettype"),
     )
@@ -78,6 +78,7 @@ class FacetWaarde(BaseModel):
         verbose_name = _("facetwaarde")
         verbose_name_plural = _("facetwaarden")
         ordering = ("naam",)
+        unique_together = ("facet_type", "naam")
 
     def __str__(self):
         return f"{self.facet_type.naam}: {self.naam}"
