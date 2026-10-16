@@ -52,7 +52,7 @@ class ThemaAdmin(OrderedInlineModelAdminMixin, AdminAuditLogMixin, CompareVersio
             super()
             .get_queryset(request)
             .annotate(
-                producttypen_count=Count("producttypen"),
+                producttypen_count=Count("producttypen", distinct=True),
                 content_elementen_count=Count("content_elementen", distinct=True),
             )
             .select_related("hoofd_thema")

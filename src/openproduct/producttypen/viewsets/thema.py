@@ -1,4 +1,4 @@
-from django.db.models import Prefetch
+from django.db.models import Count, Prefetch
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 
@@ -111,7 +111,7 @@ class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     )
     def content_elementen(self, request, *args, **kwargs):
         thema = self.get_object()
-        queryset = thema.content_elementen.all()
+        queryset = thema.content_elementen.prefetch_related("translations", "labels")
 
         filterset = ContentFilterSet(request.GET, queryset=queryset)
         if filterset.is_valid():
@@ -123,8 +123,12 @@ class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         errors = []
-        for producttype in ProductType.objects.filter(themas__in=[instance]):
-            if producttype.themas.count() <= 1:
+        # annotate before filter so the count uses its own join over all themas
+        producttypen = ProductType.objects.annotate(
+            themas_count=Count("themas")
+        ).filter(themas=instance)
+        for producttype in producttypen:
+            if producttype.themas_count <= 1:
                 errors.append(
                     _(
                         "Producttype {} moet aan een minimaal één thema zijn gelinkt."

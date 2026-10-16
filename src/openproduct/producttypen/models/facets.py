@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.producttypen.models.validators import check_meervoudig_facettype
+from openproduct.producttypen.models.validators import (
+    check_meervoudig_facettype,
+    check_verplicht_facettype,
+)
 from openproduct.utils.models import BaseModel
 
 
@@ -18,7 +21,7 @@ class FacetType(BaseModel):
     )
     facetteerbaar = models.BooleanField(
         _("facetteerbaar"),
-        default=False,
+        default=True,
         help_text=_("Geeft aan of er kan worden gefiltered op het facet"),
     )
     meervoudig_toegestaan = models.BooleanField(
@@ -31,12 +34,14 @@ class FacetType(BaseModel):
     verplicht = models.BooleanField(
         _("verplicht"),
         default=False,
-        help_text=_("Geeft aan of het facet verplicht is voor producttype"),
+        help_text=_(
+            "Geeft aan of het facet verplicht is voor producttype. Een facet kan alleen verplicht worden als alle bestaande producttype een waarde hebben."
+        ),
     )
 
     class Meta:
         verbose_name = _("facettype")
-        verbose_name_plural = _("facettypes")
+        verbose_name_plural = _("facettypen")
         ordering = ("naam",)
 
     def __str__(self):
@@ -44,13 +49,14 @@ class FacetType(BaseModel):
 
     def clean(self):
         super().clean()
-        check_meervoudig_facettype(self)
+        check_meervoudig_facettype(self, self.meervoudig_toegestaan)
+        check_verplicht_facettype(self, self.verplicht)
 
 
 class FacetWaarde(BaseModel):
     facet_type = models.ForeignKey(
         FacetType,
-        on_delete=models.CASCADE,  # TODO check?
+        on_delete=models.CASCADE,
         related_name="waarden",
         verbose_name=_("facettype"),
     )
@@ -72,6 +78,32 @@ class FacetWaarde(BaseModel):
         verbose_name = _("facetwaarde")
         verbose_name_plural = _("facetwaarden")
         ordering = ("naam",)
+        unique_together = ("facet_type", "naam")
 
     def __str__(self):
         return f"{self.facet_type.naam}: {self.naam}"
+
+
+class ProductTypeFacet(models.Model):
+    producttype = models.ForeignKey(
+        "producttypen.ProductType",
+        on_delete=models.CASCADE,
+        related_name="producttype_facetten",
+        verbose_name=_("producttype"),
+    )
+    facetwaarde = models.ForeignKey(
+        FacetWaarde,
+        on_delete=models.CASCADE,
+        related_name="producttype_facetten",
+        verbose_name=_("facetwaarde"),
+    )
+
+    class Meta:
+        db_table = "producttypen_producttype_facetten"
+        verbose_name = _("facet")
+        verbose_name_plural = _("facetten")
+        ordering = ("facetwaarde__facet_type__naam", "facetwaarde__naam")
+        unique_together = ("producttype", "facetwaarde")
+
+    def __str__(self):
+        return f"{str(self.producttype)}: {str(self.facetwaarde)}"

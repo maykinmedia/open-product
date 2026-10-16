@@ -12,7 +12,7 @@ from openproduct.utils.validators import CustomRegexValidator
 from .enums import DoelgroepChoices
 
 
-def check_meervoudig_facettype(facet_type):
+def check_meervoudig_facettype(facet_type, meervoudig_toegestaan):
     """
     Prevent disabling ``meervoudig_toegestaan`` while product
     types still have multiple values of this facettype.
@@ -20,27 +20,79 @@ def check_meervoudig_facettype(facet_type):
 
     from openproduct.producttypen.models import ProductType
 
-    if not facet_type.pk or facet_type.meervoudig_toegestaan:
+    if not facet_type or not facet_type.pk or meervoudig_toegestaan:
         return
 
     if (
-        ProductType.objects.filter(facetten__facet_type=facet_type)
-        .annotate(total=Count("facetten"))
+        ProductType.objects.filter(facetwaarden__facet_type=facet_type)
+        .annotate(total=Count("facetwaarden"))
         .filter(total__gt=1)
         .exists()
     ):
         raise ValidationError(
             {
                 "meervoudig_toegestaan": _(
-                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facet."
+                    "Er zijn producttypen met meerdere waarden van dit facettype."
                 )
             }
         )
 
 
+def check_verplicht_facettype(facet_type, verplicht):
+    """
+    Only allow making a facettype ``verplicht`` when all existing producttypes have a value of this facettype.
+    """
+
+    from openproduct.producttypen.models import ProductType
+
+    if not verplicht:
+        return
+
+    if not facet_type or not facet_type.pk:
+        # a new facettype has no values yet
+        missing = ProductType.objects.exists()
+    else:
+        missing = ProductType.objects.exclude(
+            facetwaarden__facet_type=facet_type
+        ).exists()
+
+    if missing:
+        raise ValidationError(
+            {
+                "verplicht": _(
+                    "Alle producttypen moeten een waarde van een facettype voordat het verplicht kan worden."
+                )
+            }
+        )
+
+
+def check_verplichte_facetwaarden_delete(facet_type, facet_waarden, verplicht):
+    """
+    Prevent deleting values of a ``verplicht`` facettype when a product type
+    would be left without a value of this facettype.
+    """
+
+    from openproduct.producttypen.models import ProductType
+
+    if not verplicht or not facet_waarden:
+        return
+
+    remaining = facet_type.waarden.exclude(pk__in=[w.pk for w in facet_waarden])
+    producttypen = ProductType.objects.filter(facetwaarden__in=facet_waarden).exclude(
+        facetwaarden__in=remaining
+    )
+
+    if producttypen.exists():
+        raise ValidationError(
+            _(
+                "Het facettype is verplicht en er zijn producttypen zonder andere waarde."
+            ),
+        )
+
+
 def validate_verplichte_facetten(facet_waarden):
     """
-    Ensure all mandatory (``verplicht``) facettypes are present in ``facet_waarden``.
+    Ensure all mandatory (``verplicht``) facettypen are present in ``facet_waarden``.
     """
 
     from openproduct.producttypen.models import FacetType
@@ -49,14 +101,14 @@ def validate_verplichte_facetten(facet_waarden):
     missing = FacetType.objects.filter(verplicht=True).exclude(pk__in=facet_types_ids)
     if missing.exists():
         raise ValidationError(
-            _("Verplichte facettypes ontbreken: %(namen)s.")
+            _("Verplichte facettypen ontbreken: %(namen)s.")
             % {"namen": ", ".join(missing.values_list("naam", flat=True))}
         )
 
 
-def validate_meervoudig_facetten(facet_waarden):
+def validate_meervoudige_facetten(facet_waarden):
     """
-    Ensure single-value facettypes have at most one value in ``facet_waarden``.
+    Ensure single-value facettypen have at most one value in ``facet_waarden``.
     """
 
     dict_type = defaultdict(list)

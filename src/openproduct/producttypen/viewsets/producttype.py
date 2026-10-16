@@ -23,6 +23,7 @@ from openproduct.logging.api_tools import AuditTrailViewSetMixin
 from openproduct.producttypen.models import (
     Actie,
     ContentElement,
+    FacetWaarde,
     Prijs,
     PrijsRegel,
     ProductType,
@@ -64,6 +65,12 @@ class ProductTypeFilterSet(FilterSet):
         method="filter_by_parameter",
         validators=[ManyRegexValidator(regex)],
         help_text=_("Producttype parameters. [naam:waarde]"),
+    )
+
+    facet = ManyCharFilter(
+        method="filter_by_facet",
+        validators=[ManyRegexValidator(regex)],
+        help_text=_("Producttype facetten. [type:waarde]"),
     )
 
     uniforme_product_naam = django_filters.CharFilter(
@@ -153,6 +160,18 @@ class ProductTypeFilterSet(FilterSet):
             queryset = queryset.filter(parameters__naam=naam, parameters__waarde=waarde)
         return queryset
 
+    def filter_by_facet(self, queryset, name, value):
+        for val in value:
+            value_list = val.strip("[]").split(":")
+            if len(value_list) != 2:
+                raise ParseError(_("Ongeldig format voor facet query parameter."))
+
+            facet_type, waarde = value_list
+            queryset = queryset.filter(
+                facetwaarden__facet_type__naam=facet_type, facetwaarden__naam=waarde
+            )
+        return queryset
+
     themas__naam = django_filters.CharFilter(
         field_name="themas__naam",
         lookup_expr="exact",
@@ -199,17 +218,10 @@ class ProductTypeFilterSet(FilterSet):
         help_text=_("Lijst van organisatie uuids waarop kan worden gezocht."),
     )
 
-    facetten__uuid__in = UUIDFInFilter(
-        field_name="facetten__uuid",
+    facetwaarden__uuid__in = UUIDFInFilter(
+        field_name="facetwaarden__uuid",
         distinct=True,
-        help_text=_("Lijst van UUID's van facetten waarop gefilterd kan worden."),
-    )
-
-    facetten__naam = django_filters.CharFilter(
-        field_name="facetten__naam",
-        lookup_expr="exact",
-        distinct=True,
-        help_text=_("Naam van het facet waarop gefilterd kan worden."),
+        help_text=_("Lijst van UUID's van facetwaarden waarop gefilterd kan worden."),
     )
 
     class Meta:
@@ -231,7 +243,7 @@ class ProductTypeFilterSet(FilterSet):
             "contacten__uuid": ["exact"],
             "locaties__uuid": ["exact"],
             "organisaties__uuid": ["exact"],
-            "facetten__uuid": ["exact"],
+            "facetwaarden__uuid": ["exact"],
             "organisaties__code": ["exact"],
             "themas__uuid": ["exact"],
         }
@@ -252,10 +264,9 @@ class ContentFilterSet(FilterSet):
         help_text=get_help_text("producttypen.ContentElement", "labels"),
     )
 
-
-class Meta:
-    model = ContentElement
-    fields = ("label", "exclude_labels")
+    class Meta:
+        model = ContentElement
+        fields = ("labels", "exclude_labels")
 
 
 @extend_schema_view(
@@ -307,7 +318,7 @@ class Meta:
     ),
     partial_update=extend_schema(
         summary="Werk een PRODUCTTYPE deels bij.",
-        description="Als thema_uuids, locatie_uuids, organisatie_uuids of contact_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
+        description="Als thema_uuids, locatie_uuids, organisatie_uuids, contact_uuids of facetwaarden_uuids in een patch request wordt meegegeven wordt deze lijst geheel overschreven.",
     ),
     destroy=extend_schema(
         summary="Verwijder een PRODUCTTYPE.",
@@ -324,12 +335,12 @@ class ProductTypeViewSet(
         "locaties",
         "organisaties",
         "translations",
+        Prefetch(
+            "facetwaarden",
+            queryset=FacetWaarde.objects.select_related("facet_type"),
+        ),
         Prefetch("acties", queryset=Actie.objects.select_related("dmn_config")),
         "bestanden",
-        Prefetch(
-            "content_elementen",
-            queryset=ContentElement.objects.prefetch_related("translations"),
-        ),
         "externe_codes",
         Prefetch(
             "prijzen",
@@ -346,7 +357,6 @@ class ProductTypeViewSet(
         "processen",
         "verzoektypen",
         "zaaktypen",
-        "translations",
     )
     serializer_class = ProductTypeSerializer
     lookup_field = "uuid"
@@ -466,7 +476,9 @@ class ProductTypeViewSet(
     def content(self, request, uuid=None):
         producttype = self.get_object()
 
-        queryset = producttype.content_elementen
+        queryset = producttype.content_elementen.prefetch_related(
+            "translations", "labels"
+        )
 
         # Apply filtering
         filterset = ContentFilterSet(request.GET, queryset=queryset)

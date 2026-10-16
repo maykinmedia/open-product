@@ -84,9 +84,9 @@ class ContentElementFilterSet(FilterSet):
 class ContentElementViewSet(
     AuditTrailViewSetMixin, TranslatableViewSetMixin, ModelViewSet
 ):
-    queryset = ContentElement.objects.select_related("producttype").prefetch_related(
-        "translations", "labels"
-    )
+    queryset = ContentElement.objects.select_related(
+        "producttype", "thema"
+    ).prefetch_related("translations", "labels")
     serializer_class = ContentElementSerializer
     lookup_field = "uuid"
     filterset_class = ContentElementFilterSet

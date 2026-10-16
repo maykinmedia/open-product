@@ -14,7 +14,7 @@ from openproduct.utils.fields import ChoiceArrayField
 from openproduct.utils.models import BasePublishableModel
 
 from .enums import DoelgroepChoices, ProductStateChoices
-from .facets import FacetWaarde
+from .facets import FacetWaarde, ProductTypeFacet
 from .jsonschema import JsonSchema
 from .thema import Thema
 from .upn import UniformeProductNaam
@@ -130,12 +130,13 @@ class ProductType(BasePublishableModel, TranslatableModel):
         help_text=_("organisaties die dit het product aanbieden."),
     )
 
-    facetten = models.ManyToManyField(
+    facetwaarden = models.ManyToManyField(
         FacetWaarde,
-        verbose_name=_("facetten"),
+        verbose_name=_("facetwaarden"),
         blank=True,
+        through=ProductTypeFacet,
         related_name="producttypen",
-        help_text=_("facetten producttypen"),
+        help_text=_("facetwaarden die aan het producttype zijn gelinkt"),
     )
 
     eigenaar = UrnField(
