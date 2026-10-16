@@ -164,7 +164,7 @@ class ProductTypeAdmin(
             .get_queryset(request)
             .select_related("uniforme_product_naam")
             .prefetch_related("themas")
-            .prefetch_related("facetten")
+            .prefetch_related("facetwaarden")
         )
 
     def get_urls(self):

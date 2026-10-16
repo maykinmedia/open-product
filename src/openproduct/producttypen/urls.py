@@ -153,10 +153,10 @@ custom_settings = {
 ## Opvragen en bewerken van PRODUCTTYPEN.
 
 ### Opmerkingen
-- Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids`, `locatie_uuids`, `organisatie_uuids`, `contact__uuids` & `facetten_uuids` een lijst met uuids worden meegegeven.
+- Bij het aanmaken en wijzigen van een producttype kan bij `thema_uuids`, `locatie_uuids`, `organisatie_uuids`, `contact__uuids` & `facetwaarden_uuids` een lijst met uuids worden meegegeven.
     - `thema_uuids` moet minimaal 1 uuid bevatten.
-    - `facetten_uuids` moet een waarde bevatten van elk facettype dat `verplicht` is.
-    - `facetten_uuids` mag maar één waarde per facettype bevatten tenzij `meervoudig_toegestaan` van het facettype aan staat.
+    - `facetwaarden_uuids` moet een waarde bevatten van elk facettype dat `verplicht` is.
+    - `facetwaarden_uuids` mag maar één waarde per facettype bevatten tenzij `meervoudig_toegestaan` van het facettype aan staat.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
 - Bij het veld `uniforme_product_naam` gaat het om de naam uit de Uniforme productnamenlijst (UPL).
@@ -269,7 +269,7 @@ identifier van de tabel in de DMN omgeving.
 - De velden `prijsopties` en `prijsregels` worden samen met het producttype genest aangemaakt of gewijzigd.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-    - In een PUT of PATCH kan in een optie of regel object een bestaand id worden meegegeven zodat een bestaande optie/regel blijft bestaan.
+    - In een PUT of PATCH kan in een optie of regel object een bestaand uuid worden meegegeven zodat een bestaande optie/regel blijft bestaan.
     Zo kan ook een bestaande optie/regel worden gewijzigd.
     - objecten zonder id zullen worden aangemaakt in een PUT of PATCH.
     - bestaande objecten die niet in de lijst voorkomen met hun id zullen worden verwijderd.
@@ -281,7 +281,7 @@ identifier van de tabel in de DMN omgeving.
 ## Opvragen en bewerken van FACETTYPEN.
 
 ### Opmerkingen
-- Een facettype heeft één of meerdere facetwaarden die aan producttypen kunnen worden gelinkt via `facetten_uuids` van een producttype.
+- Een facettype heeft één of meerdere facetwaarden die aan producttypen kunnen worden gelinkt via `facetwaarden_uuids` van een producttype.
 - Via `facetteerbaar` kan worden aangegeven of er op het facettype kan worden gefilterd.
 - `meervoudig_toegestaan` geeft aan of een producttype meerdere waarden van het facettype mag hebben.
     - `meervoudig_toegestaan` kan niet worden uitgezet als er producttypen zijn met meerdere waarden van het facettype.
@@ -291,7 +291,7 @@ identifier van de tabel in de DMN omgeving.
 - Het veld `waarden` wordt samen met het facettype genest aangemaakt of gewijzigd.
     - Bij een PUT request word de bestaande lijst overschreven met de nieuwe lijst.
     - Bij een PATCH request wordt de lijst alleen overschreven als het veld wordt meegegeven.
-    - In een PUT of PATCH kan in een waarde object een bestaand id worden meegegeven zodat een bestaande waarde blijft bestaan.
+    - In een PUT of PATCH kan in een waarde object een bestaand uuid worden meegegeven zodat een bestaande waarde blijft bestaan.
     Zo kan ook een bestaande waarde worden gewijzigd.
     - objecten zonder id zullen worden aangemaakt in een PUT of PATCH.
     - bestaande objecten die niet in de lijst voorkomen met hun id zullen worden verwijderd, waardoor ze ook van de gelinkte producttypen worden verwijderd.

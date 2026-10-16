@@ -198,7 +198,7 @@ class TestFacetTypeAdmin(TestCase):
     def test_make_facettype_verplicht(self):
         with self.subTest("all producttypen have a waarde"):
             facet_type = FacetTypeFactory.create(naam="doelgroep", waarden=1)
-            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+            ProductTypeFactory.create().facetwaarden.add(facet_type.waarden.get())
 
             response = self.client.post(
                 self._change_url(facet_type), self.data | {"verplicht": "on"}
@@ -210,7 +210,7 @@ class TestFacetTypeAdmin(TestCase):
 
         with self.subTest("not all producttypen have a waarde"):
             facet_type = FacetTypeFactory.create(naam="doelgroep", waarden=1)
-            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+            ProductTypeFactory.create().facetwaarden.add(facet_type.waarden.get())
             ProductTypeFactory.create()
 
             response = self.client.post(
@@ -221,7 +221,7 @@ class TestFacetTypeAdmin(TestCase):
             self.assertContains(
                 response,
                 _(
-                    "Kan niet verplicht gemaakt worden: niet alle producttypen hebben een waarde van dit facettype."
+                    "Alle producttypen moeten een waarde van een facettype voordat het verplicht kan worden."
                 ),
             )
             facet_type.refresh_from_db()
@@ -244,7 +244,7 @@ class TestFacetWaardeAdmin(TestCase):
         )
         waarde, other_waarde = facet_type.waarden.all()
         producttype = ProductTypeFactory.create()
-        producttype.facetten.add(waarde, other_waarde)
+        producttype.facetwaarden.add(waarde, other_waarde)
 
         response = self.client.post(self._delete_url(waarde), {"post": "yes"})
 
@@ -255,7 +255,7 @@ class TestFacetWaardeAdmin(TestCase):
         facet_type = FacetTypeFactory.create(waarden=1, verplicht=True)
         waarde = facet_type.waarden.get()
         producttype = ProductTypeFactory.create()
-        producttype.facetten.add(waarde)
+        producttype.facetwaarden.add(waarde)
 
         response = self.client.post(
             self._delete_url(waarde), {"post": "yes"}, follow=True
@@ -264,8 +264,8 @@ class TestFacetWaardeAdmin(TestCase):
         self.assertContains(
             response,
             _(
-                "Kan niet verwijderd worden: producttypen {producttypen} hebben geen andere waarde van verplicht facettype &#x27;{type}&#x27;."
-            ).format(producttypen=producttype.code, type=facet_type.naam),
+                "Het facettype is verplicht en er zijn producttypen zonder andere waarde."
+            ),
         )
         self.assertTrue(FacetWaarde.objects.filter(pk=waarde.pk).exists())
 
@@ -288,7 +288,7 @@ class ProductTypeFacetFormTests(TestCase):
             facet_type = FacetTypeFactory.create(waarden=1)
 
             producttype = ProductTypeFactory.create()
-            producttype.facetten.add(facet_type.waarden.first())
+            producttype.facetwaarden.add(facet_type.waarden.first())
             producttype.save()
 
             instance = ProductTypeFacet.objects.get(producttype=producttype)
@@ -356,7 +356,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
         self.assertCountEqual(self._option_values(facet_waarde), expected)
 
         self._save(page)
-        self.assertEqual(list(self.producttype.facetten.all()), [facet_waarde_obj])
+        self.assertEqual(list(self.producttype.facetwaarden.all()), [facet_waarde_obj])
 
     def test_changing_facet_type_updates_facetwaarde_options(self):
         facet_type_a = FacetTypeFactory.create(waarden=1)
@@ -408,7 +408,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
         self._save(page)
 
         expect(page.locator(".errornote")).to_be_visible()
-        self.assertFalse(self.producttype.facetten.exists())
+        self.assertFalse(self.producttype.facetwaarden.exists())
 
     def test_validate_verplichte_facetten(self):
         facet_type_obj_1 = FacetTypeFactory.create(waarden=1, verplicht=True)
@@ -425,7 +425,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
         facet_waarde.select_option(str(facet_waarde_obj.pk))
 
         self._save(page)
-        self.assertEqual(list(self.producttype.facetten.all()), [facet_waarde_obj])
+        self.assertEqual(list(self.producttype.facetwaarden.all()), [facet_waarde_obj])
 
         facet_type_obj_2.verplicht = True
         facet_type_obj_2.save()
@@ -447,7 +447,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
         facet_waarde.select_option(str(facet_waarde_obj.pk))
 
         self._save(page)
-        self.assertEqual(self.producttype.facetten.count(), 2)
+        self.assertEqual(self.producttype.facetwaarden.count(), 2)
 
     def test_validate_meervoudig_facetten(self):
         with self.subTest("multiple == True"):
@@ -474,7 +474,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
             self._save(page)
 
-            self.assertEqual(self.producttype.facetten.count(), 2)
+            self.assertEqual(self.producttype.facetwaarden.count(), 2)
 
         with self.subTest("multiple == False"):
             facet_type_obj = FacetTypeFactory.create(
@@ -506,7 +506,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
                 f"Facettype '{facet_type_obj.naam}' staat maar één waarde toe, gekregen: {', '.join(w.naam for w in facet_type_obj.waarden.all())}.",
             )
 
-            self.assertEqual(self.producttype.facetten.count(), 2)
+            self.assertEqual(self.producttype.facetwaarden.count(), 2)
 
             # reload the page and select only one
             page = self.new_page(self.user)
@@ -518,14 +518,14 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
             self._save(page)
             # total for the same producttype ==  3
-            self.assertEqual(self.producttype.facetten.count(), 3)
+            self.assertEqual(self.producttype.facetwaarden.count(), 3)
 
     def test_check_meervoudig_facettype(self):
         # facet_type_obj.meervoudig_toegestaan == True
         # producttype has multiple facetten
 
         facet_type_obj = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=True)
-        self.producttype.facetten.add(*facet_type_obj.waarden.all())
+        self.producttype.facetwaarden.add(*facet_type_obj.waarden.all())
 
         page = self.new_page(self.user)
         page.goto(
@@ -542,14 +542,14 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
         expect(page.locator(".errornote")).to_be_visible()
         expect(page.locator(".field-meervoudig_toegestaan .errorlist")).to_contain_text(
-            "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facettype."
+            "Er zijn producttypen met meerdere waarden van dit facettype."
         )
         facet_type_obj.refresh_from_db()
         self.assertTrue(facet_type_obj.meervoudig_toegestaan)
 
         # producttype has only one facet
         facet_type_obj = FacetTypeFactory.create(waarden=1, meervoudig_toegestaan=True)
-        self.producttype.facetten.add(*facet_type_obj.waarden.all())
+        self.producttype.facetwaarden.add(*facet_type_obj.waarden.all())
 
         page = self.new_page(self.user)
         page.goto(

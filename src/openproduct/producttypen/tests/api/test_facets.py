@@ -104,16 +104,16 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         facet_type = FacetTypeFactory.create(waarden=1)
         facet_waarde = facet_type.waarden.first()
         producttype = ProductTypeFactory.create()
-        producttype.facetten.add(facet_waarde)
+        producttype.facetwaarden.add(facet_waarde)
         producttype.save()
 
         detail_url = reverse_lazy("producttype-detail", args=[producttype.uuid])
         response = self.client.get(detail_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(len(response.json()["facetten"]), 1)
+        self.assertEqual(len(response.json()["facetwaarden"]), 1)
         self.assertEqual(
-            response.json()["facetten"],
+            response.json()["facetwaarden"],
             [
                 {
                     "uuid": str(facet_waarde.uuid),
@@ -349,7 +349,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         with self.subTest("producttype has one waarde"):
-            producttype.facetten.set([facet_type.waarden.first()])
+            producttype.facetwaarden.set([facet_type.waarden.first()])
 
             response = self.client.patch(
                 self._detail_url(facet_type), {"meervoudig_toegestaan": False}
@@ -360,7 +360,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             facet_type.save()
 
         with self.subTest("producttype has multiple waarden"):
-            producttype.facetten.set(facet_type.waarden.all())
+            producttype.facetwaarden.set(facet_type.waarden.all())
 
             response = self.client.patch(
                 self._detail_url(facet_type), {"meervoudig_toegestaan": False}
@@ -369,9 +369,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertEqual(
                 get_validation_errors(response, "meervoudig_toegestaan")["reason"],
-                _(
-                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facettype."
-                ),
+                _("Er zijn producttypen met meerdere waarden van dit facettype."),
             )
             facet_type.refresh_from_db()
             self.assertTrue(facet_type.meervoudig_toegestaan)
@@ -379,18 +377,18 @@ class TestFacetTypeViewSet(BaseApiTestCase):
     def test_delete_facettype(self):
         facet_type = FacetTypeFactory.create(waarden=2)
         producttype = ProductTypeFactory.create()
-        producttype.facetten.set(facet_type.waarden.all())
+        producttype.facetwaarden.set(facet_type.waarden.all())
 
         response = self.client.delete(self._detail_url(facet_type))
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(FacetType.objects.exists())
         self.assertFalse(FacetWaarde.objects.exists())
-        self.assertFalse(producttype.facetten.exists())
+        self.assertFalse(producttype.facetwaarden.exists())
 
     def test_make_facettype_verplicht(self):
         error_message = _(
-            "Kan niet verplicht gemaakt worden: niet alle producttypen hebben een waarde van dit facettype."
+            "Alle producttypen moeten een waarde van een facettype voordat het verplicht kan worden."
         )
 
         with self.subTest("create without producttypen"):
@@ -415,7 +413,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         with self.subTest("all producttypen have a waarde"):
             ProductType.objects.all().delete()
             facet_type = FacetTypeFactory.create(waarden=1)
-            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+            ProductTypeFactory.create().facetwaarden.add(facet_type.waarden.get())
 
             response = self.client.patch(
                 self._detail_url(facet_type), {"verplicht": True}
@@ -425,7 +423,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
 
         with self.subTest("not all producttypen have a waarde"):
             facet_type = FacetTypeFactory.create(waarden=1)
-            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+            ProductTypeFactory.create().facetwaarden.add(facet_type.waarden.get())
             ProductTypeFactory.create()
 
             response = self.client.patch(
@@ -447,7 +445,7 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         producttype = ProductTypeFactory.create()
 
         with self.subTest("producttype has other waarde"):
-            producttype.facetten.set([waarde, other_waarde])
+            producttype.facetwaarden.set([waarde, other_waarde])
 
             response = self.client.patch(
                 self._detail_url(facet_type),
@@ -464,8 +462,8 @@ class TestFacetTypeViewSet(BaseApiTestCase):
             self.assertEqual(
                 get_validation_errors(response, "waarden")["reason"],
                 _(
-                    "Kan niet verwijderd worden: producttypen {producttypen} hebben geen andere waarde van verplicht facettype '{type}'."
-                ).format(producttypen=producttype.code, type=facet_type.naam),
+                    "Het facettype is verplicht en er zijn producttypen zonder andere waarde."
+                ),
             )
             self.assertTrue(FacetWaarde.objects.filter(pk=other_waarde.pk).exists())
 
@@ -486,7 +484,7 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         facet_type = FacetTypeFactory.create(waarden=3)
         facet_waarde = facet_type.waarden.first()
         producttype = ProductTypeFactory.create()
-        producttype.facetten.add(facet_waarde.pk)
+        producttype.facetwaarden.add(facet_waarde.pk)
         producttype.save()
 
         detail_url = reverse_lazy("producttype-detail", args=[producttype.uuid])
@@ -495,7 +493,7 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.json()["facetten"],
+            response.json()["facetwaarden"],
             [
                 {
                     "uuid": str(facet_waarde.uuid),
@@ -532,34 +530,34 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         }
 
         with self.subTest("empty list"):
-            data["facetten_uuids"] = []
+            data["facetwaarden_uuids"] = []
             data["code"] = "PT-11111"
             response = self.client.post(list_url, data)
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-            self.assertEqual(response.json()["facetten"], [])
+            self.assertEqual(response.json()["facetwaarden"], [])
 
         with self.subTest("none value"):
-            data["facetten_uuids"] = None
+            data["facetwaarden_uuids"] = None
             data["code"] = "PT-22222"
             response = self.client.post(list_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(response, "facetten_uuids")
+            error = get_validation_errors(response, "facetwaarden_uuids")
             self.assertEqual(
                 error,
                 {
-                    "name": "facetten_uuids",
+                    "name": "facetwaarden_uuids",
                     "code": "null",
                     "reason": "Dit veld mag niet leeg zijn.",
                 },
             )
 
         with self.subTest("one value"):
-            data["facetten_uuids"] = [facet_waarde.uuid]
+            data["facetwaarden_uuids"] = [facet_waarde.uuid]
             data["code"] = "PT-33333"
             response = self.client.post(list_url, data)
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
             self.assertEqual(
-                response.json()["facetten"],
+                response.json()["facetwaarden"],
                 [
                     {
                         "uuid": str(facet_waarde.uuid),
@@ -586,31 +584,31 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         data = {}
 
         with self.subTest("empty list"):
-            data["facetten_uuids"] = []
+            data["facetwaarden_uuids"] = []
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.json()["facetten"], [])
+            self.assertEqual(response.json()["facetwaarden"], [])
 
         with self.subTest("none value"):
-            data["facetten_uuids"] = None
+            data["facetwaarden_uuids"] = None
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(response, "facetten_uuids")
+            error = get_validation_errors(response, "facetwaarden_uuids")
             self.assertEqual(
                 error,
                 {
-                    "name": "facetten_uuids",
+                    "name": "facetwaarden_uuids",
                     "code": "null",
                     "reason": "Dit veld mag niet leeg zijn.",
                 },
             )
 
         with self.subTest("one value"):
-            data["facetten_uuids"] = [facet_waarde.uuid]
+            data["facetwaarden_uuids"] = [facet_waarde.uuid]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(
-                response.json()["facetten"],
+                response.json()["facetwaarden"],
                 [
                     {
                         "uuid": str(facet_waarde.uuid),
@@ -633,12 +631,12 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         facet_type.save()
         with self.subTest("multiple values"):
             # PATCH
-            data["facetten_uuids"] = [
+            data["facetwaarden_uuids"] = [
                 facet_waarde.uuid for facet_waarde in facet_type.waarden.all()
             ]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response.json()["facetten"]), 3)
+            self.assertEqual(len(response.json()["facetwaarden"]), 3)
 
     def test_validate_verplicht_facetten(self):
         facet_type = FacetTypeFactory.create(waarden=2, verplicht=False)
@@ -649,39 +647,39 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         data = {}
 
         with self.subTest("not required"):
-            data["facetten_uuids"] = []
+            data["facetwaarden_uuids"] = []
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.json()["facetten"], [])
+            self.assertEqual(response.json()["facetwaarden"], [])
 
         with self.subTest("one value"):
-            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            data["facetwaarden_uuids"] = [facet_type.waarden.first().uuid]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response.json()["facetten"]), 1)
+            self.assertEqual(len(response.json()["facetwaarden"]), 1)
 
         # create new one
         facet_type = FacetTypeFactory.create(waarden=2, verplicht=True)
 
         with self.subTest("empty patch"):
-            data["facetten_uuids"] = []
+            data["facetwaarden_uuids"] = []
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(response, "facetten_uuids")
+            error = get_validation_errors(response, "facetwaarden_uuids")
             self.assertEqual(
                 error,
                 {
-                    "name": "facetten_uuids",
+                    "name": "facetwaarden_uuids",
                     "code": "invalid",
                     "reason": f"Verplichte facettypen ontbreken: {facet_type.naam}.",
                 },
             )
 
         with self.subTest("one value"):
-            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            data["facetwaarden_uuids"] = [facet_type.waarden.first().uuid]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response.json()["facetten"]), 1)
+            self.assertEqual(len(response.json()["facetwaarden"]), 1)
 
     def test_validate_meervoudig_facetten(self):
         facet_type = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=False)
@@ -692,22 +690,22 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         data = {}
 
         with self.subTest("one value"):
-            data["facetten_uuids"] = [facet_type.waarden.first().uuid]
+            data["facetwaarden_uuids"] = [facet_type.waarden.first().uuid]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response.json()["facetten"]), 1)
+            self.assertEqual(len(response.json()["facetwaarden"]), 1)
 
         with self.subTest("multiple values"):
-            data["facetten_uuids"] = [
+            data["facetwaarden_uuids"] = [
                 facet_waarde.uuid for facet_waarde in facet_type.waarden.all()
             ]
             response = self.client.patch(detail_url, data)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            error = get_validation_errors(response, "facetten_uuids")
+            error = get_validation_errors(response, "facetwaarden_uuids")
             self.assertEqual(
                 error,
                 {
-                    "name": "facetten_uuids",
+                    "name": "facetwaarden_uuids",
                     "code": "invalid",
                     "reason": f"Facettype '{facet_type.naam}' staat maar één waarde toe, gekregen: {', '.join(w.naam for w in facet_type.waarden.all())}.",
                 },
@@ -717,9 +715,9 @@ class TestProductTypeFacettenViewSet(BaseApiTestCase):
         facet_type.meervoudig_toegestaan = True
         facet_type.save()
 
-        data["facetten_uuids"] = [
+        data["facetwaarden_uuids"] = [
             facet_waarde.uuid for facet_waarde in facet_type.waarden.all()
         ]
         response = self.client.patch(detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()["facetten"]), 2)
+        self.assertEqual(len(response.json()["facetwaarden"]), 2)

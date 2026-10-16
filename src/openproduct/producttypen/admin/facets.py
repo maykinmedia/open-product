@@ -12,7 +12,7 @@ from openproduct.logging.admin_tools import AdminAuditLogMixin, AuditLogInlinefo
 from ..models.facets import FacetType, FacetWaarde, ProductTypeFacet
 from ..models.validators import (
     check_verplichte_facetwaarden_delete,
-    validate_meervoudig_facetten,
+    validate_meervoudige_facetten,
     validate_verplichte_facetten,
 )
 
@@ -56,7 +56,7 @@ class FacetInlineFormSet(AuditLogInlineformset):
             if facetwaarde:
                 facetwaarden.append(facetwaarde)
 
-        validate_meervoudig_facetten(facetwaarden)
+        validate_meervoudige_facetten(facetwaarden)
         validate_verplichte_facetten(facetwaarden)
 
 

@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='producttype',
-            name='facetten',
-            field=models.ManyToManyField(blank=True, help_text='facetten producttypen', related_name='producttypen', through='producttypen.ProductTypeFacet', to='producttypen.facetwaarde', verbose_name='facetten'),
+            name='facetwaarden',
+            field=models.ManyToManyField(blank=True, help_text='facetwaarden die aan het producttype zijn gelinkt', related_name='producttypen', through='producttypen.ProductTypeFacet', to='producttypen.facetwaarde', verbose_name='facetwaarden'),
         ),
     ]

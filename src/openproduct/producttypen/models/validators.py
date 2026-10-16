@@ -24,15 +24,15 @@ def check_meervoudig_facettype(facet_type, meervoudig_toegestaan):
         return
 
     if (
-        ProductType.objects.filter(facetten__facet_type=facet_type)
-        .annotate(total=Count("facetten"))
+        ProductType.objects.filter(facetwaarden__facet_type=facet_type)
+        .annotate(total=Count("facetwaarden"))
         .filter(total__gt=1)
         .exists()
     ):
         raise ValidationError(
             {
                 "meervoudig_toegestaan": _(
-                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facettype."
+                    "Er zijn producttypen met meerdere waarden van dit facettype."
                 )
             }
         )
@@ -52,13 +52,15 @@ def check_verplicht_facettype(facet_type, verplicht):
         # a new facettype has no values yet
         missing = ProductType.objects.exists()
     else:
-        missing = ProductType.objects.exclude(facetten__facet_type=facet_type).exists()
+        missing = ProductType.objects.exclude(
+            facetwaarden__facet_type=facet_type
+        ).exists()
 
     if missing:
         raise ValidationError(
             {
                 "verplicht": _(
-                    "Kan niet verplicht gemaakt worden: niet alle producttypen hebben een waarde van dit facettype."
+                    "Alle producttypen moeten een waarde van een facettype voordat het verplicht kan worden."
                 )
             }
         )
@@ -76,21 +78,15 @@ def check_verplichte_facetwaarden_delete(facet_type, facet_waarden, verplicht):
         return
 
     remaining = facet_type.waarden.exclude(pk__in=[w.pk for w in facet_waarden])
-    producttypen = (
-        ProductType.objects.filter(facetten__in=facet_waarden)
-        .exclude(facetten__in=remaining)
-        .distinct()
+    producttypen = ProductType.objects.filter(facetwaarden__in=facet_waarden).exclude(
+        facetwaarden__in=remaining
     )
 
     if producttypen.exists():
         raise ValidationError(
             _(
-                "Kan niet verwijderd worden: producttypen %(producttypen)s hebben geen andere waarde van verplicht facettype '%(type)s'."
+                "Het facettype is verplicht en er zijn producttypen zonder andere waarde."
             ),
-            params={
-                "producttypen": ", ".join(str(p) for p in producttypen),
-                "type": facet_type.naam,
-            },
         )
 
 
@@ -110,7 +106,7 @@ def validate_verplichte_facetten(facet_waarden):
         )
 
 
-def validate_meervoudig_facetten(facet_waarden):
+def validate_meervoudige_facetten(facet_waarden):
     """
     Ensure single-value facettypen have at most one value in ``facet_waarden``.
     """
