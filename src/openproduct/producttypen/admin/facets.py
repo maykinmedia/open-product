@@ -1,5 +1,8 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.contrib.admin.utils import unquote
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 
 from reversion_compare.admin import CompareVersionAdmin
@@ -8,6 +11,7 @@ from openproduct.logging.admin_tools import AdminAuditLogMixin, AuditLogInlinefo
 
 from ..models.facets import FacetType, FacetWaarde, ProductTypeFacet
 from ..models.validators import (
+    check_verplichte_facetwaarden_delete,
     validate_meervoudig_facetten,
     validate_verplichte_facetten,
 )
@@ -70,6 +74,8 @@ class FacetWaardeInline(admin.TabularInline):
     formset = AuditLogInlineformset
     model = FacetWaarde
     extra = 1
+    can_delete = False  # inline delete has no confirmation page
+    show_change_link = True
 
 
 @admin.register(FacetType)
@@ -83,3 +89,24 @@ class FacetTypeAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     list_filter = ("facetteerbaar", "meervoudig_toegestaan", "verplicht")
     search_fields = ("naam", "omschrijving")
     inlines = (FacetWaardeInline,)
+
+
+@admin.register(FacetWaarde)
+class FacetWaardeAdmin(AdminAuditLogMixin, CompareVersionAdmin):
+    actions = []
+
+    def delete_view(self, request, object_id, extra_context=None):
+        obj = self.get_object(request, unquote(object_id))
+        if obj is not None:
+            try:
+                check_verplichte_facetwaarden_delete(
+                    obj.facet_type, [obj], obj.facet_type.verplicht
+                )
+            except ValidationError as e:
+                for message in e.messages:
+                    self.message_user(request, message, messages.ERROR)
+                return redirect(
+                    "admin:producttypen_facetwaarde_change", object_id=obj.pk
+                )
+
+        return super().delete_view(request, object_id, extra_context)

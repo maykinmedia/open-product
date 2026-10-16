@@ -154,24 +154,6 @@ class TestFacetTypeAdmin(TestCase):
         self.assertEqual(waarde.naam, "burgers")
         self.assertFalse(waarde.actief)
 
-    def test_delete_waarde_via_inline(self):
-        facet_type = FacetTypeFactory.create(naam="doelgroep")
-        waarde = FacetWaardeFactory.create(facet_type=facet_type, naam="inwoners")
-        data = self.data | {
-            "waarden-TOTAL_FORMS": "1",
-            "waarden-INITIAL_FORMS": "1",
-            "waarden-0-id": str(waarde.pk),
-            "waarden-0-facet_type": str(facet_type.pk),
-            "waarden-0-naam": "inwoners",
-            "waarden-0-DELETE": "on",
-        }
-
-        url = reverse("admin:producttypen_facettype_change", args=[facet_type.pk])
-        response = self.client.post(url, data)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertFalse(FacetWaarde.objects.exists())
-
     def test_producttype_facetten_json(self):
         url = reverse("admin:producttypen_producttype_facet_waarden")
 
@@ -212,6 +194,86 @@ class TestFacetTypeAdmin(TestCase):
             self.client.force_login(UserFactory.create(is_staff=False))
             response = self.client.get(url, {"facet_type": 1})
             self.assertEqual(response.status_code, 302)
+
+    def test_make_facettype_verplicht(self):
+        with self.subTest("all producttypen have a waarde"):
+            facet_type = FacetTypeFactory.create(naam="doelgroep", waarden=1)
+            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+
+            response = self.client.post(
+                self._change_url(facet_type), self.data | {"verplicht": "on"}
+            )
+
+            self.assertEqual(response.status_code, 302)
+            facet_type.refresh_from_db()
+            self.assertTrue(facet_type.verplicht)
+
+        with self.subTest("not all producttypen have a waarde"):
+            facet_type = FacetTypeFactory.create(naam="doelgroep", waarden=1)
+            ProductTypeFactory.create().facetten.add(facet_type.waarden.get())
+            ProductTypeFactory.create()
+
+            response = self.client.post(
+                self._change_url(facet_type), self.data | {"verplicht": "on"}
+            )
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(
+                response,
+                _(
+                    "Kan niet verplicht gemaakt worden: niet alle producttypen hebben een waarde van dit facettype."
+                ),
+            )
+            facet_type.refresh_from_db()
+            self.assertFalse(facet_type.verplicht)
+
+
+@disable_admin_mfa()
+class TestFacetWaardeAdmin(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.user = UserFactory.create(superuser=True)
+        self.client.force_login(self.user)
+
+    def _delete_url(self, instance):
+        return reverse("admin:producttypen_facetwaarde_delete", args=[instance.pk])
+
+    def test_delete_waarde(self):
+        facet_type = FacetTypeFactory.create(
+            waarden=2, verplicht=True, meervoudig_toegestaan=True
+        )
+        waarde, other_waarde = facet_type.waarden.all()
+        producttype = ProductTypeFactory.create()
+        producttype.facetten.add(waarde, other_waarde)
+
+        response = self.client.post(self._delete_url(waarde), {"post": "yes"})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(FacetWaarde.objects.filter(pk=waarde.pk).exists())
+
+    def test_delete_only_waarde_of_verplicht_facettype(self):
+        facet_type = FacetTypeFactory.create(waarden=1, verplicht=True)
+        waarde = facet_type.waarden.get()
+        producttype = ProductTypeFactory.create()
+        producttype.facetten.add(waarde)
+
+        response = self.client.post(
+            self._delete_url(waarde), {"post": "yes"}, follow=True
+        )
+
+        self.assertContains(
+            response,
+            _(
+                "Kan niet verwijderd worden: producttypen {producttypen} hebben geen andere waarde van verplicht facettype &#x27;{type}&#x27;."
+            ).format(producttypen=producttype.code, type=facet_type.naam),
+        )
+        self.assertTrue(FacetWaarde.objects.filter(pk=waarde.pk).exists())
+
+    def test_bulk_delete_action_is_disabled(self):
+        response = self.client.get(reverse("admin:producttypen_facetwaarde_changelist"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'value="delete_selected"')
 
 
 class ProductTypeFacetFormTests(TestCase):
@@ -480,7 +542,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
         expect(page.locator(".errornote")).to_be_visible()
         expect(page.locator(".field-meervoudig_toegestaan .errorlist")).to_contain_text(
-            "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facet."
+            "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facettype."
         )
         facet_type_obj.refresh_from_db()
         self.assertTrue(facet_type_obj.meervoudig_toegestaan)

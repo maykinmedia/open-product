@@ -12,7 +12,7 @@ from openproduct.utils.validators import CustomRegexValidator
 from .enums import DoelgroepChoices
 
 
-def check_meervoudig_facettype(facet_type):
+def check_meervoudig_facettype(facet_type, meervoudig_toegestaan):
     """
     Prevent disabling ``meervoudig_toegestaan`` while product
     types still have multiple values of this facettype.
@@ -20,7 +20,7 @@ def check_meervoudig_facettype(facet_type):
 
     from openproduct.producttypen.models import ProductType
 
-    if not facet_type.pk or facet_type.meervoudig_toegestaan:
+    if not facet_type or not facet_type.pk or meervoudig_toegestaan:
         return
 
     if (
@@ -32,9 +32,65 @@ def check_meervoudig_facettype(facet_type):
         raise ValidationError(
             {
                 "meervoudig_toegestaan": _(
-                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facet."
+                    "Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit facettype."
                 )
             }
+        )
+
+
+def check_verplicht_facettype(facet_type, verplicht):
+    """
+    Only allow making a facettype ``verplicht`` when all existing producttypes have a value of this facettype.
+    """
+
+    from openproduct.producttypen.models import ProductType
+
+    if not verplicht:
+        return
+
+    if not facet_type or not facet_type.pk:
+        # a new facettype has no values yet
+        missing = ProductType.objects.exists()
+    else:
+        missing = ProductType.objects.exclude(facetten__facet_type=facet_type).exists()
+
+    if missing:
+        raise ValidationError(
+            {
+                "verplicht": _(
+                    "Kan niet verplicht gemaakt worden: niet alle producttypen hebben een waarde van dit facettype."
+                )
+            }
+        )
+
+
+def check_verplichte_facetwaarden_delete(facet_type, facet_waarden, verplicht):
+    """
+    Prevent deleting values of a ``verplicht`` facettype when a product type
+    would be left without a value of this facettype.
+    """
+
+    from openproduct.producttypen.models import ProductType
+
+    if not verplicht or not facet_waarden:
+        return
+
+    remaining = facet_type.waarden.exclude(pk__in=[w.pk for w in facet_waarden])
+    producttypen = (
+        ProductType.objects.filter(facetten__in=facet_waarden)
+        .exclude(facetten__in=remaining)
+        .distinct()
+    )
+
+    if producttypen.exists():
+        raise ValidationError(
+            _(
+                "Kan niet verwijderd worden: producttypen %(producttypen)s hebben geen andere waarde van verplicht facettype '%(type)s'."
+            ),
+            params={
+                "producttypen": ", ".join(str(p) for p in producttypen),
+                "type": facet_type.naam,
+            },
         )
 
 

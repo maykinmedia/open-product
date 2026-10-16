@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from openproduct.producttypen.models.validators import check_meervoudig_facettype
+from openproduct.producttypen.models.validators import (
+    check_meervoudig_facettype,
+    check_verplicht_facettype,
+)
 from openproduct.utils.models import BaseModel
 
 
@@ -18,7 +21,7 @@ class FacetType(BaseModel):
     )
     facetteerbaar = models.BooleanField(
         _("facetteerbaar"),
-        default=False,
+        default=True,
         help_text=_("Geeft aan of er kan worden gefiltered op het facet"),
     )
     meervoudig_toegestaan = models.BooleanField(
@@ -31,7 +34,9 @@ class FacetType(BaseModel):
     verplicht = models.BooleanField(
         _("verplicht"),
         default=False,
-        help_text=_("Geeft aan of het facet verplicht is voor producttype"),
+        help_text=_(
+            "Geeft aan of het facet verplicht is voor producttype. Een facet kan alleen verplicht worden als alle bestaande producttype een waarde hebben."
+        ),
     )
 
     class Meta:
@@ -44,7 +49,8 @@ class FacetType(BaseModel):
 
     def clean(self):
         super().clean()
-        check_meervoudig_facettype(self)
+        check_meervoudig_facettype(self, self.meervoudig_toegestaan)
+        check_verplicht_facettype(self, self.verplicht)
 
 
 class FacetWaarde(BaseModel):
@@ -99,4 +105,4 @@ class ProductTypeFacet(models.Model):
         unique_together = ("producttype", "facetwaarde")
 
     def __str__(self):
-        return str(self.facetwaarde)
+        return f"{str(self.producttype)}: {str(self.facetwaarde)}"
