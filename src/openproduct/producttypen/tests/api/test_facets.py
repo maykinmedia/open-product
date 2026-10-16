@@ -260,6 +260,19 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         self.assertEqual(response.json()["waarden"], [])
         self.assertFalse(FacetWaarde.objects.exists())
 
+    def test_create_facettype_with_duplicate_waarde_naam_returns_error(self):
+        data = {"naam": "doelgroep", "waarden": [{"naam": "a"}, {"naam": "a"}]}
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            get_validation_errors(response, "waarden")["reason"],
+            _("Dubbele naam: {} op index {}.").format("a", 1),
+        )
+        self.assertFalse(FacetType.objects.exists())
+        self.assertFalse(FacetWaarde.objects.exists())
+
     def test_create_facettype_ignores_waarde_uuid(self):
         waarde_uuid = uuid.uuid4()
         data = {"naam": "doelgroep", "waarden": [{"uuid": waarde_uuid, "naam": "a"}]}
@@ -344,6 +357,28 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIsNotNone(get_validation_errors(response, "waarden"))
 
+    def test_update_facettype_with_duplicate_waarde_uuid_returns_error(self):
+        facet_type = FacetTypeFactory.create(waarden=1)
+        waarde = facet_type.waarden.get()
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {
+                "waarden": [
+                    {"uuid": waarde.uuid, "naam": "a"},
+                    {"uuid": waarde.uuid, "naam": "b"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            get_validation_errors(response, "waarden")["reason"],
+            _("Dubbel uuid: {} op index {}.").format(waarde.uuid, 1),
+        )
+        waarde.refresh_from_db()
+        self.assertNotIn(waarde.naam, ("a", "b"))
+
     def test_disable_meervoudig_toegestaan(self):
         facet_type = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=True)
         producttype = ProductTypeFactory.create()
@@ -376,6 +411,18 @@ class TestFacetTypeViewSet(BaseApiTestCase):
 
     def test_delete_facettype(self):
         facet_type = FacetTypeFactory.create(waarden=2)
+        producttype = ProductTypeFactory.create()
+        producttype.facetwaarden.set(facet_type.waarden.all())
+
+        response = self.client.delete(self._detail_url(facet_type))
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(FacetType.objects.exists())
+        self.assertFalse(FacetWaarde.objects.exists())
+        self.assertFalse(producttype.facetwaarden.exists())
+
+    def test_delete_verplicht_facettype(self):
+        facet_type = FacetTypeFactory.create(waarden=1, verplicht=True)
         producttype = ProductTypeFactory.create()
         producttype.facetwaarden.set(facet_type.waarden.all())
 
@@ -474,6 +521,32 @@ class TestFacetTypeViewSet(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertFalse(facet_type.waarden.exists())
+
+    def test_remove_only_waarde_of_not_verplicht_facettype(self):
+        facet_type = FacetTypeFactory.create(waarden=1, verplicht=False)
+        producttype = ProductTypeFactory.create()
+        producttype.facetwaarden.set(facet_type.waarden.all())
+
+        response = self.client.patch(self._detail_url(facet_type), {"waarden": []})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(facet_type.waarden.exists())
+        self.assertFalse(producttype.facetwaarden.exists())
+
+    def test_remove_unused_waarde_of_verplicht_facettype(self):
+        facet_type = FacetTypeFactory.create(waarden=2, verplicht=True)
+        unused_waarde, used_waarde = facet_type.waarden.all()
+        producttype = ProductTypeFactory.create()
+        producttype.facetwaarden.set([used_waarde])
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {"waarden": [{"uuid": used_waarde.uuid, "naam": used_waarde.naam}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(FacetWaarde.objects.filter(pk=unused_waarde.pk).exists())
+        self.assertEqual(list(producttype.facetwaarden.all()), [used_waarde])
 
 
 class TestProductTypeFacettenViewSet(BaseApiTestCase):

@@ -227,6 +227,29 @@ class TestFacetTypeAdmin(TestCase):
             facet_type.refresh_from_db()
             self.assertFalse(facet_type.verplicht)
 
+    def test_create_verplicht_facettype(self):
+        with self.subTest("without producttypen"):
+            response = self.client.post(self.add_url, self.data | {"verplicht": "on"})
+
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(FacetType.objects.get().verplicht)
+
+        with self.subTest("with producttypen"):
+            ProductTypeFactory.create()
+
+            response = self.client.post(
+                self.add_url, self.data | {"naam": "regio", "verplicht": "on"}
+            )
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(
+                response,
+                _(
+                    "Alle producttypen moeten een waarde van een facettype voordat het verplicht kan worden."
+                ),
+            )
+            self.assertFalse(FacetType.objects.filter(naam="regio").exists())
+
 
 @disable_admin_mfa()
 class TestFacetWaardeAdmin(TestCase):

@@ -32,6 +32,7 @@ from openproduct.producttypen.tests.factories import (
     BestandFactory,
     ContentElementFactory,
     ExterneCodeFactory,
+    FacetTypeFactory,
     JsonSchemaFactory,
     LinkFactory,
     ParameterFactory,
@@ -461,9 +462,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         locatie = LocatieFactory.create()
 
+        facetwaarde = FacetTypeFactory.create(
+            waarden=1, meervoudig_toegestaan=True
+        ).waarden.get()
+
         data = self.data | {
             "thema_uuids": [thema.uuid, thema.uuid],
             "locatie_uuids": [locatie.uuid, locatie.uuid],
+            "facetwaarden_uuids": [facetwaarde.uuid, facetwaarde.uuid],
         }
 
         response = self.client.post(self.path, data)
@@ -484,6 +490,14 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(
             error["reason"],
             _("Dubbel uuid: {} op index 1.").format(locatie.uuid),
+        )
+        error = get_validation_errors(response, "facetwaarden_uuids")
+
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Dubbel uuid: {} op index 1.").format(facetwaarde.uuid),
         )
 
     def test_create_complete_producttype(self):

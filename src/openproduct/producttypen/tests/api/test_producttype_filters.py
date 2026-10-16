@@ -259,6 +259,19 @@ class TestProductTypeFilters(BaseApiTestCase):
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(response.data["results"][0]["uuid"], str(producttype_1.uuid))
 
+    def test_facet_filter_without_match(self):
+        doelgroep = FacetTypeFactory.create(naam="doelgroep")
+        ProductTypeFactory.create().facetwaarden.add(
+            FacetWaardeFactory.create(facet_type=doelgroep, naam="inwoners")
+        )
+
+        for value in ("[doelgroep:bedrijven]", "[regio:inwoners]"):
+            with self.subTest(value):
+                response = self.client.get(self.path, {"facet": value})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["count"], 0)
+
     def test_facet_filter_without_brackets(self):
         response = self.client.get(self.path, {"facet": "abc"})
 

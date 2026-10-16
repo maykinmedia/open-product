@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
@@ -98,6 +99,22 @@ class FacetTypeSerializer(BaseFacetTypeSerializer):
             FacetTypeVerplichtValidator(),
             FacetWaardenDeleteValidator(),
         ]
+
+    def validate_waarden(self, waarden):
+        namen = set()
+        errors = []
+        for idx, waarde in enumerate(waarden):
+            naam = waarde.get("naam")
+            if naam is None:
+                continue
+
+            if naam in namen:
+                errors.append(_("Dubbele naam: {} op index {}.").format(naam, idx))
+            namen.add(naam)
+
+        if errors:
+            raise serializers.ValidationError(errors)
+        return waarden
 
     @transaction.atomic()
     def create(self, validated_data):
