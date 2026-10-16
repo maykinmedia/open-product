@@ -18,6 +18,7 @@ from openproduct.producttypen.tests.factories import (
     ContentLabelFactory,
     ExterneCodeFactory,
     FacetTypeFactory,
+    FacetWaardeFactory,
     JsonSchemaFactory,
     ParameterFactory,
     ProcesFactory,
@@ -197,6 +198,86 @@ class TestProductTypeFilters(BaseApiTestCase):
 
     def test_parameter_filter_with_invalid_characters(self):
         response = self.client.get(self.path, {"parameter": "[a[b:[b:a]]"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_facet_filter(self):
+        doelgroep = FacetTypeFactory.create(naam="doelgroep")
+        inwoners = FacetWaardeFactory.create(facet_type=doelgroep, naam="inwoners")
+        bedrijven = FacetWaardeFactory.create(facet_type=doelgroep, naam="bedrijven")
+
+        producttype_1 = ProductTypeFactory.create()
+        producttype_1.facetwaarden.add(inwoners)
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.facetwaarden.add(bedrijven)
+
+        response = self.client.get(self.path, {"facet": "[doelgroep:inwoners]"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["uuid"], str(producttype_1.uuid))
+
+    def test_facet_filter_matches_type_and_waarde_of_same_facetwaarde(self):
+        doelgroep = FacetTypeFactory.create(naam="doelgroep")
+        regio = FacetTypeFactory.create(naam="regio")
+
+        producttype_1 = ProductTypeFactory.create()
+        producttype_1.facetwaarden.add(
+            FacetWaardeFactory.create(facet_type=doelgroep, naam="bedrijven"),
+            FacetWaardeFactory.create(facet_type=regio, naam="inwoners"),
+        )
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.facetwaarden.add(
+            FacetWaardeFactory.create(facet_type=doelgroep, naam="inwoners")
+        )
+
+        response = self.client.get(self.path, {"facet": "[doelgroep:inwoners]"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["uuid"], str(producttype_2.uuid))
+
+    def test_multiple_facet_filters(self):
+        doelgroep = FacetTypeFactory.create(naam="doelgroep")
+        regio = FacetTypeFactory.create(naam="regio")
+        inwoners = FacetWaardeFactory.create(facet_type=doelgroep, naam="inwoners")
+        centrum = FacetWaardeFactory.create(facet_type=regio, naam="centrum")
+
+        producttype_1 = ProductTypeFactory.create()
+        producttype_1.facetwaarden.add(inwoners, centrum)
+
+        producttype_2 = ProductTypeFactory.create()
+        producttype_2.facetwaarden.add(inwoners)
+
+        response = self.client.get(
+            self.path, {"facet": ("[doelgroep:inwoners]", "[regio:centrum]")}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["uuid"], str(producttype_1.uuid))
+
+    def test_facet_filter_without_brackets(self):
+        response = self.client.get(self.path, {"facet": "abc"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_facet_filter_without_key_value(self):
+        response = self.client.get(self.path, {"facet": "[:]"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_first_facet_filter_without_key_value(self):
+        response = self.client.get(
+            self.path, {"facet": ("[:]", "[doelgroep:inwoners]")}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_facet_filter_with_invalid_characters(self):
+        response = self.client.get(self.path, {"facet": "[a[b:[b:a]]"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1129,37 +1210,32 @@ class TestProductTypeFilters(BaseApiTestCase):
         waarde_b = facet_type_b.waarden.last()
         waarde_c = facet_type_a.waarden.first()
 
-        waarde_a.naam = "test"
-        waarde_b.naam = "test"
-
-        waarde_a.save()
-        waarde_b.save()
-
         producttype_a = ProductTypeFactory.create()
-        producttype_a.facetten.set(facet_type_a.waarden.all())
+        producttype_a.facetwaarden.set(facet_type_a.waarden.all())
         producttype_b = ProductTypeFactory.create()
-        producttype_b.facetten.set(facet_type_b.waarden.all())
+        producttype_b.facetwaarden.set(facet_type_b.waarden.all())
 
-        with self.subTest("facetten__uuid"):
+        with self.subTest("facetwaarden__uuid"):
             response = self.client.get(
-                self.path, {"facetten__uuid": str(facet_type_a.waarden.first().uuid)}
+                self.path,
+                {"facetwaarden__uuid": str(facet_type_a.waarden.first().uuid)},
             )
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 1)
             self.assertEqual(
-                response.data["results"][0]["facetten"][0]["uuid"],
+                response.data["results"][0]["facetwaarden"][0]["uuid"],
                 str(facet_type_a.waarden.first().uuid),
             )
             self.assertEqual(
                 response.data["results"][0]["uuid"], str(producttype_a.uuid)
             )
 
-        with self.subTest("facetten__uuid__in"):
+        with self.subTest("facetwaarden__uuid__in"):
             response = self.client.get(
                 self.path,
                 {
-                    "facetten__uuid__in": ",".join(
+                    "facetwaarden__uuid__in": ",".join(
                         str(uuid)
                         for uuid in (waarde_a.uuid, waarde_b.uuid, waarde_c.uuid)
                     ),
@@ -1168,13 +1244,3 @@ class TestProductTypeFilters(BaseApiTestCase):
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(response.data["count"], 2)
-
-        with self.subTest("facetten__naam"):
-            response = self.client.get(self.path, {"facetten__naam": "test"})
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            # two waarden, but one producttype
-            self.assertEqual(response.data["count"], 1)
-            self.assertEqual(len(response.data["results"][0]["facetten"]), 2)
-            self.assertEqual(
-                response.data["results"][0]["uuid"], str(producttype_b.uuid)
-            )
