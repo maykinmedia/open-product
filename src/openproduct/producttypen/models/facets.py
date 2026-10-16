@@ -88,13 +88,13 @@ class ProductTypeFacet(models.Model):
     producttype = models.ForeignKey(
         "producttypen.ProductType",
         on_delete=models.CASCADE,
-        related_name="ProductType_facetten+",
+        related_name="producttype_facetten",
         verbose_name=_("producttype"),
     )
     facetwaarde = models.ForeignKey(
         FacetWaarde,
         on_delete=models.CASCADE,
-        related_name="ProductType_facetten+",
+        related_name="producttype_facetten",
         verbose_name=_("facetwaarde"),
     )
 

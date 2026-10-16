@@ -345,8 +345,8 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
 
     def _row(self, page, index):
         return (
-            page.locator(f"#id_ProductType_facetten-{index}-facet_type"),
-            page.locator(f"#id_ProductType_facetten-{index}-facetwaarde"),
+            page.locator(f"#id_producttype_facetten-{index}-facet_type"),
+            page.locator(f"#id_producttype_facetten-{index}-facetwaarde"),
         )
 
     def _real_options(self, select):
@@ -460,7 +460,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
         expect(page.locator(".errornote")).to_be_visible()
 
         expect(
-            page.locator("#ProductType_facetten-group .errorlist.nonform")
+            page.locator("#producttype_facetten-group .errorlist.nonform")
         ).to_contain_text(f"Verplichte facettypen ontbreken: {facet_type_obj_2.naam}.")
 
         # select only for facet_type_obj_2
@@ -524,7 +524,7 @@ class TestProductTypeFacettenAdmin(E2ETestCase):
             self._save(page)
 
             expect(
-                page.locator("#ProductType_facetten-group .errorlist.nonform")
+                page.locator("#producttype_facetten-group .errorlist.nonform")
             ).to_contain_text(
                 f"Facettype '{facet_type_obj.naam}' staat maar één waarde toe, gekregen: {', '.join(w.naam for w in facet_type_obj.waarden.all())}.",
             )
