@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from django.core.management import CommandError, call_command
 from django.http import HttpResponse
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from openproduct.locaties.tests.factories import (
     ContactFactory,
@@ -310,6 +310,39 @@ class TestExport(TestCase):
         locaties = [loc["id"] for loc in result["locatie"]]
 
         self.assertCountEqual(locaties, [self.locatie1.id, self.locatie2.id])
+
+    @tag("gh-362")
+    @patch("openproduct.utils.management.commands.export.Command._create_zip")
+    def test_rollen(self, mock_create_zip):
+        self.call_command(
+            "producttypen",
+            "producttype",
+            ids=[self.producttype1.id],
+            archive_name="test.zip",
+        )
+
+        result = mock_create_zip.call_args.args[1]
+
+        self.assertCountEqual(
+            [
+                (item["organisatie_id"], item["rol"])
+                for item in result["producttypeorganisatie"]
+            ],
+            [
+                (self.organisatie1.id, OrganisatieRolChoices.LEVERANCIER),
+                (self.organisatie2.id, ""),
+            ],
+        )
+        self.assertCountEqual(
+            [
+                (item["contact_id"], item["rol"])
+                for item in result["producttypecontact"]
+            ],
+            [
+                (self.contact1.id, ContactRolChoices.RELATIEMANAGER),
+                (self.contact2.id, ""),
+            ],
+        )
 
     def test_response(self):
         response = HttpResponse(content_type="application/zip")
