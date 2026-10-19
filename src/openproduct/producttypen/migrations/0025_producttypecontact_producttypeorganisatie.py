@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("locaties", "0003_alter_locatie_postcode_alter_organisatie_postcode"),
-        ("producttypen", "0022_facettype_facetwaarde_producttype_facetten"),
+        ("producttypen", "0024_set_type_for_existing_acties"),
     ]
 
     operations = [

@@ -324,8 +324,8 @@ class TestSetActieTypeMigration(BaseMigrationTest):
 
 class TestProductTypeOrganisatieContactThroughMigration(BaseMigrationTest):
     app = "producttypen"
-    migrate_from = "0022_facettype_facetwaarde_producttype_facetten"
-    migrate_to = "0023_producttypecontact_producttypeorganisatie"
+    migrate_from = "0024_set_type_for_existing_acties"
+    migrate_to = "0025_producttypecontact_producttypeorganisatie"
 
     def setUp(self):
         super().setUp()

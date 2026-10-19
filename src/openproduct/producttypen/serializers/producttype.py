@@ -271,10 +271,20 @@ class NestedThemaSerializer(serializers.ModelSerializer):
                 "doelgroep": "burgers",
                 "thema_uuids": ["497f6eca-6276-4993-bfeb-53cbbbba6f08"],
                 "locatie_uuids": ["235de068-a9c5-4eda-b61d-92fd7f09e9dc"],
-                "organisatie_uuids": ["2c2694f1-f948-4960-8312-d51c3a0e540f"],
+                "organisaties": [
+                    {
+                        "rol": "leverancier",
+                        "organisatie_uuid": "2c2694f1-f948-4960-8312-d51c3a0e540f",
+                    }
+                ],
                 "facetwaarden_uuids": ["49bd9f8e-239e-49f8-a65d-e1daacad1a72"],
                 "eigenaar": "urn:nld:maykin:openzaak:organisatie:medewerker:uuid:497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                "contact_uuids": ["6863d699-460d-4c1e-9297-16812d75d8ca"],
+                "contacten": [
+                    {
+                        "rol": "relatiemanager",
+                        "contact_uuid": "6863d699-460d-4c1e-9297-16812d75d8ca",
+                    }
+                ],
                 "publicatie_start_datum": "2019-09-24",
                 "publicatie_eind_datum": "2030-09-24",
                 "naam": "Aanleunwoning",
@@ -524,8 +534,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
                 [
                     "thema_uuids",
                     "locatie_uuids",
-                    "organisatie_uuids",
-                    "contacten_uuids",
                     "facetwaarden_uuids",
                 ]
             ),
@@ -544,6 +552,7 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         validate_meervoudige_facetten(facetwaarden)
         validate_verplichte_facetten(facetwaarden)
         return facetwaarden
+
     def validate_organisaties(self, organisaties: list[dict]) -> list[dict]:
         return validate_unique_related(organisaties, "organisatie")
 
