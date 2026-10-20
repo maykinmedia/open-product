@@ -1,4 +1,6 @@
 from django.db import transaction
+from django.db.models import CharField
+from django.db.models.functions import Cast
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.types import OpenApiTypes
@@ -684,6 +686,16 @@ class ProductTypeSerializer(TranslatableModelSerializer):
         if subtypen is not None:
             kept_uuids = {subtype["uuid"] for subtype in subtypen if "uuid" in subtype}
             instance.subtypen.exclude(uuid__in=kept_uuids).delete()
+
+            # temporarily give renamed subtypen a unique name so names can be swapped
+            # without violating the producttype/naam unique constraint.
+            instance.subtypen.filter(
+                uuid__in={
+                    subtype["uuid"]
+                    for subtype in subtypen
+                    if "uuid" in subtype and "naam" in subtype
+                }
+            ).update(naam=Cast("uuid", output_field=CharField()))
 
             for subtype in subtypen:
                 subtype_uuid = subtype.pop("uuid", None)

@@ -23,7 +23,7 @@ class SubType(BaseModel):
 
     class Meta:
         verbose_name = _("Producttype subtype")
-        verbose_name_plural = _("Producttype subtype")
+        verbose_name_plural = _("Producttype subtypen")
         ordering = ("-id",)
         unique_together = (("producttype", "naam"),)
 

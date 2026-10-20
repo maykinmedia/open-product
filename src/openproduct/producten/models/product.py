@@ -160,6 +160,11 @@ class Product(BasePublishableModel):
 
     def clean(self):
         validate_product_dates(self.start_datum, self.eind_datum)
+
+        # clean is still called when pt is not set
+        if self.producttype_id is None:
+            return  # noqa
+
         original = (
             None
             if self._state.adding

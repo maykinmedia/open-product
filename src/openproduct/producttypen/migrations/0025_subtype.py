@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'Producttype subtype',
-                'verbose_name_plural': 'Producttype subtype',
+                'verbose_name_plural': 'Producttype subtypen',
                 'ordering': ('-id',),
                 'unique_together': {('producttype', 'naam')},
             },

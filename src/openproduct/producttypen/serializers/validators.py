@@ -106,8 +106,19 @@ class SubTypenValidator:
             return
 
         subtypen = value["subtypen"]
+        # subtypen without a naam (partial update) keep their current naam.
+        current_namen = (
+            dict(serializer.instance.subtypen.values_list("uuid", "naam"))
+            if serializer.instance
+            else {}
+        )
         try:
-            validate_subtypen([subtype.get("naam") for subtype in subtypen])
+            validate_subtypen(
+                [
+                    subtype.get("naam", current_namen.get(subtype.get("uuid")))
+                    for subtype in subtypen
+                ]
+            )
             if serializer.instance:
                 check_subtypen_delete(
                     serializer.instance,

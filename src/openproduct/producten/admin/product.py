@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
@@ -74,7 +74,9 @@ class ProductAdminForm(forms.ModelForm):
                 producttype_id = self.initial.get("producttype")
 
             self.fields["subtype"].queryset = (
-                SubType.objects.filter(producttype_id=producttype_id)
+                SubType.objects.filter(producttype_id=producttype_id).select_related(
+                    "producttype"
+                )
                 if str(producttype_id or "").isdigit()
                 else SubType.objects.none()
             )
@@ -152,6 +154,15 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             "admin/js/admin/product_subtype.js",
         )
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "subtype":
+            # set the attrs here because the admin wraps the widget in a RelatedFieldWidgetWrapper,
+            # which does not pass attrs set on the form field to the rendered widget.
+            kwargs["widget"] = forms.Select(
+                attrs={"data-subtypen-url": reverse("admin:producten_product_subtypen")}
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def get_urls(self):
         custom = [
             path(
@@ -166,14 +177,25 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
         return custom + super().get_urls()
 
     def subtypen_view(self, request):
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+
         producttype_id = request.GET.get("producttype", "")
-        subtypen_list = []
-        if producttype_id.isdigit():
-            subtypen_list = [
-                {"id": subtype.pk, "name": subtype.naam}
-                for subtype in SubType.objects.filter(producttype_id=producttype_id)
-            ]
-        return JsonResponse(subtypen_list, safe=False)
+        if not producttype_id.isdigit():
+            return JsonResponse([], safe=False)
+
+        subtypen = SubType.objects.filter(producttype_id=producttype_id)
+        if not request.user.is_superuser:
+            subtypen = subtypen.filter(
+                producttype__in=ProductTypePermission.objects.filter(
+                    user=request.user
+                ).values("producttype")
+            )
+
+        return JsonResponse(
+            [{"id": subtype.pk, "name": subtype.naam} for subtype in subtypen],
+            safe=False,
+        )
 
     @admin.display(description="Producttype")
     def producttype_name(self, obj):

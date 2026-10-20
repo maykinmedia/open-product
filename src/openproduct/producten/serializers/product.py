@@ -226,7 +226,7 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
         required=False,
         allow_null=True,
         help_text=_(
-            "Het subtype van het product. Dit moet een van de subtypen van het producttype zijn. Wanneer het producttype subtypen heeft is het subtype verplicht bij het aanmaken van een product en kan een eenmaal gezet niet worden leeggemaakt."
+            "Het subtype van het product. Dit moet een van de subtypen van het producttype zijn. Wanneer het producttype subtypen heeft is het subtype verplicht bij het aanmaken van een product of het wijzigen van het producttype en kan een eenmaal gezet subtype niet worden leeggemaakt."
         ),
     )
 

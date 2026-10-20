@@ -1545,6 +1545,86 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(producttype.subtypen.count(), 1)
         self.assertNotEqual(producttype.subtypen.get().uuid, subtype.uuid)
 
+    def test_update_producttype_swapping_subtype_namen(self):
+        producttype = ProductTypeFactory.create()
+        spoed = SubTypeFactory.create(producttype=producttype, naam="spoed")
+        regulier = SubTypeFactory.create(producttype=producttype, naam="regulier")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"uuid": spoed.uuid, "naam": "regulier"},
+                    {"uuid": regulier.uuid, "naam": "spoed"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        spoed.refresh_from_db()
+        regulier.refresh_from_db()
+        self.assertEqual(spoed.naam, "regulier")
+        self.assertEqual(regulier.naam, "spoed")
+
+    def test_update_producttype_creating_subtype_with_naam_of_renamed_subtype(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"naam": "spoed"},
+                    {"uuid": subtype.uuid, "naam": "urgent"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        subtype.refresh_from_db()
+        self.assertEqual(subtype.naam, "urgent")
+        self.assertEqual(
+            set(producttype.subtypen.values_list("naam", flat=True)),
+            {"spoed", "urgent"},
+        )
+
+    def test_partial_update_producttype_keeping_subtype_naam(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {"subtypen": [{"uuid": subtype.uuid}, {"naam": "urgent"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        subtype.refresh_from_db()
+        self.assertEqual(subtype.naam, "spoed")
+        self.assertEqual(producttype.subtypen.count(), 2)
+
+    def test_partial_update_producttype_with_naam_of_subtype_without_naam(self):
+        producttype = ProductTypeFactory.create()
+        spoed = SubTypeFactory.create(producttype=producttype, naam="spoed")
+        regulier = SubTypeFactory.create(producttype=producttype, naam="regulier")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"uuid": spoed.uuid},
+                    {"uuid": regulier.uuid, "naam": "spoed"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen")
+        self.assertEqual(
+            error["reason"], _("Dubbele naam: {} op index {}.").format("spoed", 1)
+        )
+        regulier.refresh_from_db()
+        self.assertEqual(regulier.naam, "regulier")
+
     def test_update_producttype_with_duplicate_subtype_namen(self):
         producttype = ProductTypeFactory.create()
 

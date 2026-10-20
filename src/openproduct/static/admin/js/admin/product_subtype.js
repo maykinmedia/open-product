@@ -3,7 +3,6 @@
 
     const PRODUCTTYPE_SELECTOR = 'select[name="producttype"]';
     const SUBTYPE_SELECTOR = 'select[name="subtype"]';
-    const DEFAULT_SUBTYPEN_URL = '/admin/producten/product/subtypen/';
 
     function setOptions(select, items) {
         const current = select.value;
@@ -18,7 +17,7 @@
 
     async function syncSubtypen(producttypeSelect) {
         const subtypeSelect = document.querySelector(SUBTYPE_SELECTOR);
-        if (!subtypeSelect) return;
+        if (!subtypeSelect || !subtypeSelect.dataset.subtypenUrl) return;
 
         const token = (producttypeSelect._syncToken = (producttypeSelect._syncToken || 0) + 1);
 
@@ -27,10 +26,7 @@
             return;
         }
 
-        const url = new URL(
-            subtypeSelect.dataset.subtypenUrl || DEFAULT_SUBTYPEN_URL,
-            window.location.origin
-        );
+        const url = new URL(subtypeSelect.dataset.subtypenUrl, window.location.origin);
         url.searchParams.set('producttype', producttypeSelect.value);
 
         subtypeSelect.disabled = true;

@@ -3,6 +3,7 @@ from django.contrib import admin, messages
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from reversion_compare.admin import CompareVersionAdmin
@@ -19,7 +20,15 @@ from ..models.validators import (
 
 class ProductTypeFacetForm(forms.ModelForm):
     facet_type = forms.ModelChoiceField(
-        queryset=FacetType.objects.all(), label=_("facettype")
+        queryset=FacetType.objects.all(),
+        label=_("facettype"),
+        widget=forms.Select(
+            attrs={
+                "data-waarden-url": reverse_lazy(
+                    "admin:producttypen_producttype_facet_waarden"
+                )
+            }
+        ),
     )
 
     class Meta:

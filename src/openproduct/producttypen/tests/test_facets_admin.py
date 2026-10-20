@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from django.test import TestCase, tag
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -195,6 +196,22 @@ class TestFacetTypeAdmin(TestCase):
             response = self.client.get(url, {"facet_type": 1})
             self.assertEqual(response.status_code, 302)
 
+        staff_user = UserFactory.create(is_staff=True)
+        self.client.force_login(staff_user)
+
+        with self.subTest("requires view permission"):
+            response = self.client.get(url, {"facet_type": facet_type.pk})
+            self.assertEqual(response.status_code, 403)
+
+        staff_user.user_permissions.add(
+            Permission.objects.get(codename="view_producttype")
+        )
+
+        with self.subTest("with view permission"):
+            response = self.client.get(url, {"facet_type": facet_type.pk})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json()), 1)
+
     def test_make_facettype_verplicht(self):
         with self.subTest("all producttypen have a waarde"):
             facet_type = FacetTypeFactory.create(naam="doelgroep", waarden=1)
@@ -301,6 +318,14 @@ class TestFacetWaardeAdmin(TestCase):
 
 class ProductTypeFacetFormTests(TestCase):
     prefix = "facetten-0"
+
+    def test_facet_type_widget_has_waarden_url(self):
+        form = ProductTypeFacetForm(prefix=self.prefix)
+
+        self.assertIn(
+            f'data-waarden-url="{reverse("admin:producttypen_producttype_facet_waarden")}"',
+            str(form["facet_type"]),
+        )
 
     def test_unbound_and_bound_formset(self):
         FacetWaardeFactory.create_batch(2)

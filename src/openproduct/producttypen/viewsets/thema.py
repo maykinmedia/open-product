@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Count, Prefetch
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
@@ -138,7 +139,8 @@ class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
         if errors:
             raise ValidationError({"producttypen": errors})
         try:
-            return super().destroy(request, *args, **kwargs)
+            with transaction.atomic():
+                return super().destroy(request, *args, **kwargs)
         except ProtectedError:
             raise ValidationError(
                 {

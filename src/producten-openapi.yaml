@@ -1652,8 +1652,8 @@ components:
           nullable: true
           description: Het subtype van het product. Dit moet een van de subtypen van
             het producttype zijn. Wanneer het producttype subtypen heeft is het subtype
-            verplicht bij het aanmaken van een product en kan een eenmaal gezet niet
-            worden leeggemaakt.
+            verplicht bij het aanmaken van een product of het wijzigen van het producttype
+            en kan een eenmaal gezet subtype niet worden leeggemaakt.
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1895,8 +1895,8 @@ components:
           nullable: true
           description: Het subtype van het product. Dit moet een van de subtypen van
             het producttype zijn. Wanneer het producttype subtypen heeft is het subtype
-            verplicht bij het aanmaken van een product en kan een eenmaal gezet niet
-            worden leeggemaakt.
+            verplicht bij het aanmaken van een product of het wijzigen van het producttype
+            en kan een eenmaal gezet subtype niet worden leeggemaakt.
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.

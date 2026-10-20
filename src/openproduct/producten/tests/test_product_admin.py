@@ -1,16 +1,20 @@
 import datetime
 from unittest.mock import patch
 
+from django.contrib.auth.models import Permission
 from django.test import TestCase, tag
+from django.urls import reverse
 
 from maykin_2fa.test import disable_admin_mfa
 from playwright.sync_api import expect
 
 from openproduct.accounts.tests.factories import UserFactory
 from openproduct.producttypen.models.enums import ProductStateChoices
+from openproduct.producttypen.models.producttypepermission import PermissionModes
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
+    ProductTypePermissionFactory,
     SubTypeFactory,
 )
 from openproduct.utils.tests.e2e import DEFAULT_PASSWORD, E2ETestCase
@@ -405,6 +409,94 @@ class TestProductAdminForm(TestCase):
 
 
 @tag("playwright")
+@disable_admin_mfa()
+class TestProductSubtypenView(TestCase):
+    url = reverse("admin:producten_product_subtypen")
+
+    def setUp(self):
+        super().setUp()
+        self.producttype = ProductTypeFactory.create()
+        self.subtype = SubTypeFactory.create(producttype=self.producttype)
+        SubTypeFactory.create()
+
+    def test_subtypen_json(self):
+        self.client.force_login(UserFactory.create(superuser=True))
+        url = self.url
+
+        with self.subTest("subtypen of producttype"):
+            response = self.client.get(url, {"producttype": self.producttype.pk})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(
+                response.json(), [{"id": self.subtype.pk, "name": self.subtype.naam}]
+            )
+
+        with self.subTest("no producttype"):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        with self.subTest("invalid producttype"):
+            response = self.client.get(url, {"producttype": "abc"})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        with self.subTest("unknown producttype"):
+            response = self.client.get(url, {"producttype": 999999})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+    def test_subtypen_json_permissions(self):
+        data = {"producttype": self.producttype.pk}
+
+        with self.subTest("requires login"):
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 302)
+            self.assertIn(reverse("admin:login"), response["Location"])
+
+        with self.subTest("requires is_staff"):
+            self.client.force_login(UserFactory.create(is_staff=False))
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 302)
+
+        user = UserFactory.create(is_staff=True)
+        self.client.force_login(user)
+
+        with self.subTest("requires view permission"):
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 403)
+
+        user.user_permissions.add(Permission.objects.get(codename="view_product"))
+
+        with self.subTest("no producttype permission"):
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        ProductTypePermissionFactory.create(
+            producttype=ProductTypeFactory.create(),
+            user=user,
+            mode=PermissionModes.read_only,
+        )
+
+        with self.subTest("other producttype permission"):
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        ProductTypePermissionFactory.create(
+            producttype=self.producttype,
+            user=user,
+            mode=PermissionModes.read_only,
+        )
+
+        with self.subTest("producttype read permission"):
+            response = self.client.get(self.url, data)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(
+                response.json(), [{"id": self.subtype.pk, "name": self.subtype.naam}]
+            )
+
+
 @disable_admin_mfa()
 class TestProductSubtypeAdmin(E2ETestCase):
     def setUp(self):
