@@ -31,8 +31,10 @@ from .validators import (
         "dataobject_schema",
         "uniforme_product_naam",
         "organisaties",
+        "producttype_organisaties",
         "locaties",
         "contacten",
+        "producttype_contacten",
         "content_elementen",
         "externe_codes",
         "links",
@@ -125,6 +127,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
     organisaties = models.ManyToManyField(
         Organisatie,
         verbose_name=_("organisaties"),
+        through="ProductTypeOrganisatie",
         blank=True,
         related_name="producttypen",
         help_text=_("organisaties die dit het product aanbieden."),
@@ -151,6 +154,7 @@ class ProductType(BasePublishableModel, TranslatableModel):
     contacten = models.ManyToManyField(
         Contact,
         verbose_name=_("contacten"),
+        through="ProductTypeContact",
         related_name="producttypen",
         blank=True,
         help_text=_("De contacten verantwoordelijk voor het producttype."),
@@ -202,14 +206,6 @@ class ProductType(BasePublishableModel, TranslatableModel):
         validate_uniforme_product_naam_constraint(
             self.uniforme_product_naam, self.doelgroep
         )
-
-    def add_contact_organisaties(self):
-        for contact in self.contacten.all():
-            if (
-                contact.organisatie_id is not None
-                and not self.organisaties.filter(id=contact.organisatie_id).exists()
-            ):
-                self.organisaties.add(contact.organisatie)
 
     @property
     def actuele_prijs(self):

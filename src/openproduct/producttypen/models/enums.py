@@ -31,3 +31,13 @@ class ActieTypeChoices(models.TextChoices):
 class ActieMethodChoices(models.TextChoices):
     POST = "post", _("Post")
     GET = "get", _("Get")
+
+
+class OrganisatieRolChoices(models.TextChoices):
+    LEVERANCIER = "leverancier", _("Leverancier")
+
+
+class ContactRolChoices(models.TextChoices):
+    RELATIEMANAGER = "relatiemanager", _("Relatiemanager")
+    CONTRACTMANAGER = "contractmanager", _("Contractmanager")
+    INTERNCONTACT = "interncontact", _("Interncontact")

@@ -104,8 +104,28 @@ class Command(BaseCommand):
         """"""
         related_instances = []
 
+        # reverse relations of m2m through models on the target side of the m2m
+        through_models = {
+            obj.through
+            for obj in meta.related_objects
+            if isinstance(obj, ManyToManyRel)
+        }
+
+        excluded_through_models = {
+            field.remote_field.through
+            for field in meta.many_to_many
+            if field.attname in exclude
+        }
+
         for obj in chain(meta.related_objects):
             if obj.related_name in exclude:
+                continue
+
+            if obj.related_model in excluded_through_models:
+                continue
+
+            # through instances are exported from the source side of the m2m
+            if obj.related_model in through_models:
                 continue
 
             manager: models.Manager = getattr(instance, obj.related_name)
@@ -132,6 +152,10 @@ class Command(BaseCommand):
 
         for obj in chain(meta.many_to_many):
             if obj.attname in exclude:
+                continue
+
+            # custom through instances are exported as related objects
+            if not obj.remote_field.through._meta.auto_created:
                 continue
 
             manager: models.Manager = getattr(instance, obj.attname)

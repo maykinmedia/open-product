@@ -5,12 +5,20 @@ from unittest.mock import patch
 
 from django.core.management import CommandError, call_command
 from django.http import HttpResponse
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from openproduct.locaties.tests.factories import (
     ContactFactory,
     LocatieFactory,
     OrganisatieFactory,
+)
+from openproduct.producttypen.models import (
+    ProductTypeContact,
+    ProductTypeOrganisatie,
+)
+from openproduct.producttypen.models.enums import (
+    ContactRolChoices,
+    OrganisatieRolChoices,
 )
 from openproduct.producttypen.tests.factories import (
     LinkFactory,
@@ -48,8 +56,13 @@ class TestExport(TestCase):
 
         self.producttype1 = ProductTypeFactory.create(uniforme_product_naam=self.upn)
         self.producttype1.locaties.add(self.locatie1)
-        self.producttype1.organisaties.add(self.organisatie1)
-        self.producttype1.contacten.add(self.contact1)
+        self.producttype1.organisaties.add(
+            self.organisatie1,
+            through_defaults={"rol": OrganisatieRolChoices.LEVERANCIER},
+        )
+        self.producttype1.contacten.add(
+            self.contact1, through_defaults={"rol": ContactRolChoices.RELATIEMANAGER}
+        )
 
         self.producttype1.locaties.add(self.locatie2)
         self.producttype1.organisaties.add(self.organisatie2)
@@ -178,14 +191,11 @@ class TestExport(TestCase):
             ],
             "producttype": [
                 {
-                    "contacten_ids": [self.contact1.id, self.contact2.id],
                     "dataobject_schema_id": None,
                     "verbruiksobject_schema_id": None,
                     "id": self.producttype1.id,
                     "locaties_ids": [self.locatie1.id, self.locatie2.id],
-                    "organisaties_ids": [self.organisatie1.id, self.organisatie2.id],
                     "themas_ids": [],
-                    "facetwaarden_ids": [],
                     "uniforme_product_naam_id": self.upn.id,
                 }
             ],
@@ -199,6 +209,26 @@ class TestExport(TestCase):
                 {
                     "id": self.upn.id,
                 }
+            ],
+            "producttypeorganisatie": [
+                {
+                    "id": through.id,  # type: ignore
+                    "producttype_id": self.producttype1.id,
+                    "organisatie_id": through.organisatie.id,
+                }
+                for through in ProductTypeOrganisatie.objects.filter(
+                    producttype=self.producttype1
+                )
+            ],
+            "producttypecontact": [
+                {
+                    "id": through.id,  # type: ignore
+                    "producttype_id": self.producttype1.id,
+                    "contact_id": through.contact.id,
+                }
+                for through in ProductTypeContact.objects.filter(
+                    producttype=self.producttype1
+                )
             ],
         }
 
@@ -234,9 +264,13 @@ class TestExport(TestCase):
 
         # m2m are separate csv's
         self.assertIn("producttypen_locaties", result)
-        self.assertIn("producttypen_contacten", result)
-        self.assertIn("producttypen_organisaties", result)
+        self.assertIn("producttypecontact", result)
+        self.assertIn("producttypeorganisatie", result)
         self.assertIn("producttypen_themas", result)
+
+        # custom through models are exported as their own model
+        self.assertNotIn("producttypen_contacten", result)
+        self.assertNotIn("producttypen_organisaties", result)
 
     @patch("openproduct.utils.management.commands.export.Command._create_zip")
     def test_exclude(self, mock_create_zip):
@@ -253,6 +287,26 @@ class TestExport(TestCase):
         self.assertNotIn("producttypen_locaties", result)
         self.assertNotIn("locatie", result)
         self.assertNotIn("locaties_ids", result["producttype"][0])
+
+    @patch("openproduct.utils.management.commands.export.Command._create_zip")
+    def test_organisatie_contact_exclude(self, mock_create_zip):
+        self.call_command(
+            "producttypen",
+            "producttype",
+            ids=[self.producttype1.id],
+            archive_name="test.zip",
+            exclude=["organisaties", "contacten"],
+        )
+
+        result = mock_create_zip.call_args.args[1]
+
+        self.assertNotIn("producttypeorganisatie", result)
+        self.assertNotIn("organisaties_ids", result["producttype"][0])
+        self.assertNotIn("organisaties", result)
+
+        self.assertNotIn("producttypecontact", result)
+        self.assertNotIn("contacten_ids", result["producttype"][0])
+        self.assertNotIn("contacten", result)
 
     @patch("openproduct.utils.management.commands.export.Command._create_zip")
     def test_no_duplicates(self, mock_create_zip):
@@ -277,6 +331,39 @@ class TestExport(TestCase):
         locaties = [loc["id"] for loc in result["locatie"]]
 
         self.assertCountEqual(locaties, [self.locatie1.id, self.locatie2.id])
+
+    @tag("gh-362")
+    @patch("openproduct.utils.management.commands.export.Command._create_zip")
+    def test_rollen(self, mock_create_zip):
+        self.call_command(
+            "producttypen",
+            "producttype",
+            ids=[self.producttype1.id],
+            archive_name="test.zip",
+        )
+
+        result = mock_create_zip.call_args.args[1]
+
+        self.assertCountEqual(
+            [
+                (item["organisatie_id"], item["rol"])
+                for item in result["producttypeorganisatie"]
+            ],
+            [
+                (self.organisatie1.id, OrganisatieRolChoices.LEVERANCIER),
+                (self.organisatie2.id, ""),
+            ],
+        )
+        self.assertCountEqual(
+            [
+                (item["contact_id"], item["rol"])
+                for item in result["producttypecontact"]
+            ],
+            [
+                (self.contact1.id, ContactRolChoices.RELATIEMANAGER),
+                (self.contact2.id, ""),
+            ],
+        )
 
     def test_response(self):
         response = HttpResponse(content_type="application/zip")
@@ -303,5 +390,7 @@ class TestExport(TestCase):
                     "parameter.json",
                     "prijs.json",
                     "prijsoptie.json",
+                    "producttypeorganisatie.json",
+                    "producttypecontact.json",
                 ],
             )

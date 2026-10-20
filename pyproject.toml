@@ -1,6 +1,7 @@
 [project]
 requires-python = '>= 3.12'
 name = "open-product"
+version = "1.8.0"
 
 [tool.uv.pip]
 emit-index-url = false
@@ -28,6 +29,9 @@ serialize = [
 [tool.bumpversion.part.pre]
 first_value = "alpha"
 values = ["alpha", "beta", "rc"]
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
 
 [[tool.bumpversion.files]]
 filename = "src/openproduct/__init__.py"
