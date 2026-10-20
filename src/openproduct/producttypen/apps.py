@@ -8,8 +8,6 @@ class ProducttypenConfig(AppConfig):
     name = "openproduct.producttypen"
 
     def ready(self):
-        # load the signal receivers
-        from . import signals  # noqa
         from . import spectacular  # noqa
         import openproduct.patches.django_otp_admin  # noqa
 

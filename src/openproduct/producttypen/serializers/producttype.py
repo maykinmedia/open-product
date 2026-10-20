@@ -626,7 +626,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
             ProductTypeContactSerializer,
         )
 
-        producttype.add_contact_organisaties()
         return producttype
 
     @transaction.atomic()
@@ -721,7 +720,6 @@ class ProductTypeSerializer(TranslatableModelSerializer):
                 ProductTypeContactSerializer,
             )
 
-        instance.add_contact_organisaties()
         return instance
 
 

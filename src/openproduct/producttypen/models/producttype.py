@@ -207,14 +207,6 @@ class ProductType(BasePublishableModel, TranslatableModel):
             self.uniforme_product_naam, self.doelgroep
         )
 
-    def add_contact_organisaties(self):
-        for contact in self.contacten.all():
-            if (
-                contact.organisatie_id is not None
-                and not self.organisaties.filter(id=contact.organisatie_id).exists()
-            ):
-                self.organisaties.add(contact.organisatie)
-
     @property
     def actuele_prijs(self):
         now = date.today()

@@ -39,15 +39,6 @@ class TestProductType(TestCase):
         producttype.clean()
         self.assertEqual(producttype.organisaties.count(), 0)
 
-    def test_save_with_contact_that_has_org(self):
-        contact = ContactFactory()
-        producttype = ProductTypeFactory.create()
-        producttype.contacten.add(contact)
-        producttype.save()
-
-        self.assertEqual(producttype.organisaties.count(), 1)
-        self.assertEqual(producttype.organisaties.get().id, contact.organisatie.id)
-
     @freeze_time("2025-01-1")
     def test_publicatie_dates(self):
         with self.subTest("not set"):

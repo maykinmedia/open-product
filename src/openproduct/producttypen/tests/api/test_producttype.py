@@ -295,9 +295,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             [(contact.naam, ContactRolChoices.RELATIEMANAGER)],
         )
 
-        # contact org is added in ProductType clean
-        self.assertEqual(ProductType.objects.get().organisaties.count(), 1)
-
     def test_create_producttype_with_toegestane_statussen(self):
         response = self.client.post(
             self.path, self.data | {"toegestane_statussen": ["gereed"]}
@@ -633,20 +630,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
                         "stad": organisatie.stad,
                     },
                 },
-                {
-                    "rol": "",
-                    "organisatie": {
-                        "uuid": str(contact.organisatie.uuid),
-                        "code": str(contact.organisatie.code),
-                        "naam": contact.organisatie.naam,
-                        "email": contact.organisatie.email,
-                        "telefoonnummer": contact.organisatie.telefoonnummer,
-                        "straat": contact.organisatie.straat,
-                        "huisnummer": contact.organisatie.huisnummer,
-                        "postcode": contact.organisatie.postcode,
-                        "stad": contact.organisatie.stad,
-                    },
-                },
             ],
             "eigenaar": None,
             "contacten": [
@@ -931,9 +914,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             [contact.naam],
         )
 
-        # contact org is added in ProductType clean
-        self.assertEqual(ProductType.objects.get().organisaties.count(), 1)
-
     def test_update_producttype_clearing_relations(self):
         # Sending an empty list in PUT must remove the existing relation
         for field, relation, factory in (
@@ -978,7 +958,6 @@ class TestProducttypeViewSet(BaseApiTestCase):
             ("contacten", ContactFactory),
         ):
             getattr(producttype, relation).set([factory.create()])
-        producttype.add_contact_organisaties()
         relations = {
             relation: set(getattr(producttype, relation).values_list("pk", flat=True))
             for relation in ("themas", "locaties", "organisaties", "contacten")
