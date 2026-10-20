@@ -231,7 +231,8 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             return (
                 permission
                 and ProductTypePermission.objects.filter(
-                    **({"mode": PermissionModes.read_and_write} if write else {})
+                    user=user,
+                    **({"mode": PermissionModes.read_and_write} if write else {}),
                 ).exists()
             )
 

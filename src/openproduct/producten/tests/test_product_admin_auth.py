@@ -116,6 +116,15 @@ class TestProductAdminAuth(WebTest):
             response = self.app.get(product_url, expect_errors=True)
             self.assertEqual(response.status_code, 403)
 
+        ProductTypePermissionFactory.create(
+            producttype=producttype,
+            user=UserFactory.create(is_staff=True),
+            mode=PermissionModes.read_and_write,
+        )
+        with self.subTest("write permission of other user"):
+            response = self.app.get(product_url, expect_errors=True)
+            self.assertEqual(response.status_code, 403)
+
         permission = ProductTypePermissionFactory.create(
             producttype=producttype,
             user=self.user,
