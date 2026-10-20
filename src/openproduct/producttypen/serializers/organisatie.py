@@ -5,10 +5,13 @@ from openproduct.locaties.models import Organisatie
 from openproduct.locaties.serializers import OrganisatieSerializer
 
 from ...utils.fields import UUIDRelatedField
+from ...utils.serializers import NestedCreateRequiredFieldsMixin
 from ..models import ProductType, ProductTypeOrganisatie
 
 
-class NestedProductTypeOrganisatieSerializer(serializers.ModelSerializer):
+class NestedProductTypeOrganisatieSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     organisatie = OrganisatieSerializer(read_only=True)
     organisatie_uuid = UUIDRelatedField(
         write_only=True,
@@ -20,19 +23,6 @@ class NestedProductTypeOrganisatieSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductTypeOrganisatie
         fields = ("rol", "organisatie", "organisatie_uuid")
-
-    def validate(self, attrs):
-        # required is not enforced on nested fields during a partial update
-        if "organisatie" not in attrs:
-            raise serializers.ValidationError(
-                {
-                    "organisatie_uuid": self.fields["organisatie_uuid"].error_messages[
-                        "required"
-                    ]
-                },
-                code="required",
-            )
-        return attrs
 
 
 class ProductTypeOrganisatieSerializer(NestedProductTypeOrganisatieSerializer):

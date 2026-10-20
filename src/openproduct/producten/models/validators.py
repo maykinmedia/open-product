@@ -72,7 +72,7 @@ def validate_product_subtype(subtype, producttype, required: bool):
 
     if subtype and subtype.producttype_id != producttype.pk:
         raise ValidationError(
-            {"subtype": _("subtype is niet gedefinieerd op het producttype")}
+            {"subtype": _("Subtype is niet gedefinieerd op het producttype.")}
         )
 
 

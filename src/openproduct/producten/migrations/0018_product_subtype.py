@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('producten', '0017_alter_product_aanvraag_zaak_urn'),
-        ('producttypen', '0025_subtype'),
+        ('producttypen', '0026_subtype'),
     ]
 
     operations = [

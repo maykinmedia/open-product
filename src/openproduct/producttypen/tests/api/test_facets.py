@@ -443,6 +443,19 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         self.assertFalse(waarde.actief)
         self.assertEqual(facet_type.waarden.count(), 2)
 
+    def test_partial_update_facettype_with_new_waarde_without_naam(self):
+        facet_type = FacetTypeFactory.create()
+
+        response = self.client.patch(
+            self._detail_url(facet_type), {"waarden": [{"naam": "a"}, {}]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            get_validation_errors(response, "waarden.1.naam")["code"], "required"
+        )
+        self.assertFalse(facet_type.waarden.exists())
+
     def test_partial_update_facettype_with_naam_of_waarde_without_naam(self):
         facet_type = FacetTypeFactory.create()
         a = FacetWaardeFactory.create(facet_type=facet_type, naam="a")

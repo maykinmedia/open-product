@@ -1993,6 +1993,10 @@ components:
         * `verlopen` - Verlopen
     SubType:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -2005,6 +2009,10 @@ components:
       - naam
     SubTypeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string

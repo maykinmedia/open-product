@@ -44,5 +44,5 @@ __all__ = [
     "ZaakType",
     "ProductTypeOrganisatie",
     "ProductTypeContact",
-    "SubType"
+    "SubType",
 ]

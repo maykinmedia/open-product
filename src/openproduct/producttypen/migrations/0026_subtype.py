@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('producttypen', '0024_set_type_for_existing_acties'),
+        ('producttypen', '0025_producttypecontact_producttypeorganisatie'),
     ]
 
     operations = [

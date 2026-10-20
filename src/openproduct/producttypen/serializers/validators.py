@@ -106,6 +106,7 @@ class SubTypenValidator:
             return
 
         subtypen = value["subtypen"]
+
         # subtypen without a naam (partial update) keep their current naam.
         current_namen = (
             dict(serializer.instance.subtypen.values_list("uuid", "naam"))

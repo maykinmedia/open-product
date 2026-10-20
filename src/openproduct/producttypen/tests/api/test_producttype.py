@@ -1602,6 +1602,18 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(subtype.naam, "spoed")
         self.assertEqual(producttype.subtypen.count(), 2)
 
+    def test_partial_update_producttype_with_new_subtype_without_naam(self):
+        producttype = ProductTypeFactory.create()
+
+        response = self.client.patch(
+            self.detail_path(producttype), {"subtypen": [{"naam": "spoed"}, {}]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen.1.naam")
+        self.assertEqual(error["code"], "required")
+        self.assertFalse(SubType.objects.exists())
+
     def test_partial_update_producttype_with_naam_of_subtype_without_naam(self):
         producttype = ProductTypeFactory.create()
         spoed = SubTypeFactory.create(producttype=producttype, naam="spoed")
@@ -1884,6 +1896,25 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ExterneCode.objects.count(), 1)
+
+    def test_partial_update_producttype_with_nested_object_without_required_fields(
+        self,
+    ):
+        producttype = ProductTypeFactory.create()
+
+        for field, required in (
+            ("parameters", ("naam", "waarde")),
+            ("externe_codes", ("naam", "code")),
+        ):
+            with self.subTest(field):
+                response = self.client.patch(
+                    self.detail_path(producttype), {field: [{}]}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                for name in required:
+                    error = get_validation_errors(response, f"{field}.0.{name}")
+                    self.assertEqual(error["code"], "required")
 
     def test_partial_update_producttype_with_parameter(self):
         producttype = ProductTypeFactory.create()

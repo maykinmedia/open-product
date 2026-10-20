@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
 from openproduct.producttypen.models import SubType
+from openproduct.utils.serializers import NestedCreateRequiredFieldsMixin
 
 
-class SubTypeSerializer(serializers.ModelSerializer):
+class SubTypeSerializer(NestedCreateRequiredFieldsMixin, serializers.ModelSerializer):
     uuid = serializers.UUIDField(required=False)
 
     class Meta:

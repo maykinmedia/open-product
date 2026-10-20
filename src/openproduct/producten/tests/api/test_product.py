@@ -505,7 +505,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("subtype is niet gedefinieerd op het producttype"),
+            _("Subtype is niet gedefinieerd op het producttype."),
         )
 
     def test_create_product_without_subtype_when_producttype_has_subtypen(self):
@@ -578,7 +578,7 @@ class TestProduct(BaseApiTestCase):
             error = get_validation_errors(response, "subtype")
             self.assertIsNotNone(error)
             self.assertEqual(
-                error["reason"], _("subtype is niet gedefinieerd op het producttype")
+                error["reason"], _("Subtype is niet gedefinieerd op het producttype.")
             )
 
         with self.subTest("subtype is cleared"):
@@ -621,7 +621,7 @@ class TestProduct(BaseApiTestCase):
         self.assertEqual(error["code"], "invalid")
         self.assertEqual(
             error["reason"],
-            _("subtype is niet gedefinieerd op het producttype"),
+            _("Subtype is niet gedefinieerd op het producttype."),
         )
 
     def test_create_product_with_allowed_subtype(self):
@@ -1011,6 +1011,72 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(Eigenaar.objects.count(), 1)
             self.assertEqual(Eigenaar.objects.get().klantnummer, "1234")
+
+    def test_update_eigenaar_is_validated_with_stored_values(self):
+        product = ProductFactory.create()
+        eigenaar = EigenaarFactory.create(product=product, bsn="111222333")
+
+        expected_reason = _(
+            "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+        )
+
+        for method in ("put", "patch"):
+            with self.subTest(f"{method} adding kvk_nummer to eigenaar with bsn"):
+                data = {
+                    "eigenaren": [{"uuid": eigenaar.uuid, "kvk_nummer": "12345678"}]
+                }
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                error = get_validation_errors(response, "eigenaren.0.model_errors")
+                self.assertEqual(error["reason"], expected_reason)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.kvk_nummer, "")
+
+            with self.subTest(f"{method} eigenaar with only uuid"):
+                data = {"eigenaren": [{"uuid": eigenaar.uuid}]}
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.bsn, "111222333")
+
+    def test_update_eigenaar_vestigingsnummer_with_stored_kvk_nummer(self):
+        product = ProductFactory.create()
+        eigenaar = EigenaarFactory.create(product=product, kvk_nummer="12345678")
+
+        data = {"eigenaren": [{"uuid": eigenaar.uuid, "vestigingsnummer": "123"}]}
+
+        for method in ("put", "patch"):
+            with self.subTest(method):
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.kvk_nummer, "12345678")
+                self.assertEqual(eigenaar.vestigingsnummer, "123")
+
+    def test_update_product_with_invalid_eigenaar_uuid(self):
+        product = ProductFactory.create()
+        EigenaarFactory.create(product=product, bsn="111222333")
+
+        response = self.client.patch(
+            self.detail_path(product),
+            {"eigenaren": [{"uuid": "invalid", "bsn": "111222333"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "eigenaren.0.uuid")
+        self.assertEqual(error["code"], "invalid")
 
     def test_update_product_with_eigenaar_not_part_of_product(self):
         product = ProductFactory.create()

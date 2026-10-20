@@ -27,6 +27,10 @@ class SubType(BaseModel):
         ordering = ("-id",)
         unique_together = (("producttype", "naam"),)
 
+    def clean(self):
+        # lowercase before validate_unique so the admin unique check matches the stored naam.
+        self.naam = self.naam.lower()
+
     def save(self, *args, **kwargs):
         self.naam = self.naam.lower()
         super().save(*args, **kwargs)

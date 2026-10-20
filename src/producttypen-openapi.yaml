@@ -9716,6 +9716,10 @@ components:
       - uuid
     NestedExterneCode:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9732,6 +9736,10 @@ components:
       - naam
     NestedExterneCodeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9750,6 +9758,10 @@ components:
       - naam
     NestedFacetWaarde:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -9766,6 +9778,10 @@ components:
       - naam
     NestedFacetWaardeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -9820,6 +9836,10 @@ components:
       - url
     NestedParameter:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9836,6 +9856,10 @@ components:
       - waarde
     NestedParameterRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9988,6 +10012,10 @@ components:
       - uuid
     NestedProductTypeContact:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10007,6 +10035,10 @@ components:
       - contact
     NestedProductTypeContactRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10036,6 +10068,10 @@ components:
         * `interncontact` - Interncontact
     NestedProductTypeOrganisatie:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10053,6 +10089,10 @@ components:
       - organisatie
     NestedProductTypeOrganisatieRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -11074,6 +11114,10 @@ components:
       - uuid
     PrijsOptie:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11092,6 +11136,10 @@ components:
       - beschrijving
     PrijsOptieRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11111,6 +11159,10 @@ components:
       - beschrijving
     PrijsRegel:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11135,6 +11187,10 @@ components:
       - url
     PrijsRegelRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11620,6 +11676,10 @@ components:
       - naam
     SubType:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11632,6 +11692,10 @@ components:
       - naam
     SubTypeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string

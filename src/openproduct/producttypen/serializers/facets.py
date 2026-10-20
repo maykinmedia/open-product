@@ -9,6 +9,7 @@ from rest_framework import serializers
 from openproduct.producttypen.models import FacetType, FacetWaarde
 
 from ...utils.drf_validators import NestedObjectsValidator
+from ...utils.serializers import NestedCreateRequiredFieldsMixin
 from .validators import (
     FacetTypeMeervoudigValidator,
     FacetTypeVerplichtValidator,
@@ -27,7 +28,9 @@ class BaseFacetWaardeSerializer(serializers.ModelSerializer):
         ]
 
 
-class NestedFacetWaardeSerializer(BaseFacetWaardeSerializer):
+class NestedFacetWaardeSerializer(
+    NestedCreateRequiredFieldsMixin, BaseFacetWaardeSerializer
+):
     uuid = serializers.UUIDField(required=False)
 
 

@@ -743,6 +743,31 @@ class TestProductTypePrijs(BaseApiTestCase):
         self.assertEqual(PrijsOptie.objects.count(), 1)
         self.assertEqual(PrijsOptie.objects.get().beschrijving, "test")
 
+    def test_partial_update_prijs_creating_optie_without_required_fields(self):
+        optie = PrijsOptieFactory.create(prijs=self.prijs)
+
+        response = self.client.patch(
+            self.detail_path,
+            {"prijsopties": [{"uuid": optie.uuid, "bedrag": "20"}, {"bedrag": "30"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "prijsopties.1.beschrijving")
+        self.assertEqual(error["code"], "required")
+        self.assertIsNone(get_validation_errors(response, "prijsopties.0.beschrijving"))
+        self.assertEqual(PrijsOptie.objects.get(), optie)
+
+    def test_partial_update_prijs_creating_regel_without_required_fields(self):
+        regel = PrijsRegelFactory.create(prijs=self.prijs)
+
+        response = self.client.patch(self.detail_path, {"prijsregels": [{}]})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        for name in ("beschrijving", "tabel_endpoint", "dmn_tabel_id"):
+            error = get_validation_errors(response, f"prijsregels.0.{name}")
+            self.assertEqual(error["code"], "required")
+        self.assertEqual(PrijsRegel.objects.get(), regel)
+
     def test_partial_update_prijs_creating_and_deleting_regels(self):
         PrijsRegelFactory.create(prijs=self.prijs)
 

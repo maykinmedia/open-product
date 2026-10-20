@@ -1,9 +1,12 @@
 from rest_framework import serializers
 
 from openproduct.producttypen.models import ExterneCode, ProductType
+from openproduct.utils.serializers import NestedCreateRequiredFieldsMixin
 
 
-class NestedExterneCodeSerializer(serializers.ModelSerializer):
+class NestedExterneCodeSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     class Meta:
         model = ExterneCode
         fields = ("naam", "code")
