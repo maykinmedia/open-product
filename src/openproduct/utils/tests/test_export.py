@@ -191,14 +191,11 @@ class TestExport(TestCase):
             ],
             "producttype": [
                 {
-                    "contacten_ids": [self.contact1.id, self.contact2.id],
                     "dataobject_schema_id": None,
                     "verbruiksobject_schema_id": None,
                     "id": self.producttype1.id,
                     "locaties_ids": [self.locatie1.id, self.locatie2.id],
-                    "organisaties_ids": [self.organisatie1.id, self.organisatie2.id],
                     "themas_ids": [],
-                    "facetwaarden_ids": [],
                     "uniforme_product_naam_id": self.upn.id,
                 }
             ],
@@ -267,9 +264,13 @@ class TestExport(TestCase):
 
         # m2m are separate csv's
         self.assertIn("producttypen_locaties", result)
-        self.assertIn("producttypen_contacten", result)
-        self.assertIn("producttypen_organisaties", result)
+        self.assertIn("producttypecontact", result)
+        self.assertIn("producttypeorganisatie", result)
         self.assertIn("producttypen_themas", result)
+
+        # custom through models are exported as their own model
+        self.assertNotIn("producttypen_contacten", result)
+        self.assertNotIn("producttypen_organisaties", result)
 
     @patch("openproduct.utils.management.commands.export.Command._create_zip")
     def test_exclude(self, mock_create_zip):
@@ -286,6 +287,26 @@ class TestExport(TestCase):
         self.assertNotIn("producttypen_locaties", result)
         self.assertNotIn("locatie", result)
         self.assertNotIn("locaties_ids", result["producttype"][0])
+
+    @patch("openproduct.utils.management.commands.export.Command._create_zip")
+    def test_organisatie_contact_exclude(self, mock_create_zip):
+        self.call_command(
+            "producttypen",
+            "producttype",
+            ids=[self.producttype1.id],
+            archive_name="test.zip",
+            exclude=["organisaties", "contacten"],
+        )
+
+        result = mock_create_zip.call_args.args[1]
+
+        self.assertNotIn("producttypeorganisatie", result)
+        self.assertNotIn("organisaties_ids", result["producttype"][0])
+        self.assertNotIn("organisaties", result)
+
+        self.assertNotIn("producttypecontact", result)
+        self.assertNotIn("contacten_ids", result["producttype"][0])
+        self.assertNotIn("contacten", result)
 
     @patch("openproduct.utils.management.commands.export.Command._create_zip")
     def test_no_duplicates(self, mock_create_zip):

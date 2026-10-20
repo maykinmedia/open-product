@@ -41,8 +41,6 @@ __all__ = [
     "UniformeProductNaam",
     "VerzoekType",
     "ZaakType",
-    "VerzoekType",
-    "ProductTypePermission",
     "ProductTypeOrganisatie",
     "ProductTypeContact",
 ]
