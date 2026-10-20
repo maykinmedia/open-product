@@ -358,14 +358,14 @@ class ProductTypeSerializer(TranslatableModelSerializer):
 
     organisaties = NestedProductTypeOrganisatieSerializer(
         many=True,
-        required=False,
+        default=[],
         source="producttype_organisaties",
         help_text=get_help_text("producttypen.ProductType", "organisaties"),
     )
 
     contacten = NestedProductTypeContactSerializer(
         many=True,
-        required=False,
+        default=[],
         source="producttype_contacten",
         help_text=get_help_text("producttypen.ProductType", "contacten"),
     )

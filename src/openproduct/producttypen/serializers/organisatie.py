@@ -21,6 +21,19 @@ class NestedProductTypeOrganisatieSerializer(serializers.ModelSerializer):
         model = ProductTypeOrganisatie
         fields = ("rol", "organisatie", "organisatie_uuid")
 
+    def validate(self, attrs):
+        # required is not enforced on nested fields during a partial update
+        if "organisatie" not in attrs:
+            raise serializers.ValidationError(
+                {
+                    "organisatie_uuid": self.fields["organisatie_uuid"].error_messages[
+                        "required"
+                    ]
+                },
+                code="required",
+            )
+        return attrs
+
 
 class ProductTypeOrganisatieSerializer(NestedProductTypeOrganisatieSerializer):
     producttype = serializers.PrimaryKeyRelatedField(

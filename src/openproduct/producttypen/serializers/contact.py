@@ -21,6 +21,19 @@ class NestedProductTypeContactSerializer(serializers.ModelSerializer):
         model = ProductTypeContact
         fields = ("rol", "contact", "contact_uuid")
 
+    def validate(self, attrs):
+        # required is not enforced on nested fields during a partial update
+        if "contact" not in attrs:
+            raise serializers.ValidationError(
+                {
+                    "contact_uuid": self.fields["contact_uuid"].error_messages[
+                        "required"
+                    ]
+                },
+                code="required",
+            )
+        return attrs
+
 
 class ProductTypeContactSerializer(NestedProductTypeContactSerializer):
     producttype = serializers.PrimaryKeyRelatedField(

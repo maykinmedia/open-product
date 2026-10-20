@@ -930,6 +930,39 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 self.assertEqual(response.data[relation], [])
                 self.assertFalse(getattr(producttype, relation).exists())
 
+    def test_update_producttype_without_organisaties_and_contacten_clears_them(self):
+        # Omitting the fields in PUT must remove the existing relations
+        producttype = ProductTypeFactory.create()
+        producttype.organisaties.add(OrganisatieFactory.create())
+        producttype.contacten.add(ContactFactory.create())
+
+        response = self.client.put(
+            self.detail_path(producttype), self.data | {"code": producttype.pk}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["organisaties"], [])
+        self.assertEqual(response.data["contacten"], [])
+        self.assertFalse(producttype.organisaties.exists())
+        self.assertFalse(producttype.contacten.exists())
+
+    def test_partial_update_producttype_without_uuid_returns_error(self):
+        producttype = ProductTypeFactory.create()
+
+        data = {
+            "organisaties": [{"rol": OrganisatieRolChoices.LEVERANCIER}],
+            "contacten": [{"rol": ContactRolChoices.RELATIEMANAGER}],
+        }
+        response = self.client.patch(self.detail_path(producttype), data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        for name in ("organisaties.0.organisatie_uuid", "contacten.0.contact_uuid"):
+            with self.subTest(name=name):
+                error = get_validation_errors(response, name)
+                self.assertIsNotNone(error)
+                self.assertEqual(error["code"], "required")
+
     def test_partial_update_producttype_clearing_relations(self):
         # Sending an empty list in PATCH must remove the existing relation
         for field, relation, factory in (

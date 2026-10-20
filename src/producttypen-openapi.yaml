@@ -10885,6 +10885,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeOrganisatieRequest'
+          default: []
           description: organisaties die dit het product aanbieden.
         facetwaarden_uuids:
           type: array
@@ -10903,6 +10904,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeContactRequest'
+          default: []
           description: De contacten verantwoordelijk voor het producttype.
         naam:
           type: string
@@ -11194,6 +11196,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeOrganisatie'
+          default: []
           description: organisaties die dit het product aanbieden.
         facetwaarden:
           type: array
@@ -11210,6 +11213,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeContact'
+          default: []
           description: De contacten verantwoordelijk voor het producttype.
         prijzen:
           type: array
@@ -11407,6 +11411,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeOrganisatieRequest'
+          default: []
           description: organisaties die dit het product aanbieden.
         facetwaarden_uuids:
           type: array
@@ -11425,6 +11430,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedProductTypeContactRequest'
+          default: []
           description: De contacten verantwoordelijk voor het producttype.
         naam:
           type: string
