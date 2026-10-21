@@ -1,6 +1,48 @@
 Changelog
 =========
 
+1.10.0 (22-10-2026)
+-------------------
+
+**New features**
+
+    * [:open-archiefbeheer:`1071`] send notification when product gets end date
+    * [:open-archiefbeheer:`1072`] implement cloud events for zaak relations
+    * [:open-product:`331`] add facetten
+    * [:open-product:`357`] add producttypen subtypen
+    * [:open-product:`362`] add rol to organisatie & contact relation to producttype
+    * [:open-product:`335`] overhaul actie, dmn, form, api actie types with mapping
+
+**Bugfixes**
+
+    * [:open-product:`368`] fix 500 error when patching product with empty aanvraag_zaak_urn
+    * [:open-product:`367`] fix producttype relation not being removable in PUT/PATCH
+    * fix 500 errors when patching nested serializers
+    * fix uncaught protect errors resulting in 500 errors
+    * toegestane_statussen filter allowed ``initieel`` incorrectly
+
+**Project maintenance**
+
+    * Upgrade dependencies
+
+        * open-api-framework to 0.16.0
+        * anyio to 4.14.2
+        * pyjwt to 2.15.1
+        * urllib3 to 2.8.0
+        * tornado to 6.5.10
+        * gitpython to 3.2.1
+        * virtualenv to 21.14.5
+        * webob to 1.8.11
+        * djangorestframework to 3.18.3
+        * maykin-common to 0.22.0
+        * notifications-api-common to 0.13.2
+        * commonground-api-common to 3.0.1
+
+    * Upgrade NPM dependencies
+    * [:open-api-framework:`223`] upgrade maykin-common
+    * [:open-api-framework:`228`] add celery result expires
+    * migrate webpack to esbuild
+    * update github actions
 
 1.9.0 (28-08-2026)
 ------------------

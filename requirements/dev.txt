@@ -15,7 +15,7 @@ annotated-types==0.7.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   pydantic
-anyio==4.8.0
+anyio==4.14.2
     # via httpx
 ape-pie==0.2.0
     # via
@@ -141,7 +141,7 @@ click-repl==0.3.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   celery
-commonground-api-common==2.14.0
+commonground-api-common==3.0.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -218,8 +218,6 @@ django==5.2.17
     #   django-simple-certmanager
     #   django-solo
     #   django-structlog
-    #   django-stubs
-    #   django-stubs-ext
     #   django-timeline-logger
     #   django-timezone-field
     #   django-two-factor-auth
@@ -391,16 +389,6 @@ django-structlog==9.1.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-django-stubs==6.0.6
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   djangorestframework-stubs
-django-stubs-ext==6.0.6
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-stubs
 django-timeline-logger==5.0.0
     # via
     #   -c requirements/ci.txt
@@ -424,7 +412,7 @@ django-webtest==1.9.13
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-djangorestframework==3.15.2
+djangorestframework==3.18.3
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -442,15 +430,11 @@ djangorestframework-camel-case==1.4.2
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   notifications-api-common
-djangorestframework-gis==1.2.0
+djangorestframework-gis==1.3.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
 djangorestframework-inclusions==1.2.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-djangorestframework-stubs==3.17.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -503,8 +487,10 @@ faker==33.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-filelock==3.20.3
-    # via virtualenv
+filelock==4.2.4
+    # via
+    #   python-discovery
+    #   virtualenv
 flower==2.0.1
     # via
     #   -c requirements/ci.txt
@@ -524,7 +510,7 @@ furl==2.1.3
     #   ape-pie
 gitdb==4.0.11
     # via gitpython
-gitpython==3.1.59
+gitpython==3.2.1
     # via -r requirements/dev.in
 glom==24.11.0
     # via
@@ -645,7 +631,7 @@ maykin-2fa==1.0.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-maykin-common==0.20.1
+maykin-common==0.22.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -672,12 +658,12 @@ mozilla-django-oidc-db==2.0.1
     #   open-api-framework
 nodeenv==1.9.1
     # via pre-commit
-notifications-api-common==0.13.0
+notifications-api-common==0.13.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   commonground-api-common
-open-api-framework==0.14.1
+open-api-framework==0.16.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -813,6 +799,7 @@ packaging==25.0
     #   kombu
     #   opentelemetry-instrumentation
     #   sphinx
+    #   virtualenv
 phonenumberslite==8.13.50
     # via
     #   -c requirements/ci.txt
@@ -893,7 +880,7 @@ pygments==2.20.0
     #   rich
     #   sphinx
     #   sphinx-tabs
-pyjwt==2.13.0
+pyjwt==2.15.1
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -938,6 +925,8 @@ python-decouple==3.8
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   maykin-common
+python-discovery==1.6.4
+    # via virtualenv
 python-dotenv==1.2.2
     # via
     #   -c requirements/ci.txt
@@ -1069,8 +1058,6 @@ six==1.16.0
     #   rfc3339-validator
 smmap==5.0.1
     # via gitdb
-sniffio==1.3.1
-    # via anyio
 snowballstemmer==2.2.0
     # via
     #   -c requirements/ci.txt
@@ -1155,26 +1142,17 @@ tomlkit==0.13.2
     #   -r requirements/ci.txt
     #   bump-my-version
     #   pylint
-tornado==6.5.7
+tornado==6.5.10
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   flower
-types-pyyaml==6.0.12.20260518
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   django-stubs
-    #   djangorestframework-stubs
 typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   anyio
     #   django-log-outgoing-requests
-    #   django-stubs
-    #   django-stubs-ext
-    #   djangorestframework-stubs
     #   faker
     #   grpcio
     #   mozilla-django-oidc-db
@@ -1219,7 +1197,7 @@ uritemplate==4.1.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   drf-spectacular
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1241,7 +1219,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.36.1
+virtualenv==21.14.5
     # via pre-commit
 waitress==3.0.2
     # via
@@ -1269,7 +1247,7 @@ webencodings==0.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   bleach
-webob==1.8.10
+webob==1.8.11
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt

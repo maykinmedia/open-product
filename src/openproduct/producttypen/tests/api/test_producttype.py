@@ -314,7 +314,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             self.path, self.data | {"toegestane_statussen": ["in aanvraag"]}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "toegestane_statussen.")
+        error = get_validation_errors(response, "toegestane_statussen.0")
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "invalid_choice")
         self.assertEqual(
@@ -327,7 +327,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             self.path, self.data | {"toegestane_statussen": [None]}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        error = get_validation_errors(response, "toegestane_statussen.")
+        error = get_validation_errors(response, "toegestane_statussen.0")
         self.assertIsNotNone(error)
         self.assertEqual(error["code"], "null")
         self.assertEqual(
