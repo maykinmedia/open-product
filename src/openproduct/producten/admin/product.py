@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.urls import path, reverse
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
@@ -18,7 +20,7 @@ from openproduct.producten.models.validators import (
 from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.models.producttype import ProductType
 
-from ...producttypen.models import ProductTypePermission
+from ...producttypen.models import ProductTypePermission, SubType
 from ...producttypen.models.producttypepermission import PermissionModes
 from ...urn.validators import validate_urn_or_url
 from .document import DocumentInline
@@ -64,6 +66,20 @@ class ProductAdminForm(forms.ModelForm):
             ),
             widget=forms.Select,
         )
+
+        if "subtype" in self.fields:
+            if self.is_bound:
+                producttype_id = self.data.get(self.add_prefix("producttype"))
+            else:
+                producttype_id = self.initial.get("producttype")
+
+            self.fields["subtype"].queryset = (
+                SubType.objects.filter(producttype_id=producttype_id).select_related(
+                    "producttype"
+                )
+                if str(producttype_id or "").isdigit()
+                else SubType.objects.none()
+            )
 
     def clean(self):
         """
@@ -132,6 +148,55 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     inlines = (EigenaarInline, DocumentInline, ZaakInline, TaakInline)
     list_select_related = ("producttype",)
 
+    class Media:
+        js = (
+            "admin/js/jquery.init.js",
+            "admin/js/admin/product_subtype.js",
+        )
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "subtype":
+            # set the attrs here because the admin wraps the widget in a RelatedFieldWidgetWrapper,
+            # which does not pass attrs set on the form field to the rendered widget.
+            kwargs["widget"] = forms.Select(
+                attrs={"data-subtypen-url": reverse("admin:producten_product_subtypen")}
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_urls(self):
+        custom = [
+            path(
+                "subtypen/",
+                self.admin_site.admin_view(self.subtypen_view),
+                name="{app_label}_{model_name}_subtypen".format(
+                    app_label=Product._meta.app_label,
+                    model_name=Product._meta.model_name,
+                ),
+            ),
+        ]
+        return custom + super().get_urls()
+
+    def subtypen_view(self, request):
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+
+        producttype_id = request.GET.get("producttype", "")
+        if not producttype_id.isdigit():
+            return JsonResponse([], safe=False)
+
+        subtypen = SubType.objects.filter(producttype_id=producttype_id)
+        if not request.user.is_superuser:
+            subtypen = subtypen.filter(
+                producttype__in=ProductTypePermission.objects.filter(
+                    user=request.user
+                ).values("producttype")
+            )
+
+        return JsonResponse(
+            [{"id": subtype.pk, "name": subtype.naam} for subtype in subtypen],
+            safe=False,
+        )
+
     @admin.display(description="Producttype")
     def producttype_name(self, obj):
         return obj.producttype.naam
@@ -166,7 +231,8 @@ class ProductAdmin(AdminAuditLogMixin, CompareVersionAdmin):
             return (
                 permission
                 and ProductTypePermission.objects.filter(
-                    **({"mode": PermissionModes.read_and_write} if write else {})
+                    user=user,
+                    **({"mode": PermissionModes.read_and_write} if write else {}),
                 ).exists()
             )
 

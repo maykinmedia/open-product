@@ -6188,6 +6188,9 @@ paths:
                       code: PT-12345
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       keywords:
                       - auto
                       interne_opmerkingen: interne opmerkingen...
@@ -6262,6 +6265,9 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6440,6 +6446,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6653,6 +6662,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6734,6 +6746,9 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -6912,6 +6927,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -6995,6 +7013,9 @@ paths:
                   toegestane_statussen:
                   - gereed
                   - actief
+                  subtypen:
+                  - naam: spoed
+                  - naam: regulier
                   interne_opmerkingen: interne opmerkingen...
                   samenvatting: korte samenvatting...
                   keywords:
@@ -7172,6 +7193,9 @@ paths:
                     code: PT-12345
                     toegestane_statussen:
                     - gereed
+                    subtypen:
+                    - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     keywords:
                     - auto
                     interne_opmerkingen: interne opmerkingen...
@@ -9692,6 +9716,10 @@ components:
       - uuid
     NestedExterneCode:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9708,6 +9736,10 @@ components:
       - naam
     NestedExterneCodeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9726,6 +9758,10 @@ components:
       - naam
     NestedFacetWaarde:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -9742,6 +9778,10 @@ components:
       - naam
     NestedFacetWaardeRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -9796,6 +9836,10 @@ components:
       - url
     NestedParameter:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9812,6 +9856,10 @@ components:
       - waarde
     NestedParameterRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         naam:
           type: string
@@ -9964,6 +10012,10 @@ components:
       - uuid
     NestedProductTypeContact:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -9983,6 +10035,10 @@ components:
       - contact
     NestedProductTypeContactRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10012,6 +10068,10 @@ components:
         * `interncontact` - Interncontact
     NestedProductTypeOrganisatie:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10029,6 +10089,10 @@ components:
       - organisatie
     NestedProductTypeOrganisatieRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         rol:
           description: |-
@@ -10958,6 +11022,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubTypeRequest'
         keywords:
           type: array
           items:
@@ -11046,6 +11114,10 @@ components:
       - uuid
     PrijsOptie:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11064,6 +11136,10 @@ components:
       - beschrijving
     PrijsOptieRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11083,6 +11159,10 @@ components:
       - beschrijving
     PrijsRegel:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11107,6 +11187,10 @@ components:
       - url
     PrijsRegelRequest:
       type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
       properties:
         uuid:
           type: string
@@ -11302,6 +11386,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubType'
         keywords:
           type: array
           items:
@@ -11484,6 +11572,10 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubTypeRequest'
         keywords:
           type: array
           items:
@@ -11581,6 +11673,39 @@ components:
           $ref: '#/components/schemas/BaseFacetTypeRequest'
       required:
       - facet_type
+      - naam
+    SubType:
+      type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
+    SubTypeRequest:
+      type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
       - naam
     Thema:
       type: object

@@ -21,11 +21,13 @@ from openproduct.producten.serializers.validators import (
     DataObjectValidator,
     DateValidator,
     StatusValidator,
+    SubTypeValidator,
     VerbruiksObjectValidator,
 )
 from openproduct.producten.serializers.zaak import NestedZaakSerializer, ZaakSerializer
-from openproduct.producttypen.models import ProductType, UniformeProductNaam
+from openproduct.producttypen.models import ProductType, SubType, UniformeProductNaam
 from openproduct.producttypen.serializers.producttype import NestedThemaSerializer
+from openproduct.producttypen.serializers.subtype import SubTypeSerializer
 from openproduct.urn.serializers import UrnMappingMixin
 from openproduct.utils.drf_validators import NestedObjectsValidator
 from openproduct.utils.fields import UUIDRelatedField
@@ -41,6 +43,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
     )
 
     themas = NestedThemaSerializer(many=True)
+    subtypen = SubTypeSerializer(many=True, read_only=True)
 
     gepubliceerd = serializers.SerializerMethodField(
         help_text=_("Geeft aan of het producttype getoond kan worden."),
@@ -75,6 +78,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
             "keywords",
             "uniforme_product_naam",
             "toegestane_statussen",
+            "subtypen",
             "gepubliceerd",
             "publicatie_start_datum",
             "publicatie_eind_datum",
@@ -97,6 +101,10 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "eind_datum": "2026-12-01",
                 "aanmaak_datum": "2019-08-24T14:15:22Z",
                 "update_datum": "2019-08-24T14:15:22Z",
+                "subtype": {
+                    "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                    "naam": "spoed",
+                },
                 "producttype": {
                     "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                     "naam": "Parkeervergunning",
@@ -104,6 +112,12 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                     "keywords": ["auto"],
                     "uniforme_product_naam": "parkeervergunning",
                     "toegestane_statussen": ["gereed"],
+                    "subtypen": [
+                        {
+                            "uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
+                            "naam": "spoed",
+                        }
+                    ],
                     "gepubliceerd": True,
                     "aanmaak_datum": "2019-08-24T14:15:22Z",
                     "update_datum": "2019-08-24T14:15:22Z",
@@ -164,6 +178,7 @@ class NestedProductTypeSerializer(serializers.ModelSerializer):
                 "start_datum": "2024-12-01",
                 "eind_datum": "2026-12-01",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
+                "subtype_uuid": "9de01697-7fc5-4113-803c-a8c9a8dad4f2",
                 "gepubliceerd": False,
                 "eigenaren": [
                     {"bsn": "111222333"},
@@ -202,6 +217,19 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
     producttype_uuid = UUIDRelatedField(
         write_only=True, queryset=ProductType.objects.all(), source="producttype"
     )
+
+    subtype = SubTypeSerializer(read_only=True)
+    subtype_uuid = UUIDRelatedField(
+        write_only=True,
+        queryset=SubType.objects.all(),
+        source="subtype",
+        required=False,
+        allow_null=True,
+        help_text=_(
+            "Het subtype van het product. Dit moet een van de subtypen van het producttype zijn. Wanneer het producttype subtypen heeft is het subtype verplicht bij het aanmaken van een product of het wijzigen van het producttype en kan een eenmaal gezet subtype niet worden leeggemaakt."
+        ),
+    )
+
     eigenaren = EigenaarSerializer(many=True)
     documenten = NestedDocumentSerializer(many=True, required=False)
     zaken = NestedZaakSerializer(many=True, required=False)
@@ -221,6 +249,8 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
             "update_datum",
             "producttype",
             "producttype_uuid",
+            "subtype",
+            "subtype_uuid",
             "gepubliceerd",
             "eigenaren",
             "documenten",
@@ -239,6 +269,7 @@ class ProductSerializer(UrnMappingMixin, serializers.ModelSerializer):
             StatusValidator(),
             VerbruiksObjectValidator(),
             DataObjectValidator(),
+            SubTypeValidator(),
             NestedObjectsValidator("eigenaren", Eigenaar),
         ]
 

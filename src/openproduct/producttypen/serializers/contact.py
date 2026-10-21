@@ -5,10 +5,13 @@ from openproduct.locaties.models import Contact
 from openproduct.locaties.serializers import ContactSerializer
 
 from ...utils.fields import UUIDRelatedField
+from ...utils.serializers import NestedCreateRequiredFieldsMixin
 from ..models import ProductType, ProductTypeContact
 
 
-class NestedProductTypeContactSerializer(serializers.ModelSerializer):
+class NestedProductTypeContactSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     contact = ContactSerializer(read_only=True)
     contact_uuid = UUIDRelatedField(
         write_only=True,
@@ -20,19 +23,6 @@ class NestedProductTypeContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductTypeContact
         fields = ("rol", "contact", "contact_uuid")
-
-    def validate(self, attrs):
-        # required is not enforced on nested fields during a partial update
-        if "contact" not in attrs:
-            raise serializers.ValidationError(
-                {
-                    "contact_uuid": self.fields["contact_uuid"].error_messages[
-                        "required"
-                    ]
-                },
-                code="required",
-            )
-        return attrs
 
 
 class ProductTypeContactSerializer(NestedProductTypeContactSerializer):

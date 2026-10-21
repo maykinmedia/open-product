@@ -26,6 +26,7 @@ from openproduct.producttypen.models.enums import ProductStateChoices
 from openproduct.producttypen.tests.factories import (
     JsonSchemaFactory,
     ProductTypeFactory,
+    SubTypeFactory,
     ThemaFactory,
 )
 from openproduct.urn.models import UrnMappingConfig
@@ -109,6 +110,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": None,
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -134,6 +136,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "toegestane_statussen": ["gereed"],
                 "aanmaak_datum": producttype.aanmaak_datum.astimezone().isoformat(),
@@ -212,6 +215,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": None,
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -237,6 +241,7 @@ class TestProduct(BaseApiTestCase):
                 "uuid": str(producttype.uuid),
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",
                 "publicatie_eind_datum": None,
@@ -367,6 +372,7 @@ class TestProduct(BaseApiTestCase):
             "uuid": str(product.uuid),
             "url": f"http://testserver{self.detail_path(product)}",
             "naam": "",
+            "subtype": None,
             "status": product.status,
             "verbruiksobject": None,
             "dataobject": {"naam": "Test"},
@@ -396,6 +402,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",
                 "publicatie_eind_datum": None,
@@ -484,6 +491,147 @@ class TestProduct(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
+
+    def test_create_product_with_subtype_not_on_producttype(self):
+        other_subtype = SubTypeFactory.create()
+
+        data = self.data | {"subtype_uuid": other_subtype.uuid}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Subtype is niet gedefinieerd op het producttype."),
+        )
+
+    def test_create_product_without_subtype_when_producttype_has_subtypen(self):
+        SubTypeFactory(producttype=self.producttype, naam="spoed")
+
+        response = self.client.post(self.path, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Subtype is verplicht als het producttype subtypen heeft."),
+        )
+
+    def test_update_existing_product_without_subtype_when_producttype_has_subtypen(
+        self,
+    ):
+        product = ProductFactory.create(producttype=self.producttype)
+        SubTypeFactory(producttype=self.producttype, naam="spoed")
+
+        response = self.client.patch(self.detail_path(product), {"prijs": "10.00"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNone(response.data["subtype"])
+
+    def test_update_product_producttype_without_subtype(self):
+        product = ProductFactory.create(producttype=self.producttype)
+        other_producttype = ProductTypeFactory.create()
+        SubTypeFactory(producttype=other_producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(product), {"producttype_uuid": other_producttype.uuid}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(
+            error["reason"],
+            _("Subtype is verplicht als het producttype subtypen heeft."),
+        )
+
+    def test_update_product_producttype_with_subtype(self):
+        product = ProductFactory.create(producttype=self.producttype)
+        other_producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory(producttype=other_producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(product),
+            {"producttype_uuid": other_producttype.uuid, "subtype_uuid": subtype.uuid},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        product.refresh_from_db()
+        self.assertEqual(product.subtype, subtype)
+
+    def test_update_product_producttype_to_producttype_without_subtypen(self):
+        subtype = SubTypeFactory(producttype=self.producttype, naam="spoed")
+        product = ProductFactory.create(producttype=self.producttype, subtype=subtype)
+        other_producttype = ProductTypeFactory.create()
+
+        with self.subTest("old subtype is not allowed"):
+            response = self.client.patch(
+                self.detail_path(product), {"producttype_uuid": other_producttype.uuid}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "subtype")
+            self.assertIsNotNone(error)
+            self.assertEqual(
+                error["reason"], _("Subtype is niet gedefinieerd op het producttype.")
+            )
+
+        with self.subTest("subtype is cleared"):
+            response = self.client.patch(
+                self.detail_path(product),
+                {"producttype_uuid": other_producttype.uuid, "subtype_uuid": None},
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            product.refresh_from_db()
+            self.assertIsNone(product.subtype)
+
+    def test_update_product_clearing_subtype(self):
+        subtype = SubTypeFactory(producttype=self.producttype, naam="spoed")
+        product = ProductFactory.create(producttype=self.producttype, subtype=subtype)
+
+        response = self.client.patch(self.detail_path(product), {"subtype_uuid": None})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(
+            error["reason"],
+            _("Subtype is verplicht als het producttype subtypen heeft."),
+        )
+        product.refresh_from_db()
+        self.assertEqual(product.subtype, subtype)
+
+    def test_create_product_with_invalid_subtype(self):
+        SubTypeFactory(producttype=self.producttype, naam="spoed")
+        other_subtype = SubTypeFactory.create()
+
+        data = self.data | {"subtype_uuid": other_subtype.uuid}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subtype")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _("Subtype is niet gedefinieerd op het producttype."),
+        )
+
+    def test_create_product_with_allowed_subtype(self):
+        subtype = SubTypeFactory(producttype=self.producttype, naam="spoed")
+
+        data = self.data | {"subtype_uuid": subtype.uuid}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["subtype"]["naam"], "spoed")
 
     def test_create_product_with_eigenaren(self):
         data = self.data | {
@@ -863,6 +1011,72 @@ class TestProduct(BaseApiTestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(Eigenaar.objects.count(), 1)
             self.assertEqual(Eigenaar.objects.get().klantnummer, "1234")
+
+    def test_update_eigenaar_is_validated_with_stored_values(self):
+        product = ProductFactory.create()
+        eigenaar = EigenaarFactory.create(product=product, bsn="111222333")
+
+        expected_reason = _(
+            "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of zonder vestigingsnummer) hebben."
+        )
+
+        for method in ("put", "patch"):
+            with self.subTest(f"{method} adding kvk_nummer to eigenaar with bsn"):
+                data = {
+                    "eigenaren": [{"uuid": eigenaar.uuid, "kvk_nummer": "12345678"}]
+                }
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                error = get_validation_errors(response, "eigenaren.0.model_errors")
+                self.assertEqual(error["reason"], expected_reason)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.kvk_nummer, "")
+
+            with self.subTest(f"{method} eigenaar with only uuid"):
+                data = {"eigenaren": [{"uuid": eigenaar.uuid}]}
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.bsn, "111222333")
+
+    def test_update_eigenaar_vestigingsnummer_with_stored_kvk_nummer(self):
+        product = ProductFactory.create()
+        eigenaar = EigenaarFactory.create(product=product, kvk_nummer="12345678")
+
+        data = {"eigenaren": [{"uuid": eigenaar.uuid, "vestigingsnummer": "123"}]}
+
+        for method in ("put", "patch"):
+            with self.subTest(method):
+                response = getattr(self.client, method)(
+                    self.detail_path(product),
+                    self.data | data if method == "put" else data,
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                eigenaar.refresh_from_db()
+                self.assertEqual(eigenaar.kvk_nummer, "12345678")
+                self.assertEqual(eigenaar.vestigingsnummer, "123")
+
+    def test_update_product_with_invalid_eigenaar_uuid(self):
+        product = ProductFactory.create()
+        EigenaarFactory.create(product=product, bsn="111222333")
+
+        response = self.client.patch(
+            self.detail_path(product),
+            {"eigenaren": [{"uuid": "invalid", "bsn": "111222333"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "eigenaren.0.uuid")
+        self.assertEqual(error["code"], "invalid")
 
     def test_update_product_with_eigenaar_not_part_of_product(self):
         product = ProductFactory.create()
@@ -1464,6 +1678,7 @@ class TestProduct(BaseApiTestCase):
                 "dataobject": None,
                 "gepubliceerd": False,
                 "naam": "",
+                "subtype": None,
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product1.prijs),
@@ -1489,6 +1704,7 @@ class TestProduct(BaseApiTestCase):
                     "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
+                    "subtypen": [],
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
                     "publicatie_start_datum": "2024-01-01",
@@ -1518,6 +1734,7 @@ class TestProduct(BaseApiTestCase):
                 "dataobject": None,
                 "gepubliceerd": False,
                 "naam": "",
+                "subtype": None,
                 "start_datum": None,
                 "eind_datum": None,
                 "prijs": str(product2.prijs),
@@ -1543,6 +1760,7 @@ class TestProduct(BaseApiTestCase):
                     "naam": self.producttype.naam,
                     "code": self.producttype.code,
                     "uniforme_product_naam": self.producttype.uniforme_product_naam.naam,
+                    "subtypen": [],
                     "toegestane_statussen": ["gereed"],
                     "gepubliceerd": True,
                     "publicatie_start_datum": "2024-01-01",
@@ -1592,6 +1810,7 @@ class TestProduct(BaseApiTestCase):
             "dataobject": None,
             "gepubliceerd": False,
             "naam": "",
+            "subtype": None,
             "start_datum": None,
             "eind_datum": None,
             "prijs": str(product.prijs),
@@ -1617,6 +1836,7 @@ class TestProduct(BaseApiTestCase):
                 "naam": producttype.naam,
                 "code": producttype.code,
                 "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+                "subtypen": [],
                 "toegestane_statussen": ["gereed"],
                 "gepubliceerd": True,
                 "publicatie_start_datum": "2024-01-01",

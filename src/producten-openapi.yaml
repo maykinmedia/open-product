@@ -519,6 +519,9 @@ paths:
                       eind_datum: '2026-12-01'
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
+                      subtype:
+                        uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       producttype:
                         uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         naam: Parkeervergunning
@@ -528,6 +531,9 @@ paths:
                         uniforme_product_naam: parkeervergunning
                         toegestane_statussen:
                         - gereed
+                        subtypen:
+                        - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                          naam: spoed
                         gepubliceerd: true
                         aanmaak_datum: '2019-08-24T14:15:22Z'
                         update_datum: '2019-08-24T14:15:22Z'
@@ -617,6 +623,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype_uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -661,6 +668,9 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype:
+                      uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -670,6 +680,9 @@ paths:
                       uniforme_product_naam: parkeervergunning
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
@@ -780,6 +793,9 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype:
+                      uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -789,6 +805,9 @@ paths:
                       uniforme_product_naam: parkeervergunning
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
@@ -885,6 +904,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype_uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -929,6 +949,9 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype:
+                      uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -938,6 +961,9 @@ paths:
                       uniforme_product_naam: parkeervergunning
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
@@ -1034,6 +1060,7 @@ paths:
                   start_datum: '2024-12-01'
                   eind_datum: '2026-12-01'
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
+                  subtype_uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
                   gepubliceerd: false
                   eigenaren:
                   - bsn: '111222333'
@@ -1077,6 +1104,9 @@ paths:
                     eind_datum: '2026-12-01'
                     aanmaak_datum: '2019-08-24T14:15:22Z'
                     update_datum: '2019-08-24T14:15:22Z'
+                    subtype:
+                      uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                      naam: spoed
                     producttype:
                       uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       naam: Parkeervergunning
@@ -1086,6 +1116,9 @@ paths:
                       uniforme_product_naam: parkeervergunning
                       toegestane_statussen:
                       - gereed
+                      subtypen:
+                      - uuid: 9de01697-7fc5-4113-803c-a8c9a8dad4f2
+                        naam: spoed
                       gepubliceerd: true
                       aanmaak_datum: '2019-08-24T14:15:22Z'
                       update_datum: '2019-08-24T14:15:22Z'
@@ -1356,6 +1389,11 @@ components:
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
           description: toegestane statussen voor producten van dit type.
+        subtypen:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubType'
+          readOnly: true
         gepubliceerd:
           type: boolean
           readOnly: true
@@ -1395,6 +1433,7 @@ components:
       - code
       - gepubliceerd
       - naam
+      - subtypen
       - taal
       - themas
       - uniforme_product_naam
@@ -1606,6 +1645,15 @@ components:
           type: string
           format: uuid
           writeOnly: true
+        subtype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Het subtype van het product. Dit moet een van de subtypen van
+            het producttype zijn. Wanneer het producttype subtypen heeft is het subtype
+            verplicht bij het aanmaken van een product of het wijzigen van het producttype
+            en kan een eenmaal gezet subtype niet worden leeggemaakt.
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1728,6 +1776,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedProductType'
           readOnly: true
+        subtype:
+          allOf:
+          - $ref: '#/components/schemas/SubType'
+          readOnly: true
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1805,6 +1857,7 @@ components:
       - aanmaak_datum
       - eigenaren
       - producttype
+      - subtype
       - update_datum
       - url
       - uuid
@@ -1835,6 +1888,15 @@ components:
           type: string
           format: uuid
           writeOnly: true
+        subtype_uuid:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Het subtype van het product. Dit moet een van de subtypen van
+            het producttype zijn. Wanneer het producttype subtypen heeft is het subtype
+            verplicht bij het aanmaken van een product of het wijzigen van het producttype
+            en kan een eenmaal gezet subtype niet worden leeggemaakt.
         gepubliceerd:
           type: boolean
           description: Geeft aan of het product getoond kan worden.
@@ -1929,6 +1991,39 @@ components:
         * `ingetrokken` - Ingetrokken
         * `geweigerd` - Geweigerd
         * `verlopen` - Verlopen
+    SubType:
+      type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
+    SubTypeRequest:
+      type: object
+      description: |-
+        A partial update of the root serializer makes all nested fields optional. New nested
+        objects (without uuid) are created from the given fields, so they still need all
+        required fields.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        naam:
+          type: string
+          minLength: 1
+          description: Naam van het subtype.
+          maxLength: 255
+      required:
+      - naam
     ToegestaneStatussenEnum:
       enum:
       - in_aanvraag

@@ -18,6 +18,7 @@ from ..models import (
     Proces,
     ProductType,
     ProductTypePermission,
+    SubType,
     Thema,
     UniformeProductNaam,
     VerzoekType,
@@ -161,6 +162,14 @@ class ParameterFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Parameter
+
+
+class SubTypeFactory(factory.django.DjangoModelFactory):
+    producttype = factory.SubFactory(ProductTypeFactory)
+    naam = factory.Sequence(lambda n: f"subtype {n}")
+
+    class Meta:
+        model = SubType
 
 
 class ZaakTypeFactory(factory.django.DjangoModelFactory):

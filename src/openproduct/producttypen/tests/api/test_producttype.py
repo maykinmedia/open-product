@@ -1,5 +1,6 @@
 import datetime
 from datetime import date
+from uuid import uuid4
 
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse, reverse_lazy
@@ -18,6 +19,7 @@ from openproduct.locaties.tests.factories import (
 )
 from openproduct.logging.constants import Events
 from openproduct.logging.models import TimelineLogProxy
+from openproduct.producten.tests.factories import ProductFactory
 from openproduct.producttypen.models import (
     ExterneCode,
     Link,
@@ -25,6 +27,7 @@ from openproduct.producttypen.models import (
     Proces,
     ProductType,
     ProductTypeOrganisatie,
+    SubType,
     VerzoekType,
     ZaakType,
 )
@@ -46,6 +49,7 @@ from openproduct.producttypen.tests.factories import (
     PrijsRegelFactory,
     ProcesFactory,
     ProductTypeFactory,
+    SubTypeFactory,
     ThemaFactory,
     UniformeProductNaamFactory,
     VerzoekTypeFactory,
@@ -156,6 +160,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
@@ -581,6 +586,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "verbruiksobject_schema": {
                 "naam": "test",
@@ -810,6 +816,41 @@ class TestProducttypeViewSet(BaseApiTestCase):
                     },
                 )
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_producttype_with_subtypen(self):
+        data = self.data | {"subtypen": [{"naam": "spoed"}, {"naam": "regulier"}]}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(SubType.objects.count(), 2)
+
+    def test_create_producttype_with_duplicate_subtype_namen(self):
+        data = self.data | {"subtypen": [{"naam": "spoed"}, {"naam": "Spoed"}]}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen")
+        self.assertEqual(
+            error["reason"], _("Dubbele naam: {} op index {}.").format("Spoed", 1)
+        )
+
+    def test_create_producttype_with_subtype_with_uuid(self):
+        uuid = uuid4()
+        data = self.data | {"subtypen": [{"uuid": uuid, "naam": "spoed"}]}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(SubType.objects.count(), 1)
+        self.assertNotEqual(SubType.objects.get().uuid, uuid)
+
+    def test_create_producttype_with_empty_subtype(self):
+        data = self.data | {"subtypen": [{}]}
+        response = self.client.post(self.path, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen.0.naam")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "required")
 
     def test_update_minimal_producttype(self):
         producttype = ProductTypeFactory.create()
@@ -1387,6 +1428,328 @@ class TestProducttypeViewSet(BaseApiTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Proces.objects.count(), 1)
 
+    def test_update_producttype_removing_subtypen(self):
+        producttype = ProductTypeFactory.create()
+        SubTypeFactory.create(producttype=producttype)
+        SubTypeFactory.create(producttype=producttype)
+
+        with self.subTest("PUT"):
+            response = self.client.put(
+                self.detail_path(producttype), self.data | {"subtypen": []}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(SubType.objects.count(), 0)
+            self.assertEqual(response.data["subtypen"], [])
+
+        SubTypeFactory.create(producttype=producttype)
+
+        with self.subTest("PATCH"):
+            response = self.client.patch(
+                self.detail_path(producttype), {"subtypen": []}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(SubType.objects.count(), 0)
+            self.assertEqual(response.data["subtypen"], [])
+
+    def test_update_producttype_removing_subtype_used_in_product(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype)
+        ProductFactory.create(producttype=producttype, subtype=subtype)
+
+        response = self.client.patch(self.detail_path(producttype), {"subtypen": []})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen")
+        self.assertIsNotNone(error)
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _(
+                "Een subtype kan niet worden verwijderd omdat er gerelateerde producten zijn."
+            ),
+        )
+        self.assertEqual(producttype.subtypen.count(), 1)
+
+    def test_update_producttype_updating_and_removing_subtypen(self):
+        producttype = ProductTypeFactory.create()
+        subtype_to_be_updated = SubTypeFactory.create(
+            producttype=producttype, naam="spoed"
+        )
+        SubTypeFactory.create(producttype=producttype, naam="regulier")
+
+        data = {
+            "subtypen": [
+                {
+                    "uuid": subtype_to_be_updated.uuid,
+                    "naam": "urgent",
+                }
+            ]
+        }
+
+        expected_data = [
+            {
+                "uuid": str(subtype_to_be_updated.uuid),
+                "naam": "urgent",
+            }
+        ]
+
+        with self.subTest("PUT"):
+            response = self.client.put(self.detail_path(producttype), self.data | data)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(SubType.objects.count(), 1)
+            self.assertEqual(response.data["subtypen"], expected_data)
+
+        with self.subTest("PATCH"):
+            response = self.client.patch(self.detail_path(producttype), data)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(SubType.objects.count(), 1)
+            self.assertEqual(response.data["subtypen"], expected_data)
+
+    def test_update_producttype_creating_and_removing_subtypen(self):
+        data = {"subtypen": [{"naam": "urgent"}]}
+
+        with self.subTest("PUT"):
+            producttype = ProductTypeFactory.create()
+            SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+            response = self.client.put(self.detail_path(producttype), self.data | data)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(producttype.subtypen.count(), 1)
+            self.assertEqual(producttype.subtypen.get().naam, "urgent")
+
+        with self.subTest("PATCH"):
+            producttype = ProductTypeFactory.create()
+            SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+            response = self.client.patch(self.detail_path(producttype), data)
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(producttype.subtypen.count(), 1)
+            self.assertEqual(producttype.subtypen.get().naam, "urgent")
+
+    def test_update_producttype_replacing_subtype_with_same_naam(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {"subtypen": [{"naam": "spoed"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(producttype.subtypen.count(), 1)
+        self.assertNotEqual(producttype.subtypen.get().uuid, subtype.uuid)
+
+    def test_update_producttype_swapping_subtype_namen(self):
+        producttype = ProductTypeFactory.create()
+        spoed = SubTypeFactory.create(producttype=producttype, naam="spoed")
+        regulier = SubTypeFactory.create(producttype=producttype, naam="regulier")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"uuid": spoed.uuid, "naam": "regulier"},
+                    {"uuid": regulier.uuid, "naam": "spoed"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        spoed.refresh_from_db()
+        regulier.refresh_from_db()
+        self.assertEqual(spoed.naam, "regulier")
+        self.assertEqual(regulier.naam, "spoed")
+
+    def test_update_producttype_creating_subtype_with_naam_of_renamed_subtype(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"naam": "spoed"},
+                    {"uuid": subtype.uuid, "naam": "urgent"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        subtype.refresh_from_db()
+        self.assertEqual(subtype.naam, "urgent")
+        self.assertEqual(
+            set(producttype.subtypen.values_list("naam", flat=True)),
+            {"spoed", "urgent"},
+        )
+
+    def test_partial_update_producttype_keeping_subtype_naam(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype, naam="spoed")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {"subtypen": [{"uuid": subtype.uuid}, {"naam": "urgent"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        subtype.refresh_from_db()
+        self.assertEqual(subtype.naam, "spoed")
+        self.assertEqual(producttype.subtypen.count(), 2)
+
+    def test_partial_update_producttype_with_new_subtype_without_naam(self):
+        producttype = ProductTypeFactory.create()
+
+        response = self.client.patch(
+            self.detail_path(producttype), {"subtypen": [{"naam": "spoed"}, {}]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen.1.naam")
+        self.assertEqual(error["code"], "required")
+        self.assertFalse(SubType.objects.exists())
+
+    def test_partial_update_producttype_with_naam_of_subtype_without_naam(self):
+        producttype = ProductTypeFactory.create()
+        spoed = SubTypeFactory.create(producttype=producttype, naam="spoed")
+        regulier = SubTypeFactory.create(producttype=producttype, naam="regulier")
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {
+                "subtypen": [
+                    {"uuid": spoed.uuid},
+                    {"uuid": regulier.uuid, "naam": "spoed"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen")
+        self.assertEqual(
+            error["reason"], _("Dubbele naam: {} op index {}.").format("spoed", 1)
+        )
+        regulier.refresh_from_db()
+        self.assertEqual(regulier.naam, "regulier")
+
+    def test_update_producttype_with_duplicate_subtype_namen(self):
+        producttype = ProductTypeFactory.create()
+
+        response = self.client.patch(
+            self.detail_path(producttype),
+            {"subtypen": [{"naam": "spoed"}, {"naam": "spoed"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "subtypen")
+        self.assertEqual(
+            error["reason"], _("Dubbele naam: {} op index {}.").format("spoed", 1)
+        )
+        self.assertFalse(SubType.objects.exists())
+
+    def test_update_producttype_with_subtype_not_part_of_producttype(self):
+        producttype = ProductTypeFactory.create()
+        subtype_of_other_producttype = SubTypeFactory.create()
+
+        data = {
+            "subtypen": [{"uuid": subtype_of_other_producttype.uuid, "naam": "spoed"}]
+        }
+
+        expected_reason = _(
+            "Producttype subtype uuid {} op index 0 is niet onderdeel van het Producttype object."
+        ).format(subtype_of_other_producttype.uuid)
+
+        with self.subTest("PUT"):
+            response = self.client.put(self.detail_path(producttype), self.data | data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
+        with self.subTest("PATCH"):
+            response = self.client.patch(self.detail_path(producttype), data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
+    def test_update_producttype_with_subtype_uuid_not_existing(self):
+        producttype = ProductTypeFactory.create()
+
+        subtype_uuid = uuid4()
+
+        data = {"subtypen": [{"uuid": subtype_uuid, "naam": "spoed"}]}
+
+        expected_reason = _(
+            "Producttype subtype uuid {} op index 0 bestaat niet."
+        ).format(subtype_uuid)
+
+        with self.subTest("PUT"):
+            response = self.client.put(self.detail_path(producttype), self.data | data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
+        with self.subTest("PATCH"):
+            response = self.client.patch(self.detail_path(producttype), data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
+    def test_update_producttype_with_duplicate_subtypen_uuids(self):
+        producttype = ProductTypeFactory.create()
+        subtype_to_be_updated = SubTypeFactory.create(producttype=producttype)
+
+        expected_reason = _("Dubbel uuid: {} op index 1.").format(
+            subtype_to_be_updated.uuid
+        )
+
+        data = {
+            "subtypen": [
+                {"uuid": subtype_to_be_updated.uuid, "naam": "spoed"},
+                {"uuid": subtype_to_be_updated.uuid, "naam": "regulier"},
+            ]
+        }
+
+        with self.subTest("PUT"):
+            response = self.client.put(self.detail_path(producttype), self.data | data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
+        with self.subTest("PATCH"):
+            response = self.client.patch(self.detail_path(producttype), data)
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+            error = get_validation_errors(response, "subtypen")
+            self.assertIsNotNone(error)
+            self.assertEqual(error["code"], "invalid")
+            self.assertEqual(error["reason"], expected_reason)
+
     def test_update_producttype_creates_log_and_history(self):
         producttype = ProductTypeFactory.create()
 
@@ -1533,6 +1896,25 @@ class TestProducttypeViewSet(BaseApiTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ExterneCode.objects.count(), 1)
+
+    def test_partial_update_producttype_with_nested_object_without_required_fields(
+        self,
+    ):
+        producttype = ProductTypeFactory.create()
+
+        for field, required in (
+            ("parameters", ("naam", "waarde")),
+            ("externe_codes", ("naam", "code")),
+        ):
+            with self.subTest(field):
+                response = self.client.patch(
+                    self.detail_path(producttype), {field: [{}]}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                for name in required:
+                    error = get_validation_errors(response, f"{field}.0.{name}")
+                    self.assertEqual(error["code"], "required")
 
     def test_partial_update_producttype_with_parameter(self):
         producttype = ProductTypeFactory.create()
@@ -1868,6 +2250,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype1.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype1.uniforme_product_naam.naam,
+                "subtypen": [],
                 "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
@@ -1912,6 +2295,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
                 "interne_opmerkingen": producttype2.interne_opmerkingen,
                 "taal": "nl",
                 "uniforme_product_naam": producttype2.uniforme_product_naam.naam,
+                "subtypen": [],
                 "doelgroep": "burgers",
                 "toegestane_statussen": [],
                 "verbruiksobject_schema": None,
@@ -1967,6 +2351,7 @@ class TestProducttypeViewSet(BaseApiTestCase):
             "interne_opmerkingen": producttype.interne_opmerkingen,
             "taal": "nl",
             "uniforme_product_naam": producttype.uniforme_product_naam.naam,
+            "subtypen": [],
             "doelgroep": "burgers",
             "toegestane_statussen": [],
             "verbruiksobject_schema": None,
@@ -2063,6 +2448,40 @@ class TestProducttypeViewSet(BaseApiTestCase):
         ).get()
 
         self.assertEqual(log.event, Events.delete)
+
+    def test_delete_producttype_with_product(self):
+        producttype = ProductTypeFactory.create()
+        ProductFactory.create(producttype=producttype)
+
+        response = self.client.delete(self.detail_path(producttype))
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "producten")
+        self.assertEqual(error["code"], "invalid")
+        self.assertEqual(
+            error["reason"],
+            _(
+                "Dit producttype kan niet worden verwijderd omdat er gerelateerde producten zijn."
+            ),
+        )
+        self.assertEqual(ProductType.objects.count(), 1)
+        self.assertFalse(
+            TimelineLogProxy.objects.filter(
+                content_type__exact=ContentType.objects.get_for_model(producttype).pk,
+                object_id=producttype.pk,
+            ).exists()
+        )
+
+    def test_delete_producttype_with_product_with_subtype(self):
+        producttype = ProductTypeFactory.create()
+        subtype = SubTypeFactory.create(producttype=producttype)
+        ProductFactory.create(producttype=producttype, subtype=subtype)
+
+        response = self.client.delete(self.detail_path(producttype))
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(ProductType.objects.count(), 1)
+        self.assertEqual(SubType.objects.count(), 1)
 
 
 @freeze_time("2024-01-01")

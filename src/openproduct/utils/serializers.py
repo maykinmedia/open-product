@@ -10,6 +10,56 @@ from rest_framework.serializers import Serializer
 from .models import BaseModel
 
 
+class NestedCreateRequiredFieldsMixin(serializers.Serializer):
+    """
+    A partial update of the root serializer makes all nested fields optional. New nested
+    objects (without uuid) are created from the given fields, so they still need all
+    required fields.
+    """
+
+    def validate(self, attrs):
+        if self.root.partial and "uuid" not in attrs:
+            errors = {
+                name: field.error_messages["required"]
+                for name, field in self.fields.items()
+                if field.required and not field.read_only and field.source not in attrs
+            }
+            if errors:
+                raise serializers.ValidationError(errors, code="required")
+        return super().validate(attrs)
+
+
+class NestedListSerializer(serializers.ListSerializer):
+    """
+    Nested child serializers have no instance, so validators can't use the stored values of
+    fields that are not given. Set the existing object (matched on uuid within the parent
+    instance) as the child instance during validation.
+    """
+
+    def run_child_validation(self, data):
+        child = self.child
+        if not isinstance(child, serializers.BaseSerializer):
+            return super().run_child_validation(data)
+
+        child.instance = self._get_existing_object(data)
+        try:
+            return super().run_child_validation(data)
+        finally:
+            child.instance = None
+
+    def _get_existing_object(self, data):
+        parent = self.parent.instance if self.parent else None
+        if parent is None or self.source is None or not isinstance(data, dict):
+            return None
+
+        try:
+            uuid = UUID(str(data.get("uuid")))
+        except ValueError:
+            return None
+
+        return getattr(parent, self.source).filter(uuid=uuid).first()
+
+
 def get_from_serializer_data_or_instance(
     field: str, data: dict, serializer: Serializer
 ):

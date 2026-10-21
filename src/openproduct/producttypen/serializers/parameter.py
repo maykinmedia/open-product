@@ -1,9 +1,12 @@
 from rest_framework import serializers
 
 from openproduct.producttypen.models import Parameter, ProductType
+from openproduct.utils.serializers import NestedCreateRequiredFieldsMixin
 
 
-class NestedParameterSerializer(serializers.ModelSerializer):
+class NestedParameterSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     class Meta:
         model = Parameter
         fields = ("naam", "waarde")

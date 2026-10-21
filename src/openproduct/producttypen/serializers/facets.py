@@ -1,4 +1,6 @@
 from django.db import transaction
+from django.db.models import CharField
+from django.db.models.functions import Cast
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
@@ -7,6 +9,7 @@ from rest_framework import serializers
 from openproduct.producttypen.models import FacetType, FacetWaarde
 
 from ...utils.drf_validators import NestedObjectsValidator
+from ...utils.serializers import NestedCreateRequiredFieldsMixin
 from .validators import (
     FacetTypeMeervoudigValidator,
     FacetTypeVerplichtValidator,
@@ -25,7 +28,9 @@ class BaseFacetWaardeSerializer(serializers.ModelSerializer):
         ]
 
 
-class NestedFacetWaardeSerializer(BaseFacetWaardeSerializer):
+class NestedFacetWaardeSerializer(
+    NestedCreateRequiredFieldsMixin, BaseFacetWaardeSerializer
+):
     uuid = serializers.UUIDField(required=False)
 
 
@@ -101,10 +106,16 @@ class FacetTypeSerializer(BaseFacetTypeSerializer):
         ]
 
     def validate_waarden(self, waarden):
+        # waarden without a naam (partial update) keep their current naam.
+        current_namen = (
+            dict(self.instance.waarden.values_list("uuid", "naam"))
+            if self.instance
+            else {}
+        )
         namen = set()
         errors = []
         for idx, waarde in enumerate(waarden):
-            naam = waarde.get("naam")
+            naam = waarde.get("naam", current_namen.get(waarde.get("uuid")))
             if naam is None:
                 continue
 
@@ -134,10 +145,18 @@ class FacetTypeSerializer(BaseFacetTypeSerializer):
         facet_type = super().update(instance, validated_data)
 
         if waarden is not None:
-            current_waarde_uuids = set(
-                facet_type.waarden.values_list("uuid", flat=True)
-            )
-            seen_waarde_uuids = set()
+            kept_uuids = {waarde["uuid"] for waarde in waarden if "uuid" in waarde}
+            facet_type.waarden.exclude(uuid__in=kept_uuids).delete()
+
+            # temporarily give renamed waarden a unique name so names can be swapped
+            # without violating the facet_type/naam unique constraint.
+            facet_type.waarden.filter(
+                uuid__in={
+                    waarde["uuid"]
+                    for waarde in waarden
+                    if "uuid" in waarde and "naam" in waarde
+                }
+            ).update(naam=Cast("uuid", output_field=CharField()))
 
             for waarde in waarden:
                 waarde_uuid = waarde.pop("uuid", None)
@@ -145,16 +164,9 @@ class FacetTypeSerializer(BaseFacetTypeSerializer):
                     NestedFacetWaardeSerializer().create(
                         waarde | {"facet_type": facet_type}
                     )
-
                 else:
-                    existing_waarde = FacetWaarde.objects.get(uuid=waarde_uuid)
                     NestedFacetWaardeSerializer(partial=self.partial).update(
-                        existing_waarde, waarde
+                        facet_type.waarden.get(uuid=waarde_uuid), waarde
                     )
-                    seen_waarde_uuids.add(waarde_uuid)
-
-            facet_type.waarden.filter(
-                uuid__in=(current_waarde_uuids - seen_waarde_uuids)
-            ).delete()
 
         return facet_type

@@ -2,7 +2,6 @@
     'use strict';
 
     const TYPE_SELECTOR = 'select[name$="-facet_type"]';
-    const DEFAULT_WAARDEN_URL = '/admin/producttypen/producttype/facet-waarden/';
 
     function getWaardeSelect(typeSelect) {
         const prefix = typeSelect.name.replace(/facet_type$/, '');
@@ -23,7 +22,7 @@
 
     async function syncWaarden(typeSelect) {
         const waardeSelect = getWaardeSelect(typeSelect);
-        if (!waardeSelect) return;
+        if (!waardeSelect || !typeSelect.dataset.waardenUrl) return;
 
         const token = (typeSelect._syncToken = (typeSelect._syncToken || 0) + 1);
 
@@ -32,10 +31,7 @@
             return;
         }
 
-        const url = new URL(
-            typeSelect.dataset.waardenUrl || DEFAULT_WAARDEN_URL,
-            window.location.origin
-        );
+        const url = new URL(typeSelect.dataset.waardenUrl, window.location.origin);
         url.searchParams.set('facet_type', typeSelect.value);
 
         waardeSelect.disabled = true;

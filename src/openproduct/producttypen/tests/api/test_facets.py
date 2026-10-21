@@ -379,6 +379,101 @@ class TestFacetTypeViewSet(BaseApiTestCase):
         waarde.refresh_from_db()
         self.assertNotIn(waarde.naam, ("a", "b"))
 
+    def test_update_facettype_replacing_waarde_with_same_naam(self):
+        facet_type = FacetTypeFactory.create()
+        waarde = FacetWaardeFactory.create(facet_type=facet_type, naam="a")
+
+        response = self.client.patch(
+            self._detail_url(facet_type), {"waarden": [{"naam": "a"}]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(facet_type.waarden.count(), 1)
+        self.assertNotEqual(facet_type.waarden.get().uuid, waarde.uuid)
+
+    def test_update_facettype_swapping_waarde_namen(self):
+        facet_type = FacetTypeFactory.create()
+        a = FacetWaardeFactory.create(facet_type=facet_type, naam="a")
+        b = FacetWaardeFactory.create(facet_type=facet_type, naam="b")
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {
+                "waarden": [
+                    {"uuid": a.uuid, "naam": "b"},
+                    {"uuid": b.uuid, "naam": "a"},
+                ]
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        a.refresh_from_db()
+        b.refresh_from_db()
+        self.assertEqual(a.naam, "b")
+        self.assertEqual(b.naam, "a")
+
+    def test_update_facettype_creating_waarde_with_naam_of_renamed_waarde(self):
+        facet_type = FacetTypeFactory.create()
+        waarde = FacetWaardeFactory.create(facet_type=facet_type, naam="a")
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {"waarden": [{"naam": "a"}, {"uuid": waarde.uuid, "naam": "b"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        waarde.refresh_from_db()
+        self.assertEqual(waarde.naam, "b")
+        self.assertEqual(
+            set(facet_type.waarden.values_list("naam", flat=True)), {"a", "b"}
+        )
+
+    def test_partial_update_facettype_keeping_waarde_naam(self):
+        facet_type = FacetTypeFactory.create()
+        waarde = FacetWaardeFactory.create(facet_type=facet_type, naam="a")
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {"waarden": [{"uuid": waarde.uuid, "actief": False}, {"naam": "b"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        waarde.refresh_from_db()
+        self.assertEqual(waarde.naam, "a")
+        self.assertFalse(waarde.actief)
+        self.assertEqual(facet_type.waarden.count(), 2)
+
+    def test_partial_update_facettype_with_new_waarde_without_naam(self):
+        facet_type = FacetTypeFactory.create()
+
+        response = self.client.patch(
+            self._detail_url(facet_type), {"waarden": [{"naam": "a"}, {}]}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            get_validation_errors(response, "waarden.1.naam")["code"], "required"
+        )
+        self.assertFalse(facet_type.waarden.exists())
+
+    def test_partial_update_facettype_with_naam_of_waarde_without_naam(self):
+        facet_type = FacetTypeFactory.create()
+        a = FacetWaardeFactory.create(facet_type=facet_type, naam="a")
+        b = FacetWaardeFactory.create(facet_type=facet_type, naam="b")
+
+        response = self.client.patch(
+            self._detail_url(facet_type),
+            {"waarden": [{"uuid": a.uuid}, {"uuid": b.uuid, "naam": "a"}]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            get_validation_errors(response, "waarden")["reason"],
+            _("Dubbele naam: {} op index {}.").format("a", 1),
+        )
+        b.refresh_from_db()
+        self.assertEqual(b.naam, "b")
+
     def test_disable_meervoudig_toegestaan(self):
         facet_type = FacetTypeFactory.create(waarden=2, meervoudig_toegestaan=True)
         producttype = ProductTypeFactory.create()

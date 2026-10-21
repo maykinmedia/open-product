@@ -1,11 +1,12 @@
+from django.db import transaction
 from django.db.models import Count, Prefetch
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
-from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -136,19 +137,17 @@ class ThemaViewSet(AuditTrailViewSetMixin, ModelViewSet):
                 )
 
         if errors:
-            return Response(
-                data={"producttypen": errors}, status=status.HTTP_400_BAD_REQUEST
-            )
+            raise ValidationError({"producttypen": errors})
         try:
-            return super().destroy(request, *args, **kwargs)
+            with transaction.atomic():
+                return super().destroy(request, *args, **kwargs)
         except ProtectedError:
-            return Response(
-                data={
+            raise ValidationError(
+                {
                     "sub_themas": [
                         _(
                             "Dit thema kan niet worden verwijderd omdat er gerelateerde sub_themas zijn."
                         )
                     ]
-                },
-                status=status.HTTP_400_BAD_REQUEST,
+                }
             )

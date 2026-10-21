@@ -12,13 +12,16 @@ from vng_api_common.utils import get_help_text
 
 from ...utils.drf_validators import NestedObjectsValidator
 from ...utils.fields import UUIDRelatedField
+from ...utils.serializers import NestedCreateRequiredFieldsMixin
 from ..models import Prijs, PrijsOptie, ProductType
 from ..models.dmn_config import DmnConfig
 from ..models.prijs import PrijsRegel
 from .validators import PrijsOptieRegelValidator
 
 
-class PrijsOptieSerializer(serializers.ModelSerializer):
+class PrijsOptieSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     uuid = serializers.UUIDField(required=False)
 
     class Meta:
@@ -26,7 +29,9 @@ class PrijsOptieSerializer(serializers.ModelSerializer):
         fields = ("uuid", "bedrag", "beschrijving")
 
 
-class PrijsRegelSerializer(serializers.ModelSerializer):
+class PrijsRegelSerializer(
+    NestedCreateRequiredFieldsMixin, serializers.ModelSerializer
+):
     uuid = serializers.UUIDField(required=False)
 
     tabel_endpoint = serializers.SlugRelatedField(

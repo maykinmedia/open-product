@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.urls import path, reverse
 from django.utils.translation import gettext as _
@@ -28,6 +29,7 @@ from .link import LinkInline
 from .organisatie import ProductTypeOrganisatieInline
 from .parameter import ParameterInline
 from .proces import ProcesInline
+from .subtype import SubTypeInline
 from .verzoektype import VerzoekTypeInline
 from .zaaktype import ZaakTypeInline
 
@@ -125,6 +127,7 @@ class ProductTypeAdmin(
         ExterneCodeInline,
         ParameterInline,
         ActieInline,
+        SubTypeInline,
         ProcesInline,
         ZaakTypeInline,
         VerzoekTypeInline,
@@ -175,6 +178,9 @@ class ProductTypeAdmin(
         return custom + super().get_urls()
 
     def facet_waarden_view(self, request):
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+
         facet_type_id = request.GET.get("facet_type", "")
         warden_list = []
         if facet_type_id.isdigit():
