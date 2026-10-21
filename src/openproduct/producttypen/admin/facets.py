@@ -117,6 +117,9 @@ class FacetWaardeAdmin(AdminAuditLogMixin, CompareVersionAdmin):
     actions = []
     list_select_related = ("facet_type",)
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
     def delete_view(self, request, object_id, extra_context=None):
         obj = self.get_object(request, unquote(object_id))
         if obj is not None:

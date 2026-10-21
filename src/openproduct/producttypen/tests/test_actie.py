@@ -29,3 +29,41 @@ class TestActie(TestCase):
                 _("Method is alleen toegestaan (en verplicht) bij een 'api' actie"),
             ):
                 actie.full_clean()
+
+    def test_dmn_fields(self):
+        with self.subTest("DMN with config and tabel id"):
+            ActieFactory(type=ActieTypeChoices.DMN).full_clean()
+
+        with self.subTest("DMN without tabel id"):
+            actie = ActieFactory(type=ActieTypeChoices.DMN, dmn_tabel_id="")
+
+            with self.assertRaisesMessage(
+                ValidationError,
+                _(
+                    "Dmn velden zijn alleen toegestaan (en verplicht) bij een 'dmn' actie"
+                ),
+            ):
+                actie.full_clean()
+
+        for type in (ActieTypeChoices.FORMULIER, ActieTypeChoices.API):
+            for field, kwargs in (
+                ("dmn_config", {"dmn_tabel_id": ""}),
+                ("dmn_tabel_id", {"dmn_config": None}),
+            ):
+                with self.subTest(f"{type} with {field}"):
+                    actie = ActieFactory(
+                        type=type,
+                        method=ActieMethodChoices.POST
+                        if type == ActieTypeChoices.API
+                        else "",
+                        direct_url="http://example.com",
+                        **kwargs,
+                    )
+
+                    with self.assertRaisesMessage(
+                        ValidationError,
+                        _(
+                            "Dmn velden zijn alleen toegestaan (en verplicht) bij een 'dmn' actie"
+                        ),
+                    ):
+                        actie.full_clean()

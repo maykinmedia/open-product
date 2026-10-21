@@ -88,7 +88,9 @@ class ProductType(BasePublishableModel, TranslatableModel):
         verbose_name=_("toegestane statussen"),
         default=list,
         blank=True,
-        help_text=_("toegestane statussen voor producten van dit type."),
+        help_text=_(
+            "toegestane statussen voor producten van dit type. De status `initieel` is altijd toegestaan"
+        ),
     )
 
     keywords = ArrayField(

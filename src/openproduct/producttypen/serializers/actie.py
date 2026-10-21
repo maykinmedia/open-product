@@ -18,7 +18,7 @@ from openproduct.utils.fields import UUIDRelatedField
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "actie response (formulier) zonder mapping",
+            "actie response (formulier)",
             value={
                 "uuid": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
@@ -94,7 +94,7 @@ from openproduct.utils.fields import UUIDRelatedField
             response_only=True,
         ),
         OpenApiExample(
-            "actie request (formulier) zonder mapping",
+            "actie request (formulier)",
             value={
                 "producttype_uuid": "95792000-d57f-4d3a-b14c-c4c7aa964907",
                 "naam": "Parkeervergunning opzegging",
@@ -181,21 +181,26 @@ class ActieSerializer(serializers.ModelSerializer):
         write_only=True,
         help_text=_("tabel endpoint van een bestaande dmn config."),
         required=False,
+        allow_null=True,
     )
 
     direct_url = serializers.URLField(
         write_only=True,
         help_text=get_help_text("producttypen.Actie", "direct_url"),
         required=False,
+        allow_blank=True,
     )
 
     dmn_tabel_id = serializers.CharField(
         write_only=True,
         help_text=get_help_text("producttypen.Actie", "dmn_tabel_id"),
         required=False,
+        allow_blank=True,
     )
 
-    url = serializers.SerializerMethodField(help_text=_("De url naar de dmn tabel."))
+    url = serializers.SerializerMethodField(
+        help_text=_("De url van de actie: het formulier, de api of de dmn tabel.")
+    )
 
     @extend_schema_field(OpenApiTypes.URI)
     def get_url(self, obj):

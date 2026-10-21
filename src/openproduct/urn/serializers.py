@@ -88,7 +88,7 @@ class UrnMappingMixin:
     ) -> tuple[str, str] | tuple[None, None]:
         sep = ":uuid:" if is_urn else "/"
 
-        value = attrs.get(field) or getattr(self.instance, field, None)
+        value = attrs[field] if field in attrs else getattr(self.instance, field, None)
 
         if not value:
             return None, None

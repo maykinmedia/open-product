@@ -55,6 +55,14 @@ from openproduct.utils.views import TranslatableViewSetMixin
 logger = structlog.stdlib.get_logger(__name__)
 
 
+# `initieel` is always allowed so it is not part of the toegestane statussen
+TOEGESTANE_STATUSSEN_CHOICES = [
+    choice
+    for choice in ProductStateChoices.choices
+    if choice[0] != ProductStateChoices.INITIEEL
+]
+
+
 class ProductTypeFilterSet(FilterSet):
     regex = r"^\[([^:\[\]]+):([^:\[\]]+)\]$"  # [key:value] where the key and value cannot contain `[`, `]` or `:`
 
@@ -110,7 +118,7 @@ class ProductTypeFilterSet(FilterSet):
     toegestane_statussen = ChoiceArrayFilter(
         field_name="toegestane_statussen",
         lookup_expr="overlap",
-        choices=ProductStateChoices.choices,
+        choices=TOEGESTANE_STATUSSEN_CHOICES,
         help_text=get_help_text("producttypen.ProductType", "toegestane_statussen"),
     )
 
@@ -173,7 +181,7 @@ class ProductTypeFilterSet(FilterSet):
             queryset = queryset.filter(
                 facetwaarden__facet_type__naam=facet_type, facetwaarden__naam=waarde
             )
-        return queryset
+        return queryset.distinct()
 
     themas__naam = django_filters.CharFilter(
         field_name="themas__naam",
@@ -289,13 +297,13 @@ class ContentFilterSet(FilterSet):
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "enum": [choice[0] for choice in ProductStateChoices.choices],
+                        "enum": [choice[0] for choice in TOEGESTANE_STATUSSEN_CHOICES],
                     },
                 },
                 location=OpenApiParameter.QUERY,
                 description="{}\n\n{}".format(
                     get_help_text("producttypen.ProductType", "toegestane_statussen"),
-                    build_choice_description_list(ProductStateChoices.choices),
+                    build_choice_description_list(TOEGESTANE_STATUSSEN_CHOICES),
                 ),
                 explode=False,
                 style="form",
