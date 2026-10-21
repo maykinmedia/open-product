@@ -10,7 +10,7 @@ from rest_framework.serializers import Serializer
 from .models import BaseModel
 
 
-class NestedCreateRequiredFieldsMixin:
+class NestedCreateRequiredFieldsMixin(serializers.Serializer):
     """
     A partial update of the root serializer makes all nested fields optional. New nested
     objects (without uuid) are created from the given fields, so they still need all
@@ -37,15 +37,19 @@ class NestedListSerializer(serializers.ListSerializer):
     """
 
     def run_child_validation(self, data):
-        self.child.instance = self._get_existing_object(data)
+        child = self.child
+        if not isinstance(child, serializers.BaseSerializer):
+            return super().run_child_validation(data)
+
+        child.instance = self._get_existing_object(data)
         try:
             return super().run_child_validation(data)
         finally:
-            self.child.instance = None
+            child.instance = None
 
     def _get_existing_object(self, data):
         parent = self.parent.instance if self.parent else None
-        if parent is None or not isinstance(data, dict):
+        if parent is None or self.source is None or not isinstance(data, dict):
             return None
 
         try:

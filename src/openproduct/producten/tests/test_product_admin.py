@@ -497,6 +497,7 @@ class TestProductSubtypenView(TestCase):
             )
 
 
+@tag("playwright")
 @disable_admin_mfa()
 class TestProductSubtypeAdmin(E2ETestCase):
     def setUp(self):
