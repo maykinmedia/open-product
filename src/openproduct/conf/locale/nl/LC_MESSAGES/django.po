@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-26 16:48+0100\n"
+"POT-Creation-Date: 2026-10-16 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,91 +17,82 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/models.py:19
+#: accounts/models.py:21
 msgid "username"
 msgstr "gebruikersnaam"
 
-#: accounts/models.py:23
+#: accounts/models.py:25
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr ""
 "Vereist. 150 tekens of minder. Alleen letters, cijfers en @/,/+/-/_ tekens "
 "zijn toegestaan."
 
-#: accounts/models.py:27
+#: accounts/models.py:29
 msgid "A user with that username already exists."
 msgstr "Een gebruiker met deze gebruikersnaam bestaat al."
 
-#: accounts/models.py:30
+#: accounts/models.py:32
 msgid "first name"
 msgstr "voornaam"
 
-#: accounts/models.py:31
+#: accounts/models.py:33
 msgid "last name"
 msgstr "achternaam"
 
-#: accounts/models.py:32
+#: accounts/models.py:34
 msgid "email address"
 msgstr "e-mailadres"
 
-#: accounts/models.py:34
+#: accounts/models.py:36
 msgid "staff status"
 msgstr "stafstatus"
 
-#: accounts/models.py:36
+#: accounts/models.py:38
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: accounts/models.py:39
+#: accounts/models.py:41
 msgid "active"
 msgstr "Bepaalt of de gebruiker zich op deze beheerwebsite kan aanmelden."
 
-#: accounts/models.py:42
+#: accounts/models.py:44
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: accounts/models.py:46
+#: accounts/models.py:48
 msgid "date joined"
 msgstr "datum toegetreden"
 
-#: accounts/models.py:54
+#: accounts/models.py:56
 msgid "user"
 msgstr "gebruiker"
 
-#: accounts/models.py:55
+#: accounts/models.py:57
 msgid "users"
 msgstr "gebruikers"
 
-#: accounts/tests/test_oidc.py:39 accounts/tests/test_oidc.py:55
-#: accounts/tests/test_oidc.py:71 accounts/tests/test_oidc.py:93
-#: accounts/tests/test_oidc.py:134 accounts/tests/test_oidc.py:165
+#: accounts/tests/test_oidc.py:58 accounts/tests/test_oidc.py:74
+#: accounts/tests/test_oidc.py:90 accounts/tests/test_oidc.py:113
+#: accounts/tests/test_oidc.py:154 accounts/tests/test_oidc.py:185
 #: templates/maykin_2fa/login.html:9
 msgid "Login with organization account"
 msgstr "Login met organisatie account"
 
-#: accounts/utils.py:18
-msgid "You need to be superuser to create other superusers."
-msgstr ""
-"U dient een supergebruiker te zijn om andere supergebruikers aan te maken."
-
-#: accounts/utils.py:44
-msgid "You cannot create or update a user with more permissions than yourself."
-msgstr "U kunt een gebruiker niet meer rechten geven dan u zelf heeft."
-
-#: conf/base.py:218
+#: conf/base.py:292
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: conf/base.py:219
+#: conf/base.py:293
 msgid "English"
 msgstr "Engels"
 
-#: conf/base.py:240
+#: conf/base.py:314
 msgid "A page number within the paginated result set."
 msgstr "Een pagina binnen de gepagineerde set resultaten."
 
-#: conf/base.py:241
+#: conf/base.py:315
 msgid "Number of results to return per page."
 msgstr "Het aantal resultaten terug te geven per pagina."
 
@@ -124,7 +115,8 @@ msgstr ""
 #: locaties/models/contact.py:24 locaties/models/locatie.py:12
 #: producten/models/product.py:41 producttypen/models/actie.py:17
 #: producttypen/models/dmn_config.py:12 producttypen/models/externe_code.py:13
-#: producttypen/models/jsonschema.py:17 producttypen/models/link.py:21
+#: producttypen/models/facets.py:10 producttypen/models/facets.py:58
+#: producttypen/models/jsonschema.py:20 producttypen/models/link.py:21
 #: producttypen/models/parameter.py:13 producttypen/models/thema.py:16
 #: producttypen/models/upn.py:17
 msgid "naam"
@@ -195,7 +187,7 @@ msgid "Organisaties"
 msgstr ""
 
 #: locaties/models/organisatie.py:17 producttypen/models/externe_code.py:20
-#: producttypen/models/producttype.py:45
+#: producttypen/models/producttype.py:46
 msgid "code"
 msgstr ""
 
@@ -205,30 +197,21 @@ msgstr ""
 
 #: locaties/tests/api/test_contact.py:41 locaties/tests/api/test_locatie.py:37
 #: locaties/tests/api/test_organisatie.py:43
-#: locaties/tests/api/test_organisatie.py:46
+#: locaties/tests/api/test_organisatie.py:48
 #: producten/tests/api/test_product.py:89
-#: producten/tests/api/test_product.py:92
+#: producten/tests/api/test_product.py:94
 #: producttypen/tests/api/test_actie.py:46
-#: producttypen/tests/api/test_actie.py:49
-#: producttypen/tests/api/test_actie.py:52
-#: producttypen/tests/api/test_actie.py:55
-#: producttypen/tests/api/test_bestand.py:55
-#: producttypen/tests/api/test_content.py:49
-#: producttypen/tests/api/test_jsonschema.py:43
-#: producttypen/tests/api/test_jsonschema.py:46
-#: producttypen/tests/api/test_link.py:42
-#: producttypen/tests/api/test_link.py:45
-#: producttypen/tests/api/test_link.py:48
+#: producttypen/tests/api/test_actie.py:51
+#: producttypen/tests/api/test_bestand.py:60
+#: producttypen/tests/api/test_content.py:50
+#: producttypen/tests/api/test_jsonschema.py:48
+#: producttypen/tests/api/test_link.py:44
+#: producttypen/tests/api/test_link.py:52
+#: producttypen/tests/api/test_link.py:60
 #: producttypen/tests/api/test_prijs.py:57
-#: producttypen/tests/api/test_prijs.py:60
-#: producttypen/tests/api/test_producttype.py:100
-#: producttypen/tests/api/test_producttype.py:103
-#: producttypen/tests/api/test_producttype.py:106
-#: producttypen/tests/api/test_producttype.py:109
-#: producttypen/tests/api/test_producttype.py:112
-#: producttypen/tests/api/test_thema.py:43
-#: producttypen/tests/api/test_thema.py:46
-#: producttypen/tests/api/test_thema.py:49
+#: producttypen/tests/api/test_prijs.py:64
+#: producttypen/tests/test_facets_admin.py:101
+#: producttypen/tests/test_facets_admin.py:116
 msgid "This field is required."
 msgstr "Dit veld is verplicht."
 
@@ -274,7 +257,7 @@ msgstr "{name} ({identifier}, lokale gebruikers-ID: {django_id})"
 msgid "affected object"
 msgstr "betrokken object"
 
-#: logging/admin_tools.py:159
+#: logging/admin_tools.py:157
 msgid "Show logs"
 msgstr "Toon logs"
 
@@ -320,9 +303,9 @@ msgstr "(object niet bekend)"
 msgid "%(timestamp)s | %(user)s | <code>%(event)s</code>: %(object)s."
 msgstr "%(timestamp)s | %(user)s | <code>%(event)s</code>: %(object)s."
 
-#: producten/admin/eigenaar.py:19 producten/serializers/product.py:224
-#: producten/tests/api/test_product.py:503
-#: producten/tests/api/test_product.py:722
+#: producten/admin/eigenaar.py:19 producten/serializers/product.py:247
+#: producten/tests/api/test_product.py:551
+#: producten/tests/api/test_product.py:778
 msgid "Er is minimaal één eigenaar vereist."
 msgstr ""
 
@@ -330,7 +313,7 @@ msgstr ""
 msgid "status"
 msgstr ""
 
-#: producten/admin/product.py:139 producttypen/models/actie.py:62
+#: producten/admin/product.py:139 producttypen/models/actie.py:78
 msgid "acties"
 msgstr ""
 
@@ -418,7 +401,7 @@ msgid "Geeft aan of het product getoond kan worden."
 msgstr ""
 
 #: producten/models/product.py:35 producttypen/models/actie.py:24
-#: producttypen/models/link.py:15 producttypen/models/producttype.py:181
+#: producttypen/models/link.py:15 producttypen/models/producttype.py:190
 msgid "Producttype"
 msgstr ""
 
@@ -494,40 +477,41 @@ msgstr ""
 #: producten/models/product.py:106
 msgid ""
 "Dataobject van dit product. Wordt gevalideerd met het `dataobject_schema` "
-"uit het producttype."
+"uit het producttype. De inhoud kan worden gepubliceerd op overheidsportalen "
+"en mag GEEN interne informatie bevatten die niet bestemd is voor de eigenaar."
 msgstr ""
 
-#: producten/models/product.py:112
+#: producten/models/product.py:113
 msgid "aanvraag zaak urn"
 msgstr ""
 
-#: producten/models/product.py:114
+#: producten/models/product.py:115
 msgid ""
-"De zaak waaruit dit product is ontstaan. (<organisatie>:<systeem>:"
-"<component>:<resource>:<identificatie>)"
-msgstr ""
-
-#: producten/models/product.py:121
-msgid "aanvraag zaak url"
+"De zaak waaruit dit product is ontstaan. (`<organisatie>:<systeem>:"
+"<component>:<resource>:<identificatie>`)"
 msgstr ""
 
 #: producten/models/product.py:122
+msgid "aanvraag zaak url"
+msgstr ""
+
+#: producten/models/product.py:123
 msgid "De zaak waaruit dit product is ontstaan."
 msgstr ""
 
-#: producten/models/product.py:128
+#: producten/models/product.py:129
 msgid "Product"
 msgstr ""
 
-#: producten/models/product.py:129
+#: producten/models/product.py:130
 msgid "Producten"
 msgstr ""
 
-#: producten/models/product.py:140
+#: producten/models/product.py:152
 msgid "Status is naar ACTIEF gezet vanwege de start datum."
 msgstr ""
 
-#: producten/models/product.py:147
+#: producten/models/product.py:159
 msgid "Status is naar VERLOPEN gezet vanwege de eind datum."
 msgstr ""
 
@@ -551,7 +535,7 @@ msgstr ""
 msgid "Ongeldig bsn number."
 msgstr ""
 
-#: producten/models/validators.py:30 producten/tests/api/test_product.py:463
+#: producten/models/validators.py:30 producten/tests/api/test_product.py:525
 #: producten/tests/test_eigenaar.py:46 producten/tests/test_eigenaar.py:72
 msgid ""
 "Een eigenaar moet een bsn (en/of klantnummer) of een kvk nummer (met of "
@@ -575,31 +559,18 @@ msgid ""
 "als de start datum."
 msgstr ""
 
-#: producten/models/validators.py:80 producten/tests/api/test_product.py:1628
-#: producten/tests/api/test_product.py:1699 producten/tests/test_product.py:164
+#: producten/models/validators.py:80 producten/tests/api/test_product.py:1755
+#: producten/tests/api/test_product.py:1811 producten/tests/test_product.py:164
 msgid ""
 "De start datum van het product kan niet worden gezet omdat de status ACTIEF "
 "niet is toegestaan op het producttype."
 msgstr ""
 
-#: producten/models/validators.py:94 producten/tests/api/test_product.py:1641
-#: producten/tests/api/test_product.py:1712 producten/tests/test_product.py:177
+#: producten/models/validators.py:94 producten/tests/api/test_product.py:1762
+#: producten/tests/api/test_product.py:1818 producten/tests/test_product.py:177
 msgid ""
 "De eind datum van het product kan niet worden gezet omdat de status VERLOPEN "
 "niet is toegestaan op het producttype."
-msgstr ""
-
-#: producten/models/validators.py:111 producten/tests/api/test_product.py:289
-#: producten/tests/test_product_admin.py:166
-msgid ""
-"Het verbruiksobject komt niet overeen met het schema gedefinieerd op het "
-"producttype."
-msgstr ""
-
-#: producten/models/validators.py:125 producten/tests/test_product_admin.py:261
-msgid ""
-"Het dataobject komt niet overeen met het schema gedefinieerd op het "
-"producttype."
 msgstr ""
 
 #: producten/models/zaak.py:14
@@ -614,85 +585,107 @@ msgstr ""
 msgid "Zaken"
 msgstr ""
 
-#: producten/serializers/product.py:45
-#: producttypen/serializers/producttype.py:341
+#: producten/serializers/product.py:46
+#: producttypen/serializers/producttype.py:372
 #: producttypen/serializers/thema.py:26
 msgid "Geeft aan of het producttype getoond kan worden."
 msgstr ""
 
-#: producten/serializers/product.py:231
+#: producten/serializers/product.py:56
+#: producttypen/serializers/producttype.py:368
+#: producttypen/serializers/thema.py:36
+msgid "De huidige taal van het producttype."
+msgstr ""
+
+#: producten/serializers/product.py:254
 msgid "Er bestaat al een document met de urn {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:237
+#: producten/serializers/product.py:260
 msgid "Er bestaat al een document met de url {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:246
+#: producten/serializers/product.py:269
 msgid "Er bestaat al een zaak met de urn {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:252
+#: producten/serializers/product.py:275
 msgid "Er bestaat al een zaak met de url {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:261
+#: producten/serializers/product.py:284
 msgid "Er bestaat al een taak met de urn {} voor dit Product."
 msgstr ""
 
-#: producten/serializers/product.py:267
+#: producten/serializers/product.py:290
 msgid "Er bestaat al een taak met de url {} voor dit Product."
 msgstr ""
 
-#: producten/tests/api/test_product.py:409
-#: producten/tests/api/test_product.py:706
-msgid "Status 'Actief' is niet toegestaan voor het producttype {}."
+#: producten/tests/api/test_product.py:170
+msgid "Status 'None' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product.py:821
+#: producten/tests/api/test_product.py:184
+#: producttypen/tests/api/test_producttype.py:283
+msgid "\"in aanvraag\" is een ongeldige keuze."
+msgstr ""
+
+#: producten/tests/api/test_product.py:318
+msgid "123 is not of type 'string'"
+msgstr ""
+
+#: producten/tests/api/test_product.py:343
+msgid "'not-an-email' is not a 'email'"
+msgstr ""
+
+#: producten/tests/api/test_product.py:476
+#: producten/tests/api/test_product.py:768
+msgid "Status 'actief' is niet toegestaan voor het producttype {}."
+msgstr ""
+
+#: producten/tests/api/test_product.py:878
 msgid "Eigenaar uuid {} op index 0 is niet onderdeel van het Product object."
 msgstr ""
 
-#: producten/tests/api/test_product.py:850
+#: producten/tests/api/test_product.py:908
 msgid "Eigenaar uuid {} op index 0 bestaat niet."
 msgstr ""
 
-#: producten/tests/api/test_product.py:879
-#: producttypen/tests/api/test_prijs.py:651
-#: producttypen/tests/api/test_prijs.py:688
-#: producttypen/tests/api/test_prijs.py:867
-#: producttypen/tests/api/test_prijs.py:928
-#: producttypen/tests/api/test_producttype.py:432
-#: producttypen/tests/api/test_producttype.py:438
-#: producttypen/tests/api/test_producttype.py:842
-#: producttypen/tests/api/test_producttype.py:848
-#: producttypen/tests/api/test_producttype.py:1189
-#: producttypen/tests/api/test_thema.py:120
-#: producttypen/tests/api/test_thema.py:206
-#: producttypen/tests/api/test_thema.py:323
+#: producten/tests/api/test_product.py:938
+#: producttypen/tests/api/test_prijs.py:599
+#: producttypen/tests/api/test_prijs.py:633
+#: producttypen/tests/api/test_prijs.py:807
+#: producttypen/tests/api/test_prijs.py:872
+#: producttypen/tests/api/test_producttype.py:478
+#: producttypen/tests/api/test_producttype.py:486
+#: producttypen/tests/api/test_producttype.py:953
+#: producttypen/tests/api/test_producttype.py:961
+#: producttypen/tests/api/test_producttype.py:1311
+#: producttypen/tests/api/test_thema.py:119
+#: producttypen/tests/api/test_thema.py:297
 msgid "Dubbel uuid: {} op index 1."
 msgstr ""
 
-#: producten/tests/api/test_product.py:1615
-#: producten/tests/api/test_product.py:1686 producten/tests/test_product.py:189
-msgid "Status 'Gereed' is niet toegestaan voor het producttype {}."
+#: producten/tests/api/test_product.py:1748
+#: producten/tests/api/test_product.py:1804 producten/tests/test_product.py:189
+msgid "Status 'gereed' is niet toegestaan voor het producttype {}."
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:636
+#: producten/tests/api/test_product_filters.py:930
 msgid ""
 "Filter '{}' moet de format 'key__operator__value' hebben, komma's kunnen "
 "alleen in de `waarde` worden toegevoegd"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:658
+#: producten/tests/api/test_product_filters.py:951
 msgid "Filter '{}' heeft niet de format 'key__operator__waarde'"
 msgstr ""
 
-#: producten/tests/api/test_product_filters.py:676
+#: producten/tests/api/test_product_filters.py:969
 msgid "operator `{}` is niet bekend/ondersteund"
 msgstr ""
 
-#: producten/viewsets/product.py:43
+#: producten/viewsets/product.py:49
 msgid ""
 "\n"
 "Een json filter parameter heeft de format `key__operator__waarde`.\n"
@@ -719,43 +712,51 @@ msgid ""
 "B&objectdata_attr=zone__exact__B`\n"
 msgstr ""
 
-#: producten/viewsets/product.py:75 producten/viewsets/product.py:92
-#: producttypen/viewsets/actie.py:24 producttypen/viewsets/bestand.py:30
-#: producttypen/viewsets/link.py:24 producttypen/viewsets/prijs.py:25
-#: producttypen/viewsets/producttype.py:84
+#: producten/viewsets/product.py:81 producten/viewsets/product.py:87
+#: producten/viewsets/product.py:104 producttypen/viewsets/actie.py:24
+#: producttypen/viewsets/actie.py:30 producttypen/viewsets/bestand.py:30
+#: producttypen/viewsets/bestand.py:36 producttypen/viewsets/content.py:32
+#: producttypen/viewsets/link.py:24 producttypen/viewsets/link.py:30
+#: producttypen/viewsets/prijs.py:25 producttypen/viewsets/prijs.py:31
+#: producttypen/viewsets/producttype.py:85
+#: producttypen/viewsets/producttype.py:91
 msgid "De Nederlandse naam van het producttype"
 msgstr ""
 
-#: producten/viewsets/product.py:126 producttypen/viewsets/producttype.py:103
+#: producten/viewsets/product.py:138 producttypen/viewsets/producttype.py:110
 msgid "Lijst van thema namen waarop kan worden gezocht."
 msgstr ""
 
-#: producten/viewsets/product.py:132 producttypen/viewsets/producttype.py:109
+#: producten/viewsets/product.py:144 producttypen/viewsets/producttype.py:116
 msgid "Lijst van thema uuids waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:170
+#: producttypen/admin/facets.py:21 producttypen/models/facets.py:38
+#: producttypen/models/facets.py:55
+msgid "facettype"
+msgstr ""
+
+#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:198
 msgid "Ja"
 msgstr ""
 
-#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:170
+#: producttypen/admin/filters.py:13 producttypen/admin/producttype.py:198
 msgid "Nee"
 msgstr ""
 
-#: producttypen/admin/producttype.py:77 producttypen/models/producttype.py:118
+#: producttypen/admin/producttype.py:79 producttypen/models/producttype.py:119
 #: producttypen/models/thema.py:44
 msgid "thema's"
 msgstr ""
 
-#: producttypen/admin/producttype.py:80
+#: producttypen/admin/producttype.py:82
 msgid "Thema"
 msgstr ""
 
-#: producttypen/admin/producttype.py:86
-#: producttypen/serializers/producttype.py:469
-#: producttypen/tests/api/test_producttype.py:201
-#: producttypen/tests/api/test_producttype.py:773
-#: producttypen/tests/api/test_producttype.py:1207
+#: producttypen/admin/producttype.py:88
+#: producttypen/serializers/producttype.py:509
+#: producttypen/tests/api/test_producttype.py:220
+#: producttypen/tests/api/test_producttype.py:1325
 msgid "Er is minimaal één thema vereist."
 msgstr ""
 
@@ -775,31 +776,39 @@ msgstr ""
 msgid "Het producttype waarbij deze actie hoort."
 msgstr ""
 
-#: producttypen/models/actie.py:32 producttypen/models/prijs.py:92
+#: producttypen/models/actie.py:31 producttypen/models/dmn_config.py:18
+msgid "url"
+msgstr ""
+
+#: producttypen/models/actie.py:32
+msgid "url naar het formulier van de actie, hierbij is geen dmn nodig."
+msgstr ""
+
+#: producttypen/models/actie.py:38 producttypen/models/prijs.py:92
 msgid "dmn config"
 msgstr ""
 
-#: producttypen/models/actie.py:35 producttypen/models/prijs.py:95
+#: producttypen/models/actie.py:41 producttypen/models/prijs.py:95
 msgid "de dmn engine waar de tabel is gedefinieerd."
 msgstr ""
 
-#: producttypen/models/actie.py:39 producttypen/models/prijs.py:99
+#: producttypen/models/actie.py:47 producttypen/models/prijs.py:99
 msgid "dmn tabel id"
 msgstr ""
 
-#: producttypen/models/actie.py:41 producttypen/models/prijs.py:101
+#: producttypen/models/actie.py:49 producttypen/models/prijs.py:101
 msgid "id van de dmn tabel binnen de dmn instantie."
 msgstr ""
 
-#: producttypen/models/actie.py:45 producttypen/models/prijs.py:105
+#: producttypen/models/actie.py:54 producttypen/models/prijs.py:105
 msgid "mapping"
 msgstr ""
 
-#: producttypen/models/actie.py:48
+#: producttypen/models/actie.py:57
 msgid "De mapping tussen de velden in Open Product & DMN variabele."
 msgstr ""
 
-#: producttypen/models/actie.py:61
+#: producttypen/models/actie.py:77
 msgid "actie"
 msgstr ""
 
@@ -826,76 +835,72 @@ msgstr ""
 msgid "Producttype bestanden"
 msgstr ""
 
-#: producttypen/models/content.py:21
+#: producttypen/models/content.py:23
 msgid "Label"
 msgstr ""
 
-#: producttypen/models/content.py:22
+#: producttypen/models/content.py:24
 msgid "Labels"
 msgstr ""
 
-#: producttypen/models/content.py:38
+#: producttypen/models/content.py:40
 msgid "labels"
 msgstr ""
 
-#: producttypen/models/content.py:41
+#: producttypen/models/content.py:43
 msgid "De labels van dit content element"
 msgstr ""
 
-#: producttypen/models/content.py:45
+#: producttypen/models/content.py:47
 msgid "label"
 msgstr ""
 
-#: producttypen/models/content.py:47
+#: producttypen/models/content.py:49
 msgid "Het producttype van dit content element"
 msgstr ""
 
-#: producttypen/models/content.py:55 producttypen/models/thema.py:43
+#: producttypen/models/content.py:57 producttypen/models/thema.py:43
 msgid "thema"
 msgstr ""
 
-#: producttypen/models/content.py:60
+#: producttypen/models/content.py:62
 msgid "Het thema of subthema van dit content element"
 msgstr ""
 
-#: producttypen/models/content.py:79
+#: producttypen/models/content.py:81
 msgid "content element"
 msgstr ""
 
-#: producttypen/models/content.py:80
+#: producttypen/models/content.py:82
 msgid "content elementen"
 msgstr ""
 
-#: producttypen/models/content.py:104
+#: producttypen/models/content.py:102
 msgid "content"
 msgstr ""
 
-#: producttypen/models/content.py:105
+#: producttypen/models/content.py:103
 msgid "De content van dit content element"
 msgstr ""
 
-#: producttypen/models/content.py:108
+#: producttypen/models/content.py:106
 msgid "aanvullende informatie"
 msgstr ""
 
-#: producttypen/models/content.py:109
+#: producttypen/models/content.py:107
 msgid "De aanvullende informatie van dit content element"
 msgstr ""
 
-#: producttypen/models/content.py:115
+#: producttypen/models/content.py:113
 msgid "Content element vertaling"
 msgstr ""
 
-#: producttypen/models/content.py:116
+#: producttypen/models/content.py:114
 msgid "Content element vertalingen"
 msgstr ""
 
 #: producttypen/models/dmn_config.py:14
 msgid "naam van de dmn instantie."
-msgstr ""
-
-#: producttypen/models/dmn_config.py:18
-msgid "url"
 msgstr ""
 
 #: producttypen/models/dmn_config.py:18
@@ -974,23 +979,81 @@ msgstr ""
 msgid "externe producttype codes"
 msgstr ""
 
-#: producttypen/models/jsonschema.py:17
+#: producttypen/models/facets.py:12
+msgid "Naam van het facet"
+msgstr ""
+
+#: producttypen/models/facets.py:15 producttypen/models/facets.py:62
+msgid "omschrijving"
+msgstr ""
+
+#: producttypen/models/facets.py:17
+msgid "Omschrijving van facet"
+msgstr ""
+
+#: producttypen/models/facets.py:20
+msgid "facetteerbaar"
+msgstr ""
+
+#: producttypen/models/facets.py:22
+msgid "Geeft aan of er kan worden gefiltered op het facet"
+msgstr ""
+
+#: producttypen/models/facets.py:25
+msgid "meervoudig toegestaan"
+msgstr ""
+
+#: producttypen/models/facets.py:28
+msgid "Geeft aan of een facet meerdere keren mag voorkomen op het producttype"
+msgstr ""
+
+#: producttypen/models/facets.py:32
+msgid "verplicht"
+msgstr ""
+
+#: producttypen/models/facets.py:34
+msgid "Geeft aan of het facet verplicht is voor producttype"
+msgstr ""
+
+#: producttypen/models/facets.py:39
+msgid "facettypes"
+msgstr ""
+
+#: producttypen/models/facets.py:66
+#, fuzzy
+#| msgid "active"
+msgid "actief"
+msgstr "Bepaalt of de gebruiker zich op deze beheerwebsite kan aanmelden."
+
+#: producttypen/models/facets.py:68
+msgid "Geeft aan of de facet waarde actief is"
+msgstr ""
+
+#: producttypen/models/facets.py:72
+msgid "facetwaarde"
+msgstr ""
+
+#: producttypen/models/facets.py:73
+msgid "facetwaarden"
+msgstr ""
+
+#: producttypen/models/jsonschema.py:20
 msgid "Naam van het json schema."
 msgstr ""
 
-#: producttypen/models/jsonschema.py:21
+#: producttypen/models/jsonschema.py:24
 msgid "schema"
 msgstr ""
 
-#: producttypen/models/jsonschema.py:21
+#: producttypen/models/jsonschema.py:24
 msgid "Het schema waartegen gevalideerd kan worden."
 msgstr ""
 
-#: producttypen/models/jsonschema.py:27
+#: producttypen/models/jsonschema.py:28
 msgid "Json schema"
 msgstr ""
 
-#: producttypen/models/jsonschema.py:28
+#: producttypen/models/jsonschema.py:29
 msgid "Json Schemas"
 msgstr ""
 
@@ -1119,140 +1182,154 @@ msgstr ""
 msgid "Processen"
 msgstr ""
 
-#: producttypen/models/producttype.py:47
+#: producttypen/models/producttype.py:48
 msgid "code van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:54
+#: producttypen/models/producttype.py:55
 msgid "verbruiksobject schema"
 msgstr ""
 
-#: producttypen/models/producttype.py:57
+#: producttypen/models/producttype.py:58
 msgid ""
 "JSON schema om het verbruiksobject van een gerelateerd product te valideren."
 msgstr ""
 
-#: producttypen/models/producttype.py:66
+#: producttypen/models/producttype.py:67
 msgid "dataobject schema"
 msgstr ""
 
-#: producttypen/models/producttype.py:69
+#: producttypen/models/producttype.py:70
 msgid "JSON schema om het dataobject van een gerelateerd product te valideren."
 msgstr ""
 
-#: producttypen/models/producttype.py:85
+#: producttypen/models/producttype.py:86
 msgid "toegestane statussen"
 msgstr ""
 
-#: producttypen/models/producttype.py:88
+#: producttypen/models/producttype.py:89
 msgid "toegestane statussen voor producten van dit type."
 msgstr ""
 
-#: producttypen/models/producttype.py:93
+#: producttypen/models/producttype.py:94
 msgid "Keywords"
 msgstr ""
 
-#: producttypen/models/producttype.py:96
+#: producttypen/models/producttype.py:97
 msgid "Lijst van keywords waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/models/producttype.py:101
+#: producttypen/models/producttype.py:102
 msgid "Uniforme Product naam"
 msgstr ""
 
-#: producttypen/models/producttype.py:103
+#: producttypen/models/producttype.py:104
 msgid "Uniforme product naam gedefinieerd door de overheid."
 msgstr ""
 
-#: producttypen/models/producttype.py:110
+#: producttypen/models/producttype.py:111
 msgid "doelgroep"
 msgstr ""
 
-#: producttypen/models/producttype.py:113
+#: producttypen/models/producttype.py:114
 msgid "De doelgroep van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:121
+#: producttypen/models/producttype.py:122
 msgid "thema's waaraan het producttype is gelinkt."
 msgstr ""
 
-#: producttypen/models/producttype.py:126
+#: producttypen/models/producttype.py:127
 msgid "organisaties"
 msgstr ""
 
-#: producttypen/models/producttype.py:129
+#: producttypen/models/producttype.py:130
 msgid "organisaties die dit het product aanbieden."
 msgstr ""
 
-#: producttypen/models/producttype.py:133
+#: producttypen/models/producttype.py:135
+msgid "facetten"
+msgstr ""
+
+#: producttypen/models/producttype.py:138
+msgid "facetten producttypen"
+msgstr ""
+
+#: producttypen/models/producttype.py:142
 msgid "eigenaar"
 msgstr ""
 
-#: producttypen/models/producttype.py:137
+#: producttypen/models/producttype.py:146
 msgid ""
 "De eigenaar van dit producttype zoals een medewerker uit Open Organisatie "
-"(<organisatie>:<systeem>:<component>:<resource>:<identificatie>)"
+"(`<organisatie>:<systeem>:<component>:<resource>:<identificatie>`)"
 msgstr ""
 
-#: producttypen/models/producttype.py:143
+#: producttypen/models/producttype.py:152
 msgid "contacten"
 msgstr ""
 
-#: producttypen/models/producttype.py:146
+#: producttypen/models/producttype.py:155
 msgid "De contacten verantwoordelijk voor het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:151
+#: producttypen/models/producttype.py:160
 msgid "locaties"
 msgstr ""
 
-#: producttypen/models/producttype.py:154
+#: producttypen/models/producttype.py:163
 msgid "De locaties waar het product beschikbaar is."
 msgstr ""
 
-#: producttypen/models/producttype.py:158
+#: producttypen/models/producttype.py:167
 msgid "interne opmerkingen"
 msgstr ""
 
-#: producttypen/models/producttype.py:160
+#: producttypen/models/producttype.py:169
 msgid "Interne opmerkingen over het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:164
-#: producttypen/models/producttype.py:171
+#: producttypen/models/producttype.py:173
 msgid "publicatie startdatum"
 msgstr ""
 
-#: producttypen/models/producttype.py:165
-#: producttypen/models/producttype.py:172
+#: producttypen/models/producttype.py:174
 msgid "De datum waarop het producttype gepubliceerd is"
 msgstr ""
 
-#: producttypen/models/producttype.py:182
+#: producttypen/models/producttype.py:180
+msgid "publicatie einddatum"
+msgstr ""
+
+#: producttypen/models/producttype.py:181
+msgid "De datum waarop de publicatie eindigt"
+msgstr ""
+
+#: producttypen/models/producttype.py:191
 msgid "Producttypen"
 msgstr ""
 
-#: producttypen/models/producttype.py:231
+#: producttypen/models/producttype.py:240
 msgid "producttype naam"
 msgstr ""
 
-#: producttypen/models/producttype.py:233
+#: producttypen/models/producttype.py:242
 msgid "naam van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:237
+#: producttypen/models/producttype.py:246
 msgid "samenvatting"
 msgstr ""
 
-#: producttypen/models/producttype.py:239
+#: producttypen/models/producttype.py:248
 msgid "Korte samenvatting van het producttype."
 msgstr ""
 
-#: producttypen/models/producttype.py:244
+#: producttypen/models/producttype.py:253
 msgid "Producttype vertaling"
 msgstr ""
 
-#: producttypen/models/producttype.py:245
+#: producttypen/models/producttype.py:254
 msgid "Producttype vertalingen"
 msgstr ""
 
@@ -1320,82 +1397,104 @@ msgstr ""
 msgid "Uniforme product namen"
 msgstr ""
 
-#: producttypen/models/validators.py:14
-#: producttypen/tests/api/test_prijs.py:236
-#: producttypen/tests/api/test_prijs.py:717
-#: producttypen/tests/api/test_prijs.py:969
+#: producttypen/models/validators.py:35
+msgid ""
+"Kan niet uitgezet worden: er zijn producttypen met meerdere waarden van dit "
+"facet."
+msgstr ""
+
+#: producttypen/models/validators.py:52
+#, python-format
+msgid "Verplichte facettypes ontbreken: %(namen)s."
+msgstr ""
+
+#: producttypen/models/validators.py:68
+#, python-format
+msgid "Facettype '%(type)s' staat maar één waarde toe, gekregen: %(waarden)s."
+msgstr ""
+
+#: producttypen/models/validators.py:83
+#: producttypen/tests/api/test_prijs.py:220
+#: producttypen/tests/api/test_prijs.py:659
+#: producttypen/tests/api/test_prijs.py:915
 #: producttypen/tests/test_prijs_admin.py:72
 msgid "Een prijs kan niet zowel opties als regels hebben."
 msgstr ""
 
-#: producttypen/models/validators.py:18 producttypen/tests/api/test_prijs.py:75
-#: producttypen/tests/api/test_prijs.py:93
-#: producttypen/tests/api/test_prijs.py:111
-#: producttypen/tests/api/test_prijs.py:129
-#: producttypen/tests/api/test_prijs.py:331
-#: producttypen/tests/api/test_prijs.py:358
+#: producttypen/models/validators.py:87 producttypen/tests/api/test_prijs.py:77
+#: producttypen/tests/api/test_prijs.py:90
+#: producttypen/tests/api/test_prijs.py:104
+#: producttypen/tests/api/test_prijs.py:117
+#: producttypen/tests/api/test_prijs.py:303
+#: producttypen/tests/api/test_prijs.py:325
 #: producttypen/tests/test_prijs_admin.py:60
 #: producttypen/tests/test_prijs_admin.py:84
 #: producttypen/tests/test_prijs_admin.py:96
 msgid "Een prijs moet één of meerdere opties of regels hebben."
 msgstr ""
 
-#: producttypen/models/validators.py:26
-#: producttypen/tests/api/test_thema.py:145
-#: producttypen/tests/api/test_thema.py:232
-#: producttypen/tests/api/test_thema.py:349 producttypen/tests/test_thema.py:16
+#: producttypen/models/validators.py:95 producttypen/tests/test_thema.py:16
 msgid ""
 "Thema's moeten gepubliceerd zijn voordat sub-thema's kunnen worden "
 "gepubliceerd."
 msgstr ""
 
-#: producttypen/models/validators.py:37
-#: producttypen/tests/api/test_thema.py:259
-#: producttypen/tests/api/test_thema.py:376 producttypen/tests/test_thema.py:35
+#: producttypen/models/validators.py:106 producttypen/tests/test_thema.py:35
 msgid ""
 "Thema's kunnen niet ongepubliceerd worden als ze gepubliceerde sub-thema's "
 "hebben."
 msgstr ""
 
-#: producttypen/models/validators.py:44
+#: producttypen/models/validators.py:113
 msgid "Code mag alleen hoofdletters, cijfers en koppeltekens bevatten."
 msgstr ""
 
-#: producttypen/models/validators.py:56 producttypen/tests/test_thema.py:45
+#: producttypen/models/validators.py:125 producttypen/tests/test_thema.py:45
 #: producttypen/tests/test_thema.py:57
 msgid "Een thema kan geen referentie naar zichzelf hebben."
 msgstr ""
 
-#: producttypen/models/validators.py:110
-#: producttypen/tests/api/test_actie.py:92
-#: producttypen/tests/api/test_prijs.py:268
+#: producttypen/models/validators.py:179
+#: producttypen/tests/api/test_actie.py:85
+#: producttypen/tests/api/test_prijs.py:247 producttypen/tests/test_actie.py:12
 msgid "De mapping komt niet overeen met het schema. (zie API spec)"
 msgstr ""
 
-#: producttypen/models/validators.py:122
+#: producttypen/models/validators.py:191
 msgid ""
 "De publicatie eind datum kan niet zonder een publicatie start datum worden "
 "gezet."
 msgstr ""
 
-#: producttypen/models/validators.py:131
+#: producttypen/models/validators.py:200
 msgid ""
 "De publicatie eind datum van een producttype mag niet op een eerdere of "
 "dezelfde dag vallen als de publicate start datum."
 msgstr ""
 
-#: producttypen/models/validators.py:145
+#: producttypen/models/validators.py:214
 msgid ""
 "Bij de doelgroep `Burgers` of `Bedrijven en instellingen` is een uniforme "
 "product naam verplicht."
 msgstr ""
 
-#: producttypen/models/validators.py:156
-msgid "Kies óf een producttype óf een thema, niet beide."
+#: producttypen/models/validators.py:225
+msgid "Kies óf een producttype of een thema, niet beide."
 msgstr ""
 
-#: producttypen/models/validators.py:159
+#: producttypen/models/validators.py:228
 msgid "Geef een producttype of thema op."
+msgstr ""
+
+#: producttypen/models/validators.py:235 producttypen/models/validators.py:239
+#: producttypen/tests/api/test_actie.py:149 producttypen/tests/test_actie.py:31
+#: producttypen/tests/test_actie.py:38
+msgid "Een actie moet een url of een dmn tabel hebben."
+msgstr ""
+
+#: producttypen/models/validators.py:242 producttypen/tests/test_actie.py:46
+#: producttypen/tests/test_actie.py:54
+msgid "Een actie dmn bestaat uit een dmn_config en dmn_tabel_id."
 msgstr ""
 
 #: producttypen/models/verzoektype.py:14
@@ -1422,11 +1521,11 @@ msgstr ""
 msgid "zaaktypen"
 msgstr ""
 
-#: producttypen/serializers/actie.py:103 producttypen/serializers/prijs.py:37
+#: producttypen/serializers/actie.py:124 producttypen/serializers/prijs.py:37
 msgid "tabel endpoint van een bestaande dmn config."
 msgstr ""
 
-#: producttypen/serializers/actie.py:111 producttypen/serializers/prijs.py:45
+#: producttypen/serializers/actie.py:140 producttypen/serializers/prijs.py:45
 msgid "De url naar de dmn tabel."
 msgstr ""
 
@@ -1438,123 +1537,143 @@ msgstr ""
 msgid "Het thema of subthema van dit content element."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:337
-msgid "De huidige taal van het producttype."
-msgstr ""
-
-#: producttypen/serializers/producttype.py:363
+#: producttypen/serializers/producttype.py:395
 msgid "Er bestaat al een externe code met de naam {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:370
+#: producttypen/serializers/producttype.py:402
 msgid "Er bestaat al een parameter met de naam {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:377
+#: producttypen/serializers/producttype.py:409
 msgid "Er bestaat al een zaaktype met de urn {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:383
+#: producttypen/serializers/producttype.py:415
 msgid "Er bestaat al een zaaktype met de url {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:392
+#: producttypen/serializers/producttype.py:424
 msgid "Er bestaat al een verzoektype met de urn {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:398
+#: producttypen/serializers/producttype.py:430
 msgid "Er bestaat al een verzoektype met de url {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:407
+#: producttypen/serializers/producttype.py:439
 msgid "Er bestaat al een proces met de urn {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/serializers/producttype.py:413
+#: producttypen/serializers/producttype.py:445
 msgid "Er bestaat al een proces met de url {} voor dit ProductType."
 msgstr ""
 
-#: producttypen/tests/api/test_bestand.py:51
+#: producttypen/tests/api/test_bestand.py:53
 msgid "Er is geen bestand opgestuurd."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:521
+#: producttypen/tests/api/test_prijs.py:484
 msgid "Prijs optie uuid {} op index 0 is niet onderdeel van het Prijs object."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:554
+#: producttypen/tests/api/test_prijs.py:514
 msgid "Prijs regel uuid {} op index 0 is niet onderdeel van het Prijs object."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:581
+#: producttypen/tests/api/test_prijs.py:539
 msgid "Prijs optie uuid {} op index 0 bestaat niet."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:614
+#: producttypen/tests/api/test_prijs.py:567
 msgid "Prijs regel uuid {} op index 0 bestaat niet."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:872
+#: producttypen/tests/api/test_prijs.py:814
 msgid "Prijs optie uuid {} op index 2 is niet onderdeel van het Prijs object."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:877
+#: producttypen/tests/api/test_prijs.py:821
 msgid "Prijs optie uuid {} op index 3 bestaat niet."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:933
+#: producttypen/tests/api/test_prijs.py:879
 msgid "Prijs regel uuid {} op index 2 is niet onderdeel van het Prijs object."
 msgstr ""
 
-#: producttypen/tests/api/test_prijs.py:938
+#: producttypen/tests/api/test_prijs.py:886
 msgid "Prijs regel uuid {} op index 3 bestaat niet."
 msgstr ""
 
-#: producttypen/tests/api/test_producttype.py:276
-msgid "Er bestaat al een externe code met de naam ISO voor dit ProductType."
+#: producttypen/tests/api/test_producttype.py:296
+msgid "Dit veld mag niet leeg zijn."
 msgstr ""
 
 #: producttypen/viewsets/bestand.py:24
 msgid "Naam van het bestand."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:59
+#: producttypen/viewsets/content.py:26
+msgid "De inhoud van het content element"
+msgstr ""
+
+#: producttypen/viewsets/facets.py:15
+msgid "Facettypes met een facetwaarde met deze uuid"
+msgstr ""
+
+#: producttypen/viewsets/facets.py:19
+msgid "Filter facettypes op basis van de naam van een facetwaarde."
+msgstr ""
+
+#: producttypen/viewsets/facets.py:24
+msgid "Filter facettypes op basis van de actieve status van een facetwaarde."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:60
 msgid "Producttype codes uit externe omgevingen. [naam:code]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:65
+#: producttypen/viewsets/producttype.py:66
 msgid "Producttype parameters. [naam:waarde]"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:77
+#: producttypen/viewsets/producttype.py:78
 msgid "Filter op de eerste letter van de Nederlandse naam van het producttype"
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:130
+#: producttypen/viewsets/producttype.py:137
 msgid "Ongeldig format voor externe_code query parameter."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:143
+#: producttypen/viewsets/producttype.py:150
 msgid "Ongeldig format voor parameter query parameter."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:180
+#: producttypen/viewsets/producttype.py:187
 msgid "Lijst van contact uuids waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:186
+#: producttypen/viewsets/producttype.py:193
 msgid "Lijst van locatie uuids waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/viewsets/producttype.py:192
+#: producttypen/viewsets/producttype.py:199
 msgid "Lijst van organisatie uuids waarop kan worden gezocht."
 msgstr ""
 
-#: producttypen/viewsets/thema.py:127
+#: producttypen/viewsets/producttype.py:205
+msgid "Lijst van UUID's van facetten waarop gefilterd kan worden."
+msgstr ""
+
+#: producttypen/viewsets/producttype.py:212
+msgid "Naam van het facet waarop gefilterd kan worden."
+msgstr ""
+
+#: producttypen/viewsets/thema.py:130
 msgid "Producttype {} moet aan een minimaal één thema zijn gelinkt."
 msgstr ""
 
-#: producttypen/viewsets/thema.py:142
+#: producttypen/viewsets/thema.py:145
 msgid ""
 "Dit thema kan niet worden verwijderd omdat er gerelateerde sub_themas zijn."
 msgstr ""
@@ -1566,6 +1685,14 @@ msgstr "Sorry, je hebt geen toegang tot deze pagina (403)"
 #: templates/404.html:13
 msgid "Sorry, the requested page could not be found (404)"
 msgstr "Sorry, de gevraagde pagina is niet gevonden (404)"
+
+#: templates/account_blocked.html:13
+msgid "Sorry, your account has been blocked"
+msgstr ""
+
+#: templates/account_blocked.html:14
+msgid "If you you want your account unblocked, please contact the webmaster."
+msgstr ""
 
 #: templates/admin/base_site.html:5 templates/admin/base_site.html:24
 msgid "Administration"
@@ -1649,31 +1776,47 @@ msgstr ""
 msgid "Go back to history list"
 msgstr "Ga terug naar geschiedenislijst"
 
-#: urn/fields.py:12
-msgid "URN"
+#: urn/fields.py:99
+msgid "URN (RFC 8141)"
+msgstr ""
+
+#: urn/fields.py:103
+msgid "Urn moet eindigen met `:uuid:<uuid>`."
+msgstr ""
+
+#: urn/fields.py:118
+msgid ""
+"Base urn mag niet eindigen met :uuid, dit is onderdeel van de volledige urn "
+"van een object."
+msgstr ""
+
+#: urn/fields.py:122
+msgid "Base urn mag niet eindigen met :"
 msgstr ""
 
 #: urn/models.py:9
 msgid "Urn"
 msgstr ""
 
-#: urn/models.py:10
-msgid "Basis urn (<organisatie>:<systeem>:<component>:<resource>)"
+#: urn/models.py:11
+msgid ""
+"Basis urn (RFC 8141) (voorbeeld: urn:nld:<organisatie>:<systeem>:<component>:"
+"<resource>)"
 msgstr ""
 
-#: urn/models.py:15
+#: urn/models.py:17
 msgid "basis url"
 msgstr ""
 
-#: urn/models.py:16
+#: urn/models.py:18
 msgid "Basis url van een urn."
 msgstr ""
 
-#: urn/models.py:21
+#: urn/models.py:23
 msgid "Urn Mapping"
 msgstr ""
 
-#: urn/models.py:22
+#: urn/models.py:24
 msgid "Urn Mappings"
 msgstr ""
 
@@ -1689,15 +1832,15 @@ msgstr ""
 msgid "de urn heeft geen mapping"
 msgstr ""
 
-#: urn/serializers.py:77
+#: urn/serializers.py:73
 msgid "de urn en url mappings komen niet overeen"
 msgstr ""
 
-#: urn/serializers.py:81
+#: urn/serializers.py:77
 msgid "de url in de urn mapping is niet hetzelfde"
 msgstr ""
 
-#: urn/serializers.py:85
+#: urn/serializers.py:81
 msgid "de urn in de url mapping is niet hetzelfde"
 msgstr ""
 
@@ -1775,33 +1918,25 @@ msgstr ""
 msgid "{} {} was successfully exported"
 msgstr ""
 
-#: utils/fields.py:31
+#: utils/fields.py:32
 #, python-brace-format
 msgid "Object with uuid={value} does not exist."
 msgstr "Object met uuid={value} bestaat niet."
 
-#: utils/fields.py:32
+#: utils/fields.py:33
 msgid "Invalid value."
 msgstr "Ongeldige waarde"
 
-#: utils/management/commands/export.py:30
-msgid "Name of the archive to write data to"
+#: utils/jsonschema_validators.py:32
+#, python-brace-format
+msgid "'{value}' is not a string and therefore not a valid color"
 msgstr ""
 
-#: utils/management/commands/export.py:34
-msgid "HttpResponse object to which the output data should be written"
-msgstr ""
-
-#: utils/management/commands/export.py:39
-msgid "IDs of producttypes to be exported"
-msgstr ""
-
-#: utils/management/commands/export.py:46
-msgid "names of fields to be excluded from the exported data"
-msgstr ""
-
-#: utils/management/commands/export.py:55
-msgid "Specify the export format: json or csv (default: json)"
+#: utils/jsonschema_validators.py:43
+#, python-brace-format
+msgid ""
+"'{value}' is not a valid hexadecimal color and not defined as a named color "
+"in CSS3 color"
 msgstr ""
 
 #: utils/management/commands/export.py:70
@@ -1834,12 +1969,12 @@ msgid ""
 "aanroep. Voorbeeld: 1.2.1."
 msgstr ""
 
-#: utils/tests/test_validators.py:24 utils/validators.py:27
+#: utils/tests/test_validators.py:27 utils/validators.py:29
 #, python-format
 msgid "The provided value contains an invalid character: %s"
 msgstr "Uw invoer bevat een ongeldig teken: %s"
 
-#: utils/tests/test_validators.py:62 utils/validators.py:58
+#: utils/tests/test_validators.py:65 utils/validators.py:61
 #, fuzzy
 #| msgid ""
 #| "Invalid postal code. A postal code must consist of 4 numbers followed by "
@@ -1851,58 +1986,61 @@ msgstr ""
 "Ongeldige postcode. Een postcode moet bestaan uit 4 cijfers gevolgd door "
 "twee hoofdletters (bv: 1234 AB)."
 
-#: utils/tests/test_validators.py:84 utils/validators.py:36
+#: utils/tests/test_validators.py:87 utils/validators.py:38
 msgid "Ongeldig telefoonnummer."
 msgstr ""
 
-#: utils/validators.py:68
+#: utils/validators.py:71
 #, python-format
 msgid "Filter '%(value_part)s' heeft niet de format 'key__operator__waarde'"
 msgstr ""
 
-#: utils/validators.py:73
+#: utils/validators.py:76
 #, python-format
 msgid "operator `%(operator)s` is niet bekend/ondersteund"
 msgstr ""
 
-#: utils/validators.py:84
+#: utils/validators.py:87
 #, python-format
 msgid ""
 "Operator `%(operator)s` ondersteunt alleen datums en/of numerieke waarden"
 msgstr ""
 
-#: utils/validators.py:96
+#: utils/validators.py:99
 #, python-format
 msgid ""
 "Filter '%(value_part)s' moet de format 'key__operator__value' hebben, "
 "komma's kunnen alleen in de `waarde` worden toegevoegd"
 msgstr ""
 
-#: utils/views.py:15
-#, fuzzy
-#| msgid "Invalid value."
-msgid "Invalid input."
-msgstr "Ongeldige waarde"
-
-#: utils/views.py:31
-msgid "A server error has occurred."
-msgstr ""
-
-#: utils/views.py:69 utils/views.py:88
+#: utils/views.py:26 utils/views.py:45
 msgid "nl vertaling kan worden aangepast via het model zelf."
 msgstr ""
 
-#: utils/views.py:72
+#: utils/views.py:29
 msgid "{} vertaling wordt niet ondersteunt."
 msgstr ""
 
-#: utils/views.py:75
+#: utils/views.py:32
 msgid "patch request mag niet leeg zijn."
 msgstr ""
 
-#: utils/views.py:91
+#: utils/views.py:48
 msgid "{} vertaling bestaat niet."
 msgstr ""
+
+#~ msgid "You need to be superuser to create other superusers."
+#~ msgstr ""
+#~ "U dient een supergebruiker te zijn om andere supergebruikers aan te maken."
+
+#~ msgid ""
+#~ "You cannot create or update a user with more permissions than yourself."
+#~ msgstr "U kunt een gebruiker niet meer rechten geven dan u zelf heeft."
+
+#, fuzzy
+#~| msgid "Invalid value."
+#~ msgid "Invalid input."
+#~ msgstr "Ongeldige waarde"
 
 #
 # TODO move these to maykin common

@@ -1,6 +1,6 @@
 {
     "name": "Open Product",
-    "version": "1.8.0",
+    "version": "1.10.0",
     "description": "open-product project",
     "type": "module",
     "main": "src/openproduct/static/bundles/index.js",
@@ -8,7 +8,7 @@
         "doc": "docs"
     },
     "scripts": {
-        "build": "node build.js",
+        "build": "node build.js && npm run collect",
         "test": "echo 'no tests defined' && exit 1",
         "watch": "node build.js --watch",
         "collect": "cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js src/openproduct/static/wysimark/wysimark.js && cp node_modules/wysimark-standalone/dist/javascript/index.cjs.js.map src/openproduct/static/wysimark/index.cjs.js.map"
@@ -35,7 +35,7 @@
     },
     "overrides": {
         "@portive/client": {
-            "axios": "1.19.0"
+            "axios": "1.20.0"
         }
     }
 }

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Producttypen API
-  version: 1.7.0
+  version: 1.8.0
   description: |2+
 
     Een API voor Producttypen.
@@ -215,7 +215,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedActieList'
               examples:
-                ActieResponse(formulier)ZonderMapping:
+                ActieResponse(formulier):
                   value:
                     count: 123
                     next: http://api.example.org/accounts/?page=4
@@ -230,7 +230,7 @@ paths:
                         variabelen:
                           product:
                             pid: $.uuid
-                  summary: actie response (formulier) zonder mapping
+                  summary: actie response (formulier)
                 ActieResponse(api):
                   value:
                     count: 123
@@ -323,7 +323,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest(formulier)ZonderMapping:
+              ActieRequest(formulier):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -333,7 +333,7 @@ paths:
                     variabelen:
                       product:
                         pid: $.uuid
-                summary: actie request (formulier) zonder mapping
+                summary: actie request (formulier)
               ActieRequest(api):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -388,7 +388,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(formulier)ZonderMapping:
+                ActieResponse(formulier):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -399,7 +399,7 @@ paths:
                       variabelen:
                         product:
                           pid: $.uuid
-                  summary: actie response (formulier) zonder mapping
+                  summary: actie response (formulier)
                 ActieResponse(api):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -502,7 +502,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(formulier)ZonderMapping:
+                ActieResponse(formulier):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -513,7 +513,7 @@ paths:
                       variabelen:
                         product:
                           pid: $.uuid
-                  summary: actie response (formulier) zonder mapping
+                  summary: actie response (formulier)
                 ActieResponse(api):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -605,7 +605,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ActieRequest'
             examples:
-              ActieRequest(formulier)ZonderMapping:
+              ActieRequest(formulier):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -615,7 +615,7 @@ paths:
                     variabelen:
                       product:
                         pid: $.uuid
-                summary: actie request (formulier) zonder mapping
+                summary: actie request (formulier)
               ActieRequest(api):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -670,7 +670,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(formulier)ZonderMapping:
+                ActieResponse(formulier):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -681,7 +681,7 @@ paths:
                       variabelen:
                         product:
                           pid: $.uuid
-                  summary: actie response (formulier) zonder mapping
+                  summary: actie response (formulier)
                 ActieResponse(api):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -773,7 +773,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedActieRequest'
             examples:
-              ActieRequest(formulier)ZonderMapping:
+              ActieRequest(formulier):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
                   naam: Parkeervergunning opzegging
@@ -783,7 +783,7 @@ paths:
                     variabelen:
                       product:
                         pid: $.uuid
-                summary: actie request (formulier) zonder mapping
+                summary: actie request (formulier)
               ActieRequest(api):
                 value:
                   producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -837,7 +837,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Actie'
               examples:
-                ActieResponse(formulier)ZonderMapping:
+                ActieResponse(formulier):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     producttype_uuid: 95792000-d57f-4d3a-b14c-c4c7aa964907
@@ -848,7 +848,7 @@ paths:
                       variabelen:
                         product:
                           pid: $.uuid
-                  summary: actie response (formulier) zonder mapping
+                  summary: actie response (formulier)
                 ActieResponse(api):
                   value:
                     uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
@@ -5947,7 +5947,6 @@ paths:
           items:
             type: string
             enum:
-            - initieel
             - in_aanvraag
             - gereed
             - actief
@@ -5955,9 +5954,8 @@ paths:
             - geweigerd
             - verlopen
         description: |-
-          toegestane statussen voor producten van dit type.
+          toegestane statussen voor producten van dit type. De status `initieel` is altijd toegestaan
 
-          * `initieel` - Initieel
           * `in_aanvraag` - In aanvraag
           * `gereed` - Gereed
           * `actief` - Actief
@@ -8933,7 +8931,7 @@ components:
           type: string
           format: uri
           readOnly: true
-          description: De url naar de dmn tabel.
+          description: 'De url van de actie: het formulier, de api of de dmn tabel.'
         producttype_uuid:
           type: string
           format: uuid
@@ -8981,7 +8979,6 @@ components:
           type: string
           format: uri
           writeOnly: true
-          minLength: 1
           description: url naar het formulier van de actie, hierbij is geen dmn nodig.
         tabel_endpoint:
           type: string
@@ -8990,10 +8987,10 @@ components:
           title: Url
           description: tabel endpoint van een bestaande dmn config.
           writeOnly: true
+          nullable: true
         dmn_tabel_id:
           type: string
           writeOnly: true
-          minLength: 1
           description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
@@ -9617,7 +9614,7 @@ components:
           type: string
           format: uri
           readOnly: true
-          description: De url naar de dmn tabel.
+          description: 'De url van de actie: het formulier, de api of de dmn tabel.'
         mapping:
           oneOf:
           - $ref: '#/components/schemas/DmnMapping'
@@ -9970,7 +9967,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         gepubliceerd:
           type: boolean
           readOnly: true
@@ -10141,7 +10139,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         publicatie_start_datum:
           type: string
           format: date
@@ -10682,7 +10681,6 @@ components:
           type: string
           format: uri
           writeOnly: true
-          minLength: 1
           description: url naar het formulier van de actie, hierbij is geen dmn nodig.
         tabel_endpoint:
           type: string
@@ -10691,10 +10689,10 @@ components:
           title: Url
           description: tabel endpoint van een bestaande dmn config.
           writeOnly: true
+          nullable: true
         dmn_tabel_id:
           type: string
           writeOnly: true
-          minLength: 1
           description: id van de dmn tabel binnen de dmn instantie.
         producttype_uuid:
           type: string
@@ -11021,7 +11019,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         subtypen:
           type: array
           items:
@@ -11385,7 +11384,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         subtypen:
           type: array
           items:
@@ -11571,7 +11571,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         subtypen:
           type: array
           items:

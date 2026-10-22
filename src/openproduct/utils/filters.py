@@ -4,6 +4,7 @@ from django.db import models
 import django_filters
 from django_filters import constants
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet as _FilterSet
+from django_filters.utils import get_field_parts
 
 from openproduct.utils.enums import Operators
 from openproduct.utils.helpers import string_to_value
@@ -20,6 +21,12 @@ class FilterSet(_FilterSet):
 
         if not filter.extra.get("help_text"):
             filter.extra["help_text"] = getattr(field, "help_text", None)
+
+        # filtering over a to-many relation can return the same object multiple times
+        parts = get_field_parts(cls._meta.model, field_name) or []  # pyright: ignore[reportAttributeAccessIssue]
+        if any(part.one_to_many or part.many_to_many for part in parts):
+            filter.distinct = True
+
         return filter
 
 

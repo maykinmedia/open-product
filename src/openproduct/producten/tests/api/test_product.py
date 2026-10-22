@@ -2538,3 +2538,46 @@ class TestProductUrns(BaseApiTestCase):
         path = reverse("product-detail", args=[product.uuid])
         response = self.client.patch(path, {"prijs": "100"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    @override_settings(REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False)
+    def test_patch_clearing_aanvraag_zaak(self):
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_url="https://maykin.ztc.com/zaken/d42613cd-ee22-4455-808c-c19c7b8442a1",
+        )
+        path = reverse("product-detail", args=[product.uuid])
+
+        for value in ("", None):
+            with self.subTest(value=value):
+                response = self.client.patch(
+                    path,
+                    {"aanvraag_zaak_urn": value, "aanvraag_zaak_url": value},
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                error = get_validation_errors(response, "aanvraag_zaak")
+                self.assertIsNotNone(error)
+                self.assertEqual(error["reason"], "een url of urn is verplicht")
+
+    @override_settings(REQUIRE_URN_URL_MAPPING=False, REQUIRE_URL_URN_MAPPING=False)
+    def test_patch_replace_urn_with_url(self):
+        product = ProductFactory.create(
+            aanvraag_zaak_urn="urn:nld:maykin:openzaak:ztc:zaak:uuid:d42613cd-ee22-4455-808c-c19c7b8442a1",
+            aanvraag_zaak_url="",
+        )
+        path = reverse("product-detail", args=[product.uuid])
+
+        response = self.client.patch(
+            path,
+            {
+                "aanvraag_zaak_urn": "",
+                "aanvraag_zaak_url": "https://maykin.ztc.com/zaken/3a8c4bd5-4b7c-4fc5-9b1a-5b2d8b6b0e6f",
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        product.refresh_from_db()
+        self.assertEqual(
+            product.aanvraag_zaak_url,
+            "https://maykin.ztc.com/zaken/3a8c4bd5-4b7c-4fc5-9b1a-5b2d8b6b0e6f",
+        )

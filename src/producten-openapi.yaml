@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Producten API
-  version: 1.7.0
+  version: 1.8.0
   description: |2+
 
     Een API voor Producten.
@@ -1388,7 +1388,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         subtypen:
           type: array
           items:
@@ -1467,7 +1468,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ToegestaneStatussenEnum'
-          description: toegestane statussen voor producten van dit type.
+          description: toegestane statussen voor producten van dit type. De status
+            `initieel` is altijd toegestaan
         publicatie_start_datum:
           type: string
           format: date

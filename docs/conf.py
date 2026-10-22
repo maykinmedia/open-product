@@ -101,6 +101,7 @@ linkcheck_ignore = [
     r"https://github.com/maykinmedia/open-product/blob/master/README.EN.rst#.*",
     r"https://opentelemetry.io/.*",
     r"https://sentry.io/",
+    r"https://gitdocumentatie.logius.nl/.*",
 ]
 
 sphinx_tabs_valid_builders = ["linkcheck"]
@@ -117,6 +118,10 @@ extlinks = {
     ),
     "commonground-api-common": (
         "https://github.com/maykinmedia/commonground-api-common/issues/%s",
+        "#%s",
+    ),
+    "open-archiefbeheer": (
+        "https://github.com/maykinmedia/open-archiefbeheer/issues/%s",
         "#%s",
     ),
 }

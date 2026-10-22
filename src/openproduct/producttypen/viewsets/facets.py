@@ -23,6 +23,7 @@ class FacetTypeFilterSet(filters.FilterSet):
         help_text=_(
             "Filter facettypen op basis van de actieve status van een facetwaarde."
         ),
+        distinct=True,
     )
 
     class Meta:

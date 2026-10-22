@@ -321,7 +321,12 @@ def validate_actie_method(method: str, type: str):
 
 def validate_actie_dmn(dmn_config: DmnConfig, dmn_tabel_id: str, type: str):
     """dmn fields are required when type is DMN. Otherwise the fields should be empty."""
-    if (type == ActieTypeChoices.DMN) != bool(dmn_config and dmn_tabel_id):
+    if type == ActieTypeChoices.DMN:
+        valid = bool(dmn_config and dmn_tabel_id)
+    else:
+        valid = not (dmn_config or dmn_tabel_id)
+
+    if not valid:
         raise ValidationError(
             {
                 "dmn_config": _(
