@@ -1,6 +1,7 @@
 from django_setup_configuration import DjangoModelRef
 from django_setup_configuration.models import ConfigurationModel
 
+from openproduct.config.models import ReferentielijstenConfig
 from openproduct.producttypen.models.dmn_config import DmnConfig
 from openproduct.urn.models import UrnMappingConfig
 
@@ -48,3 +49,23 @@ class DmnConfigConfigurationModel(ConfigurationModel):
 
 class DmnConfigsConfigurationModel(ConfigurationModel):
     configs: list[DmnConfigConfigurationModel]
+
+
+class ReferentielijstenConfigurationModel(ConfigurationModel):
+    referentielijsten_api_service_identifier: str = DjangoModelRef(
+        ReferentielijstenConfig, "service"
+    )
+
+    class Meta:
+        django_model_refs = {
+            ReferentielijstenConfig: [
+                "enabled",
+                "kanalen_tabel_code",
+            ]
+        }
+
+        extra_kwargs = {
+            "referentielijsten_api_service_identifier": {
+                "examples": ["referentielijsten-api"]
+            },
+        }
