@@ -2,7 +2,7 @@ name: bin-check.yml
 on:
   push:
     branches:
-      - main
+      - master
     tags:
       - "*"
   pull_request:
