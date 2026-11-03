@@ -90,7 +90,7 @@ celery==5.6.3
     #   django-celery-beat
     #   flower
     #   notifications-api-common
-certifi==2024.8.30
+certifi==2026.10.23
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -477,7 +477,7 @@ faker==33.1.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   factory-boy
-filelock==4.2.4
+filelock==4.2.7
     # via
     #   python-discovery
     #   virtualenv
@@ -548,11 +548,6 @@ imagesize==1.4.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   sphinx
-importlib-metadata==8.7.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   opentelemetry-api
 inflection==0.5.1
     # via
     #   -c requirements/ci.txt
@@ -647,10 +642,11 @@ open-api-framework==0.16.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-api==1.38.0
+opentelemetry-api==1.45.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   opentelemetry-exporter-http-transport
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-instrumentation
@@ -663,27 +659,38 @@ opentelemetry-api==1.38.0
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
-opentelemetry-exporter-otlp==1.38.0
+opentelemetry-exporter-http-transport==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-exporter-otlp-proto-common==1.38.0
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-exporter-otlp==1.45.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+opentelemetry-exporter-otlp-common==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-opentelemetry-exporter-otlp-proto-grpc==1.38.0
+opentelemetry-exporter-otlp-proto-common==1.45.2
+    # via
+    #   -c requirements/ci.txt
+    #   -r requirements/ci.txt
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-exporter-otlp-proto-grpc==1.45.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp
-opentelemetry-exporter-otlp-proto-http==1.38.0
+opentelemetry-exporter-otlp-proto-http==1.45.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-exporter-otlp
-opentelemetry-instrumentation==0.59b0
+opentelemetry-instrumentation==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -694,37 +701,37 @@ opentelemetry-instrumentation==0.59b0
     #   opentelemetry-instrumentation-redis
     #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
-opentelemetry-instrumentation-celery==0.59b0
+opentelemetry-instrumentation-celery==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-instrumentation-dbapi==0.59b0
+opentelemetry-instrumentation-dbapi==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-instrumentation-psycopg
-opentelemetry-instrumentation-django==0.59b0
+opentelemetry-instrumentation-django==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-instrumentation-psycopg==0.59b0
+opentelemetry-instrumentation-psycopg==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-instrumentation-redis==0.59b0
+opentelemetry-instrumentation-redis==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-instrumentation-requests==0.59b0
+opentelemetry-instrumentation-requests==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-instrumentation-wsgi==0.59b0
+opentelemetry-instrumentation-wsgi==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   opentelemetry-instrumentation-django
-opentelemetry-proto==1.38.0
+opentelemetry-proto==1.45.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -735,14 +742,15 @@ opentelemetry-resource-detector-containerid==0.59b0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-opentelemetry-sdk==1.38.0
+opentelemetry-sdk==1.45.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   opentelemetry-exporter-otlp-common
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-resource-detector-containerid
-opentelemetry-semantic-conventions==0.59b0
+opentelemetry-semantic-conventions==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -754,7 +762,7 @@ opentelemetry-semantic-conventions==0.59b0
     #   opentelemetry-instrumentation-requests
     #   opentelemetry-instrumentation-wsgi
     #   opentelemetry-sdk
-opentelemetry-util-http==0.59b0
+opentelemetry-util-http==0.66b2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -955,6 +963,7 @@ requests==2.33.1
     #   django-log-outgoing-requests
     #   mozilla-django-oidc
     #   open-api-framework
+    #   opentelemetry-exporter-http-transport
     #   opentelemetry-exporter-otlp-proto-http
     #   requests-mock
     #   sphinx
@@ -1110,7 +1119,7 @@ tblib==3.0.0
     #   -r requirements/ci.txt
 tomlkit==0.13.2
     # via bump-my-version
-tornado==6.5.10
+tornado==6.6
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
@@ -1240,8 +1249,3 @@ zgw-consumers==1.2.0
     #   -r requirements/ci.txt
     #   commonground-api-common
     #   notifications-api-common
-zipp==3.23.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   importlib-metadata
