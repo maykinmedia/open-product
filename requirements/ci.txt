@@ -37,8 +37,6 @@ asn1crypto==1.5.1
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   webauthn
-astroid==3.3.5
-    # via pylint
 attrs==24.2.0
     # via
     #   -c requirements/base.txt
@@ -145,8 +143,6 @@ diff-match-patch==20241021
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-reversion-compare
-dill==0.3.9
-    # via pylint
 django==5.2.17
     # via
     #   -c requirements/base.txt
@@ -501,8 +497,6 @@ isoduration==20.11.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
-isort==5.13.2
-    # via pylint
 jinja2==3.1.6
     # via sphinx
 jsonpointer==3.1.1
@@ -548,8 +542,6 @@ maykin-common==0.22.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-mccabe==0.7.0
-    # via pylint
 mdurl==0.1.2
     # via
     #   -c requirements/base.txt
@@ -711,8 +703,6 @@ phonenumberslite==8.13.50
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
-platformdirs==4.3.6
-    # via pylint
 playwright==1.63.0
     # via -r requirements/test-tools.in
 prometheus-client==0.21.0
@@ -779,8 +769,6 @@ pyjwt==2.15.1
     #   commonground-api-common
     #   mozilla-django-oidc
     #   zgw-consumers
-pylint==3.3.1
-    # via -r requirements/test-tools.in
 pyopenssl==26.4.0
     # via
     #   -c requirements/base.txt
@@ -979,8 +967,6 @@ structlog==25.4.0
     #   notifications-api-common
 tblib==3.0.0
     # via -r requirements/test-tools.in
-tomlkit==0.13.2
-    # via pylint
 tornado==6.5.10
     # via
     #   -c requirements/base.txt

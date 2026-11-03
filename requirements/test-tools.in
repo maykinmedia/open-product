@@ -7,7 +7,6 @@ coverage
 django-webtest
 factory-boy
 freezegun
-pylint
 pyquery  # integrates with webtest
 requests-mock
 tblib

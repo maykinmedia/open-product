@@ -40,11 +40,6 @@ asn1crypto==1.5.1
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   webauthn
-astroid==3.3.5
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 attrs==24.2.0
     # via
     #   -c requirements/ci.txt
@@ -165,11 +160,6 @@ diff-match-patch==20241021
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-reversion-compare
-dill==0.3.9
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 django==5.2.17
     # via
     #   -c requirements/ci.txt
@@ -549,11 +539,6 @@ isoduration==20.11.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-isort==5.13.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 jinja2==3.1.6
     # via
     #   -c requirements/ci.txt
@@ -608,11 +593,6 @@ maykin-common==0.22.0
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   open-api-framework
-mccabe==0.7.0
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 mdurl==0.1.2
     # via
     #   -c requirements/ci.txt
@@ -774,11 +754,6 @@ phonenumberslite==8.13.50
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
     #   django-two-factor-auth
-platformdirs==4.3.6
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 playwright==1.63.0
     # via
     #   -c requirements/ci.txt
@@ -850,10 +825,6 @@ pyjwt==2.15.1
     #   commonground-api-common
     #   mozilla-django-oidc
     #   zgw-consumers
-pylint==3.3.1
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
 pyopenssl==26.4.0
     # via
     #   -c requirements/ci.txt
@@ -1087,11 +1058,6 @@ tblib==3.0.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
-tomlkit==0.13.2
-    # via
-    #   -c requirements/ci.txt
-    #   -r requirements/ci.txt
-    #   pylint
 tornado==6.5.10
     # via
     #   -c requirements/ci.txt
