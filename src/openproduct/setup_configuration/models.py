@@ -25,25 +25,20 @@ class UrnMappingConfigsConfigurationModel(ConfigurationModel):
 
 
 class DmnConfigConfigurationModel(ConfigurationModel):
-    class Meta:
-        django_model_refs = {
-            DmnConfig: (
-                "naam",
-                "tabel_endpoint",
-            )
-        }
-        extra_kwargs = {
-            "naam": {
-                "examples": ["main repository"],
-                "description": "Name of the DMN instance",
-            },
-            "tabel_endpoint": {
-                "examples": [
-                    "https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/"
-                ],
-                "description": "Base url of the DMN instance.",
-            },
-        }
+    naam: str = DjangoModelRef(
+        DmnConfig,
+        "naam",
+        examples=["main repository"],
+        description="Name of the DMN instance",
+    )
+    tabel_endpoint: str = DjangoModelRef(
+        DmnConfig,
+        "tabel_endpoint",
+        examples=[
+            "https://gemeente.flowable-dmn.nl/flowable-rest/dmn-api/dmn-repository/"
+        ],
+        description="Base url of the DMN instance.",
+    )
 
 
 class DmnConfigsConfigurationModel(ConfigurationModel):

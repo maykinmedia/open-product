@@ -84,10 +84,8 @@ urlpatterns += staticfiles_urlpatterns() + static(
 )
 
 if settings.DEBUG and apps.is_installed("debug_toolbar"):
-    import debug_toolbar
-
     urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls)),
+        path("__debug__/", include("debug_toolbar.urls")),
         path(
             "favicon.ico",
             RedirectView.as_view(url="/static/maykin_common/ico/favicon.png"),

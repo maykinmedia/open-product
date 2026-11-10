@@ -10,9 +10,12 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 
+from openproduct.accounts.models import User
+
 
 class Command(BaseCommand):
     help = "Set up an initial superuser account if it doesn't exist yet"
+    UserModel: type[User]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
