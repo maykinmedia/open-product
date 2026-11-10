@@ -10,6 +10,8 @@ from django.utils.translation import gettext, gettext_lazy as _
 
 from timeline_logger.models import TimelineLog
 
+from openproduct.typing import StrOrPromise
+
 from .constants import Events
 from .models import TimelineLogProxy
 
@@ -78,7 +80,7 @@ class TimelineLogProxyAdmin(admin.ModelAdmin):
         return Truncator(full_msg).chars(100) or gettext("(no message)")
 
     @admin.display(description=_("event"), ordering="extra_data__event")
-    def show_event(self, obj: TimelineLogProxy) -> str:
+    def show_event(self, obj: TimelineLogProxy) -> StrOrPromise:
         if (event := obj.event) == "unknown":
             return gettext("Unknown")
         return Events(event).label

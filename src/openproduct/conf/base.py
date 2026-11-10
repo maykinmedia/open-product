@@ -7,7 +7,7 @@ from celery.schedules import crontab
 os.environ["_USE_STRUCTLOG"] = "True"
 from maykin_common.branding import ProductDefinition
 from maykin_common.config import DocumentationParams, config
-from open_api_framework.conf.base import *  # noqa: F403
+from open_api_framework.conf.base import *  # noqa: F403  # pyright: ignore[reportWildcardImportFromLibrary]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

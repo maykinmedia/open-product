@@ -8,7 +8,7 @@ from openproduct.urn.models import UrnMappingConfig
 from openproduct.urn.validators import validate_urn_or_url
 
 
-class UrnMappingMixin:
+class UrnMappingMixin(serializers.Serializer):
     urn_fields: list
 
     def validate(self, attrs):

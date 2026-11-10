@@ -84,6 +84,8 @@ celery==5.6.3
     #   django-celery-beat
     #   flower
     #   notifications-api-common
+celery-types==0.23.0
+    # via -r requirements/type-checking.in
 certifi==2026.10.23
     # via
     #   -c requirements/ci.txt
@@ -1080,6 +1082,7 @@ typing-extensions==4.12.2
     # via
     #   -c requirements/ci.txt
     #   -r requirements/ci.txt
+    #   celery-types
     #   django-log-outgoing-requests
     #   django-stubs
     #   django-stubs-ext

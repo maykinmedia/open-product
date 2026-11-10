@@ -108,21 +108,21 @@ READINESS_FILE = Path(settings.BASE_DIR) / "tmp" / "celery_worker_ready"
 # Utilities for checking the health of celery workers
 #
 class LivenessProbe(bootsteps.StartStopStep):
-    requires = {"celery.worker.components:Timer"}
+    requires = ("celery.worker.components:Timer",)
 
     def __init__(self, worker, **kwargs):
         self.requests = []
         self.tref = None
 
-    def start(self, worker):
-        self.tref = worker.timer.call_repeatedly(
+    def start(self, parent):
+        self.tref = parent.timer.call_repeatedly(
             10.0,
             self.update_heartbeat_file,
-            (worker,),
+            (parent,),
             priority=10,
         )
 
-    def stop(self, worker):
+    def stop(self, parent):
         HEARTBEAT_FILE.unlink(missing_ok=True)
 
     def update_heartbeat_file(self, worker):
@@ -130,12 +130,12 @@ class LivenessProbe(bootsteps.StartStopStep):
 
 
 @worker_ready.connect
-def worker_ready(**_):
+def create_readiness_file(**_):
     READINESS_FILE.touch()
 
 
 @worker_shutdown.connect
-def worker_shutdown(**_):
+def remove_readiness_file(**_):
     READINESS_FILE.unlink(missing_ok=True)
 
 
