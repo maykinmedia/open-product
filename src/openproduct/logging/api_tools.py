@@ -5,6 +5,8 @@ from django.db.models import Model
 from rest_framework import serializers
 from rest_framework.request import Request
 
+from openproduct.accounts.models import User
+
 from .logevent import (
     audit_api_create,
     audit_api_delete,
@@ -25,10 +27,10 @@ __all__ = [
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)  # taken from DRF stubs
 
 
-def extract_audit_parameters(request: Request) -> tuple[str, str, str]:
-    user_id = request.user.id
-    user_repr = request.user.username
-    return user_id, user_repr, ""
+def extract_audit_parameters(request: Request) -> tuple[int, str, str]:
+    user = request.user
+    assert isinstance(user, User)
+    return user.pk, user.username, ""
 
 
 class AuditTrailCreateMixin:
