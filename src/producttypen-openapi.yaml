@@ -7382,19 +7382,6 @@ paths:
             type: string
         description: Filter content op basis van de labels.
         explode: false
-      - name: page
-        required: false
-        in: query
-        description: Een pagina binnen de gepagineerde set resultaten.
-        schema:
-          type: integer
-      - name: page_size
-        required: false
-        in: query
-        description: 'Het aantal resultaten terug te geven per pagina. (default: 100,
-          maximum: 500).'
-        schema:
-          type: integer
       - in: path
         name: uuid
         schema:
@@ -7417,37 +7404,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedNestedContentElementList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/NestedContentElement'
               examples:
                 ContentElementResponse(linkedToProducttype):
                   value:
-                    count: 123
-                    next: http://api.example.org/accounts/?page=4
-                    previous: http://api.example.org/accounts/?page=2
-                    results:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      labels:
-                      - openingstijden
-                      content: ma-vr 8:00-17:00
-                      aanvullende_informatie: ''
-                      taal: nl
-                      producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
-                      thema_uuid: null
+                  - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: 5f6a2219-5768-4e11-8a8e-ffbafff32482
+                    thema_uuid: null
                   summary: content element response (linked to producttype)
                 ContentElementResponse(linkedToThema):
                   value:
-                    count: 123
-                    next: http://api.example.org/accounts/?page=4
-                    previous: http://api.example.org/accounts/?page=2
-                    results:
-                    - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      labels:
-                      - openingstijden
-                      content: ma-vr 8:00-17:00
-                      aanvullende_informatie: ''
-                      taal: nl
-                      producttype_uuid: null
-                      thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
+                  - uuid: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    labels:
+                    - openingstijden
+                    content: ma-vr 8:00-17:00
+                    aanvullende_informatie: ''
+                    taal: nl
+                    producttype_uuid: null
+                    thema_uuid: 41ec14a8-ca7d-43a9-a4a8-46f9587c8d91
                   summary: content element response (linked to thema)
           description: ''
   /producttypen/{uuid}/vertaling/{taal}:
@@ -10187,6 +10168,7 @@ components:
         hoofd_thema:
           type: string
           format: uuid
+          nullable: true
           description: Het hoofd thema waaronder dit thema valt.
       required:
       - aanmaak_datum
@@ -10211,6 +10193,7 @@ components:
         hoofd_thema:
           type: string
           format: uuid
+          nullable: true
           description: Het hoofd thema waaronder dit thema valt.
       required:
       - hoofd_thema
