@@ -57,7 +57,7 @@ jobs:
 
     strategy:
       matrix:
-        postgres: [ '14', '15', '16', '17' ]
+        postgres: [ '15', '16', '17', '18' ]
 
     services:
       postgres:
@@ -74,7 +74,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up backend environment
-        uses: maykinmedia/setup-django-backend@4a6c5facc65bb1dd510cf06be20871db11a156b3 # v1.4.2
+        uses: maykinmedia/setup-django-backend@de45f894bd82c649e07f8343abe4f2afdd89a111 # v1.4.3
         with:
           python-version: '3.12'
           setup-node: true
@@ -85,11 +85,11 @@ jobs:
           coverage run src/manage.py test src --exclude-tag=playwright
 
       - name: Install Playwright browsers
-        if: ${{ matrix.postgres == '17' }}
+        if: ${{ matrix.postgres == '18' }}
         run: playwright install --with-deps chromium
 
       - name: Run Playwright tests
-        if: ${{ matrix.postgres == '17' }}
+        if: ${{ matrix.postgres == '18' }}
         run: coverage run -a src/manage.py test src --tag=playwright
 
       - name: Publish coverage report
