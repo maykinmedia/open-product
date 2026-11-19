@@ -261,11 +261,12 @@ django-ordered-model==3.7.4
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-admin-index
-django-otp==1.5.4
+django-otp==1.7.5
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-two-factor-auth
+    #   maykin-2fa
 django-parler==2.3
     # via
     #   -c requirements/base.txt
@@ -351,7 +352,7 @@ django-timezone-field==7.0
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   django-celery-beat
-django-two-factor-auth==1.17.0
+django-two-factor-auth==1.18.1
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -527,12 +528,12 @@ markdown-it-py==3.0.0
     #   rich
 markupsafe==3.0.2
     # via jinja2
-maykin-2fa==1.0.1
+maykin-2fa==3.0.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
     #   open-api-framework
-maykin-common==0.22.0
+maykin-common==0.23.0
     # via
     #   -c requirements/base.txt
     #   -r requirements/base.txt
@@ -706,11 +707,6 @@ packaging==25.0
     #   kombu
     #   opentelemetry-instrumentation
     #   sphinx
-phonenumberslite==8.13.50
-    # via
-    #   -c requirements/base.txt
-    #   -r requirements/base.txt
-    #   django-two-factor-auth
 playwright==1.63.0
     # via -r requirements/test-tools.in
 prometheus-client==0.21.0
