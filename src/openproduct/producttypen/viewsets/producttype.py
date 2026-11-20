@@ -508,6 +508,7 @@ class ProductTypeViewSet(
         serializer_class=NestedContentElementSerializer,
         url_path="content",
         filterset_class=None,
+        pagination_class=None,
     )
     def content(self, request, uuid=None):
         producttype = self.get_object()
