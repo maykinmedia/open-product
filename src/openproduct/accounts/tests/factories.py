@@ -19,7 +19,7 @@ class UserFactory(DjangoModelFactory):
     last_name = factory.Faker("last_name")
     password = factory.PostGenerationMethodCall("set_password", "password")
 
-    class Meta:
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         model = User
 
     class Params:

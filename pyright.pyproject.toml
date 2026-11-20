@@ -3,7 +3,17 @@ pythonVersion = "3.12"
 pythonPlatform = "Linux"
 reportUnnecessaryTypeIgnoreComment = "error"
 include = [
-    "src/openproduct/utils"
+    "src/openproduct/accounts",
+    "src/openproduct/celery.py",
+    "src/openproduct/conf",
+    "src/openproduct/logging",
+    "src/openproduct/setup.py",
+    "src/openproduct/setup_configuration",
+    "src/openproduct/typing.py",
+    "src/openproduct/urls.py",
+    "src/openproduct/urn",
+    "src/openproduct/utils",
+    "src/openproduct/wsgi.py",
 ]
 exclude = [
     "src/openproduct/conf/dev.py"
