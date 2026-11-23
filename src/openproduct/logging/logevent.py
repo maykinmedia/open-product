@@ -29,7 +29,7 @@ def _audit_event(
     *,
     content_object: models.Model,
     event: Events,
-    user_id: str = "",
+    user_id: str | int = "",
     user_display: str = "",
     django_user: User | None = None,
     **kwargs,
@@ -137,7 +137,7 @@ def audit_admin_delete(
 def audit_api_create(
     *,
     content_object: models.Model,
-    user_id: str,
+    user_id: str | int,
     user_display: str,
     object_data: JSONObject,
     remarks: str,
@@ -156,7 +156,7 @@ def audit_api_create(
 def audit_api_read(
     *,
     content_object: models.Model,
-    user_id: str,
+    user_id: str | int,
     user_display: str,
     remarks: str,
 ) -> None:
@@ -173,7 +173,7 @@ def audit_api_read(
 def audit_api_update(
     *,
     content_object: models.Model,
-    user_id: str,
+    user_id: str | int,
     user_display: str,
     object_data: JSONObject,
     remarks: str,
@@ -192,7 +192,7 @@ def audit_api_update(
 def audit_api_delete(
     *,
     content_object: models.Model,
-    user_id: str,
+    user_id: str | int,
     user_display: str,
     object_data: JSONObject,
     remarks: str,

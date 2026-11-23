@@ -12,6 +12,8 @@ they are available for Django settings initialization.
 
 import os
 import warnings
+from collections.abc import Callable
+from functools import wraps
 from pathlib import Path
 
 from django.conf import settings
@@ -21,6 +23,7 @@ from dotenv import load_dotenv
 from maykin_common.otel import setup_otel
 
 logger = structlog.stdlib.get_logger(__name__)
+_timeout_sentinel = object()
 
 
 def setup_env():
@@ -55,17 +58,36 @@ def monkeypatch_requests():
     try:
         from requests import Session
     except ModuleNotFoundError:
-        logger.debug("attempt_to_patch_requests_but_library_not_installed")
+        logger.debug(
+            "requests_patching_failed", reason="requests library not installed"
+        )
         return
 
-    if hasattr(Session, "_original_request"):
-        logger.debug("session_already_patched_or_has_original_request_attribute")
+    marking_attr = "_timeout_monkeypatched"
+
+    if (mark := getattr(Session, marking_attr, None)) is not None:
+        if mark is _timeout_sentinel:
+            logger.debug(
+                "requests_patching_skipped", reason="Session is already patched"
+            )
+        else:
+            logger.debug(
+                "requests_patching_skipped",
+                reason=(
+                    f"Session.{marking_attr} was set by code other than this module, "
+                    "e.g. a copy of this patch"
+                ),
+            )
         return
 
-    Session._original_request = Session.request
+    setattr(Session, marking_attr, _timeout_sentinel)
 
-    def new_request(self, *args, **kwargs):
-        kwargs.setdefault("timeout", settings.REQUESTS_DEFAULT_TIMEOUT)
-        return self._original_request(*args, **kwargs)
+    def decorate[**P, R](func: Callable[P, R]) -> Callable[P, R]:
+        @wraps(func)
+        def new_request(*args: P.args, **kwargs: P.kwargs) -> R:
+            kwargs.setdefault("timeout", settings.REQUESTS_DEFAULT_TIMEOUT)
+            return func(*args, **kwargs)
 
-    Session.request = new_request
+        return new_request
+
+    Session.request = decorate(Session.request)
