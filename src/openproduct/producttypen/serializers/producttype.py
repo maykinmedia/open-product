@@ -62,6 +62,7 @@ from .zaaktype import NestedZaakTypeSerializer, ZaakTypeSerializer
 class NestedThemaSerializer(serializers.ModelSerializer):
     hoofd_thema = UUIDRelatedField(
         queryset=Thema.objects.all(),
+        allow_null=True,
         help_text=get_help_text("producttypen.Thema", "hoofd_thema"),
     )
 

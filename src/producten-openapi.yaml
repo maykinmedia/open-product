@@ -1545,6 +1545,7 @@ components:
         hoofd_thema:
           type: string
           format: uuid
+          nullable: true
           description: Het hoofd thema waaronder dit thema valt.
       required:
       - aanmaak_datum
@@ -1569,6 +1570,7 @@ components:
         hoofd_thema:
           type: string
           format: uuid
+          nullable: true
           description: Het hoofd thema waaronder dit thema valt.
       required:
       - hoofd_thema
